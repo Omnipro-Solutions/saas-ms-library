@@ -4,6 +4,7 @@ import json
 import redis
 from mongoengine import register_connection
 from mongoengine.context_managers import switch_db
+from omni.pro.protos.common import base_pb2
 from omni.pro.util import nested
 
 
@@ -173,7 +174,7 @@ class RedisManager(object):
         self.host = host
         self.port = port
         self.db = db
-        self._connection = RedisConnection(host=self.host, port=self.port, db=self.db)
+        self._connection = RedisConnection(host=self.host, port=int(self.port), db=int(self.db))
 
     def get_connection(self) -> RedisConnection:
         return self._connection
@@ -284,11 +285,11 @@ class DBUtil(object):
     def db_prepared_statement(
         cls,
         id: str,
-        fields,
-        filter,
-        paginated,
-        group_by,
-        sort_by,
+        fields: base_pb2.Fields,
+        filter: base_pb2.Filter,
+        paginated: base_pb2.Paginated,
+        group_by: base_pb2.GroupBy,
+        sort_by: base_pb2.SortBy,
     ) -> dict:
         prepared_statement = {}
         if paginated:
