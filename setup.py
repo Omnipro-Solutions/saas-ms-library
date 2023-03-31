@@ -17,6 +17,7 @@ URL = "https://github.com/Omnipro-Solutions/saas-ms-library"
 INSTALL_REQUIRES = [
     "boto3==1.26.75",
     "mongoengine==0.26.0",
+    "marshmallow==3.19.0",
     "hiredis==2.2.2",
     "redis==4.5.1",
 ]
@@ -33,6 +34,8 @@ setup(
     author_email=AUTHOR_EMAIL,
     license="MIT",
     packages=find_packages(exclude=("tests",)),
+    package_data={"": ["*.pyi"]},
+    include_package_data=True,
     install_requires=INSTALL_REQUIRES,
     classifiers=[
         "Development Status :: 3 - Alpha",

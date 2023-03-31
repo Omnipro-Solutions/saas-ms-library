@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from google.protobuf.timestamp_pb2 import Timestamp
-from mongoengine import DateTimeField, Document, EmbeddedDocument, EmbeddedDocumentField, StringField
+from mongoengine import BooleanField, DateTimeField, Document, EmbeddedDocument, EmbeddedDocumentField, StringField
 from omni.pro.protos.common.base_pb2 import Context as ContextProto
 from omni.pro.protos.common.base_pb2 import ObjectAudit as AuditProto
 
@@ -51,6 +51,7 @@ class Context(BaseEmbeddedDocument):
 class BaseDocument(Document):
     audit = EmbeddedDocumentField(Audit)
     context = EmbeddedDocumentField(Context)
+    active = BooleanField(default=True)
 
     meta = {
         "abstract": True,
@@ -62,10 +63,8 @@ class BaseDocument(Document):
             self.context = Context()
         if not self.audit:
             self.audit = Audit(created_by=self.context.user)
-        self.audit = Audit(
-            updated_by=self.context.user,
-            updated_at=datetime.utcnow(),
-        )
+        self.audit.updated_by = self.context.user
+        self.audit.updated_at = datetime.utcnow()
         return super().save(*args, **kwargs)
 
     def to_proto(self):
