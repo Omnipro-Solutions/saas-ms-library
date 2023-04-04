@@ -2,14 +2,18 @@ import ast
 import json
 
 import redis
+from bson import ObjectId
 from mongoengine import register_connection
 from mongoengine.context_managers import switch_db
-from omni.pro.protos.common import base_pb2
+from omni.pro.logger import configure_logger
 from omni.pro.util import nested
+from protos.common import base_pb2
+
+logger = configure_logger(name=__name__)
 
 
 class DatabaseManager(object):
-    def __init__(self, host: str, port: int, user: str, password: str, complement: str) -> None:
+    def __init__(self, host: str, port: int, user: str, password: str, complement: dict) -> None:
         """
         :param db_object: Database object
         Example:
@@ -25,11 +29,12 @@ class DatabaseManager(object):
         """
         register_connection(
             alias="default",
-            name="default",
+            db="default",
             host=host,
             port=int(port),
             username=user,
             password=password,
+            **complement,
         )
         self.host = host
         self.port = port
@@ -47,12 +52,12 @@ class DatabaseManager(object):
         if db_alias not in self.connections:
             register_connection(
                 alias=db_alias,
-                name=db_name,
+                db=db_name,
                 host=self.host,
                 port=int(self.port),
                 username=self.user,
                 password=self.password,
-                authentication_source=self.complement,
+                **self.complement,
             )
             self.connections[db_alias] = True
 
@@ -118,11 +123,11 @@ class DatabaseManager(object):
         db_alias = self.connect_to_database(db_name)
 
         with switch_db(document_class, db_alias) as DocumentAlias:
-            query_set = DocumentAlias.objects
-
             # Filter documents based on criteria provided
             if filter:
-                query_set = query_set.filter(__raw__=filter)
+                query_set = DocumentAlias.objects.filter(__raw__=filter)
+            else:
+                query_set = DocumentAlias.objects
 
             # Only retrieve specified fields
             if fields:
@@ -134,8 +139,8 @@ class DatabaseManager(object):
 
             # Paginate results based on criteria provided
             if paginated:
-                page = int(paginated.get("page", 1))
-                per_page = int(paginated.get("per_page", 10))
+                page = int(paginated.get("page") or 1)
+                per_page = int(paginated.get("per_page") or 10)
                 start = (page - 1) * per_page
                 end = start + per_page
                 query_set = query_set[start:end]
@@ -158,7 +163,7 @@ class DatabaseManager(object):
 class RedisConnection:
     def __init__(self, host: str, port: int, db: int) -> None:
         self.host = host
-        self.port = port
+        self.port = int(port)
         self.db = db
 
     def __enter__(self) -> redis.StrictRedis:
@@ -172,9 +177,9 @@ class RedisConnection:
 class RedisManager(object):
     def __init__(self, host: str, port: int, db: int) -> None:
         self.host = host
-        self.port = port
+        self.port = int(port)
         self.db = db
-        self._connection = RedisConnection(host=self.host, port=int(self.port), db=int(self.db))
+        self._connection = RedisConnection(host=self.host, port=self.port, db=self.db)
 
     def get_connection(self) -> RedisConnection:
         return self._connection
@@ -184,8 +189,9 @@ class RedisManager(object):
 
     def set_json(self, key, json_obj):
         with self.get_connection() as rc:
-            json_str = json.dumps(json_obj)
-            return rc.json().set(key, json_str)
+            if isinstance(json_obj, str):
+                json_obj = json.loads(json_obj)
+            return rc.json().set(key, "$", json_obj)
 
     def get_json(self, key):
         with self.get_connection() as rc:
@@ -193,6 +199,7 @@ class RedisManager(object):
 
     def get_resource_config(self, service_id: str, tenant_code: str) -> dict:
         config = self.get_json(tenant_code)
+        logger.info(f"Redis config", extra={"deb_config": config})
         return {
             **nested(config, f"resources.{service_id}", {}),
             **nested(config, "aws", {}),
@@ -292,25 +299,22 @@ class DBUtil(object):
         sort_by: base_pb2.SortBy,
     ) -> dict:
         prepared_statement = {}
-        if paginated:
-            prepared_statement["paginated"] = {"page": paginated.offset, "per_page": paginated.limit}
-        if filter or id:
-            filter_custom = None
-            if id:
-                filter_custom = {"id": id}
-            elif filter:
+        prepared_statement["paginated"] = {"page": paginated.offset, "per_page": paginated.limit or 10}
+        if (ft := filter.ListFields()) or id:
+            expression = [("_id", "=", ObjectId(id or None))]
+            if ft:
                 str_filter = filter.filter.replace("true", "True").replace("false", "False")
                 expression = ast.literal_eval(str_filter)
-                filter_custom = PolishNotationToMongoDB(expression=expression).convert()
+            filter_custom = PolishNotationToMongoDB(expression=expression).convert()
             prepared_statement["filter"] = filter_custom
         if group_by:
             prepared_statement["group_by"] = [x.name_field for x in group_by]
-        if sort_by:
+        if sort_by.ListFields():
             prepared_statement["sort_by"] = [cls.db_trans_sort(sort_by)]
         return prepared_statement
 
     @classmethod
-    def db_trans_sort(cls, sort_by) -> str:
+    def db_trans_sort(cls, sort_by: base_pb2.SortBy) -> str:
         if not sort_by.name_field:
             return None
         return f"{'-' if sort_by.type == sort_by.DESC else '+'}{sort_by.name_field}"
