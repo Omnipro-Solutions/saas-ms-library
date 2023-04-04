@@ -6,8 +6,8 @@ from bson import ObjectId
 from mongoengine import register_connection
 from mongoengine.context_managers import switch_db
 from omni.pro.logger import configure_logger
+from omni.pro.protos.common import base_pb2
 from omni.pro.util import nested
-from protos.common import base_pb2
 
 logger = configure_logger(name=__name__)
 
