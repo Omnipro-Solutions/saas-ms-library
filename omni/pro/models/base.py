@@ -2,11 +2,13 @@ from datetime import datetime
 
 from google.protobuf.timestamp_pb2 import Timestamp
 from mongoengine import BooleanField, DateTimeField, Document, EmbeddedDocument, EmbeddedDocumentField, StringField
+
 from omni.pro.protos.common.base_pb2 import Context as ContextProto
 from omni.pro.protos.common.base_pb2 import ObjectAudit as AuditProto
 
 
 class BaseEmbeddedDocument(EmbeddedDocument):
+    active = BooleanField(default=True)
     meta = {
         "abstract": True,
         "strict": False,
@@ -40,11 +42,13 @@ class Audit(BaseEmbeddedDocument):
 class Context(BaseEmbeddedDocument):
     tenant = StringField()
     user = StringField()
+    country_code = StringField()
 
     def to_proto(self):
         return ContextProto(
             tenant=self.tenant,
             user=self.user,
+            country_code=self.country_code,
         )
 
 
