@@ -5,6 +5,7 @@ import redis
 from bson import ObjectId
 from mongoengine import register_connection
 from mongoengine.context_managers import switch_db
+
 from omni.pro.logger import configure_logger
 from omni.pro.protos.common import base_pb2
 from omni.pro.util import nested
@@ -72,11 +73,11 @@ class DatabaseManager(object):
 
         return document
 
-    def get_document(self, db_name: str, document_class, **kwargs) -> object:
+    def get_document(self, db_name: str, tenant: str, document_class, **kwargs) -> object:
         db_alias = self.connect_to_database(db_name)
 
         with switch_db(document_class, db_alias) as DocumentAlias:
-            document = DocumentAlias.objects(**kwargs).first()
+            document = DocumentAlias.objects(**kwargs, context__tenant=tenant).first()
 
         return document
 
@@ -102,6 +103,7 @@ class DatabaseManager(object):
     def list_documents(
         self,
         db_name: str,
+        tenant: str,
         document_class,
         fields: list = None,
         filter: dict = None,
@@ -125,9 +127,9 @@ class DatabaseManager(object):
         with switch_db(document_class, db_alias) as DocumentAlias:
             # Filter documents based on criteria provided
             if filter:
-                query_set = DocumentAlias.objects.filter(__raw__=filter)
+                query_set = DocumentAlias.objects(context__tenant=tenant).filter(__raw__=filter)
             else:
-                query_set = DocumentAlias.objects
+                query_set = DocumentAlias.objects(context__tenant=tenant)
 
             # Only retrieve specified fields
             if fields:
