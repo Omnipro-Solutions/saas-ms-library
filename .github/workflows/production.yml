@@ -1,0 +1,31 @@
+name: Deploy Python Library
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      #- name: Login to AWS
+      #  uses: aws-actions/configure-aws-credentials@v1
+      #  with:
+      #    aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #    aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      #    aws-region: <tu-region>
+      - name: Install Python dependencies and CDK
+        run: |
+          python -m pip install --upgrade pip
+          # install your Python dependencies here
+          #npm install -g aws-cdk
+          #pip3 install aws-cdk-lib
+          pip3 install -r requirements.txt
+          #wget -P workspace/saas-lambdas-layers/lambdas/users/login https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem
+      
+      - name: Deploy CDK Stack
+        run: |
+          python setup.py bdist_wheel
+          ls -la
