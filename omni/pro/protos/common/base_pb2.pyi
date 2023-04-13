@@ -1,9 +1,14 @@
+from typing import ClassVar as _ClassVar
+from typing import Iterable as _Iterable
+from typing import Mapping as _Mapping
+from typing import Optional as _Optional
+from typing import Union as _Union
+
+from google.protobuf import descriptor as _descriptor
+from google.protobuf import message as _message
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
-from google.protobuf import descriptor as _descriptor
-from google.protobuf import message as _message
-from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Mapping, Optional as _Optional, Union as _Union
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
@@ -15,7 +20,9 @@ class Context(_message.Message):
     country_code: str
     tenant: str
     user: str
-    def __init__(self, tenant: _Optional[str] = ..., user: _Optional[str] = ..., country_code: _Optional[str] = ...) -> None: ...
+    def __init__(
+        self, tenant: _Optional[str] = ..., user: _Optional[str] = ..., country_code: _Optional[str] = ...
+    ) -> None: ...
 
 class Fields(_message.Message):
     __slots__ = ["name_field"]
@@ -37,6 +44,7 @@ class GroupBy(_message.Message):
 
 class LinkPage(_message.Message):
     __slots__ = ["link", "type"]
+
     class LinkType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = []
     FIRST: LinkPage.LinkType
@@ -61,7 +69,14 @@ class MetaData(_message.Message):
     link_page: _containers.RepeatedCompositeFieldContainer[LinkPage]
     offset: int
     total: int
-    def __init__(self, total: _Optional[int] = ..., offset: _Optional[int] = ..., limit: _Optional[int] = ..., count: _Optional[int] = ..., link_page: _Optional[_Iterable[_Union[LinkPage, _Mapping]]] = ...) -> None: ...
+    def __init__(
+        self,
+        total: _Optional[int] = ...,
+        offset: _Optional[int] = ...,
+        limit: _Optional[int] = ...,
+        count: _Optional[int] = ...,
+        link_page: _Optional[_Iterable[_Union[LinkPage, _Mapping]]] = ...,
+    ) -> None: ...
 
 class Object(_message.Message):
     __slots__ = ["code", "name"]
@@ -85,7 +100,15 @@ class ObjectAudit(_message.Message):
     deleted_by: str
     updated_at: _timestamp_pb2.Timestamp
     updated_by: str
-    def __init__(self, created_by: _Optional[str] = ..., updated_by: _Optional[str] = ..., deleted_by: _Optional[str] = ..., created_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., updated_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., deleted_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    def __init__(
+        self,
+        created_by: _Optional[str] = ...,
+        updated_by: _Optional[str] = ...,
+        deleted_by: _Optional[str] = ...,
+        created_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
+        updated_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
+        deleted_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
+    ) -> None: ...
 
 class Paginated(_message.Message):
     __slots__ = ["limit", "offset"]
@@ -103,10 +126,13 @@ class ResponseStandard(_message.Message):
     message: str
     status_code: int
     success: bool
-    def __init__(self, success: bool = ..., message: _Optional[str] = ..., status_code: _Optional[int] = ...) -> None: ...
+    def __init__(
+        self, success: bool = ..., message: _Optional[str] = ..., status_code: _Optional[int] = ...
+    ) -> None: ...
 
 class SortBy(_message.Message):
     __slots__ = ["name_field", "type"]
+
     class SortType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = []
     ASC: SortBy.SortType
@@ -115,4 +141,6 @@ class SortBy(_message.Message):
     TYPE_FIELD_NUMBER: _ClassVar[int]
     name_field: str
     type: SortBy.SortType
-    def __init__(self, name_field: _Optional[str] = ..., type: _Optional[_Union[SortBy.SortType, str]] = ...) -> None: ...
+    def __init__(
+        self, name_field: _Optional[str] = ..., type: _Optional[_Union[SortBy.SortType, str]] = ...
+    ) -> None: ...

@@ -2,7 +2,6 @@ from datetime import datetime
 
 from google.protobuf.timestamp_pb2 import Timestamp
 from mongoengine import BooleanField, DateTimeField, Document, EmbeddedDocument, EmbeddedDocumentField, StringField
-
 from omni.pro.protos.common.base_pb2 import Context as ContextProto
 from omni.pro.protos.common.base_pb2 import ObjectAudit as AuditProto
 
