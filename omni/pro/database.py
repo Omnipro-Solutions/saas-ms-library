@@ -153,10 +153,21 @@ class DatabaseManager(object):
             # Return list of documents matching the specified criteria and total count of documents
             return list(query_set), query_set.count()
 
-    def delete_document(self, db_name, document_class, **kwargs):
+    def delete_documents(self, db_name, document_class, **kwargs):
         db_alias = self.connect_to_database(db_name)
         with switch_db(document_class, db_alias) as DocumentAlias:
             document = DocumentAlias.objects(**kwargs).delete()
+
+        return document
+
+    def update_list_element(
+        self, db_name: str, document_class, filters: dict, update: dict, many: bool = False
+    ) -> object:
+        db_alias = self.connect_to_database(db_name)
+        with switch_db(document_class, db_alias) as DocumentAlias:
+            if many:
+                document = DocumentAlias.objects(**filters).update_many(**update)
+            document = DocumentAlias.objects(**filters).update_one(**update)
 
         return document
 
