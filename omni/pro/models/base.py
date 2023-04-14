@@ -42,14 +42,32 @@ class Audit(BaseEmbeddedDocument):
 class Context(BaseEmbeddedDocument):
     tenant = StringField()
     user = StringField()
-    country_code = StringField()
 
     def to_proto(self):
         return ContextProto(
             tenant=self.tenant,
             user=self.user,
-            country_code=self.country_code,
         )
+
+
+class BaseAuditEmbeddedDocument(BaseEmbeddedDocument):
+    context = EmbeddedDocumentField(Context)
+    audit = EmbeddedDocumentField(Audit)
+    active = BooleanField(default=True)
+    meta = {
+        "abstract": True,
+        "strict": False,
+    }
+
+    # TODO: Add a method to update the audit fields
+    def save(self, *args, **kwargs):
+        if not self.context:
+            self.context = Context()
+        if not self.audit:
+            self.audit = Audit(created_by=self.context.user)
+        self.audit.updated_by = self.context.user
+        self.audit.updated_at = datetime.utcnow()
+        return super().save(*args, **kwargs)
 
 
 class BaseDocument(Document):

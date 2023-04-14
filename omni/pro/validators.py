@@ -1,24 +1,9 @@
-import typing
-
-from marshmallow import Schema, fields, types
+from marshmallow import Schema, fields
 
 
 class ContextSchema(Schema):
     tenant = fields.String(required=True)
     user = fields.String(required=True)
-    countryCode = fields.String(required=True)
-
-    def load(
-        self,
-        data: (typing.Mapping[str, typing.Any] | typing.Iterable[typing.Mapping[str, typing.Any]]),
-        *,
-        many: bool | None = None,
-        partial: bool | types.StrSequenceOrSet | None = None,
-        unknown: str | None = None
-    ):
-        data = super().load(data, many=many, partial=partial, unknown=unknown)
-        data["country_code"] = data.pop("countryCode")
-        return data
 
 
 class BaseObjectSchema(Schema):
