@@ -13,16 +13,12 @@ from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Context(_message.Message):
-    __slots__ = ["country_code", "tenant", "user"]
-    COUNTRY_CODE_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["tenant", "user"]
     TENANT_FIELD_NUMBER: _ClassVar[int]
     USER_FIELD_NUMBER: _ClassVar[int]
-    country_code: str
     tenant: str
     user: str
-    def __init__(
-        self, tenant: _Optional[str] = ..., user: _Optional[str] = ..., country_code: _Optional[str] = ...
-    ) -> None: ...
+    def __init__(self, tenant: _Optional[str] = ..., user: _Optional[str] = ...) -> None: ...
 
 class Fields(_message.Message):
     __slots__ = ["name_field"]
