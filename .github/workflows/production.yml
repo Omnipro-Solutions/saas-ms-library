@@ -25,7 +25,7 @@ jobs:
       
       - name: Generate release tag
         id: generate_tag
-        uses: amitsingh-007/next-release-tag@v3.0.0
+        uses: amitsingh-007/next-release-tag@v4.0.0
         with:
           github_token: ${{ secrets.TOKEN_GITHUB }}
           tag_prefix: 'v'
