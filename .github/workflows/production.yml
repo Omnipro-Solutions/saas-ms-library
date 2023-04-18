@@ -25,8 +25,18 @@ jobs:
       
       - name: Generate release tag
         id: generate_release_tag
-        uses: amitsingh-007/next-release-tag@v4.0.0
+        uses: amitsingh-007/next-release-tag@v1.0.0
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          tag_prefix: 'v'
-          tag_template: 'yyyy.mm.dd.i'
+          github_token: ${{ secrets.TOKEN_GITHUB }}
+
+      - name: Check Output Parameters
+        run: |
+          echo "Got tag name ${{ steps.generate_release_tag.outputs.next_release_tag }}"
+
+      - name: Create Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
+        with:
+          tag_name: ${{ env.release_tag }}
+          release_name: Release ${{ env.release_tag }}
