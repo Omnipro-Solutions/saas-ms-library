@@ -24,18 +24,12 @@ jobs:
           ls -la dist/
       
       - name: Get next version
-        uses: technote-space/get-next-version-action@v1
-      - uses: actions/github-script@0.4.0
+        id: generate_release_tag
+        uses: phish108/autotag-action@1.1.53
         with:
-          github-token: ${{ secrets.TOKEN_GITHUB }}
-          script: |
-            github.git.createRef({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              ref: `refs/tags/${process.env.NEXT_VERSION}`,
-              sha: context.sha
-            })
+          github-token: ${{ secrets.GITHUB_TOKEN}}
+          with-v: "true"
 
       - name: Check Output Parameters
         run: |
-          echo "Got tag name ${{ steps.generate_release_tag.outputs.next }}"
+          echo "Got tag name ${{ steps.generate_release_tag.outputs.new-tag }}"
