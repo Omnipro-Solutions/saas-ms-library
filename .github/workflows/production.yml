@@ -30,21 +30,29 @@ jobs:
           python setup.py bdist_wheel
           ls -la dist/
       
+      - name: Generate release tag
+        id: generate_release_tag
+        uses: amitsingh-007/next-release-tag@v4.0.0
+        with:
+          github_token: ${{ secrets.TOKEN_GITHUB }} 
+          tag_prefix: 'v'
+          tag_template: 'yyyy.mm.dd.i'
+
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: "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"
+          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          tag_name: ${{ steps.generate_release_tag.outputs.next_release_tag }}
+          release_name: Release ${{ steps.generate_release_tag.outputs.next_release_tag }}
           draft: false
           prerelease: false
 
       - name: Upload assets to release created
         uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN: "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"
+          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: "dist/omni_pro-0.1.2-py3-none-any.whl"          
