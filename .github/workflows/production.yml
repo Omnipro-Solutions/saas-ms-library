@@ -34,9 +34,9 @@ jobs:
       - name: Print release tag 
         run: |
           echo "Tag Name"
-          echo ${{steps.tag.outputs.next_release_tag}}
+          echo ${{ steps.tag.outputs.next_release_tag }}
           echo "Release Name"
-          echo ${{steps.tag.outputs.next_release_tag}}
+          echo ${{ steps.tag.outputs.next_release_tag }}
 
       - name: Create Release
         id: create_release
@@ -56,5 +56,5 @@ jobs:
         with:
            upload_url: ${{ steps.create_release.outputs.upload_url }}
            asset_path: "dist/omni_pro-0.1.2-py3-none-any.whl"          
-           asset_name: omni_pro-0.1.2-py3-none-any.whl.${{ steps.tag.outputs.next_release_tag }}
+           asset_name: omni_pro-0.1.2-py3-none-any.whl.${{ github.ref }}
            asset_content_type: application/zip
