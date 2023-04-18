@@ -42,6 +42,6 @@ jobs:
       - name: Print release tag 
         run: |
           echo "Tag Name"
-          echo ${{steps.generate_release_tag.outputs.next_release_tag}}
+          echo ${{steps.generate_release_tag.outputs.content}}
           echo "Release Name"
-          echo ${{steps.generate_release_tag.outputs.next_release_tag}}
+          echo ${{steps.generate_release_tag.outputs.content}}
