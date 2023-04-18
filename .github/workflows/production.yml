@@ -3,69 +3,53 @@ name: Deploy Python Library
 on:
   push:
     branches:
-      - test
+      - master
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      #- name: Login to AWS
-      #  uses: aws-actions/configure-aws-credentials@v1
-      #  with:
-      #    aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      #    aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      #    aws-region: <tu-region>
+      - name: Checkout branch
+        uses: actions/checkout@v2
+     
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
           # install your Python dependencies here
-          #npm install -g aws-cdk
-          #pip3 install aws-cdk-lib
           pip3 install -r requirements.txt
-          #wget -P workspace/saas-lambdas-layers/lambdas/users/login https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem
       
       - name: Deploy Library on dist folder
         run: |
           python setup.py bdist_wheel
           ls -la dist/
       
+      - name: Get next version
+        id: generate_release_tag
+        uses: phish108/autotag-action@1.1.53
+        with:
+          github-token: ${{ secrets.TOKEN_GITHUB}}
+          with-v: "true"
+
+      - name: Check Output Parameters
+        run: |
+          echo "Got tag name ${{ steps.generate_release_tag.outputs.new-tag }}"
+
+  
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: "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"
+          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          draft: false
-          prerelease: false
-
-      - name: Upload assets to release
+          tag_name: ${{ steps.generate_release_tag.outputs.new-tag }}
+          release_name: Release ${{ steps.generate_release_tag.outputs.new-tag }}
+      
+      - name: Upload assets to release created
         uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN: "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"
+          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: "dist/omni_pro-0.1.2-py3-none-any.whl"          
-          asset_name: omni_pro-0.1.2-py3-none-any.whl.${{ github.ref }}
-          #asset_content_type: application/zip
-
-      # - name: Upload release to github  
-      #   uses: xresloader/upload-to-github-release@v1
-      #   env:
-      #     GITHUB_TOKEN: "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"
-      #   with:
-      #     file: "dist/omni_pro-0.1.2-py3-none-any.whl"
-      #     tags: true
-      #     draft: true
-
-      # - name: Upload binaries to release
-      #   uses: actions/checkout@v2
-      #   with:
-      #     repo_token: ${{ secrets.TOKEN_GITHUB }}
-      #     file: dist/omni_pro-0.1.2-py3-none-any.whl
-      #     asset_name: omni_pro-0.1.2-py3-none-any.whl
-      #     tag: ${{ github.ref }}
-      #     overwrite: false
-      #     body: "This is my release text"
+          asset_name: omni_pro-0.1.2-py3-none-any.whl.${{ steps.generate_tag.outputs.new-tag }}
+          asset_content_type: application/zip
