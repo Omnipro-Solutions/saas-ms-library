@@ -27,7 +27,7 @@ jobs:
         id: generate_release_tag
         uses: phish108/autotag-action@1.1.53
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN}}
+          github-token: ${{ secrets.TOKEN_GITHUB}}
           with-v: "true"
 
       - name: Check Output Parameters
