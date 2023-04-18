@@ -3,7 +3,7 @@ name: Deploy Python Library
 on:
   push:
     branches:
-      - test
+      - master
 
 jobs:
   deploy:
