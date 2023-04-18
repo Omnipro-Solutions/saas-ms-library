@@ -50,22 +50,3 @@ jobs:
           asset_path: "dist/omni_pro-0.1.2-py3-none-any.whl"          
           asset_name: omni_pro-0.1.2-py3-none-any.whl.${{ github.ref }}
           #asset_content_type: application/zip
-
-      # - name: Upload release to github  
-      #   uses: xresloader/upload-to-github-release@v1
-      #   env:
-      #     GITHUB_TOKEN: "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"
-      #   with:
-      #     file: "dist/omni_pro-0.1.2-py3-none-any.whl"
-      #     tags: true
-      #     draft: true
-
-      # - name: Upload binaries to release
-      #   uses: actions/checkout@v2
-      #   with:
-      #     repo_token: ${{ secrets.TOKEN_GITHUB }}
-      #     file: dist/omni_pro-0.1.2-py3-none-any.whl
-      #     asset_name: omni_pro-0.1.2-py3-none-any.whl
-      #     tag: ${{ github.ref }}
-      #     overwrite: false
-      #     body: "This is my release text"
