@@ -23,20 +23,19 @@ jobs:
           python setup.py bdist_wheel
           ls -la dist/
       
-      - name: Generate release tag
-        id: generate_release_tag
-        uses: amitsingh-007/next-release-tag@v1.0.0
+      - name: Get next version
+        uses: technote-space/get-next-version-action@v1
+      - uses: actions/github-script@0.4.0
         with:
-          github_token: ${{ secrets.TOKEN_GITHUB }}
+          github-token: ${{ secrets.TOKEN_GITHUB }}
+          script: |
+            github.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: `refs/tags/${process.env.NEXT_VERSION}`,
+              sha: context.sha
+            })
 
       - name: Check Output Parameters
         run: |
-          echo "Got tag name ${{ steps.generate_release_tag.outputs.next_release_tag }}"
-
-      - name: Create Release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
-        with:
-          tag_name: ${{ env.release_tag }}
-          release_name: Release ${{ env.release_tag }}
+          echo "Got tag name ${{ steps.generate_release_tag.outputs.next }}"
