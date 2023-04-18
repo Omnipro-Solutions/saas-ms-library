@@ -41,7 +41,7 @@ jobs:
           draft: false
           prerelease: false
 
-      - name: Upload assets to release
+      - name: Upload assets to release created
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: "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"
