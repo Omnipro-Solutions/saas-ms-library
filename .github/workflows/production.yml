@@ -8,8 +8,6 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    env:
-      GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
     steps:
       - name: Checkout branch
         uses: actions/checkout@v2
@@ -25,15 +23,13 @@ jobs:
           python setup.py bdist_wheel
           ls -la dist/
       
-      - name: Tag Release
-        id: release
-        uses: rymndhng/release-on-push-action@master
+      - name: Generate release tag
+        id: generate_release_tag
+        uses: alexvingg/next-release-tag@v1.0.3
         with:
-          bump_version_scheme: minor
-          tag_prefix: v
+          github_token: ${{ secrets.TOKEN_GITHUB }}
+          tag_prefix: ''
           
       - name: Check Output Parameters
         run: |
-          echo "Got tag name ${{ steps.release.outputs.tag_name }}"
-          echo "Got release version ${{ steps.release.outputs.version }}"
-          echo "Upload release artifacts to ${{ steps.release.outputs.upload_url }}"
+          echo "Got tag name ${{ steps.generate_release_tag.outputs.release_tag }}"
