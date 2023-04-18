@@ -30,23 +30,23 @@ jobs:
           python setup.py bdist_wheel
           ls -la dist/
       
-#      - name: Create Release
-#        id: create_release
-#        uses: actions/create-release@v1
-#        env:
-#          GITHUB_TOKEN: "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"
-#        with:
-#          tag_name: ${{ github.ref }}
-#          release_name: Release ${{ github.ref }}
-#          draft: false
-#          prerelease: false
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: "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"
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
 
-#      - name: Upload assets to release
-#        uses: actions/upload-release-asset@v1
-#        env:
-#          GITHUB_TOKEN: "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"
-#        with:
-#          upload_url: ${{ steps.create_release.outputs.upload_url }}
-#          asset_path: "dist/omni_pro-0.1.2-py3-none-any.whl"          
-#          asset_name: omni_pro-0.1.2-py3-none-any.whl.${{ github.ref }}
-          #asset_content_type: application/zip
+      - name: Upload assets to release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: "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"
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: "dist/omni_pro-0.1.2-py3-none-any.whl"          
+          asset_name: omni_pro-0.1.2-py3-none-any.whl.${{ github.ref }}
+          asset_content_type: application/zip
