@@ -44,4 +44,4 @@ jobs:
           echo "Tag Name"
           echo ${{steps.generate_release_tag.outputs.next_release_tag}}
           echo "Release Name"
-          echo ${{step.generate_release_tag.outputs.next_release_tag}}
+          echo ${{steps.generate_release_tag.outputs.next_release_tag}}
