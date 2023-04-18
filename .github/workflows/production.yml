@@ -33,3 +33,22 @@ jobs:
       - name: Check Output Parameters
         run: |
           echo "Got tag name ${{ steps.generate_release_tag.outputs.new-tag }}"
+
+  
+      - name: Create Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
+        with:
+          tag_name: ${{ steps.generate_release_tag.outputs.new-tag }}
+          release_name: Release ${{ steps.generate_release_tag.outputs.new-tag }}
+      
+      - name: Upload assets to release created
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: "dist/omni_pro-0.1.2-py3-none-any.whl"          
+          asset_name: omni_pro-0.1.2-py3-none-any.whl.${{ steps.generate_tag.outputs.new-tag }}
+          asset_content_type: application/zip
