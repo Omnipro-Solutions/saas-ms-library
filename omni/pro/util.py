@@ -1,3 +1,4 @@
+import math
 import secrets
 import string
 from functools import reduce
@@ -66,6 +67,17 @@ def deep_search(lst, key=None, value=None, default=None):
             elif isinstance(elem, dict) and key in elem and elem[key] == value:
                 return elem
     return default
+
+
+def paginate_list(objects_list, page_num, per_page, filters=None):
+    filtered_list = objects_list
+    if filters:
+        filtered_list = [o for o in objects_list if o.attr == filters["attr"]]
+    start = (page_num - 1) * per_page
+    end = start + per_page
+    paginated_list = filtered_list[start:end]
+    total_pages = int(math.ceil(len(filtered_list) / per_page))
+    return paginated_list, total_pages
 
 
 class HTTPStatus(object):
