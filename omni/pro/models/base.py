@@ -38,7 +38,7 @@ class Audit(BaseEmbeddedDocument):
         )
 
 
-class Context(BaseEmbeddedDocument):
+class Context(EmbeddedDocument):
     tenant = StringField()
     user = StringField()
 
