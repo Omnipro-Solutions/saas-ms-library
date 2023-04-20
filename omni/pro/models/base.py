@@ -7,7 +7,6 @@ from omni.pro.protos.common.base_pb2 import ObjectAudit as AuditProto
 
 
 class BaseEmbeddedDocument(EmbeddedDocument):
-    active = BooleanField(default=True)
     meta = {
         "abstract": True,
         "strict": False,
@@ -49,6 +48,29 @@ class Context(BaseEmbeddedDocument):
         )
 
 
+class BaseDocument(Document):
+    context = EmbeddedDocumentField(Context)
+    audit = EmbeddedDocumentField(Audit)
+    active = BooleanField(default=True)
+
+    meta = {
+        "abstract": True,
+        "strict": False,
+    }
+
+    def save(self, *args, **kwargs):
+        if not self.context:
+            self.context = Context()
+        if not self.audit:
+            self.audit = Audit(created_by=self.context.user)
+        self.audit.updated_by = self.context.user
+        self.audit.updated_at = datetime.utcnow()
+        return super().save(*args, **kwargs)
+
+    def to_proto(self):
+        raise NotImplementedError
+
+
 class BaseAuditEmbeddedDocument(BaseEmbeddedDocument):
     context = EmbeddedDocumentField(Context)
     audit = EmbeddedDocumentField(Audit)
@@ -69,24 +91,4 @@ class BaseAuditEmbeddedDocument(BaseEmbeddedDocument):
         return super().save(*args, **kwargs)
 
 
-class BaseDocument(Document):
-    audit = EmbeddedDocumentField(Audit)
-    context = EmbeddedDocumentField(Context)
-    active = BooleanField(default=True)
-
-    meta = {
-        "abstract": True,
-        "strict": False,
-    }
-
-    def save(self, *args, **kwargs):
-        if not self.context:
-            self.context = Context()
-        if not self.audit:
-            self.audit = Audit(created_by=self.context.user)
-        self.audit.updated_by = self.context.user
-        self.audit.updated_at = datetime.utcnow()
-        return super().save(*args, **kwargs)
-
-    def to_proto(self):
-        raise NotImplementedError
+BaseAuditContextEmbeddedDocument = BaseAuditEmbeddedDocument
