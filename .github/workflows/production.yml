@@ -50,6 +50,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: "dist/omni_pro-0.1.2-py3-none-any.whl"
-          asset_name: omni_pro-0.1.2-py3-none-any.whl.${{ steps.generate_tag.outputs.new-tag }}
+          asset_path: "dist/omni_pro-0.1.3-py3-none-any.whl"
+          asset_name: omni_pro-0.1.3-py3-none-any.whl.${{ steps.generate_tag.outputs.new-tag }}
           asset_content_type: application/zip
