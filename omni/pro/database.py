@@ -158,22 +158,20 @@ class DatabaseManager(object):
         db_alias = self.connect_to_database(db_name)
         with switch_db(document_class, db_alias) as DocumentAlias:
             document = DocumentAlias.objects(**kwargs).delete()
-            document.reload()
         return document
 
-    def update_list_element(
+    def update_embeded_document(
         self, db_name: str, document_class, filters: dict, update: dict, many: bool = False
     ) -> object:
         db_alias = self.connect_to_database(db_name)
+
         with switch_db(document_class, db_alias) as DocumentAlias:
             if many:
+                DocumentAlias.objects(**filters).update(**update)
                 document = DocumentAlias.objects(**filters)
-                DocumentAlias.objects(**filters).update_many(**update)
             else:
+                DocumentAlias.objects(**filters).update_one(**update)
                 document = DocumentAlias.objects(**filters).first()
-                DocumentAlias.objects(**filters).first().update_one(**update)
-            document.reload()
-
         return document
 
 
