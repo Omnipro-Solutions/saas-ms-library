@@ -5,6 +5,7 @@ import redis
 from bson import ObjectId
 from mongoengine import register_connection
 from mongoengine.context_managers import switch_db
+
 from omni.pro.logger import configure_logger
 from omni.pro.protos.common import base_pb2
 from omni.pro.util import nested
@@ -157,18 +158,20 @@ class DatabaseManager(object):
         db_alias = self.connect_to_database(db_name)
         with switch_db(document_class, db_alias) as DocumentAlias:
             document = DocumentAlias.objects(**kwargs).delete()
-
         return document
 
-    def update_list_element(
+    def update_embeded_document(
         self, db_name: str, document_class, filters: dict, update: dict, many: bool = False
     ) -> object:
         db_alias = self.connect_to_database(db_name)
+
         with switch_db(document_class, db_alias) as DocumentAlias:
             if many:
-                document = DocumentAlias.objects(**filters).update_many(**update)
-            document = DocumentAlias.objects(**filters).update_one(**update)
-
+                DocumentAlias.objects(**filters).update(**update)
+                document = DocumentAlias.objects(**filters)
+            else:
+                DocumentAlias.objects(**filters).update_one(**update)
+                document = DocumentAlias.objects(**filters).first()
         return document
 
 
