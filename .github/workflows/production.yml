@@ -21,7 +21,7 @@ jobs:
         run: |
           python setup.py bdist_wheel
           ls -la dist/
-      
+
       - name: Get next version
         id: generate_release_tag
         uses: phish108/autotag-action@1.1.53
@@ -46,7 +46,7 @@ jobs:
         id: upload-release-assets
         uses: dwenegar/upload-release-assets@v1
         env:
-           GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
+          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
         with:
-           release_id: ${{ steps.create_release.outputs.id }}
-           assets_path: dist/
+          release_id: ${{ steps.create_release.outputs.id }}
+          assets_path: dist/
