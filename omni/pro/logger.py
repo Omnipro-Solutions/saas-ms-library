@@ -13,8 +13,18 @@ def configure_logger(name) -> logging.Logger:
     return logger
 
 
-def write_exception_msg(msg: str, e: Exception, logger: logging.Logger) -> None:
-    msg_error = "{msg} - {ex}".format(msg=msg, ex=e.__class__)
-    tb = traceback.format_exc()
-    logger.error(f"{msg_error}: {tb}")
-    return msg_error
+class LoggerTraceback(object):
+    @staticmethod
+    def error(msg: str, e: Exception, logger: logging.Logger = None) -> str:
+        if logger is None:
+            logger = configure_logger(name=__name__)
+        if not isinstance(e, Exception):
+            e = Exception(str(e))
+        msg_error = "{msg} - {ex}".format(msg=msg, ex=e.__class__)
+        tb = traceback.format_exc()
+        logger.error(f"{msg_error}: {tb}")
+        return msg_error
+
+
+# FIXME: Replace write_exception_msg with LoggerTraceback.error in all services
+write_exception_msg = LoggerTraceback.error
