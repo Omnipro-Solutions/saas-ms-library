@@ -98,3 +98,4 @@ class HTTPStatus(object):
 class Resource(object):
     AWS_COGNITO = "cognito"
     MONGODB = "mongodb"
+    POSTGRES = "postgres"

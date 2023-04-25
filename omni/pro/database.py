@@ -5,6 +5,7 @@ import redis
 from bson import ObjectId
 from mongoengine import register_connection
 from mongoengine.context_managers import switch_db
+from peewee import PostgresqlDatabase
 
 from omni.pro.logger import configure_logger
 from omni.pro.protos.common import base_pb2
@@ -175,6 +176,42 @@ class DatabaseManager(object):
         return document
 
 
+class PostgresDatabaseManager:
+    def __init__(self, databases):
+        self.databases = databases
+
+        self.db_connections = {}
+        for db_name, db_config in self.databases.items():
+            self.db_connections[db_name] = PostgresqlDatabase(
+                db_config["database"],
+                user=db_config["user"],
+                password=db_config["password"],
+                host=db_config["host"],
+                port=db_config["port"],
+            )
+
+    def get_db_connection(self, db_name):
+        return self.db_connections[db_name]
+
+    def create_new_record(self, db_name, table_name, **kwargs):
+        with self.db_connections[db_name].atomic():
+            new_record = table_name(**kwargs)
+            new_record.save()
+        return new_record
+
+    def update_record(self, db_name, table_name, filters, update_dict):
+        with self.db_connections[db_name].atomic():
+            query = table_name.update(**update_dict).where(**filters)
+            query.execute()
+        return query
+
+    def delete_record(self, db_name, table_name, filters):
+        with self.db_connections[db_name].atomic():
+            query = table_name.delete().where(**filters)
+            query.execute()
+        return query
+
+
 class RedisConnection:
     def __init__(self, host: str, port: int, db: int) -> None:
         self.host = host
@@ -238,6 +275,16 @@ class RedisManager(object):
             "password": nested(config, "dbs.mongodb.pass"),
             "name": nested(config, "dbs.mongodb.name"),
             "complement": nested(config, "dbs.mongodb.complement"),
+        }
+
+    def get_postgres_config(self, service_id: str, tenant_code: str) -> dict:
+        config = self.get_resource_config(service_id, tenant_code)
+        return {
+            "database": nested(config, "dbs.postgres.database"),
+            "host": nested(config, "dbs.postgres.host"),
+            "port": nested(config, "dbs.postgres.port"),
+            "user": nested(config, "dbs.postgres.user"),
+            "password": nested(config, "dbs.postgres.pass"),
         }
 
     connection = property(get_connection, set_connection)
