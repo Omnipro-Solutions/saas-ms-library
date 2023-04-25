@@ -78,7 +78,7 @@ class AWSCognitoClient(AWSClient):
             ],
         )
         self.set_user_password(username=username, password=password)
-        return True, response
+        return response
 
     def delete_user(self, username: str) -> dict:
         return self.client.admin_delete_user(UserPoolId=self.user_pool_id, Username=username)
