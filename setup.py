@@ -8,7 +8,7 @@ HERE = Path(__file__).parent
 # The text of the README file
 README = (HERE / "README.md").read_text()
 DESCRIPTION = "Python library designed to be a utility for OMS microservices"
-VERSION = "0.1.3"
+VERSION = "0.1.4"
 PACKAGE_NAME = "omni-pro"
 AUTHOR = "OMNI.PRO"
 AUTHOR_EMAIL = "development@omni.pro"
@@ -20,6 +20,7 @@ INSTALL_REQUIRES = [
     "marshmallow==3.19.0",
     "hiredis==2.2.2",
     "redis==4.5.1",
+    "peewee==3.16.2",
 ]
 
 # This call to setup() does all the work

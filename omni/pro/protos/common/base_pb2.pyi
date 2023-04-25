@@ -115,15 +115,21 @@ class Paginated(_message.Message):
     def __init__(self, offset: _Optional[int] = ..., limit: _Optional[int] = ...) -> None: ...
 
 class ResponseStandard(_message.Message):
-    __slots__ = ["message", "status_code", "success"]
+    __slots__ = ["message", "message_code", "status_code", "success"]
+    MESSAGE_CODE_FIELD_NUMBER: _ClassVar[int]
     MESSAGE_FIELD_NUMBER: _ClassVar[int]
     STATUS_CODE_FIELD_NUMBER: _ClassVar[int]
     SUCCESS_FIELD_NUMBER: _ClassVar[int]
     message: str
+    message_code: str
     status_code: int
     success: bool
     def __init__(
-        self, success: bool = ..., message: _Optional[str] = ..., status_code: _Optional[int] = ...
+        self,
+        success: bool = ...,
+        message: _Optional[str] = ...,
+        status_code: _Optional[int] = ...,
+        message_code: _Optional[str] = ...,
     ) -> None: ...
 
 class SortBy(_message.Message):
