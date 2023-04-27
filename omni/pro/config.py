@@ -11,3 +11,8 @@ class Config(object):
     REDIS_HOST = os.environ["REDIS_HOST"]
     REDIS_PORT = int(os.environ.get("REDIS_PORT") or 6379)
     REDIS_DB = int(os.environ.get("REDIS_DB") or 0)
+    AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
+    AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
+    REGION_NAME = os.environ.get("REGION_NAME") or "us-east-1"
+    NAMESPACE_NAME = os.environ.get("NAMESPACE_NAME")
+    SERVICE_NAME = os.environ.get("SERVICE_NAME")
