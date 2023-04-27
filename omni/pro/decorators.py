@@ -30,7 +30,7 @@ def resources_decorator(resource_list: list) -> callable:
                 if Resource.POSTGRES in resource_list:
                     db_params = redis_manager.get_postgres_config(Config.SERVICE_ID, request.context.tenant)
                     context.db_name = db_params.get("name")
-                    context.db_manager = PostgresDatabaseManager(**db_params)
+                    context.pg_manager = PostgresDatabaseManager(**db_params)
             except Exception as e:
                 LoggerTraceback.error("Resource Decorator exception", e, logger)
             c = funcion(instance, request, context)
