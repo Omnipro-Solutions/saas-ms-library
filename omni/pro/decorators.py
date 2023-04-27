@@ -21,7 +21,7 @@ def resources_decorator(resource_list: list) -> callable:
                     context.db_manager = DatabaseManager(**db_params)
                 if Resource.POSTGRES in resource_list:
                     db_params = redis_manager.get_postgres_config(Config.SERVICE_ID, request.context.tenant)
-                    context.db_name = db_params.pop("name")
+                    context.db_name = db_params.get("name")
                     context.db_manager = PostgresDatabaseManager(**db_params)
             except Exception as e:
                 logger.info(f"Decorator Exception! {str(e)}")

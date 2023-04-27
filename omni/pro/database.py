@@ -177,38 +177,56 @@ class DatabaseManager(object):
 
 
 class PostgresDatabaseManager:
-    def __init__(self, databases):
-        self.databases = databases
+    def __init__(self, name: str, host: str, port: str, user: str, password: str):
+        self.name = name
+        self.host = host
+        self.port = port
+        self.user = user
+        self.password = password
+        self.connection = PostgresqlDatabase(
+            database=self.name,
+            user=self.user,
+            password=self.password,
+            host=self.host,
+            port=self.port,
+        )
 
-        self.db_connections = {}
-        for db_name, db_config in self.databases.items():
-            self.db_connections[db_name] = PostgresqlDatabase(
-                db_config["database"],
-                user=db_config["user"],
-                password=db_config["password"],
-                host=db_config["host"],
-                port=db_config["port"],
-            )
+    def get_db_connection(self):
+        return self.connection
 
-    def get_db_connection(self, db_name):
-        return self.db_connections[db_name]
-
-    def create_new_record(self, db_name, table_name, **kwargs):
-        with self.db_connections[db_name].atomic():
-            new_record = table_name(**kwargs)
+    def create_new_record(self, model, **kwargs):
+        with self.connection.atomic():
+            if not model.table_exists():
+                self.connection.create_tables([model])
+            new_record = model(**kwargs)
+            new_record.bind(self.connection)
             new_record.save()
         return new_record
 
-    def update_record(self, db_name, table_name, filters, update_dict):
-        with self.db_connections[db_name].atomic():
-            query = table_name.update(**update_dict).where(**filters)
-            query.execute()
+    def retrieve_record(self, model, filters):
+        with self.connection.atomic():
+            model.bind(self.connection)
+            query = model.get_or_none(**filters)
         return query
 
-    def delete_record(self, db_name, table_name, filters):
-        with self.db_connections[db_name].atomic():
-            query = table_name.delete().where(**filters)
-            query.execute()
+    def retrieve_record_by_id(self, model, id):
+        with self.connection.atomic():
+            model.bind(self.connection)
+            query = model.get_by_id(id)
+        return query
+
+    def update_record(self, model, model_id, update_dict):
+        with self.connection.atomic():
+            model.bind(self.connection)
+            record = model.get_by_id(model_id)
+            record.update(**update_dict).where(model.id == model_id).execute()
+        return model.get_by_id(model_id)
+
+    def delete_record_by_id(self, model, model_id):
+        with self.connection.atomic():
+            model.bind(self.connection)
+            record = model.get_by_id(model_id)
+            query = record.delete_instance()
         return query
 
 
@@ -280,14 +298,12 @@ class RedisManager(object):
     def get_postgres_config(self, service_id: str, tenant_code: str) -> dict:
         config = self.get_resource_config(service_id, tenant_code)
         return {
-            "database": nested(config, "dbs.postgres.database"),
             "host": nested(config, "dbs.postgres.host"),
             "port": nested(config, "dbs.postgres.port"),
             "user": nested(config, "dbs.postgres.user"),
             "password": nested(config, "dbs.postgres.pass"),
+            "name": nested(config, "dbs.postgres.name"),
         }
-
-    connection = property(get_connection, set_connection)
 
 
 class PolishNotationToMongoDB:
