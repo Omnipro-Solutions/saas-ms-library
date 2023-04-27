@@ -105,7 +105,7 @@ class AuditPeewee(Model):
     created_by = IntegerFieldPeewee(null=True, default=None)
     updated_by = IntegerFieldPeewee(null=True, default=None)
     deleted_by = IntegerFieldPeewee(null=True, default=None)
-    created_at = DateTimeFieldPeewee(default=datetime.now())
+    created_at = DateTimeFieldPeewee(null=True, default=None)
     updated_at = DateTimeFieldPeewee(null=True, default=None)
     deleted_at = DateTimeFieldPeewee(null=True, default=None)
 
@@ -132,26 +132,53 @@ class ContextPeewee(Model):
 
 
 class BaseModel(Model):
-    object_audit = ForeignKeyField(AuditPeewee, null=True)
-    context = ForeignKeyField(ContextPeewee, null=True)
-    active = BooleanFieldPeewee(default=True)
+    # object_audit = ForeignKeyField(AuditPeewee, null=True)
+    # context = ForeignKeyField(ContextPeewee, null=True)
+    created_by = CharFieldPeewee(null=True, default=None)
+    updated_by = CharFieldPeewee(null=True, default=None)
+    deleted_by = CharFieldPeewee(null=True, default=None)
+    created_at = DateTimeFieldPeewee(default=datetime.now())
+    updated_at = DateTimeFieldPeewee(null=True, default=None)
+    deleted_at = DateTimeFieldPeewee(null=True, default=None)
+    context_user = CharFieldPeewee(null=True, default=None)
+    context_tenant = CharFieldPeewee(null=True, default=None)
+    active = BooleanFieldPeewee(null=False, default=True)
 
     class Meta:
+        abstract = True
         database = None
 
+    def get_audit_proto(self) -> AuditProto:
+        created_at_ts = Timestamp()
+        created_at_ts.FromDatetime(self.created_at)
+        updated_at_ts = Timestamp()
+        updated_at_ts.FromDatetime(self.updated_at)
+        audit_proto = AuditProto(
+            created_by=self.created_by,
+            updated_by=self.updated_by,
+            deleted_by=self.deleted_by,
+            created_at=created_at_ts,
+            updated_at=updated_at_ts,
+        )
+        if self.deleted_at:
+            deleted_at_ts = Timestamp()
+            deleted_at_ts.FromDatetime(self.deleted_at)
+            audit_proto.deleted_at = deleted_at_ts
+        return audit_proto
+
+    def get_context_proto(self) -> ContextProto:
+        return ContextProto(
+            tenant=self.context_tenant,
+            user=self.context_user,
+        )
+
     def save(self, *args, **kwargs):
-        if self.object_audit is None:
-            self.object_audit = AuditPeewee()
-        if self._get_pk_value() is None:
-            self.object_audit.created_by = self.context.user
-            self.object_audit.created_at = datetime.now()
-        self.object_audit.updated_by = self.context.user
-        self.object_audit.updated_at = datetime.now()
+        if self.created_at is None:
+            self.created_by = self.context_user
+            self.created_at = datetime.now()
+        self.updated_by = self.context_user
+        self.updated_at = datetime.now()
         return super().save(*args, **kwargs)
 
-    def to_proto(self, proto_model):
-        proto_model.active = self.active
-        proto_model.tenant = self.context.tenant
-        proto_model.user = self.context.user
-        proto_model.object_audit.CopyFrom(self.object_audit.to_proto())
-        return proto_model
+    def to_proto(self):
+        raise NotImplementedError
