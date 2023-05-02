@@ -5,10 +5,10 @@ import redis
 from bson import ObjectId
 from mongoengine import register_connection
 from mongoengine.context_managers import switch_db
-
 from omni.pro.logger import configure_logger
 from omni.pro.protos.common import base_pb2
 from omni.pro.util import nested
+from peewee import PostgresqlDatabase
 
 logger = configure_logger(name=__name__)
 
@@ -175,6 +175,61 @@ class DatabaseManager(object):
         return document
 
 
+class PostgresDatabaseManager:
+    def __init__(self, name: str, host: str, port: str, user: str, password: str):
+        self.name = name
+        self.host = host
+        self.port = port
+        self.user = user
+        self.password = password
+        self.connection = PostgresqlDatabase(
+            database=self.name,
+            user=self.user,
+            password=self.password,
+            host=self.host,
+            port=self.port,
+        )
+
+    def get_db_connection(self):
+        return self.connection
+
+    def create_new_record(self, model, **kwargs):
+        model._meta.database = self.connection
+        with self.connection.atomic():
+            if not model.table_exists():
+                self.connection.create_tables([model])
+            new_record = model(**kwargs)
+            new_record.bind(self.connection)
+            new_record.save()
+        return new_record
+
+    def retrieve_record(self, model, filters):
+        with self.connection.atomic():
+            model.bind(self.connection)
+            query = model.get_or_none(**filters)
+        return query
+
+    def retrieve_record_by_id(self, model, id):
+        with self.connection.atomic():
+            model.bind(self.connection)
+            query = model.get_by_id(id)
+        return query
+
+    def update_record(self, model, model_id, update_dict):
+        with self.connection.atomic():
+            model.bind(self.connection)
+            record = model.get_by_id(model_id)
+            record.update(**update_dict).where(model.id == model_id).execute()
+        return model.get_by_id(model_id)
+
+    def delete_record_by_id(self, model, model_id):
+        with self.connection.atomic():
+            model.bind(self.connection)
+            record = model.get_by_id(model_id)
+            query = record.delete_instance()
+        return query
+
+
 class RedisConnection:
     def __init__(self, host: str, port: int, db: int) -> None:
         self.host = host
@@ -240,7 +295,15 @@ class RedisManager(object):
             "complement": nested(config, "dbs.mongodb.complement"),
         }
 
-    connection = property(get_connection, set_connection)
+    def get_postgres_config(self, service_id: str, tenant_code: str) -> dict:
+        config = self.get_resource_config(service_id, tenant_code)
+        return {
+            "host": nested(config, "dbs.postgres.host"),
+            "port": nested(config, "dbs.postgres.port"),
+            "user": nested(config, "dbs.postgres.user"),
+            "password": nested(config, "dbs.postgres.pass"),
+            "name": nested(config, "dbs.postgres.name"),
+        }
 
 
 class PolishNotationToMongoDB:

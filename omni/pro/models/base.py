@@ -2,6 +2,13 @@ from datetime import datetime
 
 from google.protobuf.timestamp_pb2 import Timestamp
 from mongoengine import BooleanField, DateTimeField, Document, EmbeddedDocument, EmbeddedDocumentField, StringField
+from peewee import BooleanField as BooleanFieldPeewee
+from peewee import CharField as CharFieldPeewee
+from peewee import DateTimeField as DateTimeFieldPeewee
+from peewee import ForeignKeyField
+from peewee import IntegerField as IntegerFieldPeewee
+from peewee import Model
+
 from omni.pro.protos.common.base_pb2 import Context as ContextProto
 from omni.pro.protos.common.base_pb2 import ObjectAudit as AuditProto
 
@@ -92,3 +99,83 @@ class BaseAuditEmbeddedDocument(BaseEmbeddedDocument):
 
 
 BaseAuditContextEmbeddedDocument = BaseAuditEmbeddedDocument
+
+
+class AuditPeewee(Model):
+    created_by = IntegerFieldPeewee(null=True, default=None)
+    updated_by = IntegerFieldPeewee(null=True, default=None)
+    deleted_by = IntegerFieldPeewee(null=True, default=None)
+    created_at = DateTimeFieldPeewee(null=True, default=None)
+    updated_at = DateTimeFieldPeewee(null=True, default=None)
+    deleted_at = DateTimeFieldPeewee(null=True, default=None)
+
+    def to_proto(self) -> AuditProto:
+        return AuditProto(
+            created_by=self.created_by,
+            updated_by=self.updated_by,
+            deleted_by=self.deleted_by,
+            created_at=self.created_at,
+            updated_at=self.updated_at,
+            deleted_at=self.deleted_at,
+        )
+
+
+class ContextPeewee(Model):
+    tenant = CharFieldPeewee()
+    user = CharFieldPeewee()
+
+    def to_proto(self) -> ContextProto:
+        return ContextProto(
+            tenant=self.tenant,
+            user=self.user,
+        )
+
+
+class BaseModel(Model):
+    created_by = CharFieldPeewee(null=True, default=None)
+    updated_by = CharFieldPeewee(null=True, default=None)
+    deleted_by = CharFieldPeewee(null=True, default=None)
+    created_at = DateTimeFieldPeewee(default=datetime.now())
+    updated_at = DateTimeFieldPeewee(null=True, default=None)
+    deleted_at = DateTimeFieldPeewee(null=True, default=None)
+    active = BooleanFieldPeewee(null=False, default=True)
+
+    class Meta:
+        abstract = True
+        database = None
+
+    def get_audit_proto(self) -> AuditProto:
+        created_at_ts = Timestamp()
+        created_at_ts.FromDatetime(self.created_at)
+        updated_at_ts = Timestamp()
+        updated_at_ts.FromDatetime(self.updated_at)
+        audit_proto = AuditProto(
+            created_by=self.created_by,
+            updated_by=self.updated_by,
+            deleted_by=self.deleted_by,
+            created_at=created_at_ts,
+            updated_at=updated_at_ts,
+        )
+        if self.deleted_at:
+            deleted_at_ts = Timestamp()
+            deleted_at_ts.FromDatetime(self.deleted_at)
+            audit_proto.deleted_at = deleted_at_ts
+        return audit_proto
+
+    def get_context_proto(self) -> ContextProto:
+        return ContextProto(
+            tenant=self.context["tenant"],
+            user=self.context["user"],
+        )
+
+    def save(self, *args, **kwargs):
+        if self.created_by is None:
+            self.created_by = self.context["user"]
+        if self.created_at is None:
+            self.created_at = datetime.now()
+        self.updated_by = self.context["user"]
+        self.updated_at = datetime.now()
+        return super().save(*args, **kwargs)
+
+    def to_proto(self):
+        raise NotImplementedError
