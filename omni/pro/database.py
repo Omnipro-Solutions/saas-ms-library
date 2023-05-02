@@ -195,6 +195,7 @@ class PostgresDatabaseManager:
         return self.connection
 
     def create_new_record(self, model, **kwargs):
+        model._meta.database = self.connection
         with self.connection.atomic():
             if not model.table_exists():
                 self.connection.create_tables([model])

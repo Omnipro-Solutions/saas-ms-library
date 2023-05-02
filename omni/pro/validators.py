@@ -13,8 +13,3 @@ class BaseObjectSchema(Schema):
 
 class BaseSchema(Schema):
     context = fields.Nested(ContextSchema, required=True)
-
-
-class BasePeeweeSchema(Schema):
-    active = fields.Boolean(required=True, default=True)
-    context = fields.Nested(ContextSchema, required=True)

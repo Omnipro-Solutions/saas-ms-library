@@ -132,16 +132,12 @@ class ContextPeewee(Model):
 
 
 class BaseModel(Model):
-    # object_audit = ForeignKeyField(AuditPeewee, null=True)
-    # context = ForeignKeyField(ContextPeewee, null=True)
     created_by = CharFieldPeewee(null=True, default=None)
     updated_by = CharFieldPeewee(null=True, default=None)
     deleted_by = CharFieldPeewee(null=True, default=None)
     created_at = DateTimeFieldPeewee(default=datetime.now())
     updated_at = DateTimeFieldPeewee(null=True, default=None)
     deleted_at = DateTimeFieldPeewee(null=True, default=None)
-    context_user = CharFieldPeewee(null=True, default=None)
-    context_tenant = CharFieldPeewee(null=True, default=None)
     active = BooleanFieldPeewee(null=False, default=True)
 
     class Meta:
@@ -168,15 +164,16 @@ class BaseModel(Model):
 
     def get_context_proto(self) -> ContextProto:
         return ContextProto(
-            tenant=self.context_tenant,
-            user=self.context_user,
+            tenant=self.context["tenant"],
+            user=self.context["user"],
         )
 
     def save(self, *args, **kwargs):
+        if self.created_by is None:
+            self.created_by = self.context["user"]
         if self.created_at is None:
-            self.created_by = self.context_user
             self.created_at = datetime.now()
-        self.updated_by = self.context_user
+        self.updated_by = self.context["user"]
         self.updated_at = datetime.now()
         return super().save(*args, **kwargs)
 

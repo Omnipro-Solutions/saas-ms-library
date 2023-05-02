@@ -16,3 +16,7 @@ venv/
 # Operating system specific files and directories
 .DS_Store
 Thumbs.db
+
+# IDE's
+.vscode/
+.idea/
