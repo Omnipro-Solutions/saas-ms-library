@@ -75,12 +75,12 @@ class MetaData(_message.Message):
     ) -> None: ...
 
 class Object(_message.Message):
-    __slots__ = ["code", "name"]
+    __slots__ = ["code", "code_name"]
     CODE_FIELD_NUMBER: _ClassVar[int]
-    NAME_FIELD_NUMBER: _ClassVar[int]
+    CODE_NAME_FIELD_NUMBER: _ClassVar[int]
     code: str
-    name: str
-    def __init__(self, name: _Optional[str] = ..., code: _Optional[str] = ...) -> None: ...
+    code_name: str
+    def __init__(self, code_name: _Optional[str] = ..., code: _Optional[str] = ...) -> None: ...
 
 class ObjectAudit(_message.Message):
     __slots__ = ["created_at", "created_by", "deleted_at", "deleted_by", "updated_at", "updated_by"]
