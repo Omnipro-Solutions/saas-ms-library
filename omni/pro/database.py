@@ -379,7 +379,7 @@ class DBUtil(object):
         prepared_statement = {}
         prepared_statement["paginated"] = {"page": paginated.offset, "per_page": paginated.limit or 10}
         if (ft := filter.ListFields()) or id:
-            expression = [("_id", "=", ObjectId(id or None))]
+            expression = [("_id", "=", cls.generate_object_id(id))]
             if ft:
                 str_filter = filter.filter.replace("true", "True").replace("false", "False")
                 expression = ast.literal_eval(str_filter)
@@ -396,3 +396,10 @@ class DBUtil(object):
         if not sort_by.name_field:
             return None
         return f"{'-' if sort_by.type == sort_by.DESC else '+'}{sort_by.name_field}"
+
+    @classmethod
+    def generate_object_id(cls, id=None):
+        try:
+            return ObjectId(id)
+        except:
+            return ObjectId(None)
