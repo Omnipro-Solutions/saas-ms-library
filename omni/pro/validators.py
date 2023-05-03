@@ -8,7 +8,7 @@ class ContextSchema(Schema):
 
 class BaseObjectSchema(Schema):
     code = fields.String(required=True)
-    name = fields.String(required=True)
+    code_name = fields.String(required=True)
 
 
 class BaseSchema(Schema):
