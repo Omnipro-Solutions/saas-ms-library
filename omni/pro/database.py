@@ -5,7 +5,7 @@ import redis
 from bson import ObjectId
 from mongoengine import register_connection
 from mongoengine.context_managers import switch_db
-from peewee import PostgresqlDatabase
+from peewee import Model, PostgresqlDatabase
 
 from omni.pro.logger import configure_logger
 from omni.pro.protos.common import base_pb2
@@ -193,6 +193,11 @@ class PostgresDatabaseManager:
 
     def get_db_connection(self):
         return self.connection
+
+    def create_table(self, model: Model):
+        model._meta.database = self.connection
+        with self.connection.atomic():
+            self.connection.create_tables([model])
 
     def create_new_record(self, model, **kwargs):
         model._meta.database = self.connection
