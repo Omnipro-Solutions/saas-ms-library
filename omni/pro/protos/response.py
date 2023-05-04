@@ -37,12 +37,58 @@ class MessageResponse(object):
             **kwargs,
         )
 
+    # FIXME: This is a bad name for this method
     def bad_response(self, message: str, **kwargs):
+        return self.input_validator_response(message, **kwargs)
+
+    def input_validator_response(self, message: str, **kwargs):
         return self.response(
             success=False,
             message=message,
             status_code=HTTPStatus.BAD_REQUEST,
             message_code=MessageCode.INPUT_VALIDATOR_ERROR,
+            **kwargs,
+        )
+
+    def created_response(self, message: str, **kwargs):
+        return self.response(
+            success=True,
+            message=message,
+            status_code=HTTPStatus.CREATED,
+            message_code=MessageCode.RESOURCE_CREATED,
+            **kwargs,
+        )
+
+    def deleted_response(self, message: str, **kwargs):
+        return self.response(
+            success=True,
+            message=message,
+            status_code=HTTPStatus.OK,
+            message_code=MessageCode.RESOURCE_DELETED,
+            **kwargs,
+        )
+
+    def updated_response(self, message: str, **kwargs):
+        return self.response(
+            success=True,
+            message=message,
+            status_code=HTTPStatus.OK,
+            message_code=MessageCode.RESOURCE_UPDATED,
+            **kwargs,
+        )
+
+    def fetched_response(self, message: str, paginated: base_pb2.Paginated, total: int, **kwargs):
+        return self.response(
+            success=total > 0,
+            message=message,
+            status_code=HTTPStatus.OK,
+            message_code=MessageCode.RESOURCE_FETCHED,
+            meta_data=base_pb2.MetaData(
+                limit=paginated.limit,
+                offset=paginated.offset,
+                total=total,
+                count=total,
+            ),
             **kwargs,
         )
 
@@ -52,6 +98,15 @@ class MessageResponse(object):
             success=False,
             status_code=HTTPStatus.INTERNAL_SERVER_ERROR,
             message_code=message_code,
+            **kwargs,
+        )
+
+    def already_exists_response(self, message: str, **kwargs):
+        return self.response(
+            success=False,
+            message=message,
+            status_code=HTTPStatus.OK,
+            message_code=MessageCode.RESOURCE_ALREADY_EXISTS,
             **kwargs,
         )
 

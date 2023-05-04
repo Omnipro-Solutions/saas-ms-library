@@ -2,15 +2,14 @@ from datetime import datetime
 
 from google.protobuf.timestamp_pb2 import Timestamp
 from mongoengine import BooleanField, DateTimeField, Document, EmbeddedDocument, EmbeddedDocumentField, StringField
+from omni.pro.protos.common.base_pb2 import Context as ContextProto
+from omni.pro.protos.common.base_pb2 import Object as ObjectProto
+from omni.pro.protos.common.base_pb2 import ObjectAudit as AuditProto
 from peewee import BooleanField as BooleanFieldPeewee
 from peewee import CharField as CharFieldPeewee
 from peewee import DateTimeField as DateTimeFieldPeewee
-from peewee import ForeignKeyField
 from peewee import IntegerField as IntegerFieldPeewee
 from peewee import Model
-
-from omni.pro.protos.common.base_pb2 import Context as ContextProto
-from omni.pro.protos.common.base_pb2 import ObjectAudit as AuditProto
 
 
 class BaseEmbeddedDocument(EmbeddedDocument):
@@ -21,6 +20,20 @@ class BaseEmbeddedDocument(EmbeddedDocument):
 
     def to_proto(self):
         raise NotImplementedError
+
+
+class BaseObjectEmbeddedDocument(BaseEmbeddedDocument):
+    code = StringField()
+    code_name = StringField()
+    meta = {
+        "allow_inheritance": True,
+    }
+
+    def to_proto(self):
+        return ObjectProto(
+            code=self.code,
+            code_name=self.code_name,
+        )
 
 
 class Audit(BaseEmbeddedDocument):
