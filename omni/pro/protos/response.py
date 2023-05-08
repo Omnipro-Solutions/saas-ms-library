@@ -9,6 +9,7 @@ class MessageCode(object):
     INPUT_VALIDATOR_ERROR = "SV002"
     COGNITO_CLIENT_ERROR = "CO001"
     USER_PASSWORD_CHANGED = "US007"
+    USER_EMAIL_CHANGED = "US008"
     RESOURCE_CREATED = "RS001"
     RESOURCE_READ = "RS002"
     RESOURCE_FETCHED = "RS002"
@@ -78,6 +79,9 @@ class MessageResponse(object):
         )
 
     def fetched_response(self, message: str, paginated: base_pb2.Paginated, total: int, **kwargs):
+        if kwargs.pop("id", False) and total == 0:
+            return self.not_found_response(message, **kwargs)
+
         return self.response(
             success=total > 0,
             message=message,
