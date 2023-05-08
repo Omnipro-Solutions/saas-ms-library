@@ -211,12 +211,14 @@ class PostgresDatabaseManager:
         return new_record
 
     def retrieve_record(self, model, filters):
+        model._meta.database = self.connection
         with self.connection.atomic():
             model.bind(self.connection)
             query = model.get_or_none(**filters)
         return query
 
     def retrieve_record_by_id(self, model, id):
+        model._meta.database = self.connection
         with self.connection.atomic():
             model.bind(self.connection)
             query = model.get_by_id(id)
@@ -229,6 +231,7 @@ class PostgresDatabaseManager:
         return model_select
 
     def update_record(self, model, model_id, update_dict):
+        model._meta.database = self.connection
         with self.connection.atomic():
             model.bind(self.connection)
             record = model.get_by_id(model_id)
@@ -236,6 +239,7 @@ class PostgresDatabaseManager:
         return model.get_by_id(model_id)
 
     def delete_record_by_id(self, model, model_id):
+        model._meta.database = self.connection
         with self.connection.atomic():
             model.bind(self.connection)
             record = model.get_by_id(model_id)

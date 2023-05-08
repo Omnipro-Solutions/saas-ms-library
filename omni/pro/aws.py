@@ -89,14 +89,23 @@ class AWSCognitoClient(AWSClient):
         )
 
     def update_user(self, username: str, name: str, language_code: str, timezone_code: str) -> dict:
-        response = self.client.admin_update_user_attributes(
-            UserPoolId=self.user_pool_id,
-            Username=username,
-            UserAttributes=[
+        return self._update_attributes(
+            username=username,
+            attributes=[
                 {"Name": "name", "Value": name},
                 {"Name": "locale", "Value": language_code},
                 {"Name": "zoneinfo", "Value": timezone_code},
             ],
+        )
+
+    def update_email(self, username, email: str) -> dict:
+        return self._update_attributes(username=username, attributes=[{"Name": "email", "Value": email}])
+
+    def _update_attributes(self, username: str, attributes: list) -> dict:
+        response = self.client.admin_update_user_attributes(
+            UserPoolId=self.user_pool_id,
+            Username=username,
+            UserAttributes=attributes,
         )
         return nested(response, "ResponseMetadata.HTTPStatusCode") == HTTPStatus.OK, response
 
