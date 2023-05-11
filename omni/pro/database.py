@@ -10,7 +10,6 @@ from peewee import Expression, Model, ModelSelect, PostgresqlDatabase
 
 from omni.pro.logger import configure_logger
 from omni.pro.protos.common import base_pb2
-from omni.pro.protos.util import MessageToDict
 from omni.pro.util import nested
 
 logger = configure_logger(name=__name__)
