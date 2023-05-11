@@ -1,5 +1,6 @@
 import ast
 import json
+import time
 
 import redis
 from bson import ObjectId
@@ -11,6 +12,16 @@ from omni.pro.util import nested
 from peewee import PostgresqlDatabase
 
 logger = configure_logger(name=__name__)
+
+
+def measure_time(function):
+    def measured_function(*args, **kwargs):
+        start = time.time()
+        c = function(*args, **kwargs)
+        logger.info(f"Func: {str(function.__qualname__)} - Time: {time.time() - start}")
+        return c
+
+    return measured_function
 
 
 class DatabaseManager(object):
@@ -64,6 +75,7 @@ class DatabaseManager(object):
 
         return db_alias
 
+    @measure_time
     def create_document(self, db_name: str, document_class, **kwargs) -> object:
         db_alias = self.connect_to_database(db_name)
 
@@ -73,6 +85,7 @@ class DatabaseManager(object):
 
         return document
 
+    @measure_time
     def get_document(self, db_name: str, tenant: str, document_class, **kwargs) -> object:
         db_alias = self.connect_to_database(db_name)
 
@@ -81,6 +94,7 @@ class DatabaseManager(object):
 
         return document
 
+    @measure_time
     def update_document(self, db_name: str, document_class, id: str, **kwargs) -> object:
         db_alias = self.connect_to_database(db_name)
 
@@ -91,6 +105,7 @@ class DatabaseManager(object):
 
         return document
 
+    @measure_time
     def delete_document(self, db_name: str, document_class, id: str) -> object:
         db_alias = self.connect_to_database(db_name)
 
@@ -100,6 +115,7 @@ class DatabaseManager(object):
 
         return document
 
+    @measure_time
     def list_documents(
         self,
         db_name: str,
@@ -154,12 +170,14 @@ class DatabaseManager(object):
             # Return list of documents matching the specified criteria and total count of documents
             return list(query_set), query_set.count()
 
+    @measure_time
     def delete_documents(self, db_name, document_class, **kwargs):
         db_alias = self.connect_to_database(db_name)
         with switch_db(document_class, db_alias) as DocumentAlias:
             document = DocumentAlias.objects(**kwargs).delete()
         return document
 
+    @measure_time
     def update_embeded_document(
         self, db_name: str, document_class, filters: dict, update: dict, many: bool = False
     ) -> object:
