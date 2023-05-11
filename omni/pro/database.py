@@ -1,14 +1,16 @@
 import ast
 import json
+import operator
 
 import redis
 from bson import ObjectId
 from mongoengine import register_connection
 from mongoengine.context_managers import switch_db
-from peewee import Model, PostgresqlDatabase
+from peewee import Expression, Model, ModelSelect, PostgresqlDatabase
 
 from omni.pro.logger import configure_logger
 from omni.pro.protos.common import base_pb2
+from omni.pro.protos.util import MessageToDict
 from omni.pro.util import nested
 
 logger = configure_logger(name=__name__)
@@ -221,6 +223,12 @@ class PostgresDatabaseManager:
             query = model.get_by_id(id)
         return query
 
+    def list_records(self, model, id, fields, filter, group_by, sort_by, paginated):
+        with self.connection.atomic():
+            model.bind(self.connection)
+            model_select = QueryBuilder().build_filter(model, id, fields, filter, group_by, sort_by, paginated)
+        return model_select
+
     def update_record(self, model, model_id, update_dict):
         with self.connection.atomic():
             model.bind(self.connection)
@@ -409,3 +417,131 @@ class DBUtil(object):
             return ObjectId(id)
         except:
             return ObjectId(None)
+
+
+class QueryBuilder:
+    filter_ops = {
+        "=": operator.eq,
+        "<": operator.lt,
+        "<=": operator.le,
+        ">": operator.gt,
+        ">=": operator.ge,
+        "!=": operator.ne,
+        "in": operator.contains,
+        "and": operator.and_,
+        "or": operator.or_,
+        "not": lambda x: ~(x),
+    }
+    DEFAULT_PAGE_SIZE = 10
+
+    @classmethod
+    def pre_to_in(cls, filters: base_pb2.Filter) -> list:
+        str_filter = filters.filter.replace("true", "True").replace("false", "False")
+        expression = ast.literal_eval(str_filter)
+        stack = []
+        result = []
+        for item in expression:
+            if isinstance(item, tuple):
+                if stack:
+                    result.append(item)
+                    result.append(stack.pop())
+                else:
+                    result.append(item)
+            else:
+                stack.append(item)
+        return result
+
+    @classmethod
+    def build_filter(
+        cls,
+        model: Model,
+        id: int,
+        fields: base_pb2.Fields,
+        filter: base_pb2.Filter,
+        group_by: base_pb2.GroupBy,
+        sort_by: base_pb2.SortBy,
+        paginated: base_pb2.Paginated,
+    ):
+        query_fields = list()
+        query: Expression | None = None
+        group_by_fields = list()
+        order_by_fields = list()
+        model_select: ModelSelect
+
+        if id:
+            model_select = model.select().where(model.id == id)
+            return list(model_select)
+
+        if fields.ListFields():
+            query_fields = cls.build_fields(model, fields)
+
+        if filter.ListFields():
+            filter_custom = cls.pre_to_in(filter)
+            query = cls.build_query(model, filter_custom)
+
+        if paginated.ListFields():
+            model_select = (
+                model.select(*query_fields)
+                .where(query)
+                .paginate(paginated.offset, paginated.limit or cls.DEFAULT_PAGE_SIZE)
+            )
+        else:
+            model_select = model.select(*query_fields).where(query).paginate(1, cls.DEFAULT_PAGE_SIZE)
+
+        if group_by:
+            group_by_fields = cls.build_group_by(model, group_by)
+            model_select = model_select.group_by(*group_by_fields)
+
+        if sort_by.ListFields():
+            order_by_fields = cls.build_sort_by(model, sort_by)
+            model_select = model_select.order_by(*order_by_fields)
+
+        return list(model_select)
+
+    @classmethod
+    def build_query(cls, model: Model, filters: list) -> Expression | None:
+        query: Expression | None = None
+        filter_operator = None
+        for item in filters:
+            if isinstance(item, str):
+                filter_operator = item.lower()
+                if filter_operator not in cls.filter_ops:
+                    raise ValueError(f"Invalid filter operator: {filter_operator}")
+            elif isinstance(item, tuple) and len(item) == 3:
+                field, op, value = item
+                if "." in field:
+                    related, field = field.split(".")
+                    related_model = getattr(model, related).rel_model
+                    related_field = getattr(related_model, field)
+                    related_query = cls.filter_ops[op](related_field, value)
+                    query = cls.filter_ops[op](query, related_query) if query else related_query
+                else:
+                    field = getattr(model, field)
+                    field_query = cls.filter_ops[op](field, value)
+                    query = cls.filter_ops[filter_operator](query, field_query) if filter_operator else field_query
+            else:
+                raise ValueError(f"Invalid filter item: {item}")
+
+        return query
+
+    @classmethod
+    def build_fields(cls, model: Model, fields: base_pb2.Fields) -> list:
+        return [getattr(model, x) for x in fields.name_field]
+
+    @classmethod
+    def build_group_by(cls, model: Model, group_by: base_pb2.GroupBy) -> list:
+        group_by_fields = list()
+        for item in group_by:
+            if item.name_field:
+                group_by_fields.append(getattr(model, item.name_field))
+        return group_by_fields
+
+    @classmethod
+    def build_group_by(cls, model: Model, group_by: base_pb2.GroupBy) -> list:
+        return [getattr(model, x.name_field) for x in group_by]
+
+    @classmethod
+    def build_sort_by(cls, model: Model, sort_by: base_pb2.SortBy) -> list:
+        if sort_by.type == sort_by.DESC:
+            return [getattr(model, sort_by.name_field).desc()]
+        return [getattr(model, sort_by.name_field)]
