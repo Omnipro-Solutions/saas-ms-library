@@ -147,6 +147,7 @@ class DatabaseManager(object):
         # Return list of documents matching the specified criteria and total count of documents
         return list(query_set), query_set.count()
 
+    @measure_time
     def delete_documents(self, db_name, document_class, **kwargs):
         # with self.get_connection() as cnn:
         document = document_class.objects(**kwargs).delete()
