@@ -1,15 +1,17 @@
 from datetime import datetime
+from time import time
 
 from google.protobuf.timestamp_pb2 import Timestamp
 from mongoengine import BooleanField, DateTimeField, Document, EmbeddedDocument, EmbeddedDocumentField, StringField
-from omni.pro.protos.common.base_pb2 import Context as ContextProto
-from omni.pro.protos.common.base_pb2 import Object as ObjectProto
-from omni.pro.protos.common.base_pb2 import ObjectAudit as AuditProto
 from peewee import BooleanField as BooleanFieldPeewee
 from peewee import CharField as CharFieldPeewee
 from peewee import DateTimeField as DateTimeFieldPeewee
 from peewee import IntegerField as IntegerFieldPeewee
 from peewee import Model
+
+from omni.pro.protos.common.base_pb2 import Context as ContextProto
+from omni.pro.protos.common.base_pb2 import Object as ObjectProto
+from omni.pro.protos.common.base_pb2 import ObjectAudit as AuditProto
 
 
 class BaseEmbeddedDocument(EmbeddedDocument):
@@ -157,22 +159,44 @@ class BaseModel(Model):
         abstract = True
         database = None
 
-    def get_audit_proto(self) -> AuditProto:
-        created_at_ts = Timestamp()
-        created_at_ts.FromDatetime(self.created_at)
-        updated_at_ts = Timestamp()
-        updated_at_ts.FromDatetime(self.updated_at)
-        audit_proto = AuditProto(
+    def set_audit_proto(self, **kwargs):
+        self.created_at = kwargs.get("created_at", self.created_at)
+        self.updated_at = kwargs.get("updated_at", self.updated_at)
+        self.deleted_at = kwargs.get("deleted_at", self.deleted_at)
+        self.created_by = kwargs.get("created_by", self.created_by)
+        self.updated_by = kwargs.get("updated_by", self.updated_by)
+        self.deleted_by = kwargs.get("deleted_by", self.deleted_by)
+        return AuditProto(
             created_by=self.created_by,
             updated_by=self.updated_by,
             deleted_by=self.deleted_by,
-            created_at=created_at_ts,
-            updated_at=updated_at_ts,
+            created_at=self.created_at,
+            updated_at=self.updated_at,
+            deleted_at=self.deleted_at,
         )
-        if self.deleted_at:
+
+    def get_audit_proto(self) -> AuditProto:
+        created_at_ts = Timestamp()
+        created_at_ts.FromDatetime(self.created_at)
+        audit_proto = self.set_audit_proto(
+            created_at=created_at_ts,
+        )
+        if self.updated_by:
+            current_time = time()
+            dt_object = datetime.fromtimestamp(current_time)
+            updated_at_ts = Timestamp()
+            updated_at_ts.FromDatetime(dt_object)
+            audit_proto = self.set_audit_proto(
+                updated_at=updated_at_ts,
+            )
+        if self.deleted_by:
+            current_time = time()
+            dt_object = datetime.fromtimestamp(current_time)
             deleted_at_ts = Timestamp()
-            deleted_at_ts.FromDatetime(self.deleted_at)
-            audit_proto.deleted_at = deleted_at_ts
+            deleted_at_ts.FromDatetime(dt_object)
+            audit_proto = self.set_audit_proto(
+                deleted_at=deleted_at_ts,
+            )
         return audit_proto
 
     def get_context_proto(self) -> ContextProto:

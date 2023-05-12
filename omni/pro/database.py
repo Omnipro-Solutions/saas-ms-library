@@ -83,6 +83,14 @@ class DatabaseManager(object):
 
         return document
 
+    def get_documents(self, db_name: str, tenant: str, document_class, **kwargs) -> list:
+        db_alias = self.connect_to_database(db_name)
+
+        with switch_db(document_class, db_alias) as DocumentAlias:
+            documents = DocumentAlias.objects(**kwargs, context__tenant=tenant)
+
+        return documents
+
     def update_document(self, db_name: str, document_class, id: str, **kwargs) -> object:
         db_alias = self.connect_to_database(db_name)
 
