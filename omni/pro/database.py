@@ -2,6 +2,7 @@ import ast
 import json
 import time
 
+import mongoengine as mongo
 import redis
 from bson import ObjectId
 from mongoengine import register_connection
@@ -25,7 +26,7 @@ def measure_time(function):
 
 
 class DatabaseManager(object):
-    def __init__(self, host: str, port: int, user: str, password: str, complement: dict) -> None:
+    def __init__(self, host: str, port: int, db: str, user: str, password: str, complement: dict) -> None:
         """
         :param db_object: Database object
         Example:
@@ -39,80 +40,58 @@ class DatabaseManager(object):
                 "complement":""
             }
         """
-        register_connection(
-            alias="default",
-            db="default",
-            host=host,
-            port=int(port),
-            username=user,
-            password=password,
-            **complement,
-        )
+        self.db = db
         self.host = host
         self.port = port
-        self.user = user
+        self.username = user
         self.password = password
         self.complement = complement
-        self.connections = {}
+        # self.get_connection().connect()
 
-    def get_db_alias(self, db_name: str) -> str:
-        return f"db_{db_name}"
-
-    def connect_to_database(self, db_name: str) -> str:
-        db_alias = self.get_db_alias(db_name)
-
-        if db_alias not in self.connections:
-            register_connection(
-                alias=db_alias,
-                db=db_name,
-                host=self.host,
-                port=int(self.port),
-                username=self.user,
-                password=self.password,
-                **self.complement,
-            )
-            self.connections[db_alias] = True
-
-        return db_alias
+    def get_connection(self):
+        return MongoConnection(
+            db=self.db,
+            host=self.host,
+            port=self.port,
+            username=self.username,
+            password=self.password,
+            complement=self.complement,
+        )
 
     @measure_time
     def create_document(self, db_name: str, document_class, **kwargs) -> object:
-        db_alias = self.connect_to_database(db_name)
-
-        with switch_db(document_class, db_alias) as DocumentAlias:
-            document = DocumentAlias(**kwargs)
-            document.save()
-
+        # with self.get_connection() as cnn:
+        document = document_class(**kwargs)
+        document.save()
         return document
 
     @measure_time
     def get_document(self, db_name: str, tenant: str, document_class, **kwargs) -> object:
-        db_alias = self.connect_to_database(db_name)
-
-        with switch_db(document_class, db_alias) as DocumentAlias:
-            document = DocumentAlias.objects(**kwargs, context__tenant=tenant).first()
-
+        # with self.get_connection() as cnn:
+        document = document_class.objects(**kwargs, context__tenant=tenant).first()
+        # document.to_proto()
         return document
 
     @measure_time
     def update_document(self, db_name: str, document_class, id: str, **kwargs) -> object:
-        db_alias = self.connect_to_database(db_name)
-
-        with switch_db(document_class, db_alias) as DocumentAlias:
-            document = DocumentAlias.objects(id=id).first()
-            DocumentAlias.objects(id=document.id).update_one(**kwargs)
-            document.reload()
-
+        # with self.get_connection() as cnn:
+        document = document_class.objects(id=id).first()
+        document_class.objects(id=document.id).update_one(**kwargs)
+        document.reload()
         return document
 
     @measure_time
+    def update(self, document_instance, **kwargs):
+        # with self.get_connection() as cnn:
+        document_instance.update(**kwargs)
+        document_instance.reload()
+        return document_instance
+
+    @measure_time
     def delete_document(self, db_name: str, document_class, id: str) -> object:
-        db_alias = self.connect_to_database(db_name)
-
-        with switch_db(document_class, db_alias) as DocumentAlias:
-            document = DocumentAlias.objects(id=id).first()
-            document.delete()
-
+        # with self.get_connection() as cnn:
+        document = document_class.objects(id=id).first()
+        document.delete()
         return document
 
     @measure_time
@@ -138,59 +117,105 @@ class DatabaseManager(object):
         Returns:
         list: A list of documents matching the specified criteria.
         """
-        db_alias = self.connect_to_database(db_name)
+        # with self.get_connection() as cnn:
+        # Filter documents based on criteria provided
+        if filter:
+            query_set = document_class.objects(context__tenant=tenant).filter(__raw__=filter)
+        else:
+            query_set = document_class.objects(context__tenant=tenant)
 
-        with switch_db(document_class, db_alias) as DocumentAlias:
-            # Filter documents based on criteria provided
-            if filter:
-                query_set = DocumentAlias.objects(context__tenant=tenant).filter(__raw__=filter)
-            else:
-                query_set = DocumentAlias.objects(context__tenant=tenant)
+        # Only retrieve specified fields
+        if fields:
+            query_set = query_set.only(*fields)
 
-            # Only retrieve specified fields
-            if fields:
-                query_set = query_set.only(*fields)
+        # Group results by specified field
+        if group_by:
+            query_set = query_set.group_by(group_by)
 
-            # Group results by specified field
-            if group_by:
-                query_set = query_set.group_by(group_by)
+        # Paginate results based on criteria provided
+        if paginated:
+            page = int(paginated.get("page") or 1)
+            per_page = int(paginated.get("per_page") or 10)
+            start = (page - 1) * per_page
+            end = start + per_page
+            query_set = query_set[start:end]
 
-            # Paginate results based on criteria provided
-            if paginated:
-                page = int(paginated.get("page") or 1)
-                per_page = int(paginated.get("per_page") or 10)
-                start = (page - 1) * per_page
-                end = start + per_page
-                query_set = query_set[start:end]
+        # Sort results based on criteria provided
+        if sort_by:
+            query_set = query_set.order_by(*sort_by)
 
-            # Sort results based on criteria provided
-            if sort_by:
-                query_set = query_set.order_by(*sort_by)
-
-            # Return list of documents matching the specified criteria and total count of documents
-            return list(query_set), query_set.count()
+        # Return list of documents matching the specified criteria and total count of documents
+        return list(query_set), query_set.count()
 
     @measure_time
     def delete_documents(self, db_name, document_class, **kwargs):
-        db_alias = self.connect_to_database(db_name)
-        with switch_db(document_class, db_alias) as DocumentAlias:
-            document = DocumentAlias.objects(**kwargs).delete()
+        # with self.get_connection() as cnn:
+        document = document_class.objects(**kwargs).delete()
         return document
 
     @measure_time
     def update_embeded_document(
         self, db_name: str, document_class, filters: dict, update: dict, many: bool = False
     ) -> object:
-        db_alias = self.connect_to_database(db_name)
-
-        with switch_db(document_class, db_alias) as DocumentAlias:
-            if many:
-                DocumentAlias.objects(**filters).update(**update)
-                document = DocumentAlias.objects(**filters)
-            else:
-                DocumentAlias.objects(**filters).update_one(**update)
-                document = DocumentAlias.objects(**filters).first()
+        # with self.get_connection() as cnn:
+        if many:
+            document_class.objects(**filters).update(**update)
+            document = document_class.objects(**filters)
+        else:
+            document_class.objects(**filters).update_one(**update)
+            document = document_class.objects(**filters).first()
         return document
+
+
+class MongoConnection(object):
+    """A MongoConnection class that can dynamically connect to a MongoDB database with MongoEngine and close the connection after each query.
+
+    Args:
+        host (str): The hostname or IP address of the MongoDB server.
+        port (int): The port number of the MongoDB server.
+        username (str): The username for the MongoDB database.
+        password (str): The password for the MongoDB database.
+        database (str): The name of the MongoDB database.
+    """
+
+    def __init__(self, host, port, db, username, password, complement):
+        self.host = f"mongodb://{host}:{port}/?{'&'.join([f'{k}={v}' for (k,v) in complement.items()])}"
+        self.port = port
+        self.username = username
+        self.password = password
+        self.db = db
+
+    def connect(self):
+        """Connects to the MongoDB database.
+
+        Returns:
+            A MongoEngine connection object.
+        """
+        self.connection = mongo.connect(
+            db=self.db,
+            username=self.username,
+            password=self.password,
+            host=self.host,
+        )
+        return self.connection
+
+    def close(self):
+        """Closes the connection to the MongoDB database."""
+        # self.connection.close()
+        mongo.disconnect()
+
+    def __enter__(self):
+        """Enters a context manager.
+
+        Returns:
+            A MongoConnection object.
+        """
+        self.connect()
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        """Exits a context manager."""
+        self.close()
 
 
 class PostgresDatabaseManager:
