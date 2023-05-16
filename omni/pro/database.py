@@ -88,6 +88,12 @@ class DatabaseManager(object):
         return document_instance
 
     @measure_time
+    def delete(self, document_instance):
+        # with self.get_connection() as cnn:
+        document_instance.delete()
+        return document_instance
+
+    @measure_time
     def delete_document(self, db_name: str, document_class, id: str) -> object:
         # with self.get_connection() as cnn:
         document = document_class.objects(id=id).first()

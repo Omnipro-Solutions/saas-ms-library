@@ -1,6 +1,6 @@
 from omni.pro.aws import AWSCloudMap, AWSCognitoClient
 from omni.pro.config import Config
-from omni.pro.database import DatabaseManager, PostgresDatabaseManager, RedisManager
+from omni.pro.database import DatabaseManager, PostgresDatabaseManager, RedisManager, measure_time
 from omni.pro.logger import LoggerTraceback, configure_logger
 from omni.pro.util import Resource
 
@@ -9,6 +9,7 @@ logger = configure_logger(name=__name__)
 
 def resources_decorator(resource_list: list) -> callable:
     def decorador_func(funcion: callable) -> callable:
+        @measure_time
         def inner(instance, request, context):
             try:
                 cloud_map = AWSCloudMap(
