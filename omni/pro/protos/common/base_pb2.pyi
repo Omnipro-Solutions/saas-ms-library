@@ -114,6 +114,30 @@ class Paginated(_message.Message):
     offset: int
     def __init__(self, offset: _Optional[int] = ..., limit: _Optional[int] = ...) -> None: ...
 
+class ReadRequest(_message.Message):
+    __slots__ = ["fields", "filter", "group_by", "id", "paginated", "sort_by"]
+    FIELDS_FIELD_NUMBER: _ClassVar[int]
+    FILTER_FIELD_NUMBER: _ClassVar[int]
+    GROUP_BY_FIELD_NUMBER: _ClassVar[int]
+    ID_FIELD_NUMBER: _ClassVar[int]
+    PAGINATED_FIELD_NUMBER: _ClassVar[int]
+    SORT_BY_FIELD_NUMBER: _ClassVar[int]
+    fields: Fields
+    filter: Filter
+    group_by: _containers.RepeatedCompositeFieldContainer[GroupBy]
+    id: str
+    paginated: Paginated
+    sort_by: SortBy
+    def __init__(
+        self,
+        group_by: _Optional[_Iterable[_Union[GroupBy, _Mapping]]] = ...,
+        sort_by: _Optional[_Union[SortBy, _Mapping]] = ...,
+        fields: _Optional[_Union[Fields, _Mapping]] = ...,
+        filter: _Optional[_Union[Filter, _Mapping]] = ...,
+        paginated: _Optional[_Union[Paginated, _Mapping]] = ...,
+        id: _Optional[str] = ...,
+    ) -> None: ...
+
 class ResponseStandard(_message.Message):
     __slots__ = ["message", "message_code", "status_code", "success"]
     MESSAGE_CODE_FIELD_NUMBER: _ClassVar[int]
