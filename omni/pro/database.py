@@ -5,8 +5,6 @@ import time
 import mongoengine as mongo
 import redis
 from bson import ObjectId
-from mongoengine import register_connection
-from mongoengine.context_managers import switch_db
 from omni.pro.logger import configure_logger
 from omni.pro.protos.common import base_pb2
 from omni.pro.util import nested
@@ -58,21 +56,18 @@ class DatabaseManager(object):
             complement=self.complement,
         )
 
-    @measure_time
     def create_document(self, db_name: str, document_class, **kwargs) -> object:
         # with self.get_connection() as cnn:
         document = document_class(**kwargs)
         document.save()
         return document
 
-    @measure_time
     def get_document(self, db_name: str, tenant: str, document_class, **kwargs) -> object:
         # with self.get_connection() as cnn:
         document = document_class.objects(**kwargs, context__tenant=tenant).first()
         # document.to_proto()
         return document
 
-    @measure_time
     def update_document(self, db_name: str, document_class, id: str, **kwargs) -> object:
         # with self.get_connection() as cnn:
         document = document_class.objects(id=id).first()
@@ -80,27 +75,23 @@ class DatabaseManager(object):
         document.reload()
         return document
 
-    @measure_time
     def update(self, document_instance, **kwargs):
         # with self.get_connection() as cnn:
         document_instance.update(**kwargs)
         document_instance.reload()
         return document_instance
 
-    @measure_time
     def delete(self, document_instance):
         # with self.get_connection() as cnn:
         document_instance.delete()
         return document_instance
 
-    @measure_time
     def delete_document(self, db_name: str, document_class, id: str) -> object:
         # with self.get_connection() as cnn:
         document = document_class.objects(id=id).first()
         document.delete()
         return document
 
-    @measure_time
     def list_documents(
         self,
         db_name: str,
@@ -153,13 +144,11 @@ class DatabaseManager(object):
         # Return list of documents matching the specified criteria and total count of documents
         return list(query_set), query_set.count()
 
-    @measure_time
     def delete_documents(self, db_name, document_class, **kwargs):
         # with self.get_connection() as cnn:
         document = document_class.objects(**kwargs).delete()
         return document
 
-    @measure_time
     def update_embeded_document(
         self, db_name: str, document_class, filters: dict, update: dict, many: bool = False
     ) -> object:
