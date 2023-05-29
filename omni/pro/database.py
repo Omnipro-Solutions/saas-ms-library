@@ -233,16 +233,17 @@ class PostgresDatabaseManager:
     def get_db_connection(self):
         return self.connection
 
-    def create_table(self, model: Model):
+    def create_table_if_not_exists(self, model: Model):
         model._meta.database = self.connection
         with self.connection.atomic():
+            if model.table_exists():
+                return
             self.connection.create_tables([model])
 
     def create_new_record(self, model: Model, **kwargs):
         model._meta.database = self.connection
         with self.connection.atomic():
-            if not model.table_exists():
-                self.connection.create_tables([model])
+            self.create_table_if_not_exists(model)
             new_record = model(**kwargs)
             new_record.bind(self.connection)
             new_record.save()
@@ -252,6 +253,7 @@ class PostgresDatabaseManager:
         model._meta.database = self.connection
         with self.connection.atomic():
             model.bind(self.connection)
+            self.create_table_if_not_exists(model)
             query = model.get_or_none(**filters)
         return query
 
@@ -259,6 +261,7 @@ class PostgresDatabaseManager:
         model._meta.database = self.connection
         with self.connection.atomic():
             model.bind(self.connection)
+            self.create_table_if_not_exists(model)
             query = model.get_by_id(id)
         return query
 
@@ -274,6 +277,7 @@ class PostgresDatabaseManager:
     ):
         with self.connection.atomic():
             model.bind(self.connection)
+            self.create_table_if_not_exists(model)
             model_select = QueryBuilder().build_filter(model, id, fields, filter, group_by, sort_by, paginated)
         return model_select
 
@@ -281,6 +285,7 @@ class PostgresDatabaseManager:
         model._meta.database = self.connection
         with self.connection.atomic():
             model.bind(self.connection)
+            self.create_table_if_not_exists(model)
             record = model.get_by_id(model_id)
             record.update(**update_dict).where(model.id == model_id).execute()
         return model.get_by_id(model_id)
@@ -289,6 +294,7 @@ class PostgresDatabaseManager:
         model._meta.database = self.connection
         with self.connection.atomic():
             model.bind(self.connection)
+            self.create_table_if_not_exists(model)
             record = model.get_by_id(model_id)
             query = record.delete_instance()
         return query
@@ -517,10 +523,11 @@ class QueryBuilder:
         group_by_fields = list()
         order_by_fields = list()
         model_select: ModelSelect
+        total: int = 0
 
         if id:
             model_select = model.select().where(model.id == id)
-            return list(model_select)
+            return list(model_select), model_select.count()
 
         if fields.ListFields():
             query_fields = cls.build_fields(model, fields)
@@ -528,6 +535,8 @@ class QueryBuilder:
         if filter.ListFields():
             filter_custom = cls.pre_to_in(filter)
             query = cls.build_query(model, filter_custom)
+
+        total = model.select(*query_fields).where(query).count()
 
         if paginated.ListFields():
             model_select = (
@@ -546,7 +555,7 @@ class QueryBuilder:
             order_by_fields = cls.build_sort_by(model, sort_by)
             model_select = model_select.order_by(*order_by_fields)
 
-        return list(model_select)
+        return list(model_select), total
 
     @classmethod
     def build_query(cls, model: Model, filters: list) -> Expression | None:
