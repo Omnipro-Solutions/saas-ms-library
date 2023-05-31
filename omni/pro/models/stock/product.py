@@ -1,4 +1,5 @@
 from omni.pro.models.base import BaseModel
+from omni.pro.protos.v1.stock.stock_pb2 import Product as ProductProto
 from peewee import CharField
 
 
@@ -10,10 +11,11 @@ class Product(BaseModel):
     class Meta:
         table_name = "product"
 
-    def to_proto(self, proto_model):
-        product_proto = super().to_proto(proto_model)
-        product_proto.id = self.id
-        product_proto.product_doc_id = self.product_doc_id
-        product_proto.template_doc_id = self.template_doc_id
-        product_proto.name = self.name
-        return product_proto
+    def to_proto(self) -> ProductProto:
+        return ProductProto(
+            id=self.id,
+            product_doc_id=self.product_doc_id,
+            template_doc_id=self.template_doc_id,
+            name=self.name,
+            object_audit=self.get_audit_proto(),
+        )
