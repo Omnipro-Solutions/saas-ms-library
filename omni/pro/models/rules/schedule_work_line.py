@@ -13,7 +13,7 @@ class ScheduleWorkLine(BaseModel):
         ("5", "saturday"),
         ("6", "sunday"),
     )
-    day = CharField(choice=DAY)
+    day = CharField(choices=DAY)
     opening_time = DateTimeField()
     closing_time = DateTimeField()
 

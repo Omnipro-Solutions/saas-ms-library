@@ -11,7 +11,7 @@ class DeliveryMethodWarehouse(BaseModel):
         ("1", "desc"),
     )
     name = CharField()
-    hierarchy_warehouse_sort = CharField(choice=HIERARCHY_WAREHOUSE_SORT)
+    hierarchy_warehouse_sort = CharField(choices=HIERARCHY_WAREHOUSE_SORT)
 
     class Meta:
         table_name = "delivery_method_warehouse"

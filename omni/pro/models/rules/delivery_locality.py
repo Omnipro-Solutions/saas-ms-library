@@ -8,7 +8,7 @@ class DeliveryLocality(BaseModel):
     name = CharField()
     # TODO ID del documento de country en mongo
     country_id = CharField()
-    territory_matrix_id = ForeignKeyField("self", on_delete="RESTRICT")
+    territory_matrix_id = CharField()
 
     class Meta:
         table_name = "delivery_locality"
@@ -18,7 +18,7 @@ class DeliveryLocality(BaseModel):
             id=self.id,
             name=self.name,
             country_id=self.country_id,
-            territory_matrix_id=self.territory_matrix_id.id,
+            territory_matrix_id=self.territory_matrix_id,
             active=self.active,
             object_audit=self.object_audit.to_proto(),
         )

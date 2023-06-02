@@ -8,7 +8,7 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
-from v1.rules import calendar_pb2 as _calendar_pb2
+from omni.pro.protos.v1.rules import calendar_pb2 as _calendar_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
