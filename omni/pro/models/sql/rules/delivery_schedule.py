@@ -1,5 +1,5 @@
 from omni.pro.models.base import BaseModel
-from omni.pro.models.rules.schedule_work import ScheduleWork
+from omni.pro.models.sql.rules.schedule_work import ScheduleWork
 from omni.pro.protos.v1.rules.delivery_schedule_pb2 import DeliverySchedule as DeliveryScheduleProto
 from peewee import CharField, ForeignKeyField
 

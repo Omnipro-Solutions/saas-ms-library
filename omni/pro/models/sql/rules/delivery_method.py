@@ -1,8 +1,8 @@
 from omni.pro.models.base import BaseModel
-from omni.pro.models.rules.delivery_category import DeliveryCategory
-from omni.pro.models.rules.delivery_locality import DeliveryLocality
-from omni.pro.models.rules.delivery_method_warehouse import DeliveryMethodWarehouse
-from omni.pro.models.rules.delivery_schedule import DeliverySchedule
+from omni.pro.models.sql.rules.delivery_category import DeliveryCategory
+from omni.pro.models.sql.rules.delivery_locality import DeliveryLocality
+from omni.pro.models.sql.rules.delivery_method_warehouse import DeliveryMethodWarehouse
+from omni.pro.models.sql.rules.delivery_schedule import DeliverySchedule
 from omni.pro.models.stock.location import Location
 from omni.pro.models.stock.warehouse import Warehouse
 from omni.pro.protos.v1.rules.delivery_method_pb2 import DeliveryMethod as DeliveryMethodProto

@@ -1,5 +1,5 @@
 from omni.pro.models.base import BaseModel
-from omni.pro.models.rules.calendar import Calendar
+from omni.pro.models.sql.rules.calendar import Calendar
 from omni.pro.protos.v1.rules.schedule_work_pb2 import ScheduleWork as ScheduleWorkProto
 from peewee import CharField, ForeignKeyField
 
