@@ -1,5 +1,6 @@
 from omni.pro.models.base import BaseModel
 from omni.pro.models.rules.delivery_category import DeliveryCategory
+from omni.pro.models.rules.delivery_locality import DeliveryLocality
 from omni.pro.models.rules.delivery_method_warehouse import DeliveryMethodWarehouse
 from omni.pro.models.rules.delivery_schedule import DeliverySchedule
 from omni.pro.models.stock.location import Location
@@ -31,7 +32,7 @@ class DeliveryMethod(BaseModel):
     delivery_location_id = ForeignKeyField(Location, on_delete="RESTRICT")
     transfer_template_id = ForeignKeyField(DeliveryMethodWarehouse, on_delete="RESTRICT")
     category_template_id = ForeignKeyField(DeliveryCategory, on_delete="RESTRICT")
-    locality_available_id = ForeignKeyField("self", on_delete="RESTRICT")
+    local_available_id = ForeignKeyField(DeliveryLocality, on_delete="RESTRICT")
     schedule_template_id = ForeignKeyField(DeliverySchedule, on_delete="RESTRICT")
 
     class Meta:
@@ -52,5 +53,5 @@ class DeliveryMethod(BaseModel):
             locality_available_id=self.locality_available_id.id,
             schedule_template_id=self.schedule_template_id.id,
             active=self.active,
-            object_audit=self.object_audit.to_proto(),
+            object_audit=self.get_audit_proto(),
         )

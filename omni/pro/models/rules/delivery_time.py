@@ -1,4 +1,5 @@
 from omni.pro.models.base import BaseModel
+from omni.pro.models.rules.delivery_locality import DeliveryLocality
 from peewee import BooleanField, CharField, ForeignKeyField, IntegerField
 
 
@@ -9,7 +10,7 @@ class DeliveryTime(BaseModel):
         ("3", "3"),
     )
     name = CharField()
-    locality_available_id = ForeignKeyField("self", on_delete="RESTRICT")
+    locality_available_id = ForeignKeyField(DeliveryLocality, on_delete="RESTRICT")
     time_type = CharField(choices=TIME_TYPE)
     value_min = IntegerField()
     value_max = IntegerField()
