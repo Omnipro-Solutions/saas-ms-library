@@ -22,5 +22,5 @@ class DeliveryMethodWarehouse(BaseModel):
             name=self.name,
             hierarchy_warehouse_sort=self.hierarchy_warehouse_sort,
             active=self.active,
-            object_audit=self.object_audit.to_proto(),
+            object_audit=self.get_audit_proto(),
         )

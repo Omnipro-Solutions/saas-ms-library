@@ -20,5 +20,5 @@ class DeliveryLocality(BaseModel):
             country_id=self.country_id,
             territory_matrix_id=self.territory_matrix_id,
             active=self.active,
-            object_audit=self.object_audit.to_proto(),
+            object_audit=self.get_audit_proto(),
         )
