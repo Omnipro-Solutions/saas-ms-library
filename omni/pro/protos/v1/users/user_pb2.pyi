@@ -7,7 +7,6 @@ from typing import Union as _Union
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf.internal import containers as _containers
-
 from omni.pro.protos.common import base_pb2 as _base_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
@@ -40,13 +39,13 @@ class Access(_message.Message):
     ) -> None: ...
 
 class AccessCreateRequest(_message.Message):
-    __slots__ = ["action_id", "code", "context", "domain", "name"]
-    ACTION_ID_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["action", "code", "context", "domain", "name"]
+    ACTION_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     DOMAIN_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
-    action_id: str
+    action: Action
     code: str
     context: _base_pb2.Context
     domain: str
@@ -56,7 +55,7 @@ class AccessCreateRequest(_message.Message):
         name: _Optional[str] = ...,
         code: _Optional[str] = ...,
         domain: _Optional[str] = ...,
-        action_id: _Optional[str] = ...,
+        action: _Optional[_Union[Action, _Mapping]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
@@ -303,44 +302,44 @@ class ActionUpdateResponse(_message.Message):
     ) -> None: ...
 
 class Group(_message.Message):
-    __slots__ = ["accesses", "active", "code", "id", "name", "object_audit"]
-    ACCESSES_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["active", "code", "id", "name", "object_audit", "users"]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
-    accesses: _containers.RepeatedCompositeFieldContainer[Access]
+    USERS_FIELD_NUMBER: _ClassVar[int]
     active: bool
     code: str
     id: str
     name: str
     object_audit: _base_pb2.ObjectAudit
+    users: _containers.RepeatedCompositeFieldContainer[User]
     def __init__(
         self,
         id: _Optional[str] = ...,
         name: _Optional[str] = ...,
         code: _Optional[str] = ...,
-        accesses: _Optional[_Iterable[_Union[Access, _Mapping]]] = ...,
+        users: _Optional[_Iterable[_Union[User, _Mapping]]] = ...,
         active: bool = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
 class GroupCreateRequest(_message.Message):
-    __slots__ = ["access_ids", "code", "context", "name"]
-    ACCESS_IDS_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["code", "context", "name", "users"]
     CODE_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
-    access_ids: _containers.RepeatedScalarFieldContainer[str]
+    USERS_FIELD_NUMBER: _ClassVar[int]
     code: str
     context: _base_pb2.Context
     name: str
+    users: _containers.RepeatedCompositeFieldContainer[User]
     def __init__(
         self,
         name: _Optional[str] = ...,
         code: _Optional[str] = ...,
-        access_ids: _Optional[_Iterable[str]] = ...,
+        users: _Optional[_Iterable[_Union[User, _Mapping]]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
@@ -442,7 +441,6 @@ class User(_message.Message):
     __slots__ = [
         "active",
         "email",
-        "groups",
         "id",
         "language",
         "mfa",
@@ -455,7 +453,6 @@ class User(_message.Message):
     ]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     EMAIL_FIELD_NUMBER: _ClassVar[int]
-    GROUPS_FIELD_NUMBER: _ClassVar[int]
     ID_FIELD_NUMBER: _ClassVar[int]
     LANGUAGE_FIELD_NUMBER: _ClassVar[int]
     MFA_FIELD_NUMBER: _ClassVar[int]
@@ -467,7 +464,6 @@ class User(_message.Message):
     USERNAME_FIELD_NUMBER: _ClassVar[int]
     active: bool
     email: str
-    groups: _containers.RepeatedCompositeFieldContainer[Group]
     id: str
     language: _base_pb2.Object
     mfa: bool
@@ -487,7 +483,6 @@ class User(_message.Message):
         email: _Optional[str] = ...,
         language: _Optional[_Union[_base_pb2.Object, _Mapping]] = ...,
         timezone: _Optional[_Union[_base_pb2.Object, _Mapping]] = ...,
-        groups: _Optional[_Iterable[_Union[Group, _Mapping]]] = ...,
         active: bool = ...,
         mfa: bool = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
@@ -546,7 +541,6 @@ class UserCreateRequest(_message.Message):
         "context",
         "email",
         "email_confirm",
-        "group_ids",
         "language",
         "name",
         "password",
@@ -557,7 +551,6 @@ class UserCreateRequest(_message.Message):
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     EMAIL_CONFIRM_FIELD_NUMBER: _ClassVar[int]
     EMAIL_FIELD_NUMBER: _ClassVar[int]
-    GROUP_IDS_FIELD_NUMBER: _ClassVar[int]
     LANGUAGE_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     PASSWORD_CONFIRM_FIELD_NUMBER: _ClassVar[int]
@@ -567,7 +560,6 @@ class UserCreateRequest(_message.Message):
     context: _base_pb2.Context
     email: str
     email_confirm: str
-    group_ids: _containers.RepeatedScalarFieldContainer[str]
     language: _base_pb2.Object
     name: str
     password: str
@@ -582,7 +574,6 @@ class UserCreateRequest(_message.Message):
         email_confirm: _Optional[str] = ...,
         password: _Optional[str] = ...,
         password_confirm: _Optional[str] = ...,
-        group_ids: _Optional[_Iterable[str]] = ...,
         language: _Optional[_Union[_base_pb2.Object, _Mapping]] = ...,
         timezone: _Optional[_Union[_base_pb2.Object, _Mapping]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
