@@ -17,8 +17,8 @@ class DeliveryLocality(BaseModel):
         return DeliveryLocalityProto(
             id=self.id,
             name=self.name,
-            country_id=self.country_id,
-            territory_matrix_id=self.territory_matrix_id,
+            country_id=self.country_id.id,
+            territory_matrix_id=self.territory_matrix_id.id,
             active=self.active,
             object_audit=self.get_audit_proto(),
         )
