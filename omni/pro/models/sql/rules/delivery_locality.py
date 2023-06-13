@@ -47,3 +47,6 @@ class DeliveryLocalityTerritoryMatrixValues(BaseModel):
             active=self.active,
             object_audit=self.object_audit.to_proto(),
         )
+
+    class Meta:
+        table_name = "delivery_locality_territory_matrix_values"

@@ -42,3 +42,6 @@ class ScheduleWorkScheduleWorkLine(BaseModel):
             active=self.active,
             object_audit=self.object_audit.to_proto(),
         )
+
+    class Meta:
+        table_name = "schedule_work_schedule_work_line"

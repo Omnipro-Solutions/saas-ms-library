@@ -39,3 +39,6 @@ class ScheduleWarehouseHierarchy(BaseModel):
             active=self.active,
             object_audit=self.object_audit.to_proto(),
         )
+
+    class Meta:
+        table_name = "delivery_schedule_warehouse_hierarchy"
