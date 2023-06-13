@@ -1,12 +1,14 @@
 from omni.pro.models.base import BaseModel
 from omni.pro.models.sql.rules.delivery_category import DeliveryCategory
 from omni.pro.models.sql.rules.delivery_locality import DeliveryLocality
+from omni.pro.models.sql.rules.delivery_method import DeliveryWarehouseRef
 from omni.pro.models.sql.rules.delivery_method_warehouse import DeliveryMethodWarehouse
 from omni.pro.models.sql.rules.delivery_schedule import DeliverySchedule
 from omni.pro.models.stock.location import Location
 from omni.pro.models.stock.warehouse import Warehouse
 from omni.pro.protos.v1.rules.delivery_method_pb2 import DeliveryMethod as DeliveryMethodProto
-from peewee import CharField, FloatField, ForeignKeyField
+from omni.pro.protos.v1.rules.delivery_warehouse_ref_pb2 import DeliveryWarehouseRef as DeliveryWarehouseRefProto
+from peewee import CharField, FloatField, ForeignKeyField, ManyToManyField
 
 
 class DeliveryMethod(BaseModel):
@@ -34,6 +36,9 @@ class DeliveryMethod(BaseModel):
     category_template_id = ForeignKeyField(DeliveryCategory, on_delete="RESTRICT")
     local_available_id = ForeignKeyField(DeliveryLocality, on_delete="RESTRICT")
     schedule_template_id = ForeignKeyField(DeliverySchedule, on_delete="RESTRICT")
+    delivery_warehouse_ids = ManyToManyField(
+        Warehouse, backref="delivery_warehouse_ids", through_model=DeliveryWarehouseRef
+    )
 
     class Meta:
         table_name = "delivery_method"
@@ -52,6 +57,22 @@ class DeliveryMethod(BaseModel):
             category_template_id=self.category_template_id.id,
             locality_available_id=self.locality_available_id.id,
             schedule_template_id=self.schedule_template_id.id,
+            delivery_warehouse_ids=[warehouse.id for warehouse in self.delivery_warehouse_ids],
             active=self.active,
             object_audit=self.get_audit_proto(),
+        )
+
+
+# TODO tabla intermedia entre delivery_method y warehouse
+class DeliveryWarehouseRef(BaseModel):
+    delivery_method_id = ForeignKeyField(DeliveryMethod, on_delete="RESTRICT")
+    warehouse_id = ForeignKeyField(Warehouse, on_delete="RESTRICT")
+
+    def to_proto(self):
+        return DeliveryWarehouseRefProto(
+            id=self.id,
+            delivery_method_id=self.delivery_method_id.id,
+            warehouse_id=self.warehouse_id.id,
+            active=self.active,
+            object_audit=self.object_audit.to_proto(),
         )

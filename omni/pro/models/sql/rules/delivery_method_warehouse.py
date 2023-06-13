@@ -1,8 +1,9 @@
 from omni.pro.models.base import BaseModel
+from omni.pro.models.sql.rules.warehouse_hierarchy import WarehouseHierarchy
 from omni.pro.protos.v1.rules.delivery_method_warehouse_pb2 import (
     DeliveryMethodWarehouse as DeliveryMethodWarehouseProto,
 )
-from peewee import CharField
+from peewee import CharField, ManyToManyField
 
 
 class DeliveryMethodWarehouse(BaseModel):
@@ -12,6 +13,7 @@ class DeliveryMethodWarehouse(BaseModel):
     )
     name = CharField()
     hierarchy_warehouse_sort = CharField(choices=HIERARCHY_WAREHOUSE_SORT)
+    transfer_warehouse_ids = ManyToManyField(WarehouseHierarchy, backref="transfer_warehouse_ids")
 
     class Meta:
         table_name = "delivery_method_warehouse"
