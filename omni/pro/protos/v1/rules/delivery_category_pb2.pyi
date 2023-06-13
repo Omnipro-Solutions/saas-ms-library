@@ -1,27 +1,25 @@
-from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
-from typing import Mapping as _Mapping
-from typing import Optional as _Optional
-from typing import Union as _Union
-
+from common import base_pb2 as _base_pb2
+from v1.rules import category_pb2 as _category_pb2
+from google.protobuf.internal import containers as _containers
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
-from google.protobuf.internal import containers as _containers
-from omni.pro.protos.common import base_pb2 as _base_pb2
+from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Mapping, Optional as _Optional, Union as _Union
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class DeliveryCategory(_message.Message):
-    __slots__ = ["active", "id", "name", "object_audit"]
+    __slots__ = ["active", "category_ids", "id", "name", "object_audit"]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
+    CATEGORY_IDS_FIELD_NUMBER: _ClassVar[int]
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     active: bool
+    category_ids: _containers.RepeatedCompositeFieldContainer[_category_pb2.Category]
     id: int
     name: str
     object_audit: _base_pb2.ObjectAudit
-    def __init__(self, id: _Optional[int] = ..., name: _Optional[str] = ..., active: bool = ..., object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...) -> None: ...
+    def __init__(self, id: _Optional[int] = ..., name: _Optional[str] = ..., category_ids: _Optional[_Iterable[_Union[_category_pb2.Category, _Mapping]]] = ..., active: bool = ..., object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...) -> None: ...
 
 class DeliveryCategoryCreateRequest(_message.Message):
     __slots__ = ["context", "name"]

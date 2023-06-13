@@ -1,19 +1,18 @@
 from omni.pro.models.base import BaseModel
-from omni.pro.models.sql.rules.delivery_schedule import ScheduleWarehouseHierarchy
 from omni.pro.models.sql.rules.schedule_work import ScheduleWork
 from omni.pro.models.sql.rules.warehouse_hierarchy import WarehouseHierarchy
 from omni.pro.protos.v1.rules.delivery_schedule_pb2 import DeliverySchedule as DeliveryScheduleProto
-from omni.pro.protos.v1.rules.delivery_schedule_warehouse_hierarchy import (
+from omni.pro.protos.v1.rules.delivery_schedule_warehouse_hierarchy_pb2 import (
     DeliveryScheduleWarehouseHierarchy as DeliveryScheduleWarehouseHierarchyProto,
 )
-from peewee import CharField, ForeignKeyField, ManyToManyField
+from peewee import CharField, DeferredThroughModel, ForeignKeyField, ManyToManyField
 
 
 class DeliverySchedule(BaseModel):
     name = CharField()
     schedule_work_id = ForeignKeyField(ScheduleWork, on_delete="RESTRICT")
     transfer_warehouse_ids = ManyToManyField(
-        WarehouseHierarchy, backref="transfer_warehouse_ids", through_model=ScheduleWarehouseHierarchy
+        WarehouseHierarchy, backref="transfer_warehouse_ids", through_model=DeferredThroughModel()
     )
 
     def to_proto(self):
@@ -42,3 +41,6 @@ class ScheduleWarehouseHierarchy(BaseModel):
 
     class Meta:
         table_name = "delivery_schedule_warehouse_hierarchy"
+
+
+# DeferredThroughModel.set_model(DeliverySchedule.transfer_warehouse_ids, ScheduleWarehouseHierarchy)

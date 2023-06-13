@@ -1,46 +1,37 @@
-from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
-from typing import Mapping as _Mapping
-from typing import Optional as _Optional
-from typing import Union as _Union
-
+from common import base_pb2 as _base_pb2
+from v1.rules import warehouse_hierarchy_pb2 as _warehouse_hierarchy_pb2
+from google.protobuf.internal import containers as _containers
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
-from google.protobuf.internal import containers as _containers
-from omni.pro.protos.common import base_pb2 as _base_pb2
+from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Mapping, Optional as _Optional, Union as _Union
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class DeliverySchedule(_message.Message):
-    __slots__ = ["active", "id", "name", "object_audit", "schedule_work_id"]
+    __slots__ = ["active", "id", "name", "object_audit", "schedule_work_id", "transfer_warehouse_ids"]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     SCHEDULE_WORK_ID_FIELD_NUMBER: _ClassVar[int]
+    TRANSFER_WAREHOUSE_IDS_FIELD_NUMBER: _ClassVar[int]
     active: bool
     id: int
     name: str
     object_audit: _base_pb2.ObjectAudit
     schedule_work_id: int
-    def __init__(
-        self,
-        id: _Optional[int] = ...,
-        name: _Optional[str] = ...,
-        schedule_work_id: _Optional[int] = ...,
-        active: bool = ...,
-        object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
-    ) -> None: ...
+    transfer_warehouse_ids: _containers.RepeatedCompositeFieldContainer[_warehouse_hierarchy_pb2.WarehouseHierarchy]
+    def __init__(self, id: _Optional[int] = ..., name: _Optional[str] = ..., schedule_work_id: _Optional[int] = ..., transfer_warehouse_ids: _Optional[_Iterable[_Union[_warehouse_hierarchy_pb2.WarehouseHierarchy, _Mapping]]] = ..., active: bool = ..., object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...) -> None: ...
 
 class DeliveryScheduleCreateRequest(_message.Message):
-    __slots__ = ["context", "name"]
+    __slots__ = ["context", "name", "schedule_work_id"]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
+    SCHEDULE_WORK_ID_FIELD_NUMBER: _ClassVar[int]
     context: _base_pb2.Context
     name: str
-    def __init__(
-        self, name: _Optional[str] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
-    ) -> None: ...
+    schedule_work_id: int
+    def __init__(self, name: _Optional[str] = ..., schedule_work_id: _Optional[int] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...) -> None: ...
 
 class DeliveryScheduleCreateResponse(_message.Message):
     __slots__ = ["delivery_schedule", "response_standard"]
@@ -48,11 +39,7 @@ class DeliveryScheduleCreateResponse(_message.Message):
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
     delivery_schedule: DeliverySchedule
     response_standard: _base_pb2.ResponseStandard
-    def __init__(
-        self,
-        delivery_schedule: _Optional[_Union[DeliverySchedule, _Mapping]] = ...,
-        response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
-    ) -> None: ...
+    def __init__(self, delivery_schedule: _Optional[_Union[DeliverySchedule, _Mapping]] = ..., response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
 
 class DeliveryScheduleDeleteRequest(_message.Message):
     __slots__ = ["context", "id"]
@@ -60,9 +47,7 @@ class DeliveryScheduleDeleteRequest(_message.Message):
     ID_FIELD_NUMBER: _ClassVar[int]
     context: _base_pb2.Context
     id: int
-    def __init__(
-        self, id: _Optional[int] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
-    ) -> None: ...
+    def __init__(self, id: _Optional[int] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...) -> None: ...
 
 class DeliveryScheduleDeleteResponse(_message.Message):
     __slots__ = ["response_standard"]
@@ -86,16 +71,7 @@ class DeliveryScheduleReadRequest(_message.Message):
     id: int
     paginated: _base_pb2.Paginated
     sort_by: _base_pb2.SortBy
-    def __init__(
-        self,
-        group_by: _Optional[_Iterable[_Union[_base_pb2.GroupBy, _Mapping]]] = ...,
-        sort_by: _Optional[_Union[_base_pb2.SortBy, _Mapping]] = ...,
-        fields: _Optional[_Union[_base_pb2.Fields, _Mapping]] = ...,
-        filter: _Optional[_Union[_base_pb2.Filter, _Mapping]] = ...,
-        paginated: _Optional[_Union[_base_pb2.Paginated, _Mapping]] = ...,
-        id: _Optional[int] = ...,
-        context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
-    ) -> None: ...
+    def __init__(self, group_by: _Optional[_Iterable[_Union[_base_pb2.GroupBy, _Mapping]]] = ..., sort_by: _Optional[_Union[_base_pb2.SortBy, _Mapping]] = ..., fields: _Optional[_Union[_base_pb2.Fields, _Mapping]] = ..., filter: _Optional[_Union[_base_pb2.Filter, _Mapping]] = ..., paginated: _Optional[_Union[_base_pb2.Paginated, _Mapping]] = ..., id: _Optional[int] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...) -> None: ...
 
 class DeliveryScheduleReadResponse(_message.Message):
     __slots__ = ["delivery_schedules", "meta_data", "response_standard"]
@@ -105,12 +81,7 @@ class DeliveryScheduleReadResponse(_message.Message):
     delivery_schedules: _containers.RepeatedCompositeFieldContainer[DeliverySchedule]
     meta_data: _base_pb2.MetaData
     response_standard: _base_pb2.ResponseStandard
-    def __init__(
-        self,
-        delivery_schedules: _Optional[_Iterable[_Union[DeliverySchedule, _Mapping]]] = ...,
-        meta_data: _Optional[_Union[_base_pb2.MetaData, _Mapping]] = ...,
-        response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
-    ) -> None: ...
+    def __init__(self, delivery_schedules: _Optional[_Iterable[_Union[DeliverySchedule, _Mapping]]] = ..., meta_data: _Optional[_Union[_base_pb2.MetaData, _Mapping]] = ..., response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
 
 class DeliveryScheduleUpdateRequest(_message.Message):
     __slots__ = ["context", "delivery_schedule"]
@@ -118,11 +89,7 @@ class DeliveryScheduleUpdateRequest(_message.Message):
     DELIVERY_SCHEDULE_FIELD_NUMBER: _ClassVar[int]
     context: _base_pb2.Context
     delivery_schedule: DeliverySchedule
-    def __init__(
-        self,
-        delivery_schedule: _Optional[_Union[DeliverySchedule, _Mapping]] = ...,
-        context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
-    ) -> None: ...
+    def __init__(self, delivery_schedule: _Optional[_Union[DeliverySchedule, _Mapping]] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...) -> None: ...
 
 class DeliveryScheduleUpdateResponse(_message.Message):
     __slots__ = ["delivery_schedule", "response_standard"]
@@ -130,8 +97,4 @@ class DeliveryScheduleUpdateResponse(_message.Message):
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
     delivery_schedule: DeliverySchedule
     response_standard: _base_pb2.ResponseStandard
-    def __init__(
-        self,
-        delivery_schedule: _Optional[_Union[DeliverySchedule, _Mapping]] = ...,
-        response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
-    ) -> None: ...
+    def __init__(self, delivery_schedule: _Optional[_Union[DeliverySchedule, _Mapping]] = ..., response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
