@@ -26,24 +26,3 @@ class ScheduleWork(BaseModel):
             active=self.active,
             object_audit=self.get_audit_proto(),
         )
-
-
-# TODO tabla intermedia entre schedule_work y schedule_work_line
-class ScheduleWorkScheduleWorkLine(BaseModel):
-    schedule_work_id = ForeignKeyField(ScheduleWork, on_delete="RESTRICT")
-    schedule_work_line_id = ForeignKeyField(ScheduleWorkLine, on_delete="RESTRICT")
-
-    def to_proto(self):
-        return ScheduleWorkScheduleWorkLineProto(
-            id=self.id,
-            schedule_work_id=self.schedule_work_id.id,
-            schedule_work_line_id=self.schedule_work_line_id.id,
-            active=self.active,
-            object_audit=self.object_audit.to_proto(),
-        )
-
-    class Meta:
-        table_name = "schedule_work_schedule_work_line"
-
-
-# DeferredThroughModel.set_model(ScheduleWork.schedule_work_lines_ids, ScheduleWorkScheduleWorkLine)

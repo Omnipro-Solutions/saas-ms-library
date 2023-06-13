@@ -23,24 +23,3 @@ class DeliverySchedule(BaseModel):
             active=self.active,
             object_audit=self.get_audit_proto(),
         )
-
-
-# TODO tabla intermedia entre delivery_schedule y warehouse_hierarchy
-class ScheduleWarehouseHierarchy(BaseModel):
-    delivery_schedule_id = ForeignKeyField(DeliverySchedule, on_delete="RESTRICT")
-    warehouse_hierarchy_id = ForeignKeyField(WarehouseHierarchy, on_delete="RESTRICT")
-
-    def to_proto(self):
-        return DeliveryScheduleWarehouseHierarchyProto(
-            id=self.id,
-            delivery_schedule_id=self.delivery_schedule_id.id,
-            warehouse_hierarchy_id=self.warehouse_hierarchy_id.id,
-            active=self.active,
-            object_audit=self.object_audit.to_proto(),
-        )
-
-    class Meta:
-        table_name = "delivery_schedule_warehouse_hierarchy"
-
-
-# DeferredThroughModel.set_model(DeliverySchedule.transfer_warehouse_ids, ScheduleWarehouseHierarchy)
