@@ -1,10 +1,15 @@
-from common import base_pb2 as _base_pb2
-from v1.rules import warehouse_pb2 as _warehouse_pb2
-from google.protobuf.internal import containers as _containers
-from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
+from typing import ClassVar as _ClassVar
+from typing import Iterable as _Iterable
+from typing import Mapping as _Mapping
+from typing import Optional as _Optional
+from typing import Union as _Union
+
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
-from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Mapping, Optional as _Optional, Union as _Union
+from google.protobuf.internal import containers as _containers
+from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
+from omni.pro.protos.common import base_pb2 as _base_pb2
+from v1.rules import warehouse_pb2 as _warehouse_pb2
 
 CONSOLIDATED: TypePickingTransfer
 DESCRIPTOR: _descriptor.FileDescriptor

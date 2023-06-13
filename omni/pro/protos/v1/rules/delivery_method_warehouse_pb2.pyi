@@ -1,10 +1,15 @@
-from common import base_pb2 as _base_pb2
-from v1.rules import warehouse_hierarchy_pb2 as _warehouse_hierarchy_pb2
-from google.protobuf.internal import containers as _containers
-from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
+from typing import ClassVar as _ClassVar
+from typing import Iterable as _Iterable
+from typing import Mapping as _Mapping
+from typing import Optional as _Optional
+from typing import Union as _Union
+
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
-from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Mapping, Optional as _Optional, Union as _Union
+from google.protobuf.internal import containers as _containers
+from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
+from omni.pro.protos.common import base_pb2 as _base_pb2
+from v1.rules import warehouse_hierarchy_pb2 as _warehouse_hierarchy_pb2
 
 ASC: SortBy
 DESC: SortBy
@@ -24,7 +29,17 @@ class DeliveryMethodWarehouse(_message.Message):
     name: str
     object_audit: _base_pb2.ObjectAudit
     transfer_warehouse_ids: _containers.RepeatedCompositeFieldContainer[_warehouse_hierarchy_pb2.WarehouseHierarchy]
-    def __init__(self, id: _Optional[int] = ..., name: _Optional[str] = ..., hierarchi_warehouse_sort_by: _Optional[_Union[SortBy, str]] = ..., transfer_warehouse_ids: _Optional[_Iterable[_Union[_warehouse_hierarchy_pb2.WarehouseHierarchy, _Mapping]]] = ..., active: bool = ..., object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...) -> None: ...
+    def __init__(
+        self,
+        id: _Optional[int] = ...,
+        name: _Optional[str] = ...,
+        hierarchi_warehouse_sort_by: _Optional[_Union[SortBy, str]] = ...,
+        transfer_warehouse_ids: _Optional[
+            _Iterable[_Union[_warehouse_hierarchy_pb2.WarehouseHierarchy, _Mapping]]
+        ] = ...,
+        active: bool = ...,
+        object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
+    ) -> None: ...
 
 class DeliveryMethodWarehouseCreateRequest(_message.Message):
     __slots__ = ["context", "hierarchi_warehouse_sort_by", "name"]
@@ -34,7 +49,12 @@ class DeliveryMethodWarehouseCreateRequest(_message.Message):
     context: _base_pb2.Context
     hierarchi_warehouse_sort_by: SortBy
     name: str
-    def __init__(self, name: _Optional[str] = ..., hierarchi_warehouse_sort_by: _Optional[_Union[SortBy, str]] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...) -> None: ...
+    def __init__(
+        self,
+        name: _Optional[str] = ...,
+        hierarchi_warehouse_sort_by: _Optional[_Union[SortBy, str]] = ...,
+        context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
+    ) -> None: ...
 
 class DeliveryMethodWarehouseCreateResponse(_message.Message):
     __slots__ = ["delivery_method_warehouse", "response_standard"]
@@ -42,7 +62,11 @@ class DeliveryMethodWarehouseCreateResponse(_message.Message):
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
     delivery_method_warehouse: DeliveryMethodWarehouse
     response_standard: _base_pb2.ResponseStandard
-    def __init__(self, delivery_method_warehouse: _Optional[_Union[DeliveryMethodWarehouse, _Mapping]] = ..., response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
+    def __init__(
+        self,
+        delivery_method_warehouse: _Optional[_Union[DeliveryMethodWarehouse, _Mapping]] = ...,
+        response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
+    ) -> None: ...
 
 class DeliveryMethodWarehouseDeleteRequest(_message.Message):
     __slots__ = ["context", "id"]
@@ -50,7 +74,9 @@ class DeliveryMethodWarehouseDeleteRequest(_message.Message):
     ID_FIELD_NUMBER: _ClassVar[int]
     context: _base_pb2.Context
     id: int
-    def __init__(self, id: _Optional[int] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...) -> None: ...
+    def __init__(
+        self, id: _Optional[int] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
+    ) -> None: ...
 
 class DeliveryMethodWarehouseDeleteResponse(_message.Message):
     __slots__ = ["response_standard"]
@@ -74,7 +100,16 @@ class DeliveryMethodWarehouseReadRequest(_message.Message):
     id: int
     paginated: _base_pb2.Paginated
     sort_by: _base_pb2.SortBy
-    def __init__(self, group_by: _Optional[_Iterable[_Union[_base_pb2.GroupBy, _Mapping]]] = ..., sort_by: _Optional[_Union[_base_pb2.SortBy, _Mapping]] = ..., fields: _Optional[_Union[_base_pb2.Fields, _Mapping]] = ..., filter: _Optional[_Union[_base_pb2.Filter, _Mapping]] = ..., paginated: _Optional[_Union[_base_pb2.Paginated, _Mapping]] = ..., id: _Optional[int] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...) -> None: ...
+    def __init__(
+        self,
+        group_by: _Optional[_Iterable[_Union[_base_pb2.GroupBy, _Mapping]]] = ...,
+        sort_by: _Optional[_Union[_base_pb2.SortBy, _Mapping]] = ...,
+        fields: _Optional[_Union[_base_pb2.Fields, _Mapping]] = ...,
+        filter: _Optional[_Union[_base_pb2.Filter, _Mapping]] = ...,
+        paginated: _Optional[_Union[_base_pb2.Paginated, _Mapping]] = ...,
+        id: _Optional[int] = ...,
+        context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
+    ) -> None: ...
 
 class DeliveryMethodWarehouseReadResponse(_message.Message):
     __slots__ = ["delivery_method_warehouses", "meta_data", "response_standard"]
@@ -84,7 +119,12 @@ class DeliveryMethodWarehouseReadResponse(_message.Message):
     delivery_method_warehouses: _containers.RepeatedCompositeFieldContainer[DeliveryMethodWarehouse]
     meta_data: _base_pb2.MetaData
     response_standard: _base_pb2.ResponseStandard
-    def __init__(self, delivery_method_warehouses: _Optional[_Iterable[_Union[DeliveryMethodWarehouse, _Mapping]]] = ..., meta_data: _Optional[_Union[_base_pb2.MetaData, _Mapping]] = ..., response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
+    def __init__(
+        self,
+        delivery_method_warehouses: _Optional[_Iterable[_Union[DeliveryMethodWarehouse, _Mapping]]] = ...,
+        meta_data: _Optional[_Union[_base_pb2.MetaData, _Mapping]] = ...,
+        response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
+    ) -> None: ...
 
 class DeliveryMethodWarehouseUpdateRequest(_message.Message):
     __slots__ = ["context", "delivery_method_warehouse"]
@@ -92,7 +132,11 @@ class DeliveryMethodWarehouseUpdateRequest(_message.Message):
     DELIVERY_METHOD_WAREHOUSE_FIELD_NUMBER: _ClassVar[int]
     context: _base_pb2.Context
     delivery_method_warehouse: DeliveryMethodWarehouse
-    def __init__(self, delivery_method_warehouse: _Optional[_Union[DeliveryMethodWarehouse, _Mapping]] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...) -> None: ...
+    def __init__(
+        self,
+        delivery_method_warehouse: _Optional[_Union[DeliveryMethodWarehouse, _Mapping]] = ...,
+        context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
+    ) -> None: ...
 
 class DeliveryMethodWarehouseUpdateResponse(_message.Message):
     __slots__ = ["delivery_method_warehouse", "response_standard"]
@@ -100,7 +144,11 @@ class DeliveryMethodWarehouseUpdateResponse(_message.Message):
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
     delivery_method_warehouse: DeliveryMethodWarehouse
     response_standard: _base_pb2.ResponseStandard
-    def __init__(self, delivery_method_warehouse: _Optional[_Union[DeliveryMethodWarehouse, _Mapping]] = ..., response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
+    def __init__(
+        self,
+        delivery_method_warehouse: _Optional[_Union[DeliveryMethodWarehouse, _Mapping]] = ...,
+        response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
+    ) -> None: ...
 
 class SortBy(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = []
