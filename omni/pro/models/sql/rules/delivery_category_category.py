@@ -19,7 +19,7 @@ class DeliveryCategoryCategory(BaseModel):
             delivery_category_id=self.delivery_category_id.id,
             category_id=self.category_id.id,
             active=self.active,
-            object_audit=self.object_audit.to_proto(),
+            object_audit=self.get_audit_proto(),
         )
 
     class Meta:
