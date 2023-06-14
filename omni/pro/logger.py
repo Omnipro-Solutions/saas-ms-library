@@ -24,7 +24,3 @@ class LoggerTraceback(object):
         tb = traceback.format_exc()
         logger.error(f"{msg_error}: {tb}")
         return msg_error
-
-
-# FIXME: Replace write_exception_msg with LoggerTraceback.error in all services
-write_exception_msg = LoggerTraceback.error
