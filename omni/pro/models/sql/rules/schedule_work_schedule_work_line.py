@@ -18,7 +18,7 @@ class ScheduleWorkScheduleWorkLine(BaseModel):
             schedule_work_id=self.schedule_work_id.id,
             schedule_work_line_id=self.schedule_work_line_id.id,
             active=self.active,
-            object_audit=self.object_audit.to_proto(),
+            object_audit=self.get_audit_proto(),
         )
 
     class Meta:
