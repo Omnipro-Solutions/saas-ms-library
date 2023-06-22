@@ -1,4 +1,6 @@
 # create a decorator to check if the user has permission to access the resource
+from enum import Enum
+
 from omni.pro.logger import LoggerTraceback, configure_logger
 from omni.pro.protos.v1.users import user_pb2
 
@@ -43,7 +45,7 @@ def sync_allow_access(result):
     return True
 
 
-class Permission(object):
+class Permission(Enum):
     CAN_CREATE_ACCESS = "CAN_CREATE_ACCESS"
     CAN_UPDATE_ACCESS = "CAN_UPDATE_ACCESS"
     CAN_READ_ACCESS = "CAN_READ_ACCESS"

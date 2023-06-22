@@ -444,6 +444,7 @@ class User(_message.Message):
         "email",
         "groups",
         "id",
+        "is_superuser",
         "language",
         "mfa",
         "name",
@@ -457,6 +458,7 @@ class User(_message.Message):
     EMAIL_FIELD_NUMBER: _ClassVar[int]
     GROUPS_FIELD_NUMBER: _ClassVar[int]
     ID_FIELD_NUMBER: _ClassVar[int]
+    IS_SUPERUSER_FIELD_NUMBER: _ClassVar[int]
     LANGUAGE_FIELD_NUMBER: _ClassVar[int]
     MFA_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
@@ -469,6 +471,7 @@ class User(_message.Message):
     email: str
     groups: _containers.RepeatedCompositeFieldContainer[Group]
     id: str
+    is_superuser: bool
     language: _base_pb2.Object
     mfa: bool
     name: str
@@ -488,6 +491,7 @@ class User(_message.Message):
         language: _Optional[_Union[_base_pb2.Object, _Mapping]] = ...,
         timezone: _Optional[_Union[_base_pb2.Object, _Mapping]] = ...,
         groups: _Optional[_Iterable[_Union[Group, _Mapping]]] = ...,
+        is_superuser: bool = ...,
         active: bool = ...,
         mfa: bool = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
@@ -547,6 +551,7 @@ class UserCreateRequest(_message.Message):
         "email",
         "email_confirm",
         "group_ids",
+        "is_superuser",
         "language",
         "name",
         "password",
@@ -558,6 +563,7 @@ class UserCreateRequest(_message.Message):
     EMAIL_CONFIRM_FIELD_NUMBER: _ClassVar[int]
     EMAIL_FIELD_NUMBER: _ClassVar[int]
     GROUP_IDS_FIELD_NUMBER: _ClassVar[int]
+    IS_SUPERUSER_FIELD_NUMBER: _ClassVar[int]
     LANGUAGE_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     PASSWORD_CONFIRM_FIELD_NUMBER: _ClassVar[int]
@@ -568,6 +574,7 @@ class UserCreateRequest(_message.Message):
     email: str
     email_confirm: str
     group_ids: _containers.RepeatedScalarFieldContainer[str]
+    is_superuser: bool
     language: _base_pb2.Object
     name: str
     password: str
@@ -583,6 +590,7 @@ class UserCreateRequest(_message.Message):
         password: _Optional[str] = ...,
         password_confirm: _Optional[str] = ...,
         group_ids: _Optional[_Iterable[str]] = ...,
+        is_superuser: bool = ...,
         language: _Optional[_Union[_base_pb2.Object, _Mapping]] = ...,
         timezone: _Optional[_Union[_base_pb2.Object, _Mapping]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
