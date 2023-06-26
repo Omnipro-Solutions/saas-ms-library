@@ -6,8 +6,9 @@ from typing import Union as _Union
 
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
+from google.protobuf import struct_pb2 as _struct_pb2
+from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
-
 from omni.pro.protos.common import base_pb2 as _base_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
@@ -442,8 +443,9 @@ class User(_message.Message):
     __slots__ = [
         "active",
         "email",
-        "groups",
+        "group_ids",
         "id",
+        "is_superuser",
         "language",
         "mfa",
         "name",
@@ -455,8 +457,9 @@ class User(_message.Message):
     ]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     EMAIL_FIELD_NUMBER: _ClassVar[int]
-    GROUPS_FIELD_NUMBER: _ClassVar[int]
+    GROUP_IDS_FIELD_NUMBER: _ClassVar[int]
     ID_FIELD_NUMBER: _ClassVar[int]
+    IS_SUPERUSER_FIELD_NUMBER: _ClassVar[int]
     LANGUAGE_FIELD_NUMBER: _ClassVar[int]
     MFA_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
@@ -465,12 +468,13 @@ class User(_message.Message):
     TENANT_FIELD_NUMBER: _ClassVar[int]
     TIMEZONE_FIELD_NUMBER: _ClassVar[int]
     USERNAME_FIELD_NUMBER: _ClassVar[int]
-    active: bool
+    active: _wrappers_pb2.BoolValue
     email: str
-    groups: _containers.RepeatedCompositeFieldContainer[Group]
+    group_ids: _struct_pb2.ListValue
     id: str
+    is_superuser: _wrappers_pb2.BoolValue
     language: _base_pb2.Object
-    mfa: bool
+    mfa: _wrappers_pb2.BoolValue
     name: str
     object_audit: _base_pb2.ObjectAudit
     sub: str
@@ -487,9 +491,10 @@ class User(_message.Message):
         email: _Optional[str] = ...,
         language: _Optional[_Union[_base_pb2.Object, _Mapping]] = ...,
         timezone: _Optional[_Union[_base_pb2.Object, _Mapping]] = ...,
-        groups: _Optional[_Iterable[_Union[Group, _Mapping]]] = ...,
-        active: bool = ...,
-        mfa: bool = ...,
+        group_ids: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
+        is_superuser: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        mfa: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
@@ -547,6 +552,7 @@ class UserCreateRequest(_message.Message):
         "email",
         "email_confirm",
         "group_ids",
+        "is_superuser",
         "language",
         "name",
         "password",
@@ -558,6 +564,7 @@ class UserCreateRequest(_message.Message):
     EMAIL_CONFIRM_FIELD_NUMBER: _ClassVar[int]
     EMAIL_FIELD_NUMBER: _ClassVar[int]
     GROUP_IDS_FIELD_NUMBER: _ClassVar[int]
+    IS_SUPERUSER_FIELD_NUMBER: _ClassVar[int]
     LANGUAGE_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     PASSWORD_CONFIRM_FIELD_NUMBER: _ClassVar[int]
@@ -567,7 +574,8 @@ class UserCreateRequest(_message.Message):
     context: _base_pb2.Context
     email: str
     email_confirm: str
-    group_ids: _containers.RepeatedScalarFieldContainer[str]
+    group_ids: _struct_pb2.ListValue
+    is_superuser: _wrappers_pb2.BoolValue
     language: _base_pb2.Object
     name: str
     password: str
@@ -582,7 +590,8 @@ class UserCreateRequest(_message.Message):
         email_confirm: _Optional[str] = ...,
         password: _Optional[str] = ...,
         password_confirm: _Optional[str] = ...,
-        group_ids: _Optional[_Iterable[str]] = ...,
+        group_ids: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
+        is_superuser: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         language: _Optional[_Union[_base_pb2.Object, _Mapping]] = ...,
         timezone: _Optional[_Union[_base_pb2.Object, _Mapping]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
