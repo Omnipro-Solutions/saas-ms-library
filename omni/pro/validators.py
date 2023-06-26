@@ -3,7 +3,7 @@ import typing
 
 from bson.errors import InvalidId
 from bson.objectid import ObjectId
-from marshmallow import Schema, fields, missing
+from marshmallow import Schema, fields, missing, post_load
 from marshmallow.exceptions import ValidationError
 
 
@@ -17,7 +17,12 @@ class Context(Schema):
 
 
 class BaseSchema(Context, Schema):
-    pass
+    active = fields.Boolean(default=True)
+
+    @post_load
+    def set_active_value(self, data, **kwargs):
+        data["active"] = data.get("active", True)
+        return data
 
 
 class BaseObjectSchema(Schema):

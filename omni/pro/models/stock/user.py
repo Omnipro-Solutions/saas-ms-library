@@ -1,6 +1,7 @@
+from peewee import CharField
+
 from omni.pro.models.base import BaseModel
 from omni.pro.protos.v1.stock.picking_pb2 import User as UserProto
-from peewee import CharField
 
 
 class User(BaseModel):
@@ -16,4 +17,5 @@ class User(BaseModel):
             user_doc_id=self.user_doc_id,
             name=self.name,
             object_audit=self.get_audit_proto(),
+            active=self.active,
         )
