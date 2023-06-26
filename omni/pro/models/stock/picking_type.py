@@ -1,9 +1,10 @@
+from peewee import BooleanField, CharField, ForeignKeyField, IntegerField
+
 from omni.pro.models.base import BaseModel
 from omni.pro.models.stock.location import Location
 from omni.pro.models.stock.uom import Uom as Uom
 from omni.pro.models.stock.warehouse import Warehouse
 from omni.pro.protos.v1.stock.stock_pb2 import PickingType as PickingTypeProto
-from peewee import BooleanField, CharField, ForeignKeyField, IntegerField
 
 
 class PickingType(BaseModel):
@@ -42,4 +43,5 @@ class PickingType(BaseModel):
             number_increment=self.number_increment,
             number_next_actual=self.number_next_actual,
             object_audit=self.get_audit_proto(),
+            active=self.active,
         )

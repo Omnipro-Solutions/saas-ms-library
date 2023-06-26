@@ -1,6 +1,7 @@
+from peewee import CharField
+
 from omni.pro.models.base import BaseModel
 from omni.pro.protos.v1.stock.picking_pb2 import Attachment as AttachmentProto
-from peewee import CharField
 
 
 class Attachment(BaseModel):
@@ -18,4 +19,5 @@ class Attachment(BaseModel):
             name=self.name,
             type=self.type,
             object_audit=self.get_audit_proto(),
+            active=self.active,
         )
