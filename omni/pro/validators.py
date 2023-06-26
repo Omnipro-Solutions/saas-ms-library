@@ -17,12 +17,7 @@ class Context(Schema):
 
 
 class BaseSchema(Context, Schema):
-    active = fields.Boolean(default=True)
-
-    @post_load
-    def set_active_value(self, data, **kwargs):
-        data["active"] = data.get("active", True)
-        return data
+    active = fields.Boolean()
 
 
 class BaseObjectSchema(Schema):
