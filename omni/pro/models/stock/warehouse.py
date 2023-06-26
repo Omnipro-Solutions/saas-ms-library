@@ -1,6 +1,7 @@
+from peewee import CharField
+
 from omni.pro.models.base import BaseModel
 from omni.pro.protos.v1.stock.stock_pb2 import Warehouse as WarehouseProto
-from peewee import CharField
 
 
 class Warehouse(BaseModel):
@@ -22,5 +23,6 @@ class Warehouse(BaseModel):
             territory_matrix=self.territory_matrix,
             address=self.address,
             complement=self.complement,
+            active=self.active,
         )
         return warehouse_proto
