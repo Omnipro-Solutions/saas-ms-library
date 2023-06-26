@@ -304,14 +304,14 @@ class ActionUpdateResponse(_message.Message):
     ) -> None: ...
 
 class Group(_message.Message):
-    __slots__ = ["accesses", "active", "code", "id", "name", "object_audit"]
-    ACCESSES_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["access_ids", "active", "code", "id", "name", "object_audit"]
+    ACCESS_IDS_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
-    accesses: _containers.RepeatedCompositeFieldContainer[Access]
+    access_ids: _struct_pb2.ListValue
     active: bool
     code: str
     id: str
@@ -322,7 +322,7 @@ class Group(_message.Message):
         id: _Optional[str] = ...,
         name: _Optional[str] = ...,
         code: _Optional[str] = ...,
-        accesses: _Optional[_Iterable[_Union[Access, _Mapping]]] = ...,
+        access_ids: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
         active: bool = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
@@ -333,7 +333,7 @@ class GroupCreateRequest(_message.Message):
     CODE_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
-    access_ids: _containers.RepeatedScalarFieldContainer[str]
+    access_ids: _struct_pb2.ListValue
     code: str
     context: _base_pb2.Context
     name: str
@@ -341,7 +341,7 @@ class GroupCreateRequest(_message.Message):
         self,
         name: _Optional[str] = ...,
         code: _Optional[str] = ...,
-        access_ids: _Optional[_Iterable[str]] = ...,
+        access_ids: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
