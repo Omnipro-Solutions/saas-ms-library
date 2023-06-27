@@ -6,7 +6,9 @@ from typing import Union as _Union
 
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
+from google.protobuf import struct_pb2 as _struct_pb2
 from google.protobuf.internal import containers as _containers
+
 from omni.pro.protos.common import base_pb2 as _base_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
@@ -1223,29 +1225,42 @@ class UomUpdateResponse(_message.Message):
     ) -> None: ...
 
 class Warehouse(_message.Message):
-    __slots__ = ["active", "address", "code", "complement", "id", "name", "object_audit", "territory_matrix"]
+    __slots__ = [
+        "active",
+        "address",
+        "code",
+        "complement",
+        "country_id",
+        "id",
+        "name",
+        "object_audit",
+        "territory_matrix_value",
+    ]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     ADDRESS_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
     COMPLEMENT_FIELD_NUMBER: _ClassVar[int]
+    COUNTRY_ID_FIELD_NUMBER: _ClassVar[int]
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
-    TERRITORY_MATRIX_FIELD_NUMBER: _ClassVar[int]
+    TERRITORY_MATRIX_VALUE_FIELD_NUMBER: _ClassVar[int]
     active: bool
     address: str
     code: str
     complement: str
+    country_id: int
     id: int
     name: str
     object_audit: _base_pb2.ObjectAudit
-    territory_matrix: str
+    territory_matrix_value: _struct_pb2.Struct
     def __init__(
         self,
         id: _Optional[int] = ...,
         name: _Optional[str] = ...,
         code: _Optional[str] = ...,
-        territory_matrix: _Optional[str] = ...,
+        country_id: _Optional[int] = ...,
+        territory_matrix_value: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         address: _Optional[str] = ...,
         complement: _Optional[str] = ...,
         active: bool = ...,
@@ -1253,26 +1268,29 @@ class Warehouse(_message.Message):
     ) -> None: ...
 
 class WarehouseCreateRequest(_message.Message):
-    __slots__ = ["active", "address", "code", "complement", "context", "name", "territory_matrix"]
+    __slots__ = ["active", "address", "code", "complement", "context", "country_id", "name", "territory_matrix_value"]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     ADDRESS_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
     COMPLEMENT_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    COUNTRY_ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
-    TERRITORY_MATRIX_FIELD_NUMBER: _ClassVar[int]
+    TERRITORY_MATRIX_VALUE_FIELD_NUMBER: _ClassVar[int]
     active: bool
     address: str
     code: str
     complement: str
     context: _base_pb2.Context
+    country_id: int
     name: str
-    territory_matrix: str
+    territory_matrix_value: _struct_pb2.Struct
     def __init__(
         self,
         name: _Optional[str] = ...,
         code: _Optional[str] = ...,
-        territory_matrix: _Optional[str] = ...,
+        country_id: _Optional[int] = ...,
+        territory_matrix_value: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         address: _Optional[str] = ...,
         complement: _Optional[str] = ...,
         active: bool = ...,
