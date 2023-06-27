@@ -87,7 +87,7 @@ class BaseDocument(Document):
         self.audit.updated_at = datetime.utcnow()
         return super().save(*args, **kwargs)
 
-    def to_proto(self):
+    def to_proto(self, *args, **kwargs):
         raise NotImplementedError
 
 

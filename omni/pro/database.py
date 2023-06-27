@@ -6,11 +6,10 @@ import time
 import mongoengine as mongo
 import redis
 from bson import ObjectId
-from peewee import Expression, Model, ModelSelect, PostgresqlDatabase
-
 from omni.pro.logger import configure_logger
 from omni.pro.protos.common import base_pb2
 from omni.pro.util import nested
+from peewee import Expression, Model, ModelSelect, PostgresqlDatabase
 
 logger = configure_logger(name=__name__)
 
@@ -19,7 +18,7 @@ def measure_time(function):
     def measured_function(*args, **kwargs):
         start = time.time()
         c = function(*args, **kwargs)
-        logger.info(f"Func: {str(function.__qualname__)} - Time: {time.time() - start}")
+        # logger.info(f"Func: {str(function.__qualname__)} - Time: {time.time() - start}")
         return c
 
     return measured_function
@@ -339,7 +338,7 @@ class RedisManager(object):
 
     def get_resource_config(self, service_id: str, tenant_code: str) -> dict:
         config = self.get_json(tenant_code)
-        logger.info(f"Redis config", extra={"deb_config": config})
+        # logger.info(f"Redis config", extra={"deb_config": config})
         return {
             **nested(config, f"resources.{service_id}", {}),
             **nested(config, "aws", {}),
