@@ -18,7 +18,7 @@ class BaseEmbeddedDocument(EmbeddedDocument):
         "strict": False,
     }
 
-    def to_proto(self):
+    def to_proto(self, *args, **kwargs):
         raise NotImplementedError
 
 
@@ -190,5 +190,5 @@ class BaseModel(Model):
         self.updated_at = datetime.now()
         return super().save(*args, **kwargs)
 
-    def to_proto(self):
+    def to_proto(self, *args, **kwargs):
         raise NotImplementedError
