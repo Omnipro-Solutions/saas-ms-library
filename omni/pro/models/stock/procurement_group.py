@@ -13,6 +13,7 @@ class ProcurementGroup(BaseModel):
 
     def to_proto(self):
         return ProcurementGroupProto(
+            id=self.id,
             name=self.name,
             move_type=self.move_type,
             object_audit=self.get_audit_proto(),
