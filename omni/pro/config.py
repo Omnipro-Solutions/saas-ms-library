@@ -16,3 +16,5 @@ class Config(object):
     REGION_NAME = os.environ.get("REGION_NAME") or "us-east-1"
     NAMESPACE_NAME = os.environ.get("NAMESPACE_NAME")
     SERVICE_NAME = os.environ.get("SERVICE_NAME")
+    USER_MS_PORT = os.environ.get("USER_MS_PORT") or 50052
+    USER_MS_HOST = os.environ.get("USER_MS_HOST") or "localhost"
