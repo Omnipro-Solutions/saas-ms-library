@@ -9,13 +9,15 @@ from google.protobuf import message as _message
 from google.protobuf import struct_pb2 as _struct_pb2
 from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
+
 from omni.pro.protos.common import base_pb2 as _base_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Access(_message.Message):
-    __slots__ = ["action", "active", "code", "domain", "id", "name", "object_audit"]
+    __slots__ = ["action", "action_id", "active", "code", "domain", "id", "name", "object_audit"]
     ACTION_FIELD_NUMBER: _ClassVar[int]
+    ACTION_ID_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
     DOMAIN_FIELD_NUMBER: _ClassVar[int]
@@ -23,6 +25,7 @@ class Access(_message.Message):
     NAME_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     action: Action
+    action_id: str
     active: bool
     code: str
     domain: str
@@ -35,6 +38,7 @@ class Access(_message.Message):
         name: _Optional[str] = ...,
         code: _Optional[str] = ...,
         domain: _Optional[str] = ...,
+        action_id: _Optional[str] = ...,
         action: _Optional[_Union[Action, _Mapping]] = ...,
         active: bool = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,

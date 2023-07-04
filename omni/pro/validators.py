@@ -16,7 +16,7 @@ class Context(Schema):
     context = fields.Nested(ContextSchema, required=True)
 
 
-class BaseSchema(Context, Schema):
+class BaseSchema(Context):
     active = fields.Boolean()
 
 
