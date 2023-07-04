@@ -1,5 +1,7 @@
-from omni.pro.models.base import BaseModel
 from peewee import CharField
+
+from omni.pro.models.base import BaseModel
+from omni.pro.protos.v1.stock.stock_pb2 import Uom as UomProto
 
 
 class Uom(BaseModel):
@@ -10,10 +12,12 @@ class Uom(BaseModel):
     class Meta:
         table_name = "uom"
 
-    def to_proto(self, proto_model):
-        uom_proto = super().to_proto(proto_model)
-        uom_proto.id = self.id
-        uom_proto.uom_doc_id = self.uom_doc_id
-        uom_proto.code = self.code
-        uom_proto.name = self.name
-        return uom_proto
+    def to_proto(self) -> UomProto:
+        return UomProto(
+            id=self.id,
+            uom_doc_id=self.uom_doc_id,
+            code=self.code,
+            name=self.name,
+            active=self.active,
+            object_audit=self.get_audit_proto(),
+        )
