@@ -2,14 +2,15 @@ from datetime import datetime
 
 from google.protobuf.timestamp_pb2 import Timestamp
 from mongoengine import BooleanField, DateTimeField, Document, EmbeddedDocument, EmbeddedDocumentField, StringField
-from omni.pro.protos.common.base_pb2 import Context as ContextProto
-from omni.pro.protos.common.base_pb2 import Object as ObjectProto
-from omni.pro.protos.common.base_pb2 import ObjectAudit as AuditProto
 from peewee import BooleanField as BooleanFieldPeewee
 from peewee import CharField as CharFieldPeewee
 from peewee import DateTimeField as DateTimeFieldPeewee
 from peewee import IntegerField as IntegerFieldPeewee
 from peewee import Model
+
+from omni.pro.protos.common.base_pb2 import Context as ContextProto
+from omni.pro.protos.common.base_pb2 import Object as ObjectProto
+from omni.pro.protos.common.base_pb2 import ObjectAudit as AuditProto
 
 
 class BaseEmbeddedDocument(EmbeddedDocument):
@@ -181,6 +182,7 @@ class BaseModel(Model):
             user=self.context["user"],
         )
 
+    # TODO add a method to update the audit fields in update and delete
     def save(self, *args, **kwargs):
         if self.created_by is None:
             self.created_by = self.context["user"]
@@ -191,4 +193,7 @@ class BaseModel(Model):
         return super().save(*args, **kwargs)
 
     def to_proto(self, *args, **kwargs):
+        raise NotImplementedError
+
+    def get_document_info(self, *args, **kwargs):
         raise NotImplementedError
