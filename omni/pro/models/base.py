@@ -181,6 +181,7 @@ class BaseModel(Model):
             user=self.context["user"],
         )
 
+    # TODO add a method to update the audit fields in update and delete
     def save(self, *args, **kwargs):
         if self.created_by is None:
             self.created_by = self.context["user"]
@@ -191,4 +192,7 @@ class BaseModel(Model):
         return super().save(*args, **kwargs)
 
     def to_proto(self, *args, **kwargs):
+        raise NotImplementedError
+
+    def get_document_info(self, *args, **kwargs):
         raise NotImplementedError

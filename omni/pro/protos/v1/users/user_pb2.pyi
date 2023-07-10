@@ -14,8 +14,9 @@ from omni.pro.protos.common import base_pb2 as _base_pb2
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Access(_message.Message):
-    __slots__ = ["action", "active", "code", "domain", "id", "name", "object_audit"]
+    __slots__ = ["action", "action_id", "active", "code", "domain", "id", "name", "object_audit"]
     ACTION_FIELD_NUMBER: _ClassVar[int]
+    ACTION_ID_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
     DOMAIN_FIELD_NUMBER: _ClassVar[int]
@@ -23,7 +24,8 @@ class Access(_message.Message):
     NAME_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     action: Action
-    active: bool
+    action_id: str
+    active: _wrappers_pb2.BoolValue
     code: str
     domain: str
     id: str
@@ -35,8 +37,9 @@ class Access(_message.Message):
         name: _Optional[str] = ...,
         code: _Optional[str] = ...,
         domain: _Optional[str] = ...,
+        action_id: _Optional[str] = ...,
         action: _Optional[_Union[Action, _Mapping]] = ...,
-        active: bool = ...,
+        active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
@@ -165,7 +168,7 @@ class Action(_message.Message):
     MODEL_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
-    active: bool
+    active: _wrappers_pb2.BoolValue
     code: str
     description: str
     id: str
@@ -181,7 +184,7 @@ class Action(_message.Message):
         description: _Optional[str] = ...,
         microservice: _Optional[str] = ...,
         model: _Optional[str] = ...,
-        active: bool = ...,
+        active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
@@ -304,15 +307,15 @@ class ActionUpdateResponse(_message.Message):
     ) -> None: ...
 
 class Group(_message.Message):
-    __slots__ = ["access_ids", "active", "code", "id", "name", "object_audit"]
-    ACCESS_IDS_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["access", "active", "code", "id", "name", "object_audit"]
+    ACCESS_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
-    access_ids: _struct_pb2.ListValue
-    active: bool
+    access: _struct_pb2.ListValue
+    active: _wrappers_pb2.BoolValue
     code: str
     id: str
     name: str
@@ -322,8 +325,8 @@ class Group(_message.Message):
         id: _Optional[str] = ...,
         name: _Optional[str] = ...,
         code: _Optional[str] = ...,
-        access_ids: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
-        active: bool = ...,
+        access: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
+        active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
@@ -443,7 +446,7 @@ class User(_message.Message):
     __slots__ = [
         "active",
         "email",
-        "group_ids",
+        "groups",
         "id",
         "is_superuser",
         "language",
@@ -457,7 +460,7 @@ class User(_message.Message):
     ]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     EMAIL_FIELD_NUMBER: _ClassVar[int]
-    GROUP_IDS_FIELD_NUMBER: _ClassVar[int]
+    GROUPS_FIELD_NUMBER: _ClassVar[int]
     ID_FIELD_NUMBER: _ClassVar[int]
     IS_SUPERUSER_FIELD_NUMBER: _ClassVar[int]
     LANGUAGE_FIELD_NUMBER: _ClassVar[int]
@@ -470,7 +473,7 @@ class User(_message.Message):
     USERNAME_FIELD_NUMBER: _ClassVar[int]
     active: _wrappers_pb2.BoolValue
     email: str
-    group_ids: _struct_pb2.ListValue
+    groups: _struct_pb2.ListValue
     id: str
     is_superuser: _wrappers_pb2.BoolValue
     language: _base_pb2.Object
@@ -491,7 +494,7 @@ class User(_message.Message):
         email: _Optional[str] = ...,
         language: _Optional[_Union[_base_pb2.Object, _Mapping]] = ...,
         timezone: _Optional[_Union[_base_pb2.Object, _Mapping]] = ...,
-        group_ids: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
+        groups: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
         is_superuser: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         mfa: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
@@ -551,7 +554,7 @@ class UserCreateRequest(_message.Message):
         "context",
         "email",
         "email_confirm",
-        "group_ids",
+        "groups_ids",
         "is_superuser",
         "language",
         "name",
@@ -563,7 +566,7 @@ class UserCreateRequest(_message.Message):
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     EMAIL_CONFIRM_FIELD_NUMBER: _ClassVar[int]
     EMAIL_FIELD_NUMBER: _ClassVar[int]
-    GROUP_IDS_FIELD_NUMBER: _ClassVar[int]
+    GROUPS_IDS_FIELD_NUMBER: _ClassVar[int]
     IS_SUPERUSER_FIELD_NUMBER: _ClassVar[int]
     LANGUAGE_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
@@ -574,7 +577,7 @@ class UserCreateRequest(_message.Message):
     context: _base_pb2.Context
     email: str
     email_confirm: str
-    group_ids: _struct_pb2.ListValue
+    groups_ids: _struct_pb2.ListValue
     is_superuser: _wrappers_pb2.BoolValue
     language: _base_pb2.Object
     name: str
@@ -590,7 +593,7 @@ class UserCreateRequest(_message.Message):
         email_confirm: _Optional[str] = ...,
         password: _Optional[str] = ...,
         password_confirm: _Optional[str] = ...,
-        group_ids: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
+        groups_ids: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
         is_superuser: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         language: _Optional[_Union[_base_pb2.Object, _Mapping]] = ...,
         timezone: _Optional[_Union[_base_pb2.Object, _Mapping]] = ...,

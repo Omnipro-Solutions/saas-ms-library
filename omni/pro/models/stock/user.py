@@ -1,11 +1,14 @@
+import grpc
 from peewee import CharField
 
+from omni.pro.config import Config
 from omni.pro.models.base import BaseModel
 from omni.pro.protos.v1.stock.picking_pb2 import User as UserProto
+from omni.pro.protos.v1.users import user_pb2, user_pb2_grpc
 
 
 class User(BaseModel):
-    user_doc_id = CharField()
+    user_doc_id = CharField(unique=True)
     name = CharField()
 
     class Meta:
@@ -19,3 +22,9 @@ class User(BaseModel):
             object_audit=self.get_audit_proto(),
             active=self.active,
         )
+
+    def get_document_info(self, *args, **kwargs):
+        with grpc.insecure_channel(f"{Config.USER_MS_HOST}:{Config.USER_MS_PORT}") as channel:
+            stub = user_pb2_grpc.UsersServiceStub(channel)
+            response = stub.UserRead(user_pb2.UserReadRequest(id=self.user_doc_id, **kwargs))
+            return response.users[0] if response.users else None

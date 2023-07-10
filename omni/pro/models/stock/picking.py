@@ -1,4 +1,6 @@
 from google.protobuf.timestamp_pb2 import Timestamp
+from peewee import CharField, DateTimeField, DecimalField, ForeignKeyField
+
 from omni.pro.models.base import BaseModel
 from omni.pro.models.stock.attachment import Attachment
 from omni.pro.models.stock.carrier import Carrier
@@ -7,7 +9,6 @@ from omni.pro.models.stock.picking_type import PickingType
 from omni.pro.models.stock.procurement_group import ProcurementGroup
 from omni.pro.models.stock.user import User
 from omni.pro.protos.v1.stock.picking_pb2 import Picking as PickingProto
-from peewee import CharField, DateTimeField, DecimalField, ForeignKeyField
 
 
 class Picking(BaseModel):
@@ -21,6 +22,7 @@ class Picking(BaseModel):
     origin = CharField()
     date_done = DateTimeField(null=True, default=None)
     scheduled_date = DateTimeField()
+    date_start_preparation = DateTimeField()
     time_total_preparation = DecimalField()
     time_assigned = DecimalField()
     carrier_id = ForeignKeyField(Carrier, on_delete="RESTRICT")
@@ -39,12 +41,16 @@ class Picking(BaseModel):
             date_done = Timestamp()
             date_done.FromDatetime(self.date_done)
             self.date_done = date_done
+        if self.date_start_preparation:
+            self.date_start_preparation = Timestamp().FromDatetime(self.date_start_preparation)
         scheduled_date = Timestamp()
         scheduled_date.FromDatetime(self.scheduled_date)
         date_delivery = Timestamp()
         date_delivery.FromDatetime(self.date_delivery)
 
         return PickingProto(
+            object_audit=self.get_audit_proto(),
+            id=self.id,
             name=self.name,
             picking_type_id=self.picking_type_id.id,
             location_id=self.location_id.id,
@@ -55,6 +61,7 @@ class Picking(BaseModel):
             origin=self.origin,
             date_done=self.date_done,
             scheduled_date=scheduled_date,
+            date_start_preparation=self.date_start_preparation,
             time_total_preparation=self.time_total_preparation,
             time_assigned=self.time_assigned,
             carrier_id=self.carrier_id.id,
@@ -64,5 +71,4 @@ class Picking(BaseModel):
             weight=self.weight,
             shipping_weight=self.shipping_weight,
             active=self.active,
-            object_audit=self.get_audit_proto(),
         )
