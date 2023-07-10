@@ -7,8 +7,8 @@ class Config(object):
 
     GRPC_PORT = os.environ.get("GRPC_PORT") or 50051
     GRPC_MAX_WORKERS = int(os.environ.get("GRPC_MAX_WORKERS") or 10)
-    SERVICE_ID = os.environ["SERVICE_ID"]
-    REDIS_HOST = os.environ["REDIS_HOST"]
+    SERVICE_ID = os.environ.get("SERVICE_ID")
+    REDIS_HOST = os.environ.get("REDIS_HOST") or "localhost"
     REDIS_PORT = int(os.environ.get("REDIS_PORT") or 6379)
     REDIS_DB = int(os.environ.get("REDIS_DB") or 0)
     AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
@@ -18,3 +18,5 @@ class Config(object):
     SERVICE_NAME = os.environ.get("SERVICE_NAME")
     USER_MS_PORT = os.environ.get("USER_MS_PORT") or 50052
     USER_MS_HOST = os.environ.get("USER_MS_HOST") or "localhost"
+    SERVICE_NAME_BALANCER = os.environ.get("SERVICE_NAME_BALANCER")
+    SAAS_MS_USER = os.environ.get("SAAS_MS_USER")

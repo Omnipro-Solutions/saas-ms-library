@@ -2,15 +2,14 @@ from datetime import datetime
 
 from google.protobuf.timestamp_pb2 import Timestamp
 from mongoengine import BooleanField, DateTimeField, Document, EmbeddedDocument, EmbeddedDocumentField, StringField
+from omni.pro.protos.common.base_pb2 import Context as ContextProto
+from omni.pro.protos.common.base_pb2 import Object as ObjectProto
+from omni.pro.protos.common.base_pb2 import ObjectAudit as AuditProto
 from peewee import BooleanField as BooleanFieldPeewee
 from peewee import CharField as CharFieldPeewee
 from peewee import DateTimeField as DateTimeFieldPeewee
 from peewee import IntegerField as IntegerFieldPeewee
 from peewee import Model
-
-from omni.pro.protos.common.base_pb2 import Context as ContextProto
-from omni.pro.protos.common.base_pb2 import Object as ObjectProto
-from omni.pro.protos.common.base_pb2 import ObjectAudit as AuditProto
 
 
 class BaseEmbeddedDocument(EmbeddedDocument):

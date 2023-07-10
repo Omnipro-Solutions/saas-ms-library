@@ -1,3 +1,4 @@
+from omni.pro import redis
 from omni.pro.aws import AWSCloudMap, AWSCognitoClient
 from omni.pro.config import Config
 from omni.pro.database import DatabaseManager, PostgresDatabaseManager, RedisManager
@@ -11,20 +12,7 @@ def resources_decorator(resource_list: list) -> callable:
     def decorador_func(funcion: callable) -> callable:
         def inner(instance, request, context):
             try:
-                cm_params = {
-                    "aws_access_key_id": Config.AWS_ACCESS_KEY_ID,
-                    "aws_secret_access_key": Config.AWS_SECRET_ACCESS_KEY,
-                    "region_name": Config.REGION_NAME,
-                    "service_name": Config.SERVICE_NAME,
-                    "namespace_name": Config.NAMESPACE_NAME,
-                }
-                # logger.info(f"Cloud Map: {cm_params}")
-                cloud_map = AWSCloudMap(**cm_params)
-
-                redis_params = cloud_map.get_redis_config()
-                # logger.info(f"Redis params: {redis_params}")
-
-                redis_manager = RedisManager(**redis_params)
+                redis_manager = redis.get_redis_manager()
                 if Resource.AWS_COGNITO in resource_list:
                     cognito_params = redis_manager.get_aws_cognito_config(Config.SERVICE_ID, request.context.tenant)
                     # logger.info(f"Cognito params: {cognito_params}")
