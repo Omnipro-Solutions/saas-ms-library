@@ -80,6 +80,14 @@ def paginate_list(objects_list, page_num, per_page, filters=None):
     return paginated_list, total_pages
 
 
+def parse_bool(value):
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, str):
+        return value.lower() in ("yes", "true", "t", "1", "y")
+    return bool(value)
+
+
 class HTTPStatus(object):
     OK = 200
     CREATED = 201

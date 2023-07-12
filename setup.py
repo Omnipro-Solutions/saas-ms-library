@@ -8,7 +8,7 @@ HERE = Path(__file__).parent
 # The text of the README file
 README = (HERE / "README.md").read_text()
 DESCRIPTION = "Python library designed to be a utility for OMS microservices"
-VERSION = "0.1.5"
+VERSION = "0.1.6"
 PACKAGE_NAME = "omni-pro"
 AUTHOR = "OMNI.PRO"
 AUTHOR_EMAIL = "development@omni.pro"
@@ -35,7 +35,7 @@ setup(
     author_email=AUTHOR_EMAIL,
     license="MIT",
     packages=find_packages(exclude=("tests",)),
-    package_data={"": ["*.pyi"]},
+    package_data={"": ["*.pyi", "data/*.csv"]},
     include_package_data=True,
     install_requires=INSTALL_REQUIRES,
     classifiers=[

@@ -1,0 +1,2 @@
+name;username;email;password;is_superuser
+admin;admin;admin@omni.pro;Admin2023*;True
