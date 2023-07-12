@@ -1,6 +1,5 @@
 import csv
 import importlib
-import os
 from pathlib import Path
 
 import grpc
@@ -153,7 +152,12 @@ class UserStub(object):
                 break
 
     def create_users(self, context: dict, list_value: list) -> user_pb2.UserCreateResponse:
-        with grpc.insecure_channel(f"{self.host}:{self.port}") as channel:
+        credentials = grpc.ssl_channel_credentials()
+        with grpc.secure_channel(
+            f"{self.host}:{self.port}",
+            credentials,
+            options=[("grpc.ssl_target_name_override", "omni.pro")],
+        ) as channel:
             stub = user_pb2_grpc.UsersServiceStub(channel)
             response = user_pb2.UserCreateResponse()
             for value in list_value:
