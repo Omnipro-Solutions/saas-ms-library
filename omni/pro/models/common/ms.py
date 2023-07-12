@@ -5,7 +5,8 @@ from omni.pro.models.base import BaseDocument
 class MicroService(BaseDocument):
     name = fields.StringField()
     code = fields.StringField()
-    sumary = fields.StringField()
+    tenant_code = fields.StringField()
+    summary = fields.StringField()
     description = fields.StringField()
     author = fields.StringField()
     category = fields.StringField()
