@@ -1,9 +1,10 @@
 import json
 import typing
+from collections import Counter
 
 from bson.errors import InvalidId
 from bson.objectid import ObjectId
-from marshmallow import Schema, fields, missing
+from marshmallow import Schema, ValidationError, fields, missing, validates_schema
 from marshmallow.exceptions import ValidationError
 
 
@@ -105,3 +106,46 @@ class ObjectIdField(fields.Field):
             raise self.make_error("invalid_utf8") from error
         except (ValueError, AttributeError, TypeError) as error:
             raise ValidationError("ObjectIds must be a 12-byte input or a 24-character hex string") from error
+
+
+class MicroServiceValidator(Context, Schema):
+    name = fields.String(required=True)
+    code = fields.String(required=True)
+    tenant_code = fields.String(required=True)
+    description = fields.String(required=True)
+    version = fields.String(required=True)
+    author = fields.String(required=True)
+    summary = fields.String(required=True)
+    category = fields.String(required=True)
+    depends = fields.List(fields.String())
+    data = fields.List(fields.String())
+
+    def __init__(self, base_app, micro_data, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.base_app = base_app
+        self.micro_data = micro_data
+
+    @validates_schema
+    def validate_data(self, data, *args, **kwargs):
+        if elt := self._duplicate_elements(data.get("data", [])):
+            raise ValidationError(f"Duplicate elements in data {elt}")
+        list_path = []
+        for path in data.get("data", []):
+            file = self.base_app / path
+            if not file.exists():
+                list_path.append(path)
+        if list_path:
+            raise ValidationError(f"File not found {list_path}")
+
+    def _duplicate_elements(self, data):
+        return [item for item, count in Counter(data).items() if count > 1]
+
+    def load(self, data, *args, **kwargs):
+        data = super().load(data, *args, **kwargs)
+        list_dict = []
+        for path in data.get("data", []):
+            md = next((x for x in self.micro_data if x.get("path") == path), None)
+            if not md:
+                list_dict.append({"path": path, "load": False})
+        data["data"] = self.micro_data + list_dict
+        return data
