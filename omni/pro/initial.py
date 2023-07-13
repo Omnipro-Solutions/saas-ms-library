@@ -94,7 +94,7 @@ class LoadData(object):
 
     def load_data_dict(self, name_file):
         try:
-            with open(name_file, mode="r", encoding="utf-8") as csv_file:
+            with open(name_file, mode="r", encoding="utf-8-sig") as csv_file:
                 reader = csv.DictReader(csv_file, delimiter=";")
                 for row in reader:
                     yield row
