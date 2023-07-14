@@ -116,9 +116,7 @@ class LoadData(object):
             if not ruta_modulo.exists():
                 logger.error(f"File not found {ruta_modulo}")
                 continue
-            spec = importlib.util.spec_from_file_location(model_str, ruta_modulo)
-            modulo = importlib.util.module_from_spec(spec)
-            spec.loader.exec_module(modulo)
+            modulo = util.load_file_module(ruta_modulo, model_str)
             if not hasattr(modulo, model_str):
                 logger.error(f"Class not found {model_str} in {ruta_modulo}")
                 continue
