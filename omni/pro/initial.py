@@ -4,14 +4,13 @@ from pathlib import Path
 
 import grpc
 from google.protobuf import wrappers_pb2
-from omni.pro import redis
+from omni.pro import redis, util
 from omni.pro.cloudmap import CloudMap
 from omni.pro.config import Config
 from omni.pro.database import DatabaseManager
 from omni.pro.logger import LoggerTraceback, configure_logger
 from omni.pro.models.common.ms import MicroService
 from omni.pro.protos.v1.users import user_pb2, user_pb2_grpc
-from omni.pro.util import parse_bool
 from omni.pro.validators import MicroServiceValidator
 
 logger = configure_logger(name=__name__)
@@ -112,14 +111,12 @@ class LoadData(object):
             name_file = self.base_app / file.get("path")
             reader = self.load_data_dict(name_file)
             models, file_py, model_str = file.get("path").split("/")[1].split(".")[:-1]
-            model_str = self.to_camel_case(model_str)
+            model_str = util.to_camel_case(model_str)
             ruta_modulo = self.base_app / models / f"{file_py}.py"
             if not ruta_modulo.exists():
                 logger.error(f"File not found {ruta_modulo}")
                 continue
-            spec = importlib.util.spec_from_file_location(model_str, ruta_modulo)
-            modulo = importlib.util.module_from_spec(spec)
-            spec.loader.exec_module(modulo)
+            modulo = util.load_file_module(ruta_modulo, model_str)
             if not hasattr(modulo, model_str):
                 logger.error(f"Class not found {model_str} in {ruta_modulo}")
                 continue
@@ -133,10 +130,6 @@ class LoadData(object):
             self.db_manager.update(micro, **attr_data)
             if load:
                 logger.info(f"Load data {micro.code} - {tenant} - {file.get('path')}")
-
-    def to_camel_case(self, text: str):
-        # Divide el texto por guiones bajos y une cada palabra con la primera letra en mayúsculas
-        return "".join(word.capitalize() for word in text.split("_"))
 
 
 class UserStub(object):
@@ -181,7 +174,7 @@ class UserStub(object):
                 "password_confirm": value.get("password"),
                 "timezone": {"code": "01", "code_name": "CO"},
                 "username": value.get("username"),
-                "is_superuser": wrappers_pb2.BoolValue(value=parse_bool(value.get("is_superuser") or False)),
+                "is_superuser": wrappers_pb2.BoolValue(value=util.parse_bool(value.get("is_superuser") or False)),
             }
         )
         return stub.UserCreate(user)

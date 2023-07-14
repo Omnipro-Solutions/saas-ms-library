@@ -69,6 +69,25 @@ def deep_search(lst, key=None, value=None, default=None):
     return default
 
 
+def load_file_module(file_path: str, class_name: str):
+    """
+    Loads a module from a file.
+
+    Args:
+        file_path (str): The path to the file.
+        class_name (str): The name of the class.
+
+    Returns:
+        The module loaded.
+    """
+    import importlib.util
+
+    spec = importlib.util.spec_from_file_location(class_name, file_path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
 def paginate_list(objects_list, page_num, per_page, filters=None):
     filtered_list = objects_list
     if filters:
@@ -86,6 +105,11 @@ def parse_bool(value):
     if isinstance(value, str):
         return value.lower() in ("yes", "true", "t", "1", "y")
     return bool(value)
+
+
+def to_camel_case(text: str):
+    # Divide el texto por guiones bajos y une cada palabra con la primera letra en mayúsculas
+    return "".join(word.capitalize() for word in text.split("_"))
 
 
 class HTTPStatus(object):
