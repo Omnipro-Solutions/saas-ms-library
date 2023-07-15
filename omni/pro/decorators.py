@@ -20,8 +20,7 @@ def resources_decorator(resource_list: list) -> callable:
                 if Resource.MONGODB in resource_list:
                     # logger.info(f"Tenant: {request.context.tenant}, Service ID: {Config.SERVICE_ID}")
                     db_params = redis_manager.get_mongodb_config(Config.SERVICE_ID, request.context.tenant)
-                    # FIXME: remove db_name param from all services, it's not necessary
-                    context.db_name = db_params.get("name")
+                    context.db_name = f"{request.context.tenant}_{db_params.get('name')}"
                     db_params["db"] = db_params.pop("name")
                     # logger.info(f"MongoDB params: {db_params}")
                     context.db_manager = DatabaseManager(**db_params)
