@@ -12,3 +12,11 @@ class CloudMap(AWSCloudMap):
             "namespace_name": Config.NAMESPACE_NAME,
         }
         super().__init__(**cm_params, **kwargs)
+
+    def get_url_channel(self, service_id):
+        response = self.discover_instances()
+        for instance in response:
+            if instance.get("InstanceId") == service_id:
+                host = instance.get("Attributes").get("host")
+                port = instance.get("Attributes").get("port")
+                return f"{host}:{port}"
