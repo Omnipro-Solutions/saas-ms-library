@@ -58,37 +58,31 @@ class DatabaseManager(object):
         )
 
     def create_document(self, db_name: str, document_class, **kwargs) -> object:
-        # with self.get_connection() as cnn:
         document = document_class(**kwargs)
         document.save()
         return document
 
     def get_document(self, db_name: str, tenant: str, document_class, **kwargs) -> object:
-        # with self.get_connection() as cnn:
         document = document_class.objects(**kwargs, context__tenant=tenant).first()
         # document.to_proto()
         return document
 
     def update_document(self, db_name: str, document_class, id: str, **kwargs) -> object:
-        # with self.get_connection() as cnn:
         document = document_class.objects(id=id).first()
         document_class.objects(id=document.id).update_one(**kwargs)
         document.reload()
         return document
 
     def update(self, document_instance, **kwargs):
-        # with self.get_connection() as cnn:
         document_instance.update(**kwargs)
         document_instance.reload()
         return document_instance
 
     def delete(self, document_instance):
-        # with self.get_connection() as cnn:
         document_instance.delete()
         return document_instance
 
     def delete_document(self, db_name: str, document_class, id: str) -> object:
-        # with self.get_connection() as cnn:
         document = document_class.objects(id=id).first()
         document.delete()
         return document
@@ -115,8 +109,8 @@ class DatabaseManager(object):
         Returns:
         list: A list of documents matching the specified criteria.
         """
-        # with self.get_connection() as cnn:
         # Filter documents based on criteria provided
+
         if filter:
             query_set = document_class.objects(context__tenant=tenant).filter(__raw__=filter)
         else:
@@ -373,6 +367,10 @@ class RedisManager(object):
             "password": nested(config, "dbs.postgres.pass"),
             "name": nested(config, "dbs.postgres.name"),
         }
+
+    def get_tenant_codes(self, pattern="*") -> list:
+        with self.get_connection() as rc:
+            return rc.keys(pattern=pattern)
 
 
 class PolishNotationToMongoDB:
