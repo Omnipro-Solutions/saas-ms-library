@@ -28,8 +28,8 @@ class LoadData(object):
         self.redis_manager = redis.get_redis_manager()
         list_contexts = []
         with self.redis_manager.get_connection() as rc:
-            keys = rc.keys("*")
-            for tenant in keys:
+            tenant_codes = self.redis_manager.get_tenant_codes()
+            for tenant in tenant_codes:
                 user = rc.json().get(tenant, "$.user_admin")
                 context = {"tenant": tenant, "user": user}
                 if (not context.get("user")) or (context.get("user") and (not context.get("user")[0])):

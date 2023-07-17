@@ -8,6 +8,8 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
+from omni.pro.protos.v1.rules import location_pb2 as _location_pb2
+from omni.pro.protos.v1.rules import warehouse_pb2 as _warehouse_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
@@ -31,18 +33,18 @@ class WarehouseHierarchy(_message.Message):
     SEQUENCE_ORDER_FIELD_NUMBER: _ClassVar[int]
     WAREHOUSE_ID_FIELD_NUMBER: _ClassVar[int]
     active: bool
-    id: int
-    location_id: int
+    id: str
+    location_id: _location_pb2.Location
     object_audit: _base_pb2.ObjectAudit
     quantity_security: float
     sequence: int
     sequence_order: bool
-    warehouse_id: int
+    warehouse_id: _warehouse_pb2.Warehouse
     def __init__(
         self,
-        id: _Optional[int] = ...,
-        warehouse_id: _Optional[int] = ...,
-        location_id: _Optional[int] = ...,
+        id: _Optional[str] = ...,
+        warehouse_id: _Optional[_Union[_warehouse_pb2.Warehouse, _Mapping]] = ...,
+        location_id: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
         quantity_security: _Optional[float] = ...,
         sequence: _Optional[int] = ...,
         sequence_order: bool = ...,
@@ -59,15 +61,15 @@ class WarehouseHierarchyCreateRequest(_message.Message):
     SEQUENCE_ORDER_FIELD_NUMBER: _ClassVar[int]
     WAREHOUSE_ID_FIELD_NUMBER: _ClassVar[int]
     context: _base_pb2.Context
-    location_id: int
+    location_id: str
     quantity_security: float
     sequence: int
     sequence_order: bool
-    warehouse_id: int
+    warehouse_id: str
     def __init__(
         self,
-        warehouse_id: _Optional[int] = ...,
-        location_id: _Optional[int] = ...,
+        warehouse_id: _Optional[str] = ...,
+        location_id: _Optional[str] = ...,
         quantity_security: _Optional[float] = ...,
         sequence: _Optional[int] = ...,
         sequence_order: bool = ...,
@@ -91,9 +93,9 @@ class WarehouseHierarchyDeleteRequest(_message.Message):
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     ID_FIELD_NUMBER: _ClassVar[int]
     context: _base_pb2.Context
-    id: int
+    id: str
     def __init__(
-        self, id: _Optional[int] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
+        self, id: _Optional[str] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
     ) -> None: ...
 
 class WarehouseHierarchyDeleteResponse(_message.Message):
@@ -115,7 +117,7 @@ class WarehouseHierarchyReadRequest(_message.Message):
     fields: _base_pb2.Fields
     filter: _base_pb2.Filter
     group_by: _containers.RepeatedCompositeFieldContainer[_base_pb2.GroupBy]
-    id: int
+    id: str
     paginated: _base_pb2.Paginated
     sort_by: _base_pb2.SortBy
     def __init__(
@@ -125,7 +127,7 @@ class WarehouseHierarchyReadRequest(_message.Message):
         fields: _Optional[_Union[_base_pb2.Fields, _Mapping]] = ...,
         filter: _Optional[_Union[_base_pb2.Filter, _Mapping]] = ...,
         paginated: _Optional[_Union[_base_pb2.Paginated, _Mapping]] = ...,
-        id: _Optional[int] = ...,
+        id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 

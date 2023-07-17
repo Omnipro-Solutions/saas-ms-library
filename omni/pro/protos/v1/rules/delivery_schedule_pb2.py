@@ -13,34 +13,35 @@ _sym_db = _symbol_database.Default()
 
 
 from omni.pro.protos.common import base_pb2 as common_dot_base__pb2
+from omni.pro.protos.v1.rules import schedule_work_pb2 as v1_dot_rules_dot_schedule__work__pb2
 from omni.pro.protos.v1.rules import warehouse_hierarchy_pb2 as v1_dot_rules_dot_warehouse__hierarchy__pb2
 
 DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
-    b'\n v1/rules/delivery_schedule.proto\x12+pro.omni.oms.api.v1.rules.delivery_schedule\x1a\x11\x63ommon/base.proto\x1a"v1/rules/warehouse_hierarchy.proto"\xfa\x01\n\x10\x44\x65liverySchedule\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x18\n\x10schedule_work_id\x18\x03 \x01(\x05\x12\x61\n\x16transfer_warehouse_ids\x18\x04 \x03(\x0b\x32\x41.pro.omni.oms.api.v1.rules.warehouse_hierarchy.WarehouseHierarchy\x12\x0e\n\x06\x61\x63tive\x18\x05 \x01(\x08\x12?\n\x0cobject_audit\x18\x06 \x01(\x0b\x32).pro.omni.oms.api.common.base.ObjectAudit"\x7f\n\x1d\x44\x65liveryScheduleCreateRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x18\n\x10schedule_work_id\x18\x02 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x03 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xc5\x01\n\x1e\x44\x65liveryScheduleCreateResponse\x12X\n\x11\x64\x65livery_schedule\x18\x01 \x01(\x0b\x32=.pro.omni.oms.api.v1.rules.delivery_schedule.DeliverySchedule\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\xf9\x02\n\x1b\x44\x65liveryScheduleReadRequest\x12\x37\n\x08group_by\x18\x01 \x03(\x0b\x32%.pro.omni.oms.api.common.base.GroupBy\x12\x35\n\x07sort_by\x18\x02 \x01(\x0b\x32$.pro.omni.oms.api.common.base.SortBy\x12\x34\n\x06\x66ields\x18\x03 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Fields\x12\x34\n\x06\x66ilter\x18\x04 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Filter\x12:\n\tpaginated\x18\x05 \x01(\x0b\x32\'.pro.omni.oms.api.common.base.Paginated\x12\n\n\x02id\x18\x06 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x07 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xff\x01\n\x1c\x44\x65liveryScheduleReadResponse\x12Y\n\x12\x64\x65livery_schedules\x18\x01 \x03(\x0b\x32=.pro.omni.oms.api.v1.rules.delivery_schedule.DeliverySchedule\x12\x39\n\tmeta_data\x18\x02 \x01(\x0b\x32&.pro.omni.oms.api.common.base.MetaData\x12I\n\x11response_standard\x18\x03 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\xb1\x01\n\x1d\x44\x65liveryScheduleUpdateRequest\x12X\n\x11\x64\x65livery_schedule\x18\x01 \x01(\x0b\x32=.pro.omni.oms.api.v1.rules.delivery_schedule.DeliverySchedule\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xc5\x01\n\x1e\x44\x65liveryScheduleUpdateResponse\x12X\n\x11\x64\x65livery_schedule\x18\x01 \x01(\x0b\x32=.pro.omni.oms.api.v1.rules.delivery_schedule.DeliverySchedule\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"c\n\x1d\x44\x65liveryScheduleDeleteRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"k\n\x1e\x44\x65liveryScheduleDeleteResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard2\xeb\x05\n\x17\x44\x65liveryScheduleService\x12\xb3\x01\n\x16\x44\x65liveryScheduleCreate\x12J.pro.omni.oms.api.v1.rules.delivery_schedule.DeliveryScheduleCreateRequest\x1aK.pro.omni.oms.api.v1.rules.delivery_schedule.DeliveryScheduleCreateResponse"\x00\x12\xad\x01\n\x14\x44\x65liveryScheduleRead\x12H.pro.omni.oms.api.v1.rules.delivery_schedule.DeliveryScheduleReadRequest\x1aI.pro.omni.oms.api.v1.rules.delivery_schedule.DeliveryScheduleReadResponse"\x00\x12\xb3\x01\n\x16\x44\x65liveryScheduleUpdate\x12J.pro.omni.oms.api.v1.rules.delivery_schedule.DeliveryScheduleUpdateRequest\x1aK.pro.omni.oms.api.v1.rules.delivery_schedule.DeliveryScheduleUpdateResponse"\x00\x12\xb3\x01\n\x16\x44\x65liveryScheduleDelete\x12J.pro.omni.oms.api.v1.rules.delivery_schedule.DeliveryScheduleDeleteRequest\x1aK.pro.omni.oms.api.v1.rules.delivery_schedule.DeliveryScheduleDeleteResponse"\x00\x62\x06proto3'
+    b'\n v1/rules/delivery_schedule.proto\x12+pro.omni.oms.api.v1.rules.delivery_schedule\x1a\x11\x63ommon/base.proto\x1a"v1/rules/warehouse_hierarchy.proto\x1a\x1cv1/rules/schedule_work.proto"\xb1\x02\n\x10\x44\x65liverySchedule\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12O\n\x10schedule_work_id\x18\x03 \x01(\x0b\x32\x35.pro.omni.oms.api.v1.rules.schedule_work.ScheduleWork\x12\x61\n\x16transfer_warehouse_ids\x18\x04 \x03(\x0b\x32\x41.pro.omni.oms.api.v1.rules.warehouse_hierarchy.WarehouseHierarchy\x12\x0e\n\x06\x61\x63tive\x18\x05 \x01(\x08\x12?\n\x0cobject_audit\x18\x06 \x01(\x0b\x32).pro.omni.oms.api.common.base.ObjectAudit"\x9f\x01\n\x1d\x44\x65liveryScheduleCreateRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x18\n\x10schedule_work_id\x18\x02 \x01(\t\x12\x1e\n\x16transfer_warehouse_ids\x18\x03 \x03(\t\x12\x36\n\x07\x63ontext\x18\x04 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xc5\x01\n\x1e\x44\x65liveryScheduleCreateResponse\x12X\n\x11\x64\x65livery_schedule\x18\x01 \x01(\x0b\x32=.pro.omni.oms.api.v1.rules.delivery_schedule.DeliverySchedule\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\xf9\x02\n\x1b\x44\x65liveryScheduleReadRequest\x12\x37\n\x08group_by\x18\x01 \x03(\x0b\x32%.pro.omni.oms.api.common.base.GroupBy\x12\x35\n\x07sort_by\x18\x02 \x01(\x0b\x32$.pro.omni.oms.api.common.base.SortBy\x12\x34\n\x06\x66ields\x18\x03 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Fields\x12\x34\n\x06\x66ilter\x18\x04 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Filter\x12:\n\tpaginated\x18\x05 \x01(\x0b\x32\'.pro.omni.oms.api.common.base.Paginated\x12\n\n\x02id\x18\x06 \x01(\t\x12\x36\n\x07\x63ontext\x18\x07 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xff\x01\n\x1c\x44\x65liveryScheduleReadResponse\x12Y\n\x12\x64\x65livery_schedules\x18\x01 \x03(\x0b\x32=.pro.omni.oms.api.v1.rules.delivery_schedule.DeliverySchedule\x12\x39\n\tmeta_data\x18\x02 \x01(\x0b\x32&.pro.omni.oms.api.common.base.MetaData\x12I\n\x11response_standard\x18\x03 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\xb1\x01\n\x1d\x44\x65liveryScheduleUpdateRequest\x12X\n\x11\x64\x65livery_schedule\x18\x01 \x01(\x0b\x32=.pro.omni.oms.api.v1.rules.delivery_schedule.DeliverySchedule\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xc5\x01\n\x1e\x44\x65liveryScheduleUpdateResponse\x12X\n\x11\x64\x65livery_schedule\x18\x01 \x01(\x0b\x32=.pro.omni.oms.api.v1.rules.delivery_schedule.DeliverySchedule\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"c\n\x1d\x44\x65liveryScheduleDeleteRequest\x12\n\n\x02id\x18\x01 \x01(\t\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"k\n\x1e\x44\x65liveryScheduleDeleteResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard2\xeb\x05\n\x17\x44\x65liveryScheduleService\x12\xb3\x01\n\x16\x44\x65liveryScheduleCreate\x12J.pro.omni.oms.api.v1.rules.delivery_schedule.DeliveryScheduleCreateRequest\x1aK.pro.omni.oms.api.v1.rules.delivery_schedule.DeliveryScheduleCreateResponse"\x00\x12\xad\x01\n\x14\x44\x65liveryScheduleRead\x12H.pro.omni.oms.api.v1.rules.delivery_schedule.DeliveryScheduleReadRequest\x1aI.pro.omni.oms.api.v1.rules.delivery_schedule.DeliveryScheduleReadResponse"\x00\x12\xb3\x01\n\x16\x44\x65liveryScheduleUpdate\x12J.pro.omni.oms.api.v1.rules.delivery_schedule.DeliveryScheduleUpdateRequest\x1aK.pro.omni.oms.api.v1.rules.delivery_schedule.DeliveryScheduleUpdateResponse"\x00\x12\xb3\x01\n\x16\x44\x65liveryScheduleDelete\x12J.pro.omni.oms.api.v1.rules.delivery_schedule.DeliveryScheduleDeleteRequest\x1aK.pro.omni.oms.api.v1.rules.delivery_schedule.DeliveryScheduleDeleteResponse"\x00\x62\x06proto3'
 )
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, "v1.rules.delivery_schedule_pb2", globals())
 if _descriptor._USE_C_DESCRIPTORS == False:
     DESCRIPTOR._options = None
-    _DELIVERYSCHEDULE._serialized_start = 137
-    _DELIVERYSCHEDULE._serialized_end = 387
-    _DELIVERYSCHEDULECREATEREQUEST._serialized_start = 389
-    _DELIVERYSCHEDULECREATEREQUEST._serialized_end = 516
-    _DELIVERYSCHEDULECREATERESPONSE._serialized_start = 519
-    _DELIVERYSCHEDULECREATERESPONSE._serialized_end = 716
-    _DELIVERYSCHEDULEREADREQUEST._serialized_start = 719
-    _DELIVERYSCHEDULEREADREQUEST._serialized_end = 1096
-    _DELIVERYSCHEDULEREADRESPONSE._serialized_start = 1099
-    _DELIVERYSCHEDULEREADRESPONSE._serialized_end = 1354
-    _DELIVERYSCHEDULEUPDATEREQUEST._serialized_start = 1357
-    _DELIVERYSCHEDULEUPDATEREQUEST._serialized_end = 1534
-    _DELIVERYSCHEDULEUPDATERESPONSE._serialized_start = 1537
-    _DELIVERYSCHEDULEUPDATERESPONSE._serialized_end = 1734
-    _DELIVERYSCHEDULEDELETEREQUEST._serialized_start = 1736
-    _DELIVERYSCHEDULEDELETEREQUEST._serialized_end = 1835
-    _DELIVERYSCHEDULEDELETERESPONSE._serialized_start = 1837
-    _DELIVERYSCHEDULEDELETERESPONSE._serialized_end = 1944
-    _DELIVERYSCHEDULESERVICE._serialized_start = 1947
-    _DELIVERYSCHEDULESERVICE._serialized_end = 2694
+    _DELIVERYSCHEDULE._serialized_start = 167
+    _DELIVERYSCHEDULE._serialized_end = 472
+    _DELIVERYSCHEDULECREATEREQUEST._serialized_start = 475
+    _DELIVERYSCHEDULECREATEREQUEST._serialized_end = 634
+    _DELIVERYSCHEDULECREATERESPONSE._serialized_start = 637
+    _DELIVERYSCHEDULECREATERESPONSE._serialized_end = 834
+    _DELIVERYSCHEDULEREADREQUEST._serialized_start = 837
+    _DELIVERYSCHEDULEREADREQUEST._serialized_end = 1214
+    _DELIVERYSCHEDULEREADRESPONSE._serialized_start = 1217
+    _DELIVERYSCHEDULEREADRESPONSE._serialized_end = 1472
+    _DELIVERYSCHEDULEUPDATEREQUEST._serialized_start = 1475
+    _DELIVERYSCHEDULEUPDATEREQUEST._serialized_end = 1652
+    _DELIVERYSCHEDULEUPDATERESPONSE._serialized_start = 1655
+    _DELIVERYSCHEDULEUPDATERESPONSE._serialized_end = 1852
+    _DELIVERYSCHEDULEDELETEREQUEST._serialized_start = 1854
+    _DELIVERYSCHEDULEDELETEREQUEST._serialized_end = 1953
+    _DELIVERYSCHEDULEDELETERESPONSE._serialized_start = 1955
+    _DELIVERYSCHEDULEDELETERESPONSE._serialized_end = 2062
+    _DELIVERYSCHEDULESERVICE._serialized_start = 2065
+    _DELIVERYSCHEDULESERVICE._serialized_end = 2812
 # @@protoc_insertion_point(module_scope)

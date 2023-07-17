@@ -7,8 +7,8 @@ from typing import Union as _Union
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import struct_pb2 as _struct_pb2
+from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
-
 from omni.pro.protos.common import base_pb2 as _base_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
@@ -34,7 +34,7 @@ class Location(_message.Message):
     PARENT_ID_FIELD_NUMBER: _ClassVar[int]
     TYPE_LOCATION_FIELD_NUMBER: _ClassVar[int]
     WAREHOUSE_ID_FIELD_NUMBER: _ClassVar[int]
-    active: bool
+    active: _wrappers_pb2.BoolValue
     barcode: str
     code: str
     id: int
@@ -52,7 +52,7 @@ class Location(_message.Message):
         type_location: _Optional[str] = ...,
         barcode: _Optional[str] = ...,
         warehouse_id: _Optional[int] = ...,
-        active: bool = ...,
+        active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
@@ -66,7 +66,7 @@ class LocationCreateRequest(_message.Message):
     PARENT_ID_FIELD_NUMBER: _ClassVar[int]
     TYPE_LOCATION_FIELD_NUMBER: _ClassVar[int]
     WAREHOUSE_ID_FIELD_NUMBER: _ClassVar[int]
-    active: bool
+    active: _wrappers_pb2.BoolValue
     barcode: str
     code: str
     context: _base_pb2.Context
@@ -82,7 +82,7 @@ class LocationCreateRequest(_message.Message):
         type_location: _Optional[str] = ...,
         barcode: _Optional[str] = ...,
         warehouse_id: _Optional[int] = ...,
-        active: bool = ...,
+        active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
@@ -215,7 +215,7 @@ class PickingType(_message.Message):
     SHOW_OPERATIONS_FIELD_NUMBER: _ClassVar[int]
     SHOW_RESERVED_FIELD_NUMBER: _ClassVar[int]
     WAREHOUSE_ID_FIELD_NUMBER: _ClassVar[int]
-    active: bool
+    active: _wrappers_pb2.BoolValue
     code: str
     default_location_dest_id: int
     default_location_src_id: int
@@ -228,8 +228,8 @@ class PickingType(_message.Message):
     prefix: str
     return_picking_type_id: int
     sequence_code: str
-    show_operations: bool
-    show_reserved: bool
+    show_operations: _wrappers_pb2.BoolValue
+    show_reserved: _wrappers_pb2.BoolValue
     warehouse_id: int
     def __init__(
         self,
@@ -239,15 +239,15 @@ class PickingType(_message.Message):
         warehouse_id: _Optional[int] = ...,
         code: _Optional[str] = ...,
         return_picking_type_id: _Optional[int] = ...,
-        show_operations: bool = ...,
-        show_reserved: bool = ...,
+        show_operations: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        show_reserved: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         default_location_src_id: _Optional[int] = ...,
         default_location_dest_id: _Optional[int] = ...,
         prefix: _Optional[str] = ...,
         padding: _Optional[int] = ...,
         number_increment: _Optional[int] = ...,
         number_next_actual: _Optional[int] = ...,
-        active: bool = ...,
+        active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
@@ -293,8 +293,8 @@ class PickingTypeCreateRequest(_message.Message):
     prefix: str
     return_picking_type_id: int
     sequence_code: str
-    show_operations: bool
-    show_reserved: bool
+    show_operations: _wrappers_pb2.BoolValue
+    show_reserved: _wrappers_pb2.BoolValue
     warehouse_id: int
     def __init__(
         self,
@@ -303,8 +303,8 @@ class PickingTypeCreateRequest(_message.Message):
         warehouse_id: _Optional[int] = ...,
         code: _Optional[str] = ...,
         return_picking_type_id: _Optional[int] = ...,
-        show_operations: bool = ...,
-        show_reserved: bool = ...,
+        show_operations: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        show_reserved: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         default_location_src_id: _Optional[int] = ...,
         default_location_dest_id: _Optional[int] = ...,
         prefix: _Optional[str] = ...,
@@ -416,7 +416,7 @@ class Product(_message.Message):
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     PRODUCT_DOC_ID_FIELD_NUMBER: _ClassVar[int]
     TEMPLATE_DOC_ID_FIELD_NUMBER: _ClassVar[int]
-    active: bool
+    active: _wrappers_pb2.BoolValue
     id: int
     name: str
     object_audit: _base_pb2.ObjectAudit
@@ -428,7 +428,7 @@ class Product(_message.Message):
         product_doc_id: _Optional[str] = ...,
         template_doc_id: _Optional[str] = ...,
         name: _Optional[str] = ...,
-        active: bool = ...,
+        active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
@@ -439,7 +439,7 @@ class ProductCreateRequest(_message.Message):
     NAME_FIELD_NUMBER: _ClassVar[int]
     PRODUCT_DOC_ID_FIELD_NUMBER: _ClassVar[int]
     TEMPLATE_DOC_ID_FIELD_NUMBER: _ClassVar[int]
-    active: bool
+    active: _wrappers_pb2.BoolValue
     context: _base_pb2.Context
     name: str
     product_doc_id: str
@@ -449,7 +449,7 @@ class ProductCreateRequest(_message.Message):
         product_doc_id: _Optional[str] = ...,
         template_doc_id: _Optional[str] = ...,
         name: _Optional[str] = ...,
-        active: bool = ...,
+        active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
@@ -568,7 +568,7 @@ class Quant(_message.Message):
     PRODUCT_ID_FIELD_NUMBER: _ClassVar[int]
     QUANTITY_FIELD_NUMBER: _ClassVar[int]
     UOM_ID_FIELD_NUMBER: _ClassVar[int]
-    active: bool
+    active: _wrappers_pb2.BoolValue
     available_quantity: float
     id: int
     location_id: int
@@ -586,7 +586,7 @@ class Quant(_message.Message):
         available_quantity: _Optional[float] = ...,
         quantity: _Optional[float] = ...,
         uom_id: _Optional[int] = ...,
-        active: bool = ...,
+        active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
@@ -734,27 +734,27 @@ class Route(_message.Message):
     SEQUENCE_FIELD_NUMBER: _ClassVar[int]
     WAREHOUSE_ID_FIELD_NUMBER: _ClassVar[int]
     WAREHOUSE_SELECTABLE_FIELD_NUMBER: _ClassVar[int]
-    active: bool
+    active: _wrappers_pb2.BoolValue
     id: int
     name: str
     object_audit: _base_pb2.ObjectAudit
-    packing_selectable: bool
-    product_categ_selectable: bool
-    product_selectable: bool
+    packing_selectable: _wrappers_pb2.BoolValue
+    product_categ_selectable: _wrappers_pb2.BoolValue
+    product_selectable: _wrappers_pb2.BoolValue
     sequence: int
     warehouse_id: int
-    warehouse_selectable: bool
+    warehouse_selectable: _wrappers_pb2.BoolValue
     def __init__(
         self,
         id: _Optional[int] = ...,
         name: _Optional[str] = ...,
         sequence: _Optional[int] = ...,
-        product_categ_selectable: bool = ...,
-        product_selectable: bool = ...,
-        packing_selectable: bool = ...,
-        warehouse_selectable: bool = ...,
+        product_categ_selectable: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        product_selectable: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        packing_selectable: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        warehouse_selectable: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         warehouse_id: _Optional[int] = ...,
-        active: bool = ...,
+        active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
@@ -779,20 +779,20 @@ class RouteCreateRequest(_message.Message):
     WAREHOUSE_SELECTABLE_FIELD_NUMBER: _ClassVar[int]
     context: _base_pb2.Context
     name: str
-    packing_selectable: bool
-    product_categ_selectable: bool
-    product_selectable: bool
+    packing_selectable: _wrappers_pb2.BoolValue
+    product_categ_selectable: _wrappers_pb2.BoolValue
+    product_selectable: _wrappers_pb2.BoolValue
     sequence: int
     warehouse_id: int
-    warehouse_selectable: bool
+    warehouse_selectable: _wrappers_pb2.BoolValue
     def __init__(
         self,
         name: _Optional[str] = ...,
         sequence: _Optional[int] = ...,
-        product_categ_selectable: bool = ...,
-        product_selectable: bool = ...,
-        packing_selectable: bool = ...,
-        warehouse_selectable: bool = ...,
+        product_categ_selectable: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        product_selectable: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        packing_selectable: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        warehouse_selectable: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         warehouse_id: _Optional[int] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
@@ -919,7 +919,7 @@ class Rule(_message.Message):
     SEQUENCE_FIELD_NUMBER: _ClassVar[int]
     WAREHOUSE_ID_FIELD_NUMBER: _ClassVar[int]
     action: str
-    active: bool
+    active: _wrappers_pb2.BoolValue
     id: int
     location_id: int
     location_src_id: int
@@ -942,7 +942,7 @@ class Rule(_message.Message):
         route_id: _Optional[int] = ...,
         warehouse_id: _Optional[int] = ...,
         sequence: _Optional[int] = ...,
-        active: bool = ...,
+        active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
@@ -1095,7 +1095,7 @@ class Uom(_message.Message):
     NAME_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     UOM_DOC_ID_FIELD_NUMBER: _ClassVar[int]
-    active: bool
+    active: _wrappers_pb2.BoolValue
     code: str
     id: int
     name: str
@@ -1107,7 +1107,7 @@ class Uom(_message.Message):
         uom_doc_id: _Optional[str] = ...,
         code: _Optional[str] = ...,
         name: _Optional[str] = ...,
-        active: bool = ...,
+        active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
@@ -1118,7 +1118,7 @@ class UomCreateRequest(_message.Message):
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     UOM_DOC_ID_FIELD_NUMBER: _ClassVar[int]
-    active: bool
+    active: _wrappers_pb2.BoolValue
     code: str
     context: _base_pb2.Context
     name: str
@@ -1128,7 +1128,7 @@ class UomCreateRequest(_message.Message):
         uom_doc_id: _Optional[str] = ...,
         code: _Optional[str] = ...,
         name: _Optional[str] = ...,
-        active: bool = ...,
+        active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
@@ -1245,7 +1245,7 @@ class Warehouse(_message.Message):
     NAME_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     TERRITORY_MATRIX_VALUE_FIELD_NUMBER: _ClassVar[int]
-    active: bool
+    active: _wrappers_pb2.BoolValue
     address: str
     code: str
     complement: str
@@ -1263,7 +1263,7 @@ class Warehouse(_message.Message):
         territory_matrix_value: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         address: _Optional[str] = ...,
         complement: _Optional[str] = ...,
-        active: bool = ...,
+        active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
@@ -1277,7 +1277,7 @@ class WarehouseCreateRequest(_message.Message):
     COUNTRY_ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     TERRITORY_MATRIX_VALUE_FIELD_NUMBER: _ClassVar[int]
-    active: bool
+    active: _wrappers_pb2.BoolValue
     address: str
     code: str
     complement: str
@@ -1293,7 +1293,7 @@ class WarehouseCreateRequest(_message.Message):
         territory_matrix_value: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         address: _Optional[str] = ...,
         complement: _Optional[str] = ...,
-        active: bool = ...,
+        active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 

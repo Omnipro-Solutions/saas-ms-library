@@ -7,8 +7,8 @@ from typing import Union as _Union
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
+from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
-
 from omni.pro.protos.common import base_pb2 as _base_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
@@ -21,7 +21,7 @@ class Attachment(_message.Message):
     NAME_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     TYPE_FIELD_NUMBER: _ClassVar[int]
-    active: bool
+    active: _wrappers_pb2.BoolValue
     doc_id: str
     id: int
     name: str
@@ -33,7 +33,7 @@ class Attachment(_message.Message):
         doc_id: _Optional[str] = ...,
         name: _Optional[str] = ...,
         type: _Optional[str] = ...,
-        active: bool = ...,
+        active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
@@ -156,7 +156,7 @@ class Carrier(_message.Message):
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
-    active: bool
+    active: _wrappers_pb2.BoolValue
     code: str
     id: int
     name: str
@@ -166,7 +166,7 @@ class Carrier(_message.Message):
         id: _Optional[int] = ...,
         name: _Optional[str] = ...,
         code: _Optional[str] = ...,
-        active: bool = ...,
+        active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
@@ -326,7 +326,7 @@ class Picking(_message.Message):
     TIME_TOTAL_PREPARATION_FIELD_NUMBER: _ClassVar[int]
     USER_ID_FIELD_NUMBER: _ClassVar[int]
     WEIGHT_FIELD_NUMBER: _ClassVar[int]
-    active: bool
+    active: _wrappers_pb2.BoolValue
     attachment_guide_id: int
     attachment_invoice_id: int
     carrier_id: int
@@ -370,7 +370,7 @@ class Picking(_message.Message):
         group_id: _Optional[int] = ...,
         weight: _Optional[float] = ...,
         shipping_weight: _Optional[float] = ...,
-        active: bool = ...,
+        active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
@@ -562,7 +562,7 @@ class ProcurementGroup(_message.Message):
     MOVE_TYPE_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
-    active: bool
+    active: _wrappers_pb2.BoolValue
     id: int
     move_type: str
     name: str
@@ -572,7 +572,7 @@ class ProcurementGroup(_message.Message):
         id: _Optional[int] = ...,
         name: _Optional[str] = ...,
         move_type: _Optional[str] = ...,
-        active: bool = ...,
+        active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
@@ -692,7 +692,7 @@ class User(_message.Message):
     NAME_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     USER_DOC_ID_FIELD_NUMBER: _ClassVar[int]
-    active: bool
+    active: _wrappers_pb2.BoolValue
     id: int
     name: str
     object_audit: _base_pb2.ObjectAudit
@@ -702,7 +702,7 @@ class User(_message.Message):
         id: _Optional[int] = ...,
         user_doc_id: _Optional[str] = ...,
         name: _Optional[str] = ...,
-        active: bool = ...,
+        active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 

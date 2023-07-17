@@ -442,6 +442,36 @@ class GroupUpdateResponse(_message.Message):
         group: _Optional[_Union[Group, _Mapping]] = ...,
     ) -> None: ...
 
+class HasPermissionRequest(_message.Message):
+    __slots__ = ["context", "permission", "username"]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    PERMISSION_FIELD_NUMBER: _ClassVar[int]
+    USERNAME_FIELD_NUMBER: _ClassVar[int]
+    context: _base_pb2.Context
+    permission: str
+    username: str
+    def __init__(
+        self,
+        username: _Optional[str] = ...,
+        permission: _Optional[str] = ...,
+        context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
+    ) -> None: ...
+
+class HasPermissionResponse(_message.Message):
+    __slots__ = ["has_permission", "response_standard", "user"]
+    HAS_PERMISSION_FIELD_NUMBER: _ClassVar[int]
+    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
+    USER_FIELD_NUMBER: _ClassVar[int]
+    has_permission: bool
+    response_standard: _base_pb2.ResponseStandard
+    user: User
+    def __init__(
+        self,
+        response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
+        has_permission: bool = ...,
+        user: _Optional[_Union[User, _Mapping]] = ...,
+    ) -> None: ...
+
 class User(_message.Message):
     __slots__ = [
         "active",
