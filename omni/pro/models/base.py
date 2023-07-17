@@ -90,6 +90,10 @@ class BaseDocument(Document):
     def to_proto(self, *args, **kwargs):
         raise NotImplementedError
 
+    @classmethod
+    def reference_list(cls):
+        return [cls]
+
 
 class BaseAuditEmbeddedDocument(BaseEmbeddedDocument):
     context = EmbeddedDocumentField(Context)

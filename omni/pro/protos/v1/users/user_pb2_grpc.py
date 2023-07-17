@@ -14,95 +14,100 @@ class UsersServiceStub(object):
             channel: A grpc.Channel.
         """
         self.UserCreate = channel.unary_unary(
-                '/pro.omni.oms.api.v1.users.user.UsersService/UserCreate',
-                request_serializer=v1_dot_users_dot_user__pb2.UserCreateRequest.SerializeToString,
-                response_deserializer=v1_dot_users_dot_user__pb2.UserCreateResponse.FromString,
-                )
+            "/pro.omni.oms.api.v1.users.user.UsersService/UserCreate",
+            request_serializer=v1_dot_users_dot_user__pb2.UserCreateRequest.SerializeToString,
+            response_deserializer=v1_dot_users_dot_user__pb2.UserCreateResponse.FromString,
+        )
         self.UserRead = channel.unary_unary(
-                '/pro.omni.oms.api.v1.users.user.UsersService/UserRead',
-                request_serializer=v1_dot_users_dot_user__pb2.UserReadRequest.SerializeToString,
-                response_deserializer=v1_dot_users_dot_user__pb2.UserReadResponse.FromString,
-                )
+            "/pro.omni.oms.api.v1.users.user.UsersService/UserRead",
+            request_serializer=v1_dot_users_dot_user__pb2.UserReadRequest.SerializeToString,
+            response_deserializer=v1_dot_users_dot_user__pb2.UserReadResponse.FromString,
+        )
         self.UserUpdate = channel.unary_unary(
-                '/pro.omni.oms.api.v1.users.user.UsersService/UserUpdate',
-                request_serializer=v1_dot_users_dot_user__pb2.UserUpdateRequest.SerializeToString,
-                response_deserializer=v1_dot_users_dot_user__pb2.UserUpdateResponse.FromString,
-                )
+            "/pro.omni.oms.api.v1.users.user.UsersService/UserUpdate",
+            request_serializer=v1_dot_users_dot_user__pb2.UserUpdateRequest.SerializeToString,
+            response_deserializer=v1_dot_users_dot_user__pb2.UserUpdateResponse.FromString,
+        )
         self.UserDelete = channel.unary_unary(
-                '/pro.omni.oms.api.v1.users.user.UsersService/UserDelete',
-                request_serializer=v1_dot_users_dot_user__pb2.UserDeleteRequest.SerializeToString,
-                response_deserializer=v1_dot_users_dot_user__pb2.UserDeleteResponse.FromString,
-                )
+            "/pro.omni.oms.api.v1.users.user.UsersService/UserDelete",
+            request_serializer=v1_dot_users_dot_user__pb2.UserDeleteRequest.SerializeToString,
+            response_deserializer=v1_dot_users_dot_user__pb2.UserDeleteResponse.FromString,
+        )
         self.UserChangePassword = channel.unary_unary(
-                '/pro.omni.oms.api.v1.users.user.UsersService/UserChangePassword',
-                request_serializer=v1_dot_users_dot_user__pb2.UserChangePasswordRequest.SerializeToString,
-                response_deserializer=v1_dot_users_dot_user__pb2.UserChangePasswordResponse.FromString,
-                )
+            "/pro.omni.oms.api.v1.users.user.UsersService/UserChangePassword",
+            request_serializer=v1_dot_users_dot_user__pb2.UserChangePasswordRequest.SerializeToString,
+            response_deserializer=v1_dot_users_dot_user__pb2.UserChangePasswordResponse.FromString,
+        )
         self.UserChangeEmail = channel.unary_unary(
-                '/pro.omni.oms.api.v1.users.user.UsersService/UserChangeEmail',
-                request_serializer=v1_dot_users_dot_user__pb2.UserChangeEmailRequest.SerializeToString,
-                response_deserializer=v1_dot_users_dot_user__pb2.UserChangeEmailResponse.FromString,
-                )
+            "/pro.omni.oms.api.v1.users.user.UsersService/UserChangeEmail",
+            request_serializer=v1_dot_users_dot_user__pb2.UserChangeEmailRequest.SerializeToString,
+            response_deserializer=v1_dot_users_dot_user__pb2.UserChangeEmailResponse.FromString,
+        )
         self.GroupCreate = channel.unary_unary(
-                '/pro.omni.oms.api.v1.users.user.UsersService/GroupCreate',
-                request_serializer=v1_dot_users_dot_user__pb2.GroupCreateRequest.SerializeToString,
-                response_deserializer=v1_dot_users_dot_user__pb2.GroupCreateResponse.FromString,
-                )
+            "/pro.omni.oms.api.v1.users.user.UsersService/GroupCreate",
+            request_serializer=v1_dot_users_dot_user__pb2.GroupCreateRequest.SerializeToString,
+            response_deserializer=v1_dot_users_dot_user__pb2.GroupCreateResponse.FromString,
+        )
         self.GroupRead = channel.unary_unary(
-                '/pro.omni.oms.api.v1.users.user.UsersService/GroupRead',
-                request_serializer=v1_dot_users_dot_user__pb2.GroupReadRequest.SerializeToString,
-                response_deserializer=v1_dot_users_dot_user__pb2.GroupReadResponse.FromString,
-                )
+            "/pro.omni.oms.api.v1.users.user.UsersService/GroupRead",
+            request_serializer=v1_dot_users_dot_user__pb2.GroupReadRequest.SerializeToString,
+            response_deserializer=v1_dot_users_dot_user__pb2.GroupReadResponse.FromString,
+        )
         self.GroupUpdate = channel.unary_unary(
-                '/pro.omni.oms.api.v1.users.user.UsersService/GroupUpdate',
-                request_serializer=v1_dot_users_dot_user__pb2.GroupUpdateRequest.SerializeToString,
-                response_deserializer=v1_dot_users_dot_user__pb2.GroupUpdateResponse.FromString,
-                )
+            "/pro.omni.oms.api.v1.users.user.UsersService/GroupUpdate",
+            request_serializer=v1_dot_users_dot_user__pb2.GroupUpdateRequest.SerializeToString,
+            response_deserializer=v1_dot_users_dot_user__pb2.GroupUpdateResponse.FromString,
+        )
         self.GroupDelete = channel.unary_unary(
-                '/pro.omni.oms.api.v1.users.user.UsersService/GroupDelete',
-                request_serializer=v1_dot_users_dot_user__pb2.GroupDeleteRequest.SerializeToString,
-                response_deserializer=v1_dot_users_dot_user__pb2.GroupDeleteResponse.FromString,
-                )
+            "/pro.omni.oms.api.v1.users.user.UsersService/GroupDelete",
+            request_serializer=v1_dot_users_dot_user__pb2.GroupDeleteRequest.SerializeToString,
+            response_deserializer=v1_dot_users_dot_user__pb2.GroupDeleteResponse.FromString,
+        )
         self.ActionCreate = channel.unary_unary(
-                '/pro.omni.oms.api.v1.users.user.UsersService/ActionCreate',
-                request_serializer=v1_dot_users_dot_user__pb2.ActionCreateRequest.SerializeToString,
-                response_deserializer=v1_dot_users_dot_user__pb2.ActionCreateResponse.FromString,
-                )
+            "/pro.omni.oms.api.v1.users.user.UsersService/ActionCreate",
+            request_serializer=v1_dot_users_dot_user__pb2.ActionCreateRequest.SerializeToString,
+            response_deserializer=v1_dot_users_dot_user__pb2.ActionCreateResponse.FromString,
+        )
         self.ActionRead = channel.unary_unary(
-                '/pro.omni.oms.api.v1.users.user.UsersService/ActionRead',
-                request_serializer=v1_dot_users_dot_user__pb2.ActionReadRequest.SerializeToString,
-                response_deserializer=v1_dot_users_dot_user__pb2.ActionReadResponse.FromString,
-                )
+            "/pro.omni.oms.api.v1.users.user.UsersService/ActionRead",
+            request_serializer=v1_dot_users_dot_user__pb2.ActionReadRequest.SerializeToString,
+            response_deserializer=v1_dot_users_dot_user__pb2.ActionReadResponse.FromString,
+        )
         self.ActionUpdate = channel.unary_unary(
-                '/pro.omni.oms.api.v1.users.user.UsersService/ActionUpdate',
-                request_serializer=v1_dot_users_dot_user__pb2.ActionUpdateRequest.SerializeToString,
-                response_deserializer=v1_dot_users_dot_user__pb2.ActionUpdateResponse.FromString,
-                )
+            "/pro.omni.oms.api.v1.users.user.UsersService/ActionUpdate",
+            request_serializer=v1_dot_users_dot_user__pb2.ActionUpdateRequest.SerializeToString,
+            response_deserializer=v1_dot_users_dot_user__pb2.ActionUpdateResponse.FromString,
+        )
         self.ActionDelete = channel.unary_unary(
-                '/pro.omni.oms.api.v1.users.user.UsersService/ActionDelete',
-                request_serializer=v1_dot_users_dot_user__pb2.ActionDeleteRequest.SerializeToString,
-                response_deserializer=v1_dot_users_dot_user__pb2.ActionDeleteResponse.FromString,
-                )
+            "/pro.omni.oms.api.v1.users.user.UsersService/ActionDelete",
+            request_serializer=v1_dot_users_dot_user__pb2.ActionDeleteRequest.SerializeToString,
+            response_deserializer=v1_dot_users_dot_user__pb2.ActionDeleteResponse.FromString,
+        )
         self.AccessCreate = channel.unary_unary(
-                '/pro.omni.oms.api.v1.users.user.UsersService/AccessCreate',
-                request_serializer=v1_dot_users_dot_user__pb2.AccessCreateRequest.SerializeToString,
-                response_deserializer=v1_dot_users_dot_user__pb2.AccessCreateResponse.FromString,
-                )
+            "/pro.omni.oms.api.v1.users.user.UsersService/AccessCreate",
+            request_serializer=v1_dot_users_dot_user__pb2.AccessCreateRequest.SerializeToString,
+            response_deserializer=v1_dot_users_dot_user__pb2.AccessCreateResponse.FromString,
+        )
         self.AccessRead = channel.unary_unary(
-                '/pro.omni.oms.api.v1.users.user.UsersService/AccessRead',
-                request_serializer=v1_dot_users_dot_user__pb2.AccessReadRequest.SerializeToString,
-                response_deserializer=v1_dot_users_dot_user__pb2.AccessReadResponse.FromString,
-                )
+            "/pro.omni.oms.api.v1.users.user.UsersService/AccessRead",
+            request_serializer=v1_dot_users_dot_user__pb2.AccessReadRequest.SerializeToString,
+            response_deserializer=v1_dot_users_dot_user__pb2.AccessReadResponse.FromString,
+        )
         self.AccessUpdate = channel.unary_unary(
-                '/pro.omni.oms.api.v1.users.user.UsersService/AccessUpdate',
-                request_serializer=v1_dot_users_dot_user__pb2.AccessUpdateRequest.SerializeToString,
-                response_deserializer=v1_dot_users_dot_user__pb2.AccessUpdateResponse.FromString,
-                )
+            "/pro.omni.oms.api.v1.users.user.UsersService/AccessUpdate",
+            request_serializer=v1_dot_users_dot_user__pb2.AccessUpdateRequest.SerializeToString,
+            response_deserializer=v1_dot_users_dot_user__pb2.AccessUpdateResponse.FromString,
+        )
         self.AccessDelete = channel.unary_unary(
-                '/pro.omni.oms.api.v1.users.user.UsersService/AccessDelete',
-                request_serializer=v1_dot_users_dot_user__pb2.AccessDeleteRequest.SerializeToString,
-                response_deserializer=v1_dot_users_dot_user__pb2.AccessDeleteResponse.FromString,
-                )
+            "/pro.omni.oms.api.v1.users.user.UsersService/AccessDelete",
+            request_serializer=v1_dot_users_dot_user__pb2.AccessDeleteRequest.SerializeToString,
+            response_deserializer=v1_dot_users_dot_user__pb2.AccessDeleteResponse.FromString,
+        )
+        self.HasPermission = channel.unary_unary(
+            "/pro.omni.oms.api.v1.users.user.UsersService/HasPermission",
+            request_serializer=v1_dot_users_dot_user__pb2.HasPermissionRequest.SerializeToString,
+            response_deserializer=v1_dot_users_dot_user__pb2.HasPermissionResponse.FromString,
+        )
 
 
 class UsersServiceServicer(object):
@@ -111,516 +116,773 @@ class UsersServiceServicer(object):
     def UserCreate(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
 
     def UserRead(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
 
     def UserUpdate(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
 
     def UserDelete(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
 
     def UserChangePassword(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
 
     def UserChangeEmail(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
 
     def GroupCreate(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
 
     def GroupRead(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
 
     def GroupUpdate(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
 
     def GroupDelete(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
 
     def ActionCreate(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
 
     def ActionRead(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
 
     def ActionUpdate(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
 
     def ActionDelete(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
 
     def AccessCreate(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
 
     def AccessRead(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
 
     def AccessUpdate(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
 
     def AccessDelete(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def HasPermission(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
 
 
 def add_UsersServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'UserCreate': grpc.unary_unary_rpc_method_handler(
-                    servicer.UserCreate,
-                    request_deserializer=v1_dot_users_dot_user__pb2.UserCreateRequest.FromString,
-                    response_serializer=v1_dot_users_dot_user__pb2.UserCreateResponse.SerializeToString,
-            ),
-            'UserRead': grpc.unary_unary_rpc_method_handler(
-                    servicer.UserRead,
-                    request_deserializer=v1_dot_users_dot_user__pb2.UserReadRequest.FromString,
-                    response_serializer=v1_dot_users_dot_user__pb2.UserReadResponse.SerializeToString,
-            ),
-            'UserUpdate': grpc.unary_unary_rpc_method_handler(
-                    servicer.UserUpdate,
-                    request_deserializer=v1_dot_users_dot_user__pb2.UserUpdateRequest.FromString,
-                    response_serializer=v1_dot_users_dot_user__pb2.UserUpdateResponse.SerializeToString,
-            ),
-            'UserDelete': grpc.unary_unary_rpc_method_handler(
-                    servicer.UserDelete,
-                    request_deserializer=v1_dot_users_dot_user__pb2.UserDeleteRequest.FromString,
-                    response_serializer=v1_dot_users_dot_user__pb2.UserDeleteResponse.SerializeToString,
-            ),
-            'UserChangePassword': grpc.unary_unary_rpc_method_handler(
-                    servicer.UserChangePassword,
-                    request_deserializer=v1_dot_users_dot_user__pb2.UserChangePasswordRequest.FromString,
-                    response_serializer=v1_dot_users_dot_user__pb2.UserChangePasswordResponse.SerializeToString,
-            ),
-            'UserChangeEmail': grpc.unary_unary_rpc_method_handler(
-                    servicer.UserChangeEmail,
-                    request_deserializer=v1_dot_users_dot_user__pb2.UserChangeEmailRequest.FromString,
-                    response_serializer=v1_dot_users_dot_user__pb2.UserChangeEmailResponse.SerializeToString,
-            ),
-            'GroupCreate': grpc.unary_unary_rpc_method_handler(
-                    servicer.GroupCreate,
-                    request_deserializer=v1_dot_users_dot_user__pb2.GroupCreateRequest.FromString,
-                    response_serializer=v1_dot_users_dot_user__pb2.GroupCreateResponse.SerializeToString,
-            ),
-            'GroupRead': grpc.unary_unary_rpc_method_handler(
-                    servicer.GroupRead,
-                    request_deserializer=v1_dot_users_dot_user__pb2.GroupReadRequest.FromString,
-                    response_serializer=v1_dot_users_dot_user__pb2.GroupReadResponse.SerializeToString,
-            ),
-            'GroupUpdate': grpc.unary_unary_rpc_method_handler(
-                    servicer.GroupUpdate,
-                    request_deserializer=v1_dot_users_dot_user__pb2.GroupUpdateRequest.FromString,
-                    response_serializer=v1_dot_users_dot_user__pb2.GroupUpdateResponse.SerializeToString,
-            ),
-            'GroupDelete': grpc.unary_unary_rpc_method_handler(
-                    servicer.GroupDelete,
-                    request_deserializer=v1_dot_users_dot_user__pb2.GroupDeleteRequest.FromString,
-                    response_serializer=v1_dot_users_dot_user__pb2.GroupDeleteResponse.SerializeToString,
-            ),
-            'ActionCreate': grpc.unary_unary_rpc_method_handler(
-                    servicer.ActionCreate,
-                    request_deserializer=v1_dot_users_dot_user__pb2.ActionCreateRequest.FromString,
-                    response_serializer=v1_dot_users_dot_user__pb2.ActionCreateResponse.SerializeToString,
-            ),
-            'ActionRead': grpc.unary_unary_rpc_method_handler(
-                    servicer.ActionRead,
-                    request_deserializer=v1_dot_users_dot_user__pb2.ActionReadRequest.FromString,
-                    response_serializer=v1_dot_users_dot_user__pb2.ActionReadResponse.SerializeToString,
-            ),
-            'ActionUpdate': grpc.unary_unary_rpc_method_handler(
-                    servicer.ActionUpdate,
-                    request_deserializer=v1_dot_users_dot_user__pb2.ActionUpdateRequest.FromString,
-                    response_serializer=v1_dot_users_dot_user__pb2.ActionUpdateResponse.SerializeToString,
-            ),
-            'ActionDelete': grpc.unary_unary_rpc_method_handler(
-                    servicer.ActionDelete,
-                    request_deserializer=v1_dot_users_dot_user__pb2.ActionDeleteRequest.FromString,
-                    response_serializer=v1_dot_users_dot_user__pb2.ActionDeleteResponse.SerializeToString,
-            ),
-            'AccessCreate': grpc.unary_unary_rpc_method_handler(
-                    servicer.AccessCreate,
-                    request_deserializer=v1_dot_users_dot_user__pb2.AccessCreateRequest.FromString,
-                    response_serializer=v1_dot_users_dot_user__pb2.AccessCreateResponse.SerializeToString,
-            ),
-            'AccessRead': grpc.unary_unary_rpc_method_handler(
-                    servicer.AccessRead,
-                    request_deserializer=v1_dot_users_dot_user__pb2.AccessReadRequest.FromString,
-                    response_serializer=v1_dot_users_dot_user__pb2.AccessReadResponse.SerializeToString,
-            ),
-            'AccessUpdate': grpc.unary_unary_rpc_method_handler(
-                    servicer.AccessUpdate,
-                    request_deserializer=v1_dot_users_dot_user__pb2.AccessUpdateRequest.FromString,
-                    response_serializer=v1_dot_users_dot_user__pb2.AccessUpdateResponse.SerializeToString,
-            ),
-            'AccessDelete': grpc.unary_unary_rpc_method_handler(
-                    servicer.AccessDelete,
-                    request_deserializer=v1_dot_users_dot_user__pb2.AccessDeleteRequest.FromString,
-                    response_serializer=v1_dot_users_dot_user__pb2.AccessDeleteResponse.SerializeToString,
-            ),
+        "UserCreate": grpc.unary_unary_rpc_method_handler(
+            servicer.UserCreate,
+            request_deserializer=v1_dot_users_dot_user__pb2.UserCreateRequest.FromString,
+            response_serializer=v1_dot_users_dot_user__pb2.UserCreateResponse.SerializeToString,
+        ),
+        "UserRead": grpc.unary_unary_rpc_method_handler(
+            servicer.UserRead,
+            request_deserializer=v1_dot_users_dot_user__pb2.UserReadRequest.FromString,
+            response_serializer=v1_dot_users_dot_user__pb2.UserReadResponse.SerializeToString,
+        ),
+        "UserUpdate": grpc.unary_unary_rpc_method_handler(
+            servicer.UserUpdate,
+            request_deserializer=v1_dot_users_dot_user__pb2.UserUpdateRequest.FromString,
+            response_serializer=v1_dot_users_dot_user__pb2.UserUpdateResponse.SerializeToString,
+        ),
+        "UserDelete": grpc.unary_unary_rpc_method_handler(
+            servicer.UserDelete,
+            request_deserializer=v1_dot_users_dot_user__pb2.UserDeleteRequest.FromString,
+            response_serializer=v1_dot_users_dot_user__pb2.UserDeleteResponse.SerializeToString,
+        ),
+        "UserChangePassword": grpc.unary_unary_rpc_method_handler(
+            servicer.UserChangePassword,
+            request_deserializer=v1_dot_users_dot_user__pb2.UserChangePasswordRequest.FromString,
+            response_serializer=v1_dot_users_dot_user__pb2.UserChangePasswordResponse.SerializeToString,
+        ),
+        "UserChangeEmail": grpc.unary_unary_rpc_method_handler(
+            servicer.UserChangeEmail,
+            request_deserializer=v1_dot_users_dot_user__pb2.UserChangeEmailRequest.FromString,
+            response_serializer=v1_dot_users_dot_user__pb2.UserChangeEmailResponse.SerializeToString,
+        ),
+        "GroupCreate": grpc.unary_unary_rpc_method_handler(
+            servicer.GroupCreate,
+            request_deserializer=v1_dot_users_dot_user__pb2.GroupCreateRequest.FromString,
+            response_serializer=v1_dot_users_dot_user__pb2.GroupCreateResponse.SerializeToString,
+        ),
+        "GroupRead": grpc.unary_unary_rpc_method_handler(
+            servicer.GroupRead,
+            request_deserializer=v1_dot_users_dot_user__pb2.GroupReadRequest.FromString,
+            response_serializer=v1_dot_users_dot_user__pb2.GroupReadResponse.SerializeToString,
+        ),
+        "GroupUpdate": grpc.unary_unary_rpc_method_handler(
+            servicer.GroupUpdate,
+            request_deserializer=v1_dot_users_dot_user__pb2.GroupUpdateRequest.FromString,
+            response_serializer=v1_dot_users_dot_user__pb2.GroupUpdateResponse.SerializeToString,
+        ),
+        "GroupDelete": grpc.unary_unary_rpc_method_handler(
+            servicer.GroupDelete,
+            request_deserializer=v1_dot_users_dot_user__pb2.GroupDeleteRequest.FromString,
+            response_serializer=v1_dot_users_dot_user__pb2.GroupDeleteResponse.SerializeToString,
+        ),
+        "ActionCreate": grpc.unary_unary_rpc_method_handler(
+            servicer.ActionCreate,
+            request_deserializer=v1_dot_users_dot_user__pb2.ActionCreateRequest.FromString,
+            response_serializer=v1_dot_users_dot_user__pb2.ActionCreateResponse.SerializeToString,
+        ),
+        "ActionRead": grpc.unary_unary_rpc_method_handler(
+            servicer.ActionRead,
+            request_deserializer=v1_dot_users_dot_user__pb2.ActionReadRequest.FromString,
+            response_serializer=v1_dot_users_dot_user__pb2.ActionReadResponse.SerializeToString,
+        ),
+        "ActionUpdate": grpc.unary_unary_rpc_method_handler(
+            servicer.ActionUpdate,
+            request_deserializer=v1_dot_users_dot_user__pb2.ActionUpdateRequest.FromString,
+            response_serializer=v1_dot_users_dot_user__pb2.ActionUpdateResponse.SerializeToString,
+        ),
+        "ActionDelete": grpc.unary_unary_rpc_method_handler(
+            servicer.ActionDelete,
+            request_deserializer=v1_dot_users_dot_user__pb2.ActionDeleteRequest.FromString,
+            response_serializer=v1_dot_users_dot_user__pb2.ActionDeleteResponse.SerializeToString,
+        ),
+        "AccessCreate": grpc.unary_unary_rpc_method_handler(
+            servicer.AccessCreate,
+            request_deserializer=v1_dot_users_dot_user__pb2.AccessCreateRequest.FromString,
+            response_serializer=v1_dot_users_dot_user__pb2.AccessCreateResponse.SerializeToString,
+        ),
+        "AccessRead": grpc.unary_unary_rpc_method_handler(
+            servicer.AccessRead,
+            request_deserializer=v1_dot_users_dot_user__pb2.AccessReadRequest.FromString,
+            response_serializer=v1_dot_users_dot_user__pb2.AccessReadResponse.SerializeToString,
+        ),
+        "AccessUpdate": grpc.unary_unary_rpc_method_handler(
+            servicer.AccessUpdate,
+            request_deserializer=v1_dot_users_dot_user__pb2.AccessUpdateRequest.FromString,
+            response_serializer=v1_dot_users_dot_user__pb2.AccessUpdateResponse.SerializeToString,
+        ),
+        "AccessDelete": grpc.unary_unary_rpc_method_handler(
+            servicer.AccessDelete,
+            request_deserializer=v1_dot_users_dot_user__pb2.AccessDeleteRequest.FromString,
+            response_serializer=v1_dot_users_dot_user__pb2.AccessDeleteResponse.SerializeToString,
+        ),
+        "HasPermission": grpc.unary_unary_rpc_method_handler(
+            servicer.HasPermission,
+            request_deserializer=v1_dot_users_dot_user__pb2.HasPermissionRequest.FromString,
+            response_serializer=v1_dot_users_dot_user__pb2.HasPermissionResponse.SerializeToString,
+        ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'pro.omni.oms.api.v1.users.user.UsersService', rpc_method_handlers)
+        "pro.omni.oms.api.v1.users.user.UsersService", rpc_method_handlers
+    )
     server.add_generic_rpc_handlers((generic_handler,))
 
 
- # This class is part of an EXPERIMENTAL API.
+# This class is part of an EXPERIMENTAL API.
 class UsersService(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def UserCreate(request,
+    def UserCreate(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
             target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/pro.omni.oms.api.v1.users.user.UsersService/UserCreate',
+            "/pro.omni.oms.api.v1.users.user.UsersService/UserCreate",
             v1_dot_users_dot_user__pb2.UserCreateRequest.SerializeToString,
             v1_dot_users_dot_user__pb2.UserCreateResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
 
     @staticmethod
-    def UserRead(request,
+    def UserRead(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
             target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/pro.omni.oms.api.v1.users.user.UsersService/UserRead',
+            "/pro.omni.oms.api.v1.users.user.UsersService/UserRead",
             v1_dot_users_dot_user__pb2.UserReadRequest.SerializeToString,
             v1_dot_users_dot_user__pb2.UserReadResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
 
     @staticmethod
-    def UserUpdate(request,
+    def UserUpdate(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
             target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/pro.omni.oms.api.v1.users.user.UsersService/UserUpdate',
+            "/pro.omni.oms.api.v1.users.user.UsersService/UserUpdate",
             v1_dot_users_dot_user__pb2.UserUpdateRequest.SerializeToString,
             v1_dot_users_dot_user__pb2.UserUpdateResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
 
     @staticmethod
-    def UserDelete(request,
+    def UserDelete(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
             target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/pro.omni.oms.api.v1.users.user.UsersService/UserDelete',
+            "/pro.omni.oms.api.v1.users.user.UsersService/UserDelete",
             v1_dot_users_dot_user__pb2.UserDeleteRequest.SerializeToString,
             v1_dot_users_dot_user__pb2.UserDeleteResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
 
     @staticmethod
-    def UserChangePassword(request,
+    def UserChangePassword(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
             target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/pro.omni.oms.api.v1.users.user.UsersService/UserChangePassword',
+            "/pro.omni.oms.api.v1.users.user.UsersService/UserChangePassword",
             v1_dot_users_dot_user__pb2.UserChangePasswordRequest.SerializeToString,
             v1_dot_users_dot_user__pb2.UserChangePasswordResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
 
     @staticmethod
-    def UserChangeEmail(request,
+    def UserChangeEmail(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
             target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/pro.omni.oms.api.v1.users.user.UsersService/UserChangeEmail',
+            "/pro.omni.oms.api.v1.users.user.UsersService/UserChangeEmail",
             v1_dot_users_dot_user__pb2.UserChangeEmailRequest.SerializeToString,
             v1_dot_users_dot_user__pb2.UserChangeEmailResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
 
     @staticmethod
-    def GroupCreate(request,
+    def GroupCreate(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
             target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/pro.omni.oms.api.v1.users.user.UsersService/GroupCreate',
+            "/pro.omni.oms.api.v1.users.user.UsersService/GroupCreate",
             v1_dot_users_dot_user__pb2.GroupCreateRequest.SerializeToString,
             v1_dot_users_dot_user__pb2.GroupCreateResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
 
     @staticmethod
-    def GroupRead(request,
+    def GroupRead(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
             target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/pro.omni.oms.api.v1.users.user.UsersService/GroupRead',
+            "/pro.omni.oms.api.v1.users.user.UsersService/GroupRead",
             v1_dot_users_dot_user__pb2.GroupReadRequest.SerializeToString,
             v1_dot_users_dot_user__pb2.GroupReadResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
 
     @staticmethod
-    def GroupUpdate(request,
+    def GroupUpdate(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
             target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/pro.omni.oms.api.v1.users.user.UsersService/GroupUpdate',
+            "/pro.omni.oms.api.v1.users.user.UsersService/GroupUpdate",
             v1_dot_users_dot_user__pb2.GroupUpdateRequest.SerializeToString,
             v1_dot_users_dot_user__pb2.GroupUpdateResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
 
     @staticmethod
-    def GroupDelete(request,
+    def GroupDelete(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
             target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/pro.omni.oms.api.v1.users.user.UsersService/GroupDelete',
+            "/pro.omni.oms.api.v1.users.user.UsersService/GroupDelete",
             v1_dot_users_dot_user__pb2.GroupDeleteRequest.SerializeToString,
             v1_dot_users_dot_user__pb2.GroupDeleteResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
 
     @staticmethod
-    def ActionCreate(request,
+    def ActionCreate(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
             target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/pro.omni.oms.api.v1.users.user.UsersService/ActionCreate',
+            "/pro.omni.oms.api.v1.users.user.UsersService/ActionCreate",
             v1_dot_users_dot_user__pb2.ActionCreateRequest.SerializeToString,
             v1_dot_users_dot_user__pb2.ActionCreateResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
 
     @staticmethod
-    def ActionRead(request,
+    def ActionRead(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
             target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/pro.omni.oms.api.v1.users.user.UsersService/ActionRead',
+            "/pro.omni.oms.api.v1.users.user.UsersService/ActionRead",
             v1_dot_users_dot_user__pb2.ActionReadRequest.SerializeToString,
             v1_dot_users_dot_user__pb2.ActionReadResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
 
     @staticmethod
-    def ActionUpdate(request,
+    def ActionUpdate(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
             target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/pro.omni.oms.api.v1.users.user.UsersService/ActionUpdate',
+            "/pro.omni.oms.api.v1.users.user.UsersService/ActionUpdate",
             v1_dot_users_dot_user__pb2.ActionUpdateRequest.SerializeToString,
             v1_dot_users_dot_user__pb2.ActionUpdateResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
 
     @staticmethod
-    def ActionDelete(request,
+    def ActionDelete(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
             target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/pro.omni.oms.api.v1.users.user.UsersService/ActionDelete',
+            "/pro.omni.oms.api.v1.users.user.UsersService/ActionDelete",
             v1_dot_users_dot_user__pb2.ActionDeleteRequest.SerializeToString,
             v1_dot_users_dot_user__pb2.ActionDeleteResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
 
     @staticmethod
-    def AccessCreate(request,
+    def AccessCreate(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
             target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/pro.omni.oms.api.v1.users.user.UsersService/AccessCreate',
+            "/pro.omni.oms.api.v1.users.user.UsersService/AccessCreate",
             v1_dot_users_dot_user__pb2.AccessCreateRequest.SerializeToString,
             v1_dot_users_dot_user__pb2.AccessCreateResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
 
     @staticmethod
-    def AccessRead(request,
+    def AccessRead(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
             target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/pro.omni.oms.api.v1.users.user.UsersService/AccessRead',
+            "/pro.omni.oms.api.v1.users.user.UsersService/AccessRead",
             v1_dot_users_dot_user__pb2.AccessReadRequest.SerializeToString,
             v1_dot_users_dot_user__pb2.AccessReadResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
 
     @staticmethod
-    def AccessUpdate(request,
+    def AccessUpdate(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
             target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/pro.omni.oms.api.v1.users.user.UsersService/AccessUpdate',
+            "/pro.omni.oms.api.v1.users.user.UsersService/AccessUpdate",
             v1_dot_users_dot_user__pb2.AccessUpdateRequest.SerializeToString,
             v1_dot_users_dot_user__pb2.AccessUpdateResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
 
     @staticmethod
-    def AccessDelete(request,
+    def AccessDelete(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
             target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/pro.omni.oms.api.v1.users.user.UsersService/AccessDelete',
+            "/pro.omni.oms.api.v1.users.user.UsersService/AccessDelete",
             v1_dot_users_dot_user__pb2.AccessDeleteRequest.SerializeToString,
             v1_dot_users_dot_user__pb2.AccessDeleteResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
+
+    @staticmethod
+    def HasPermission(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            "/pro.omni.oms.api.v1.users.user.UsersService/HasPermission",
+            v1_dot_users_dot_user__pb2.HasPermissionRequest.SerializeToString,
+            v1_dot_users_dot_user__pb2.HasPermissionResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )

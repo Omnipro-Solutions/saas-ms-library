@@ -1,8 +1,10 @@
 import os
 
+from omni.pro.util import parse_bool
+
 
 class Config(object):
-    DEBUG = False
+    DEBUG = parse_bool(os.environ.get("DEBUG")) or False
     TESTING = False
 
     GRPC_PORT = os.environ.get("GRPC_PORT") or 50051

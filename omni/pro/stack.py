@@ -6,7 +6,6 @@ from contextlib import ExitStack
 from mongoengine import Document
 from mongoengine import context_managers as ctx_mgr
 from mongoengine import fields
-from omni.pro.database import ExitStackDocument
 from omni.pro.models.base import BaseDocument
 
 
