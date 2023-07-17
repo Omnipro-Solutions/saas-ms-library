@@ -17,6 +17,8 @@ permissions:
 
 jobs:
   deploy:
+    name: Deploy
+    environment: master
 
     runs-on: ubuntu-latest
 
