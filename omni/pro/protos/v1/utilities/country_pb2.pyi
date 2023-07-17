@@ -7,15 +7,14 @@ from typing import Union as _Union
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import struct_pb2 as _struct_pb2
+from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
-from v1.utilities import currency_pb2 as _currency_pb2
-from v1.utilities import document_type_pb2 as _document_type_pb2
-from v1.utilities import language_pb2 as _language_pb2
-from v1.utilities import payment_method_pb2 as _payment_method_pb2
-from v1.utilities import tax_pb2 as _tax_pb2
-from v1.utilities import territory_matrix_pb2 as _territory_matrix_pb2
-from v1.utilities import timezone_pb2 as _timezone_pb2
+from omni.pro.protos.v1.utilities import currency_pb2 as _currency_pb2
+from omni.pro.protos.v1.utilities import document_type_pb2 as _document_type_pb2
+from omni.pro.protos.v1.utilities import language_pb2 as _language_pb2
+from omni.pro.protos.v1.utilities import territory_matrix_pb2 as _territory_matrix_pb2
+from omni.pro.protos.v1.utilities import timezone_pb2 as _timezone_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
@@ -31,11 +30,9 @@ class Country(_message.Message):
         "meta_data",
         "name",
         "object_audit",
-        "payment_methods",
         "phone_number_size",
         "phone_prefix",
         "require_zipcode",
-        "taxes",
         "territory_matrixes",
         "timezones",
     ]
@@ -49,14 +46,12 @@ class Country(_message.Message):
     META_DATA_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
-    PAYMENT_METHODS_FIELD_NUMBER: _ClassVar[int]
     PHONE_NUMBER_SIZE_FIELD_NUMBER: _ClassVar[int]
     PHONE_PREFIX_FIELD_NUMBER: _ClassVar[int]
     REQUIRE_ZIPCODE_FIELD_NUMBER: _ClassVar[int]
-    TAXES_FIELD_NUMBER: _ClassVar[int]
     TERRITORY_MATRIXES_FIELD_NUMBER: _ClassVar[int]
     TIMEZONES_FIELD_NUMBER: _ClassVar[int]
-    active: bool
+    active: _wrappers_pb2.BoolValue
     code: str
     currency: _currency_pb2.Currency
     document_types: _containers.RepeatedCompositeFieldContainer[_document_type_pb2.DocumentType]
@@ -66,11 +61,9 @@ class Country(_message.Message):
     meta_data: _struct_pb2.Struct
     name: str
     object_audit: _base_pb2.ObjectAudit
-    payment_methods: _containers.RepeatedCompositeFieldContainer[_payment_method_pb2.PaymentMethod]
     phone_number_size: int
     phone_prefix: str
-    require_zipcode: bool
-    taxes: _containers.RepeatedCompositeFieldContainer[_tax_pb2.Tax]
+    require_zipcode: _wrappers_pb2.BoolValue
     territory_matrixes: _containers.RepeatedCompositeFieldContainer[_territory_matrix_pb2.TerritoryMatrix]
     timezones: _containers.RepeatedCompositeFieldContainer[_timezone_pb2.Timezone]
     def __init__(
@@ -80,23 +73,20 @@ class Country(_message.Message):
         name: _Optional[str] = ...,
         phone_number_size: _Optional[int] = ...,
         phone_prefix: _Optional[str] = ...,
-        require_zipcode: bool = ...,
+        require_zipcode: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         currency: _Optional[_Union[_currency_pb2.Currency, _Mapping]] = ...,
-        taxes: _Optional[_Iterable[_Union[_tax_pb2.Tax, _Mapping]]] = ...,
         document_types: _Optional[_Iterable[_Union[_document_type_pb2.DocumentType, _Mapping]]] = ...,
-        payment_methods: _Optional[_Iterable[_Union[_payment_method_pb2.PaymentMethod, _Mapping]]] = ...,
         territory_matrixes: _Optional[_Iterable[_Union[_territory_matrix_pb2.TerritoryMatrix, _Mapping]]] = ...,
         meta_data: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         timezones: _Optional[_Iterable[_Union[_timezone_pb2.Timezone, _Mapping]]] = ...,
         languages: _Optional[_Iterable[_Union[_language_pb2.Language, _Mapping]]] = ...,
         low_level: _Optional[str] = ...,
-        active: bool = ...,
+        active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
 class CountryCreateRequest(_message.Message):
     __slots__ = [
-        "active",
         "code",
         "context",
         "currency",
@@ -105,15 +95,12 @@ class CountryCreateRequest(_message.Message):
         "low_level",
         "meta_data",
         "name",
-        "payment_methods",
         "phone_number_size",
         "phone_prefix",
         "require_zipcode",
-        "taxes",
         "territory_matrixes",
         "timezones",
     ]
-    ACTIVE_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     CURRENCY_FIELD_NUMBER: _ClassVar[int]
@@ -122,14 +109,11 @@ class CountryCreateRequest(_message.Message):
     LOW_LEVEL_FIELD_NUMBER: _ClassVar[int]
     META_DATA_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
-    PAYMENT_METHODS_FIELD_NUMBER: _ClassVar[int]
     PHONE_NUMBER_SIZE_FIELD_NUMBER: _ClassVar[int]
     PHONE_PREFIX_FIELD_NUMBER: _ClassVar[int]
     REQUIRE_ZIPCODE_FIELD_NUMBER: _ClassVar[int]
-    TAXES_FIELD_NUMBER: _ClassVar[int]
     TERRITORY_MATRIXES_FIELD_NUMBER: _ClassVar[int]
     TIMEZONES_FIELD_NUMBER: _ClassVar[int]
-    active: bool
     code: str
     context: _base_pb2.Context
     currency: _currency_pb2.Currency
@@ -138,11 +122,9 @@ class CountryCreateRequest(_message.Message):
     low_level: str
     meta_data: _struct_pb2.Struct
     name: str
-    payment_methods: _containers.RepeatedCompositeFieldContainer[_payment_method_pb2.PaymentMethod]
     phone_number_size: int
     phone_prefix: str
     require_zipcode: bool
-    taxes: _containers.RepeatedCompositeFieldContainer[_tax_pb2.Tax]
     territory_matrixes: _containers.RepeatedCompositeFieldContainer[_territory_matrix_pb2.TerritoryMatrix]
     timezones: _containers.RepeatedCompositeFieldContainer[_timezone_pb2.Timezone]
     def __init__(
@@ -153,15 +135,12 @@ class CountryCreateRequest(_message.Message):
         phone_prefix: _Optional[str] = ...,
         require_zipcode: bool = ...,
         currency: _Optional[_Union[_currency_pb2.Currency, _Mapping]] = ...,
-        taxes: _Optional[_Iterable[_Union[_tax_pb2.Tax, _Mapping]]] = ...,
         document_types: _Optional[_Iterable[_Union[_document_type_pb2.DocumentType, _Mapping]]] = ...,
-        payment_methods: _Optional[_Iterable[_Union[_payment_method_pb2.PaymentMethod, _Mapping]]] = ...,
         territory_matrixes: _Optional[_Iterable[_Union[_territory_matrix_pb2.TerritoryMatrix, _Mapping]]] = ...,
         meta_data: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         timezones: _Optional[_Iterable[_Union[_timezone_pb2.Timezone, _Mapping]]] = ...,
         languages: _Optional[_Iterable[_Union[_language_pb2.Language, _Mapping]]] = ...,
         low_level: _Optional[str] = ...,
-        active: bool = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 

@@ -1,34 +1,130 @@
-from common import base_pb2 as _base_pb2
-from google.protobuf.internal import containers as _containers
+from typing import ClassVar as _ClassVar
+from typing import Iterable as _Iterable
+from typing import Mapping as _Mapping
+from typing import Optional as _Optional
+from typing import Union as _Union
+
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
-from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Mapping, Optional as _Optional, Union as _Union
+from google.protobuf import wrappers_pb2 as _wrappers_pb2
+from google.protobuf.internal import containers as _containers
+from omni.pro.protos.common import base_pb2 as _base_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Language(_message.Message):
-    __slots__ = ["active", "code", "name", "object_audit"]
+    __slots__ = [
+        "active",
+        "code",
+        "code_iso",
+        "date_format",
+        "decimal_point",
+        "direction",
+        "grouping",
+        "id",
+        "name",
+        "object_audit",
+        "thousands_separator",
+        "time_format",
+        "week_start",
+    ]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
+    CODE_ISO_FIELD_NUMBER: _ClassVar[int]
+    DATE_FORMAT_FIELD_NUMBER: _ClassVar[int]
+    DECIMAL_POINT_FIELD_NUMBER: _ClassVar[int]
+    DIRECTION_FIELD_NUMBER: _ClassVar[int]
+    GROUPING_FIELD_NUMBER: _ClassVar[int]
+    ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
-    active: bool
+    THOUSANDS_SEPARATOR_FIELD_NUMBER: _ClassVar[int]
+    TIME_FORMAT_FIELD_NUMBER: _ClassVar[int]
+    WEEK_START_FIELD_NUMBER: _ClassVar[int]
+    active: _wrappers_pb2.BoolValue
     code: str
+    code_iso: str
+    date_format: str
+    decimal_point: str
+    direction: str
+    grouping: str
+    id: str
     name: str
     object_audit: _base_pb2.ObjectAudit
-    def __init__(self, name: _Optional[str] = ..., code: _Optional[str] = ..., active: bool = ..., object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...) -> None: ...
+    thousands_separator: str
+    time_format: str
+    week_start: str
+    def __init__(
+        self,
+        id: _Optional[str] = ...,
+        name: _Optional[str] = ...,
+        code: _Optional[str] = ...,
+        code_iso: _Optional[str] = ...,
+        direction: _Optional[str] = ...,
+        date_format: _Optional[str] = ...,
+        time_format: _Optional[str] = ...,
+        decimal_point: _Optional[str] = ...,
+        thousands_separator: _Optional[str] = ...,
+        grouping: _Optional[str] = ...,
+        week_start: _Optional[str] = ...,
+        active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
+    ) -> None: ...
 
 class LanguageAddRequest(_message.Message):
-    __slots__ = ["code", "context", "country_id", "name"]
+    __slots__ = [
+        "active",
+        "code",
+        "code_iso",
+        "context",
+        "date_format",
+        "decimal_point",
+        "direction",
+        "grouping",
+        "name",
+        "thousands_separator",
+        "time_format",
+        "week_start",
+    ]
+    ACTIVE_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
+    CODE_ISO_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    COUNTRY_ID_FIELD_NUMBER: _ClassVar[int]
+    DATE_FORMAT_FIELD_NUMBER: _ClassVar[int]
+    DECIMAL_POINT_FIELD_NUMBER: _ClassVar[int]
+    DIRECTION_FIELD_NUMBER: _ClassVar[int]
+    GROUPING_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
+    THOUSANDS_SEPARATOR_FIELD_NUMBER: _ClassVar[int]
+    TIME_FORMAT_FIELD_NUMBER: _ClassVar[int]
+    WEEK_START_FIELD_NUMBER: _ClassVar[int]
+    active: _wrappers_pb2.BoolValue
     code: str
+    code_iso: str
     context: _base_pb2.Context
-    country_id: str
+    date_format: str
+    decimal_point: str
+    direction: str
+    grouping: str
     name: str
-    def __init__(self, country_id: _Optional[str] = ..., name: _Optional[str] = ..., code: _Optional[str] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...) -> None: ...
+    thousands_separator: str
+    time_format: str
+    week_start: str
+    def __init__(
+        self,
+        name: _Optional[str] = ...,
+        code: _Optional[str] = ...,
+        code_iso: _Optional[str] = ...,
+        direction: _Optional[str] = ...,
+        date_format: _Optional[str] = ...,
+        time_format: _Optional[str] = ...,
+        decimal_point: _Optional[str] = ...,
+        thousands_separator: _Optional[str] = ...,
+        grouping: _Optional[str] = ...,
+        week_start: _Optional[str] = ...,
+        active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
+    ) -> None: ...
 
 class LanguageAddResponse(_message.Message):
     __slots__ = ["language", "response_standard"]
@@ -36,17 +132,21 @@ class LanguageAddResponse(_message.Message):
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
     language: Language
     response_standard: _base_pb2.ResponseStandard
-    def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ..., language: _Optional[_Union[Language, _Mapping]] = ...) -> None: ...
+    def __init__(
+        self,
+        response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
+        language: _Optional[_Union[Language, _Mapping]] = ...,
+    ) -> None: ...
 
 class LanguageDeleteRequest(_message.Message):
-    __slots__ = ["code", "context", "country_id"]
-    CODE_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["context", "id"]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    COUNTRY_ID_FIELD_NUMBER: _ClassVar[int]
-    code: str
+    ID_FIELD_NUMBER: _ClassVar[int]
     context: _base_pb2.Context
-    country_id: str
-    def __init__(self, country_id: _Optional[str] = ..., code: _Optional[str] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...) -> None: ...
+    id: str
+    def __init__(
+        self, id: _Optional[str] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
+    ) -> None: ...
 
 class LanguageDeleteResponse(_message.Message):
     __slots__ = ["response_standard"]
@@ -70,7 +170,16 @@ class LanguageReadRequest(_message.Message):
     id: str
     paginated: _base_pb2.Paginated
     sort_by: _base_pb2.SortBy
-    def __init__(self, group_by: _Optional[_Iterable[_Union[_base_pb2.GroupBy, _Mapping]]] = ..., sort_by: _Optional[_Union[_base_pb2.SortBy, _Mapping]] = ..., fields: _Optional[_Union[_base_pb2.Fields, _Mapping]] = ..., filter: _Optional[_Union[_base_pb2.Filter, _Mapping]] = ..., paginated: _Optional[_Union[_base_pb2.Paginated, _Mapping]] = ..., id: _Optional[str] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...) -> None: ...
+    def __init__(
+        self,
+        group_by: _Optional[_Iterable[_Union[_base_pb2.GroupBy, _Mapping]]] = ...,
+        sort_by: _Optional[_Union[_base_pb2.SortBy, _Mapping]] = ...,
+        fields: _Optional[_Union[_base_pb2.Fields, _Mapping]] = ...,
+        filter: _Optional[_Union[_base_pb2.Filter, _Mapping]] = ...,
+        paginated: _Optional[_Union[_base_pb2.Paginated, _Mapping]] = ...,
+        id: _Optional[str] = ...,
+        context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
+    ) -> None: ...
 
 class LanguageReadResponse(_message.Message):
     __slots__ = ["languages", "meta_data", "response_standard"]
@@ -80,19 +189,24 @@ class LanguageReadResponse(_message.Message):
     languages: _containers.RepeatedCompositeFieldContainer[Language]
     meta_data: _base_pb2.MetaData
     response_standard: _base_pb2.ResponseStandard
-    def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ..., meta_data: _Optional[_Union[_base_pb2.MetaData, _Mapping]] = ..., languages: _Optional[_Iterable[_Union[Language, _Mapping]]] = ...) -> None: ...
+    def __init__(
+        self,
+        response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
+        meta_data: _Optional[_Union[_base_pb2.MetaData, _Mapping]] = ...,
+        languages: _Optional[_Iterable[_Union[Language, _Mapping]]] = ...,
+    ) -> None: ...
 
 class LanguageUpdateRequest(_message.Message):
-    __slots__ = ["code", "context", "country_id", "language"]
-    CODE_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["context", "language"]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    COUNTRY_ID_FIELD_NUMBER: _ClassVar[int]
     LANGUAGE_FIELD_NUMBER: _ClassVar[int]
-    code: str
     context: _base_pb2.Context
-    country_id: str
     language: Language
-    def __init__(self, country_id: _Optional[str] = ..., code: _Optional[str] = ..., language: _Optional[_Union[Language, _Mapping]] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...) -> None: ...
+    def __init__(
+        self,
+        language: _Optional[_Union[Language, _Mapping]] = ...,
+        context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
+    ) -> None: ...
 
 class LanguageUpdateResponse(_message.Message):
     __slots__ = ["language", "response_standard"]
@@ -100,4 +214,8 @@ class LanguageUpdateResponse(_message.Message):
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
     language: Language
     response_standard: _base_pb2.ResponseStandard
-    def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ..., language: _Optional[_Union[Language, _Mapping]] = ...) -> None: ...
+    def __init__(
+        self,
+        response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
+        language: _Optional[_Union[Language, _Mapping]] = ...,
+    ) -> None: ...

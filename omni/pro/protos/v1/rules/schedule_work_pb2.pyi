@@ -8,7 +8,8 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
-from v1.rules import schedule_work_line_pb2 as _schedule_work_line_pb2
+from omni.pro.protos.v1.rules import calendar_pb2 as _calendar_pb2
+from omni.pro.protos.v1.rules import schedule_work_line_pb2 as _schedule_work_line_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
@@ -21,22 +22,38 @@ class ScheduleWork(_message.Message):
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     SCHEDULE_WORK_LINE_IDS_FIELD_NUMBER: _ClassVar[int]
     active: bool
-    calendar_id: int
-    id: int
+    calendar_id: _calendar_pb2.Calendar
+    id: str
     name: str
     object_audit: _base_pb2.ObjectAudit
     schedule_work_line_ids: _containers.RepeatedCompositeFieldContainer[_schedule_work_line_pb2.ScheduleWorkLine]
-    def __init__(self, id: _Optional[int] = ..., name: _Optional[str] = ..., calendar_id: _Optional[int] = ..., schedule_work_line_ids: _Optional[_Iterable[_Union[_schedule_work_line_pb2.ScheduleWorkLine, _Mapping]]] = ..., active: bool = ..., object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...) -> None: ...
+    def __init__(
+        self,
+        id: _Optional[str] = ...,
+        name: _Optional[str] = ...,
+        calendar_id: _Optional[_Union[_calendar_pb2.Calendar, _Mapping]] = ...,
+        schedule_work_line_ids: _Optional[_Iterable[_Union[_schedule_work_line_pb2.ScheduleWorkLine, _Mapping]]] = ...,
+        active: bool = ...,
+        object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
+    ) -> None: ...
 
 class ScheduleWorkCreateRequest(_message.Message):
-    __slots__ = ["calendar_id", "context", "name"]
+    __slots__ = ["calendar_id", "context", "name", "schedule_work_line_ids"]
     CALENDAR_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
-    calendar_id: int
+    SCHEDULE_WORK_LINE_IDS_FIELD_NUMBER: _ClassVar[int]
+    calendar_id: str
     context: _base_pb2.Context
     name: str
-    def __init__(self, name: _Optional[str] = ..., calendar_id: _Optional[int] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...) -> None: ...
+    schedule_work_line_ids: _containers.RepeatedScalarFieldContainer[str]
+    def __init__(
+        self,
+        name: _Optional[str] = ...,
+        calendar_id: _Optional[str] = ...,
+        schedule_work_line_ids: _Optional[_Iterable[str]] = ...,
+        context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
+    ) -> None: ...
 
 class ScheduleWorkCreateResponse(_message.Message):
     __slots__ = ["response_standard", "schedule_work"]
@@ -44,15 +61,21 @@ class ScheduleWorkCreateResponse(_message.Message):
     SCHEDULE_WORK_FIELD_NUMBER: _ClassVar[int]
     response_standard: _base_pb2.ResponseStandard
     schedule_work: ScheduleWork
-    def __init__(self, schedule_work: _Optional[_Union[ScheduleWork, _Mapping]] = ..., response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
+    def __init__(
+        self,
+        schedule_work: _Optional[_Union[ScheduleWork, _Mapping]] = ...,
+        response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
+    ) -> None: ...
 
 class ScheduleWorkDeleteRequest(_message.Message):
     __slots__ = ["context", "id"]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     ID_FIELD_NUMBER: _ClassVar[int]
     context: _base_pb2.Context
-    id: int
-    def __init__(self, id: _Optional[int] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...) -> None: ...
+    id: str
+    def __init__(
+        self, id: _Optional[str] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
+    ) -> None: ...
 
 class ScheduleWorkDeleteResponse(_message.Message):
     __slots__ = ["response_standard"]
@@ -73,10 +96,19 @@ class ScheduleWorkReadRequest(_message.Message):
     fields: _base_pb2.Fields
     filter: _base_pb2.Filter
     group_by: _containers.RepeatedCompositeFieldContainer[_base_pb2.GroupBy]
-    id: int
+    id: str
     paginated: _base_pb2.Paginated
     sort_by: _base_pb2.SortBy
-    def __init__(self, group_by: _Optional[_Iterable[_Union[_base_pb2.GroupBy, _Mapping]]] = ..., sort_by: _Optional[_Union[_base_pb2.SortBy, _Mapping]] = ..., fields: _Optional[_Union[_base_pb2.Fields, _Mapping]] = ..., filter: _Optional[_Union[_base_pb2.Filter, _Mapping]] = ..., paginated: _Optional[_Union[_base_pb2.Paginated, _Mapping]] = ..., id: _Optional[int] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...) -> None: ...
+    def __init__(
+        self,
+        group_by: _Optional[_Iterable[_Union[_base_pb2.GroupBy, _Mapping]]] = ...,
+        sort_by: _Optional[_Union[_base_pb2.SortBy, _Mapping]] = ...,
+        fields: _Optional[_Union[_base_pb2.Fields, _Mapping]] = ...,
+        filter: _Optional[_Union[_base_pb2.Filter, _Mapping]] = ...,
+        paginated: _Optional[_Union[_base_pb2.Paginated, _Mapping]] = ...,
+        id: _Optional[str] = ...,
+        context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
+    ) -> None: ...
 
 class ScheduleWorkReadResponse(_message.Message):
     __slots__ = ["meta_data", "response_standard", "schedules_work"]
@@ -86,7 +118,12 @@ class ScheduleWorkReadResponse(_message.Message):
     meta_data: _base_pb2.MetaData
     response_standard: _base_pb2.ResponseStandard
     schedules_work: _containers.RepeatedCompositeFieldContainer[ScheduleWork]
-    def __init__(self, schedules_work: _Optional[_Iterable[_Union[ScheduleWork, _Mapping]]] = ..., meta_data: _Optional[_Union[_base_pb2.MetaData, _Mapping]] = ..., response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
+    def __init__(
+        self,
+        schedules_work: _Optional[_Iterable[_Union[ScheduleWork, _Mapping]]] = ...,
+        meta_data: _Optional[_Union[_base_pb2.MetaData, _Mapping]] = ...,
+        response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
+    ) -> None: ...
 
 class ScheduleWorkUpdateRequest(_message.Message):
     __slots__ = ["context", "schedule_work"]
@@ -94,7 +131,11 @@ class ScheduleWorkUpdateRequest(_message.Message):
     SCHEDULE_WORK_FIELD_NUMBER: _ClassVar[int]
     context: _base_pb2.Context
     schedule_work: ScheduleWork
-    def __init__(self, schedule_work: _Optional[_Union[ScheduleWork, _Mapping]] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...) -> None: ...
+    def __init__(
+        self,
+        schedule_work: _Optional[_Union[ScheduleWork, _Mapping]] = ...,
+        context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
+    ) -> None: ...
 
 class ScheduleWorkUpdateResponse(_message.Message):
     __slots__ = ["response_standard", "schedule_work"]
@@ -102,4 +143,8 @@ class ScheduleWorkUpdateResponse(_message.Message):
     SCHEDULE_WORK_FIELD_NUMBER: _ClassVar[int]
     response_standard: _base_pb2.ResponseStandard
     schedule_work: ScheduleWork
-    def __init__(self, schedule_work: _Optional[_Union[ScheduleWork, _Mapping]] = ..., response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
+    def __init__(
+        self,
+        schedule_work: _Optional[_Union[ScheduleWork, _Mapping]] = ...,
+        response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
+    ) -> None: ...

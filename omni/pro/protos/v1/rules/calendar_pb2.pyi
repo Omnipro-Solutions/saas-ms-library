@@ -18,12 +18,12 @@ class Calendar(_message.Message):
     NAME_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     active: bool
-    id: int
+    id: str
     name: str
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
-        id: _Optional[int] = ...,
+        id: _Optional[str] = ...,
         name: _Optional[str] = ...,
         active: bool = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
@@ -56,9 +56,9 @@ class CalendarDeleteRequest(_message.Message):
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     ID_FIELD_NUMBER: _ClassVar[int]
     context: _base_pb2.Context
-    id: int
+    id: str
     def __init__(
-        self, id: _Optional[int] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
+        self, id: _Optional[str] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
     ) -> None: ...
 
 class CalendarDeleteResponse(_message.Message):
@@ -80,7 +80,7 @@ class CalendarReadRequest(_message.Message):
     fields: _base_pb2.Fields
     filter: _base_pb2.Filter
     group_by: _containers.RepeatedCompositeFieldContainer[_base_pb2.GroupBy]
-    id: int
+    id: str
     paginated: _base_pb2.Paginated
     sort_by: _base_pb2.SortBy
     def __init__(
@@ -90,7 +90,7 @@ class CalendarReadRequest(_message.Message):
         fields: _Optional[_Union[_base_pb2.Fields, _Mapping]] = ...,
         filter: _Optional[_Union[_base_pb2.Filter, _Mapping]] = ...,
         paginated: _Optional[_Union[_base_pb2.Paginated, _Mapping]] = ...,
-        id: _Optional[int] = ...,
+        id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 

@@ -13,33 +13,35 @@ _sym_db = _symbol_database.Default()
 
 
 from omni.pro.protos.common import base_pb2 as common_dot_base__pb2
+from omni.pro.protos.v1.rules import location_pb2 as v1_dot_rules_dot_location__pb2
+from omni.pro.protos.v1.rules import warehouse_pb2 as v1_dot_rules_dot_warehouse__pb2
 
 DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
-    b'\n"v1/rules/warehouse_hierarchy.proto\x12-pro.omni.oms.api.v1.rules.warehouse_hierarchy\x1a\x11\x63ommon/base.proto"\xe1\x01\n\x12WarehouseHierarchy\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x14\n\x0cwarehouse_id\x18\x02 \x01(\x05\x12\x13\n\x0blocation_id\x18\x03 \x01(\x05\x12\x19\n\x11quantity_security\x18\x04 \x01(\x02\x12\x10\n\x08sequence\x18\x05 \x01(\x05\x12\x16\n\x0esequence_order\x18\x06 \x01(\x08\x12\x0e\n\x06\x61\x63tive\x18\x07 \x01(\x08\x12?\n\x0cobject_audit\x18\x08 \x01(\x0b\x32).pro.omni.oms.api.common.base.ObjectAudit"\xc9\x01\n\x1fWarehouseHierarchyCreateRequest\x12\x14\n\x0cwarehouse_id\x18\x01 \x01(\x05\x12\x13\n\x0blocation_id\x18\x02 \x01(\x05\x12\x19\n\x11quantity_security\x18\x03 \x01(\x02\x12\x10\n\x08sequence\x18\x04 \x01(\x05\x12\x16\n\x0esequence_order\x18\x05 \x01(\x08\x12\x36\n\x07\x63ontext\x18\x06 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xcd\x01\n WarehouseHierarchyCreateResponse\x12^\n\x13warehouse_hierarchy\x18\x01 \x01(\x0b\x32\x41.pro.omni.oms.api.v1.rules.warehouse_hierarchy.WarehouseHierarchy\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\xfb\x02\n\x1dWarehouseHierarchyReadRequest\x12\x37\n\x08group_by\x18\x01 \x03(\x0b\x32%.pro.omni.oms.api.common.base.GroupBy\x12\x35\n\x07sort_by\x18\x02 \x01(\x0b\x32$.pro.omni.oms.api.common.base.SortBy\x12\x34\n\x06\x66ields\x18\x03 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Fields\x12\x34\n\x06\x66ilter\x18\x04 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Filter\x12:\n\tpaginated\x18\x05 \x01(\x0b\x32\'.pro.omni.oms.api.common.base.Paginated\x12\n\n\x02id\x18\x06 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x07 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\x87\x02\n\x1eWarehouseHierarchyReadResponse\x12_\n\x14warehouses_hierarchy\x18\x01 \x03(\x0b\x32\x41.pro.omni.oms.api.v1.rules.warehouse_hierarchy.WarehouseHierarchy\x12\x39\n\tmeta_data\x18\x02 \x01(\x0b\x32&.pro.omni.oms.api.common.base.MetaData\x12I\n\x11response_standard\x18\x03 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\xb9\x01\n\x1fWarehouseHierarchyUpdateRequest\x12^\n\x13warehouse_hierarchy\x18\x01 \x01(\x0b\x32\x41.pro.omni.oms.api.v1.rules.warehouse_hierarchy.WarehouseHierarchy\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xcd\x01\n WarehouseHierarchyUpdateResponse\x12^\n\x13warehouse_hierarchy\x18\x01 \x01(\x0b\x32\x41.pro.omni.oms.api.v1.rules.warehouse_hierarchy.WarehouseHierarchy\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"e\n\x1fWarehouseHierarchyDeleteRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"m\n WarehouseHierarchyDeleteResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard2\x95\x06\n\x19WarehouseHierarchyService\x12\xbd\x01\n\x18WarehouseHierarchyCreate\x12N.pro.omni.oms.api.v1.rules.warehouse_hierarchy.WarehouseHierarchyCreateRequest\x1aO.pro.omni.oms.api.v1.rules.warehouse_hierarchy.WarehouseHierarchyCreateResponse"\x00\x12\xb7\x01\n\x16WarehouseHierarchyRead\x12L.pro.omni.oms.api.v1.rules.warehouse_hierarchy.WarehouseHierarchyReadRequest\x1aM.pro.omni.oms.api.v1.rules.warehouse_hierarchy.WarehouseHierarchyReadResponse"\x00\x12\xbd\x01\n\x18WarehouseHierarchyUpdate\x12N.pro.omni.oms.api.v1.rules.warehouse_hierarchy.WarehouseHierarchyUpdateRequest\x1aO.pro.omni.oms.api.v1.rules.warehouse_hierarchy.WarehouseHierarchyUpdateResponse"\x00\x12\xbd\x01\n\x18WarehouseHierarchyDelete\x12N.pro.omni.oms.api.v1.rules.warehouse_hierarchy.WarehouseHierarchyDeleteRequest\x1aO.pro.omni.oms.api.v1.rules.warehouse_hierarchy.WarehouseHierarchyDeleteResponse"\x00\x62\x06proto3'
+    b'\n"v1/rules/warehouse_hierarchy.proto\x12-pro.omni.oms.api.v1.rules.warehouse_hierarchy\x1a\x11\x63ommon/base.proto\x1a\x18v1/rules/warehouse.proto\x1a\x17v1/rules/location.proto"\xbf\x02\n\x12WarehouseHierarchy\x12\n\n\x02id\x18\x01 \x01(\t\x12\x44\n\x0cwarehouse_id\x18\x03 \x01(\x0b\x32..pro.omni.oms.api.v1.rules.warehouse.Warehouse\x12\x41\n\x0blocation_id\x18\t \x01(\x0b\x32,.pro.omni.oms.api.v1.rules.location.Location\x12\x19\n\x11quantity_security\x18\x04 \x01(\x02\x12\x10\n\x08sequence\x18\x05 \x01(\x05\x12\x16\n\x0esequence_order\x18\x06 \x01(\x08\x12\x0e\n\x06\x61\x63tive\x18\x07 \x01(\x08\x12?\n\x0cobject_audit\x18\x08 \x01(\x0b\x32).pro.omni.oms.api.common.base.ObjectAudit"\xc9\x01\n\x1fWarehouseHierarchyCreateRequest\x12\x14\n\x0cwarehouse_id\x18\x01 \x01(\t\x12\x13\n\x0blocation_id\x18\x02 \x01(\t\x12\x19\n\x11quantity_security\x18\x03 \x01(\x02\x12\x10\n\x08sequence\x18\x04 \x01(\x05\x12\x16\n\x0esequence_order\x18\x05 \x01(\x08\x12\x36\n\x07\x63ontext\x18\x06 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xcd\x01\n WarehouseHierarchyCreateResponse\x12^\n\x13warehouse_hierarchy\x18\x01 \x01(\x0b\x32\x41.pro.omni.oms.api.v1.rules.warehouse_hierarchy.WarehouseHierarchy\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\xfb\x02\n\x1dWarehouseHierarchyReadRequest\x12\x37\n\x08group_by\x18\x01 \x03(\x0b\x32%.pro.omni.oms.api.common.base.GroupBy\x12\x35\n\x07sort_by\x18\x02 \x01(\x0b\x32$.pro.omni.oms.api.common.base.SortBy\x12\x34\n\x06\x66ields\x18\x03 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Fields\x12\x34\n\x06\x66ilter\x18\x04 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Filter\x12:\n\tpaginated\x18\x05 \x01(\x0b\x32\'.pro.omni.oms.api.common.base.Paginated\x12\n\n\x02id\x18\x06 \x01(\t\x12\x36\n\x07\x63ontext\x18\x07 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\x87\x02\n\x1eWarehouseHierarchyReadResponse\x12_\n\x14warehouses_hierarchy\x18\x01 \x03(\x0b\x32\x41.pro.omni.oms.api.v1.rules.warehouse_hierarchy.WarehouseHierarchy\x12\x39\n\tmeta_data\x18\x02 \x01(\x0b\x32&.pro.omni.oms.api.common.base.MetaData\x12I\n\x11response_standard\x18\x03 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\xb9\x01\n\x1fWarehouseHierarchyUpdateRequest\x12^\n\x13warehouse_hierarchy\x18\x01 \x01(\x0b\x32\x41.pro.omni.oms.api.v1.rules.warehouse_hierarchy.WarehouseHierarchy\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xcd\x01\n WarehouseHierarchyUpdateResponse\x12^\n\x13warehouse_hierarchy\x18\x01 \x01(\x0b\x32\x41.pro.omni.oms.api.v1.rules.warehouse_hierarchy.WarehouseHierarchy\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"e\n\x1fWarehouseHierarchyDeleteRequest\x12\n\n\x02id\x18\x01 \x01(\t\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"m\n WarehouseHierarchyDeleteResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard2\x95\x06\n\x19WarehouseHierarchyService\x12\xbd\x01\n\x18WarehouseHierarchyCreate\x12N.pro.omni.oms.api.v1.rules.warehouse_hierarchy.WarehouseHierarchyCreateRequest\x1aO.pro.omni.oms.api.v1.rules.warehouse_hierarchy.WarehouseHierarchyCreateResponse"\x00\x12\xb7\x01\n\x16WarehouseHierarchyRead\x12L.pro.omni.oms.api.v1.rules.warehouse_hierarchy.WarehouseHierarchyReadRequest\x1aM.pro.omni.oms.api.v1.rules.warehouse_hierarchy.WarehouseHierarchyReadResponse"\x00\x12\xbd\x01\n\x18WarehouseHierarchyUpdate\x12N.pro.omni.oms.api.v1.rules.warehouse_hierarchy.WarehouseHierarchyUpdateRequest\x1aO.pro.omni.oms.api.v1.rules.warehouse_hierarchy.WarehouseHierarchyUpdateResponse"\x00\x12\xbd\x01\n\x18WarehouseHierarchyDelete\x12N.pro.omni.oms.api.v1.rules.warehouse_hierarchy.WarehouseHierarchyDeleteRequest\x1aO.pro.omni.oms.api.v1.rules.warehouse_hierarchy.WarehouseHierarchyDeleteResponse"\x00\x62\x06proto3'
 )
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, "v1.rules.warehouse_hierarchy_pb2", globals())
 if _descriptor._USE_C_DESCRIPTORS == False:
     DESCRIPTOR._options = None
-    _WAREHOUSEHIERARCHY._serialized_start = 105
-    _WAREHOUSEHIERARCHY._serialized_end = 330
-    _WAREHOUSEHIERARCHYCREATEREQUEST._serialized_start = 333
-    _WAREHOUSEHIERARCHYCREATEREQUEST._serialized_end = 534
-    _WAREHOUSEHIERARCHYCREATERESPONSE._serialized_start = 537
-    _WAREHOUSEHIERARCHYCREATERESPONSE._serialized_end = 742
-    _WAREHOUSEHIERARCHYREADREQUEST._serialized_start = 745
-    _WAREHOUSEHIERARCHYREADREQUEST._serialized_end = 1124
-    _WAREHOUSEHIERARCHYREADRESPONSE._serialized_start = 1127
-    _WAREHOUSEHIERARCHYREADRESPONSE._serialized_end = 1390
-    _WAREHOUSEHIERARCHYUPDATEREQUEST._serialized_start = 1393
-    _WAREHOUSEHIERARCHYUPDATEREQUEST._serialized_end = 1578
-    _WAREHOUSEHIERARCHYUPDATERESPONSE._serialized_start = 1581
-    _WAREHOUSEHIERARCHYUPDATERESPONSE._serialized_end = 1786
-    _WAREHOUSEHIERARCHYDELETEREQUEST._serialized_start = 1788
-    _WAREHOUSEHIERARCHYDELETEREQUEST._serialized_end = 1889
-    _WAREHOUSEHIERARCHYDELETERESPONSE._serialized_start = 1891
-    _WAREHOUSEHIERARCHYDELETERESPONSE._serialized_end = 2000
-    _WAREHOUSEHIERARCHYSERVICE._serialized_start = 2003
-    _WAREHOUSEHIERARCHYSERVICE._serialized_end = 2792
+    _WAREHOUSEHIERARCHY._serialized_start = 156
+    _WAREHOUSEHIERARCHY._serialized_end = 475
+    _WAREHOUSEHIERARCHYCREATEREQUEST._serialized_start = 478
+    _WAREHOUSEHIERARCHYCREATEREQUEST._serialized_end = 679
+    _WAREHOUSEHIERARCHYCREATERESPONSE._serialized_start = 682
+    _WAREHOUSEHIERARCHYCREATERESPONSE._serialized_end = 887
+    _WAREHOUSEHIERARCHYREADREQUEST._serialized_start = 890
+    _WAREHOUSEHIERARCHYREADREQUEST._serialized_end = 1269
+    _WAREHOUSEHIERARCHYREADRESPONSE._serialized_start = 1272
+    _WAREHOUSEHIERARCHYREADRESPONSE._serialized_end = 1535
+    _WAREHOUSEHIERARCHYUPDATEREQUEST._serialized_start = 1538
+    _WAREHOUSEHIERARCHYUPDATEREQUEST._serialized_end = 1723
+    _WAREHOUSEHIERARCHYUPDATERESPONSE._serialized_start = 1726
+    _WAREHOUSEHIERARCHYUPDATERESPONSE._serialized_end = 1931
+    _WAREHOUSEHIERARCHYDELETEREQUEST._serialized_start = 1933
+    _WAREHOUSEHIERARCHYDELETEREQUEST._serialized_end = 2034
+    _WAREHOUSEHIERARCHYDELETERESPONSE._serialized_start = 2036
+    _WAREHOUSEHIERARCHYDELETERESPONSE._serialized_end = 2145
+    _WAREHOUSEHIERARCHYSERVICE._serialized_start = 2148
+    _WAREHOUSEHIERARCHYSERVICE._serialized_end = 2937
 # @@protoc_insertion_point(module_scope)

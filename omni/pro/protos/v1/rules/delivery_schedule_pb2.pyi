@@ -8,7 +8,8 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
-from v1.rules import warehouse_hierarchy_pb2 as _warehouse_hierarchy_pb2
+from omni.pro.protos.v1.rules import schedule_work_pb2 as _schedule_work_pb2
+from omni.pro.protos.v1.rules import warehouse_hierarchy_pb2 as _warehouse_hierarchy_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
@@ -21,16 +22,16 @@ class DeliverySchedule(_message.Message):
     SCHEDULE_WORK_ID_FIELD_NUMBER: _ClassVar[int]
     TRANSFER_WAREHOUSE_IDS_FIELD_NUMBER: _ClassVar[int]
     active: bool
-    id: int
+    id: str
     name: str
     object_audit: _base_pb2.ObjectAudit
-    schedule_work_id: int
+    schedule_work_id: _schedule_work_pb2.ScheduleWork
     transfer_warehouse_ids: _containers.RepeatedCompositeFieldContainer[_warehouse_hierarchy_pb2.WarehouseHierarchy]
     def __init__(
         self,
-        id: _Optional[int] = ...,
+        id: _Optional[str] = ...,
         name: _Optional[str] = ...,
-        schedule_work_id: _Optional[int] = ...,
+        schedule_work_id: _Optional[_Union[_schedule_work_pb2.ScheduleWork, _Mapping]] = ...,
         transfer_warehouse_ids: _Optional[
             _Iterable[_Union[_warehouse_hierarchy_pb2.WarehouseHierarchy, _Mapping]]
         ] = ...,
@@ -39,17 +40,20 @@ class DeliverySchedule(_message.Message):
     ) -> None: ...
 
 class DeliveryScheduleCreateRequest(_message.Message):
-    __slots__ = ["context", "name", "schedule_work_id"]
+    __slots__ = ["context", "name", "schedule_work_id", "transfer_warehouse_ids"]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     SCHEDULE_WORK_ID_FIELD_NUMBER: _ClassVar[int]
+    TRANSFER_WAREHOUSE_IDS_FIELD_NUMBER: _ClassVar[int]
     context: _base_pb2.Context
     name: str
-    schedule_work_id: int
+    schedule_work_id: str
+    transfer_warehouse_ids: _containers.RepeatedScalarFieldContainer[str]
     def __init__(
         self,
         name: _Optional[str] = ...,
-        schedule_work_id: _Optional[int] = ...,
+        schedule_work_id: _Optional[str] = ...,
+        transfer_warehouse_ids: _Optional[_Iterable[str]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
@@ -70,9 +74,9 @@ class DeliveryScheduleDeleteRequest(_message.Message):
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     ID_FIELD_NUMBER: _ClassVar[int]
     context: _base_pb2.Context
-    id: int
+    id: str
     def __init__(
-        self, id: _Optional[int] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
+        self, id: _Optional[str] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
     ) -> None: ...
 
 class DeliveryScheduleDeleteResponse(_message.Message):
@@ -94,7 +98,7 @@ class DeliveryScheduleReadRequest(_message.Message):
     fields: _base_pb2.Fields
     filter: _base_pb2.Filter
     group_by: _containers.RepeatedCompositeFieldContainer[_base_pb2.GroupBy]
-    id: int
+    id: str
     paginated: _base_pb2.Paginated
     sort_by: _base_pb2.SortBy
     def __init__(
@@ -104,7 +108,7 @@ class DeliveryScheduleReadRequest(_message.Message):
         fields: _Optional[_Union[_base_pb2.Fields, _Mapping]] = ...,
         filter: _Optional[_Union[_base_pb2.Filter, _Mapping]] = ...,
         paginated: _Optional[_Union[_base_pb2.Paginated, _Mapping]] = ...,
-        id: _Optional[int] = ...,
+        id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 

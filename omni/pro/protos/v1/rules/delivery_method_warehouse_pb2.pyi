@@ -9,7 +9,7 @@ from google.protobuf import message as _message
 from google.protobuf.internal import containers as _containers
 from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
 from omni.pro.protos.common import base_pb2 as _base_pb2
-from v1.rules import warehouse_hierarchy_pb2 as _warehouse_hierarchy_pb2
+from omni.pro.protos.v1.rules import warehouse_hierarchy_pb2 as _warehouse_hierarchy_pb2
 
 ASC: SortBy
 DESC: SortBy
@@ -25,13 +25,13 @@ class DeliveryMethodWarehouse(_message.Message):
     TRANSFER_WAREHOUSE_IDS_FIELD_NUMBER: _ClassVar[int]
     active: bool
     hierarchi_warehouse_sort_by: SortBy
-    id: int
+    id: str
     name: str
     object_audit: _base_pb2.ObjectAudit
     transfer_warehouse_ids: _containers.RepeatedCompositeFieldContainer[_warehouse_hierarchy_pb2.WarehouseHierarchy]
     def __init__(
         self,
-        id: _Optional[int] = ...,
+        id: _Optional[str] = ...,
         name: _Optional[str] = ...,
         hierarchi_warehouse_sort_by: _Optional[_Union[SortBy, str]] = ...,
         transfer_warehouse_ids: _Optional[
@@ -42,16 +42,19 @@ class DeliveryMethodWarehouse(_message.Message):
     ) -> None: ...
 
 class DeliveryMethodWarehouseCreateRequest(_message.Message):
-    __slots__ = ["context", "hierarchi_warehouse_sort_by", "name"]
+    __slots__ = ["context", "hierarchi_warehouse_sort_by", "name", "transfer_warehouse_ids"]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     HIERARCHI_WAREHOUSE_SORT_BY_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
+    TRANSFER_WAREHOUSE_IDS_FIELD_NUMBER: _ClassVar[int]
     context: _base_pb2.Context
     hierarchi_warehouse_sort_by: SortBy
     name: str
+    transfer_warehouse_ids: _containers.RepeatedScalarFieldContainer[str]
     def __init__(
         self,
         name: _Optional[str] = ...,
+        transfer_warehouse_ids: _Optional[_Iterable[str]] = ...,
         hierarchi_warehouse_sort_by: _Optional[_Union[SortBy, str]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
@@ -73,9 +76,9 @@ class DeliveryMethodWarehouseDeleteRequest(_message.Message):
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     ID_FIELD_NUMBER: _ClassVar[int]
     context: _base_pb2.Context
-    id: int
+    id: str
     def __init__(
-        self, id: _Optional[int] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
+        self, id: _Optional[str] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
     ) -> None: ...
 
 class DeliveryMethodWarehouseDeleteResponse(_message.Message):
@@ -97,7 +100,7 @@ class DeliveryMethodWarehouseReadRequest(_message.Message):
     fields: _base_pb2.Fields
     filter: _base_pb2.Filter
     group_by: _containers.RepeatedCompositeFieldContainer[_base_pb2.GroupBy]
-    id: int
+    id: str
     paginated: _base_pb2.Paginated
     sort_by: _base_pb2.SortBy
     def __init__(
@@ -107,7 +110,7 @@ class DeliveryMethodWarehouseReadRequest(_message.Message):
         fields: _Optional[_Union[_base_pb2.Fields, _Mapping]] = ...,
         filter: _Optional[_Union[_base_pb2.Filter, _Mapping]] = ...,
         paginated: _Optional[_Union[_base_pb2.Paginated, _Mapping]] = ...,
-        id: _Optional[int] = ...,
+        id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
