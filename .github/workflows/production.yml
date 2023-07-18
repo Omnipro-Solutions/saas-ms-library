@@ -13,6 +13,11 @@ jobs:
       - name: Checkout branch
         uses: actions/checkout@v2
 
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x' # use the latest version of Python 3
+
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
@@ -27,13 +32,17 @@ jobs:
           with-v: "true"
           bump: patch
 
-      - name: Run Setup.py and Rename Files
+      - name: Update version in setup.py
+        run: sed -i 's/VERSION = "0.0.0"/VERSION = "${{ steps.generate_release_tag.outputs.new-tag }}"/g' setup.py
+
+      - name: Build package
         run: |
-          python setup.py bdist_wheel -k -u 
+          python -m pip install --upgrade build
+          python -m build
+
+      - name: LS
+        run: |
           ls -la dist/
-          ls -la build/bdist.linux-x86_64/wheel/omni_pro-0.0.0.dist-info
-          mv dist/omni_pro-0.0.0-py3-none-any.whl "dist/omni_pro-${{ steps.generate_release_tag.outputs.new-tag }}-py3-none-any.whl"
-          mv build/bdist.linux-x86_64/wheel/omni_pro-0.0.0.dist-info "build/bdist.linux-x86_64/wheel/omni_pro-${{ steps.generate_release_tag.outputs.new-tag }}.dist-info"
 
       - name: Check Output Parameters
         run: |
@@ -57,11 +66,11 @@ jobs:
           release_id: ${{ steps.create_release.outputs.id }}
           assets_path: dist/
 
-#      - name: Publish package PYPI
-#        uses: pypa/gh-action-pypi-publish@27b31702a0e7fc50959f5ad993c78deac1bdfc29
-#        with:
-#          user: __token__
-#          password: ${{ secrets.PYPI_API_TOKEN }}
+      - name: Publish package PYPI
+        uses: pypa/gh-action-pypi-publish@27b31702a0e7fc50959f5ad993c78deac1bdfc29
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_API_TOKEN }}
 
 
 #  deploy-minor:
