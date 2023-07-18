@@ -6,8 +6,9 @@ on:
       - master
 
 jobs:
-  deploy:
+  deploy-patch:
     runs-on: ubuntu-latest
+    if: github.event_name == 'push' && contains(github.ref, 'tags/')
     steps:
       - name: Checkout branch
         uses: actions/checkout@v2
@@ -28,7 +29,53 @@ jobs:
         with:
           github-token: ${{ secrets.TOKEN_GITHUB}}
           with-v: "true"
-          bump: ${{ if and(eq(github.event_name, 'push'), contains(github.ref, 'tags/')) }}patch{{ else }}minor{{ endif }}
+          bump: patch
+
+      - name: Check Output Parameters
+        run: |
+          echo "Got tag name ${{ steps.generate_release_tag.outputs.new-tag }}"
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
+        with:
+          tag_name: ${{ steps.generate_release_tag.outputs.new-tag }}
+          release_name: Release ${{ steps.generate_release_tag.outputs.new-tag }}
+
+      - name: Upload Release Assets
+        id: upload-release-assets
+        uses: dwenegar/upload-release-assets@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
+        with:
+          release_id: ${{ steps.create_release.outputs.id }}
+          assets_path: dist/
+
+  deploy-minor:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && !contains(github.ref, 'tags/')
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v2
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          # install your Python dependencies here
+          pip3 install -r requirements.txt
+      - name: Deploy Library on dist folder
+        run: |
+          python setup.py bdist_wheel
+          ls -la dist/
+
+      - name: Get next version
+        id: generate_release_tag
+        uses: phish108/autotag-action@1.1.53
+        with:
+          github-token: ${{ secrets.TOKEN_GITHUB}}
+          with-v: "true"
+          bump: patch
 
       - name: Check Output Parameters
         run: |
