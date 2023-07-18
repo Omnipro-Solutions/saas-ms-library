@@ -29,7 +29,7 @@ jobs:
 
       - name: Run Setup.py and Rename Files
         run: |
-          python setup.py bdist_wheel -k
+          python setup.py bdist_wheel -k -u 
           ls -la dist/
           ls -la build/bdist.linux-x86_64/wheel/omni_pro-0.0.0.dist-info
           mv dist/omni_pro-0.0.0-py3-none-any.whl "dist/omni_pro-${{ steps.generate_release_tag.outputs.new-tag }}-py3-none-any.whl"
@@ -57,11 +57,11 @@ jobs:
           release_id: ${{ steps.create_release.outputs.id }}
           assets_path: dist/
 
-      - name: Publish package PYPI
-        uses: pypa/gh-action-pypi-publish@27b31702a0e7fc50959f5ad993c78deac1bdfc29
-        with:
-          user: __token__
-          password: ${{ secrets.PYPI_API_TOKEN }}
+#      - name: Publish package PYPI
+#        uses: pypa/gh-action-pypi-publish@27b31702a0e7fc50959f5ad993c78deac1bdfc29
+#        with:
+#          user: __token__
+#          password: ${{ secrets.PYPI_API_TOKEN }}
 
 
 #  deploy-minor:
