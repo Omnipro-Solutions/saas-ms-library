@@ -19,11 +19,6 @@ jobs:
           # install your Python dependencies here
           pip3 install -r requirements.txt
 
-      - name: Deploy Library on dist folder
-        run: |
-          python setup.py bdist_wheel
-          ls -la dist/
-
       - name: Get next version
         id: generate_release_tag
         uses: phish108/autotag-action@1.1.53
@@ -32,11 +27,14 @@ jobs:
           with-v: "true"
           bump: patch
 
-      - name: Add RC
-        if: contains(steps.generate_release_tag.outputs.new-tag, 'rc')
+      - name: Deploy Library on dist folder
         run: |
-          echo "Add suffix RC"
-          echo "::set-output name=new-tag::${{ steps.generate_release_tag.outputs.new-tag }}-rc${{ github.run_number }}"
+          python setup.py bdist_wheel
+          ls -la dist/
+
+      - name: Rename File
+        run: | 
+          mv dist/omni_pro-0.0.0.py3-none-any.whl "dist/omni_pro-${{ steps.generate_release_tag.outputs.new-tag }}.whl"
 
       - name: Check Output Parameters
         run: |
