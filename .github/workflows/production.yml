@@ -34,7 +34,7 @@ jobs:
 
       - name: Rename File
         run: | 
-          mv dist/omni_pro-0.0.0.py3-none-any.whl "dist/omni_pro-${{ steps.generate_release_tag.outputs.new-tag }}.whl"
+          mv dist/omni_pro-0.0.0-py3-none-any.whl "dist/omni_pro-${{ steps.generate_release_tag.outputs.new-tag }}-py3-none-any.whl"
 
       - name: Check Output Parameters
         run: |
