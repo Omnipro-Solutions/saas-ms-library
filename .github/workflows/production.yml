@@ -18,6 +18,7 @@ jobs:
           python -m pip install --upgrade pip
           # install your Python dependencies here
           pip3 install -r requirements.txt
+
       - name: Deploy Library on dist folder
         run: |
           python setup.py bdist_wheel
@@ -31,9 +32,16 @@ jobs:
           with-v: "true"
           bump: patch
 
+      - name: Add RC
+        if: contains(steps.generate_release_tag.outputs.new-tag, 'rc')
+        run: |
+          echo "Add suffix RC"
+          echo "::set-output name=new-tag::${{ steps.generate_release_tag.outputs.new-tag }}-rc${{ github.run_number }}"
+
       - name: Check Output Parameters
         run: |
           echo "Got tag name ${{ steps.generate_release_tag.outputs.new-tag }}"
+
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
