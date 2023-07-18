@@ -30,7 +30,7 @@ jobs:
       - name: Deploy Library on dist folder
         run: |
           python setup.py bdist_wheel
-          find / -type d -name "omni_pro-0.0.0.dist-info"
+          find . -type d -name "omni_pro-0.0.0.dist-info"
           pwd
           ls -la
           ls -la dist/
