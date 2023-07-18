@@ -15,11 +15,14 @@ AUTHOR_EMAIL = "development@omni.pro"
 URL = "https://github.com/Omnipro-Solutions/saas-ms-library"
 
 INSTALL_REQUIRES = [
-    "boto3==1.26.75",
-    "mongoengine==0.26.0",
+    "protobuf==4.23.4",
+    "grpcio==1.56.0",
+    "grpcio-tools==1.56.0",
+    "boto3==1.28.4",
+    "mongoengine==0.27.0",
     "marshmallow==3.19.0",
-    "hiredis==2.2.2",
-    "redis==4.5.1",
+    "hiredis==2.2.3",
+    "redis==4.6.0",
     "peewee==3.16.2",
 ]
 
