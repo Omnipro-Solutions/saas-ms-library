@@ -30,6 +30,8 @@ jobs:
       - name: Deploy Library on dist folder
         run: |
           python setup.py bdist_wheel
+          pdw
+          ls -la
           ls -la dist/
 
       - name: Rename File
@@ -58,11 +60,11 @@ jobs:
           release_id: ${{ steps.create_release.outputs.id }}
           assets_path: dist/
 
-      - name: Publish package PYPI
-        uses: pypa/gh-action-pypi-publish@27b31702a0e7fc50959f5ad993c78deac1bdfc29
-        with:
-          user: __token__
-          password: ${{ secrets.PYPI_API_TOKEN }}
+#      - name: Publish package PYPI
+#        uses: pypa/gh-action-pypi-publish@27b31702a0e7fc50959f5ad993c78deac1bdfc29
+#        with:
+#          user: __token__
+#          password: ${{ secrets.PYPI_API_TOKEN }}
 
 
 #  deploy-minor:
