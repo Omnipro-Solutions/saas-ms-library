@@ -8,7 +8,6 @@ on:
 jobs:
   deploy-patch:
     runs-on: ubuntu-latest
-    #if: github.event_name == 'push' && contains(github.ref, 'tags/')
     steps:
       - name: Checkout branch
         uses: actions/checkout@v2
@@ -16,13 +15,12 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.x' # use the latest version of Python 3
+          python-version: '3.10'
 
-      - name: Install Python dependencies
+      - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          # install your Python dependencies here
-          pip3 install -r requirements.txt
+          python -m pip install --upgrade pip build
+          pip install -r requirements.txt
 
       - name: Get next version
         id: generate_release_tag
@@ -36,13 +34,7 @@ jobs:
         run: sed -i 's/VERSION = "0.0.0"/VERSION = "${{ steps.generate_release_tag.outputs.new-tag }}"/g' setup.py
 
       - name: Build package
-        run: |
-          python -m pip install --upgrade build
-          python -m build
-
-      - name: LS
-        run: |
-          ls -la dist/
+        run: python -m build
 
       - name: Check Output Parameters
         run: |
@@ -71,6 +63,7 @@ jobs:
         with:
           user: __token__
           password: ${{ secrets.PYPI_API_TOKEN }}
+
 
 
 #  deploy-minor:
