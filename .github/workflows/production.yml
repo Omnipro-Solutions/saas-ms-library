@@ -75,7 +75,7 @@ jobs:
         with:
           github-token: ${{ secrets.TOKEN_GITHUB}}
           with-v: "true"
-          bump: patch
+          bump: minor
 
       - name: Check Output Parameters
         run: |
