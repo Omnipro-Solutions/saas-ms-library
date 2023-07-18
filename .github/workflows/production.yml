@@ -1,4 +1,4 @@
-name: Generate Python Library
+name: Generate Files Python Library
 
 on:
   push:
