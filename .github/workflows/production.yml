@@ -1,4 +1,4 @@
-name: Deploy Python Library
+name: Generate Python Library
 
 on:
   push:
@@ -28,7 +28,7 @@ jobs:
         with:
           github-token: ${{ secrets.TOKEN_GITHUB}}
           with-v: "true"
-          bump: patch
+          bump: ${{ github.event_name == "push" && startsWith(github.ref, "refs/tags/") ? "patch" : "minor" }}
 
       - name: Check Output Parameters
         run: |
