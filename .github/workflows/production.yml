@@ -30,7 +30,7 @@ jobs:
       - name: Deploy Library on dist folder
         run: |
           python setup.py bdist_wheel
-          pdw
+          pwd
           ls -la
           ls -la dist/
 
