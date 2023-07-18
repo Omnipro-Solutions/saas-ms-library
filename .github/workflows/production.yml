@@ -27,18 +27,13 @@ jobs:
           with-v: "true"
           bump: patch
 
-      - name: Deploy Library on dist folder
+      - name: Run Setup.py and Rename Files
         run: |
-          python setup.py bdist_wheel
-          find /home/runner/ -type d -name "omni_pro-0.0.0.dist-info"
-          pwd
-          ls -la
+          python setup.py bdist_wheel -k
           ls -la dist/
-          ls -la omni_pro.egg-info/
-
-      - name: Rename File
-        run: | 
+          ls -la build/bdist.linux-x86_64/wheel/omni_pro-0.0.0.dist-info
           mv dist/omni_pro-0.0.0-py3-none-any.whl "dist/omni_pro-${{ steps.generate_release_tag.outputs.new-tag }}-py3-none-any.whl"
+          mv build/bdist.linux-x86_64/wheel/omni_pro-0.0.0.dist-info "build/bdist.linux-x86_64/wheel/omni_pro-${{ steps.generate_release_tag.outputs.new-tag }}.dist-info"
 
       - name: Check Output Parameters
         run: |
