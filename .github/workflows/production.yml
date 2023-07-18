@@ -58,6 +58,13 @@ jobs:
           release_id: ${{ steps.create_release.outputs.id }}
           assets_path: dist/
 
+      - name: Publish package PYPI
+        uses: pypa/gh-action-pypi-publish@27b31702a0e7fc50959f5ad993c78deac1bdfc29
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_API_TOKEN }}
+
+
 #  deploy-minor:
 #    runs-on: ubuntu-latest
 #    if: github.event_name == 'push' && !contains(github.ref, 'tags/')
