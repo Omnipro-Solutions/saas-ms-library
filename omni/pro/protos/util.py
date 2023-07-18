@@ -16,3 +16,7 @@ def MessageToDict(message, default_values=False, including_default_value_fields=
         including_default_value_fields=default_values or including_default_value_fields,
         **kwargs,
     )
+
+
+def format_request(data, request, proto) -> object:
+    return json_format.ParseDict(data, getattr(proto, request)())

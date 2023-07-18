@@ -1,13 +1,12 @@
 import importlib
-from pathlib import Path
 
 import grpc
 from grpc._channel import Channel
 from grpc.experimental import _insecure_channel_credentials
-from omni.pro import util
 from omni.pro.cloudmap import CloudMap
 from omni.pro.config import Config
 from omni.pro.logger import configure_logger
+from omni.pro.protos.util import format_request
 
 logger = configure_logger(name=__name__)
 
@@ -60,29 +59,28 @@ class GRPClient(object):
     def call_rpc_fuction(self, event: Event):
         """
         function to call rpc function
-        :param event: dict with params to call rpc function
-        event = {
-            "module_grpc": "v1.users.user_pb2_grpc",
-            "stub_classname": "UsersServiceStub",
-            "rpc_method": "UserRead",
-            "module_pb2": "v1.users.user_pb2",
-            "request_class": "UserReadRequest",
-            "params": {"id": "64adc0477be3ec5e9160b16e", "context": {"tenant": "SPLA", "user": "admin"}},
-        }
+        :param event: Event with params to call rpc function
+        ```
+        event = Event(
+            module_grpc="v1.users.user_pb2_grpc",
+            stub_classname="UsersServiceStub",
+            rpc_method="UserRead",
+            module_pb2="v1.users.user_pb2",
+            request_class="UserReadRequest",
+            params={"id": "64adc0477be3ec5e9160b16e", "context": {"tenant": "SPLA", "user": "admin"}},
+        )
+        response, success = GRPClient(service_id=Config.SERVICE_ID).call_rpc_fuction(event)
+        ```
         """
         with OmniChannel(self.service_id) as channel:
             stub = event.get("service_stub")
             stub_classname = event.get("stub_classname")
-            parent_path = Path(__file__).parent
-            modulo_grpc = util.load_file_module(
-                parent_path / (event.get("module_grpc").replace(".", "/") + ".py"), stub_classname
-            )
-            stub = getattr(modulo_grpc, stub_classname)(channel)
+            path_module = "omni.pro.protos"
+            module_grpc = importlib.import_module(f"{path_module}.{event.get('module_grpc')}")
+            stub = getattr(module_grpc, stub_classname)(channel)
             request_class = event.get("request_class")
-            module_pb2 = util.load_file_module(
-                parent_path / (event.get("module_pb2").replace(".", "/") + ".py"), request_class
-            )
-            request = getattr(module_pb2, request_class)(**event.get("params"))
+            module_pb2 = importlib.import_module(f"{path_module}.{event.get('module_pb2')}")
+            request = format_request(event.get("params"), request_class, module_pb2)
             # Instance the method rpc que recibe el request
             response = getattr(stub, event.get("rpc_method"))(request)
             success = response.response_standard.status_code in range(200, 300)
