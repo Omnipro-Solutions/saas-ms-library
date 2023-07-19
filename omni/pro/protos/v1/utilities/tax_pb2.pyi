@@ -13,25 +13,25 @@ from omni.pro.protos.common import base_pb2 as _base_pb2
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Tax(_message.Message):
-    __slots__ = ["active", "code", "decimal_places", "id", "name", "object_audit", "position", "rate", "rounding"]
-    ACTIVE_FIELD_NUMBER: _ClassVar[int]
-    CODE_FIELD_NUMBER: _ClassVar[int]
-    DECIMAL_PLACES_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["id", "name", "code", "rate", "rounding", "decimal_places", "position", "active", "object_audit"]
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
-    OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
-    POSITION_FIELD_NUMBER: _ClassVar[int]
+    CODE_FIELD_NUMBER: _ClassVar[int]
     RATE_FIELD_NUMBER: _ClassVar[int]
     ROUNDING_FIELD_NUMBER: _ClassVar[int]
-    active: _wrappers_pb2.BoolValue
-    code: str
-    decimal_places: int
+    DECIMAL_PLACES_FIELD_NUMBER: _ClassVar[int]
+    POSITION_FIELD_NUMBER: _ClassVar[int]
+    ACTIVE_FIELD_NUMBER: _ClassVar[int]
+    OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
-    object_audit: _base_pb2.ObjectAudit
-    position: str
+    code: str
     rate: float
     rounding: float
+    decimal_places: int
+    position: str
+    active: _wrappers_pb2.BoolValue
+    object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
         id: _Optional[str] = ...,
@@ -46,21 +46,21 @@ class Tax(_message.Message):
     ) -> None: ...
 
 class TaxAddRequest(_message.Message):
-    __slots__ = ["code", "context", "decimal_places", "name", "position", "rate", "rounding"]
-    CODE_FIELD_NUMBER: _ClassVar[int]
-    CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    DECIMAL_PLACES_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["name", "code", "rate", "rounding", "decimal_places", "position", "context"]
     NAME_FIELD_NUMBER: _ClassVar[int]
-    POSITION_FIELD_NUMBER: _ClassVar[int]
+    CODE_FIELD_NUMBER: _ClassVar[int]
     RATE_FIELD_NUMBER: _ClassVar[int]
     ROUNDING_FIELD_NUMBER: _ClassVar[int]
-    code: str
-    context: _base_pb2.Context
-    decimal_places: int
+    DECIMAL_PLACES_FIELD_NUMBER: _ClassVar[int]
+    POSITION_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
-    position: str
+    code: str
     rate: float
     rounding: float
+    decimal_places: int
+    position: str
+    context: _base_pb2.Context
     def __init__(
         self,
         name: _Optional[str] = ...,
@@ -84,38 +84,22 @@ class TaxAddResponse(_message.Message):
         tax: _Optional[_Union[Tax, _Mapping]] = ...,
     ) -> None: ...
 
-class TaxDeleteRequest(_message.Message):
-    __slots__ = ["context", "id"]
-    CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    ID_FIELD_NUMBER: _ClassVar[int]
-    context: _base_pb2.Context
-    id: str
-    def __init__(
-        self, id: _Optional[str] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
-    ) -> None: ...
-
-class TaxDeleteResponse(_message.Message):
-    __slots__ = ["response_standard"]
-    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
-    response_standard: _base_pb2.ResponseStandard
-    def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
-
 class TaxReadRequest(_message.Message):
-    __slots__ = ["context", "fields", "filter", "group_by", "id", "paginated", "sort_by"]
-    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["group_by", "sort_by", "fields", "filter", "paginated", "id", "context"]
+    GROUP_BY_FIELD_NUMBER: _ClassVar[int]
+    SORT_BY_FIELD_NUMBER: _ClassVar[int]
     FIELDS_FIELD_NUMBER: _ClassVar[int]
     FILTER_FIELD_NUMBER: _ClassVar[int]
-    GROUP_BY_FIELD_NUMBER: _ClassVar[int]
-    ID_FIELD_NUMBER: _ClassVar[int]
     PAGINATED_FIELD_NUMBER: _ClassVar[int]
-    SORT_BY_FIELD_NUMBER: _ClassVar[int]
-    context: _base_pb2.Context
+    ID_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    group_by: _containers.RepeatedCompositeFieldContainer[_base_pb2.GroupBy]
+    sort_by: _base_pb2.SortBy
     fields: _base_pb2.Fields
     filter: _base_pb2.Filter
-    group_by: _containers.RepeatedCompositeFieldContainer[_base_pb2.GroupBy]
-    id: str
     paginated: _base_pb2.Paginated
-    sort_by: _base_pb2.SortBy
+    id: str
+    context: _base_pb2.Context
     def __init__(
         self,
         group_by: _Optional[_Iterable[_Union[_base_pb2.GroupBy, _Mapping]]] = ...,
@@ -128,12 +112,12 @@ class TaxReadRequest(_message.Message):
     ) -> None: ...
 
 class TaxReadResponse(_message.Message):
-    __slots__ = ["meta_data", "response_standard", "taxes"]
-    META_DATA_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["response_standard", "meta_data", "taxes"]
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
+    META_DATA_FIELD_NUMBER: _ClassVar[int]
     TAXES_FIELD_NUMBER: _ClassVar[int]
-    meta_data: _base_pb2.MetaData
     response_standard: _base_pb2.ResponseStandard
+    meta_data: _base_pb2.MetaData
     taxes: _containers.RepeatedCompositeFieldContainer[Tax]
     def __init__(
         self,
@@ -143,11 +127,11 @@ class TaxReadResponse(_message.Message):
     ) -> None: ...
 
 class TaxUpdateRequest(_message.Message):
-    __slots__ = ["context", "tax"]
-    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["tax", "context"]
     TAX_FIELD_NUMBER: _ClassVar[int]
-    context: _base_pb2.Context
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
     tax: Tax
+    context: _base_pb2.Context
     def __init__(
         self, tax: _Optional[_Union[Tax, _Mapping]] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
     ) -> None: ...
@@ -163,3 +147,19 @@ class TaxUpdateResponse(_message.Message):
         response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
         tax: _Optional[_Union[Tax, _Mapping]] = ...,
     ) -> None: ...
+
+class TaxDeleteRequest(_message.Message):
+    __slots__ = ["id", "context"]
+    ID_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    id: str
+    context: _base_pb2.Context
+    def __init__(
+        self, id: _Optional[str] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
+    ) -> None: ...
+
+class TaxDeleteResponse(_message.Message):
+    __slots__ = ["response_standard"]
+    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
+    response_standard: _base_pb2.ResponseStandard
+    def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...

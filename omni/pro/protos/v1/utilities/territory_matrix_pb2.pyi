@@ -13,21 +13,21 @@ from omni.pro.protos.common import base_pb2 as _base_pb2
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class TerritoryMatrix(_message.Message):
-    __slots__ = ["active", "code", "country_id", "id", "name", "object_audit", "sequence"]
-    ACTIVE_FIELD_NUMBER: _ClassVar[int]
-    CODE_FIELD_NUMBER: _ClassVar[int]
-    COUNTRY_ID_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["id", "sequence", "name", "code", "active", "country_id", "object_audit"]
     ID_FIELD_NUMBER: _ClassVar[int]
-    NAME_FIELD_NUMBER: _ClassVar[int]
-    OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     SEQUENCE_FIELD_NUMBER: _ClassVar[int]
-    active: _wrappers_pb2.BoolValue
-    code: str
-    country_id: str
+    NAME_FIELD_NUMBER: _ClassVar[int]
+    CODE_FIELD_NUMBER: _ClassVar[int]
+    ACTIVE_FIELD_NUMBER: _ClassVar[int]
+    COUNTRY_ID_FIELD_NUMBER: _ClassVar[int]
+    OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
-    name: str
-    object_audit: _base_pb2.ObjectAudit
     sequence: int
+    name: str
+    code: str
+    active: _wrappers_pb2.BoolValue
+    country_id: str
+    object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
         id: _Optional[str] = ...,
@@ -40,19 +40,19 @@ class TerritoryMatrix(_message.Message):
     ) -> None: ...
 
 class TerritoryMatrixAddRequest(_message.Message):
-    __slots__ = ["active", "code", "context", "country_id", "name", "sequence"]
-    ACTIVE_FIELD_NUMBER: _ClassVar[int]
-    CODE_FIELD_NUMBER: _ClassVar[int]
-    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["country_id", "sequence", "name", "code", "active", "context"]
     COUNTRY_ID_FIELD_NUMBER: _ClassVar[int]
-    NAME_FIELD_NUMBER: _ClassVar[int]
     SEQUENCE_FIELD_NUMBER: _ClassVar[int]
-    active: _wrappers_pb2.BoolValue
-    code: str
-    context: _base_pb2.Context
+    NAME_FIELD_NUMBER: _ClassVar[int]
+    CODE_FIELD_NUMBER: _ClassVar[int]
+    ACTIVE_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
     country_id: str
-    name: str
     sequence: int
+    name: str
+    code: str
+    active: _wrappers_pb2.BoolValue
+    context: _base_pb2.Context
     def __init__(
         self,
         country_id: _Optional[str] = ...,
@@ -75,38 +75,22 @@ class TerritoryMatrixAddResponse(_message.Message):
         territory_matrixes: _Optional[_Union[TerritoryMatrix, _Mapping]] = ...,
     ) -> None: ...
 
-class TerritoryMatrixDeleteRequest(_message.Message):
-    __slots__ = ["context", "id"]
-    CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    ID_FIELD_NUMBER: _ClassVar[int]
-    context: _base_pb2.Context
-    id: str
-    def __init__(
-        self, id: _Optional[str] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
-    ) -> None: ...
-
-class TerritoryMatrixDeleteResponse(_message.Message):
-    __slots__ = ["response_standard"]
-    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
-    response_standard: _base_pb2.ResponseStandard
-    def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
-
 class TerritoryMatrixReadRequest(_message.Message):
-    __slots__ = ["context", "fields", "filter", "group_by", "id", "paginated", "sort_by"]
-    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["group_by", "sort_by", "fields", "filter", "paginated", "id", "context"]
+    GROUP_BY_FIELD_NUMBER: _ClassVar[int]
+    SORT_BY_FIELD_NUMBER: _ClassVar[int]
     FIELDS_FIELD_NUMBER: _ClassVar[int]
     FILTER_FIELD_NUMBER: _ClassVar[int]
-    GROUP_BY_FIELD_NUMBER: _ClassVar[int]
-    ID_FIELD_NUMBER: _ClassVar[int]
     PAGINATED_FIELD_NUMBER: _ClassVar[int]
-    SORT_BY_FIELD_NUMBER: _ClassVar[int]
-    context: _base_pb2.Context
+    ID_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    group_by: _containers.RepeatedCompositeFieldContainer[_base_pb2.GroupBy]
+    sort_by: _base_pb2.SortBy
     fields: _base_pb2.Fields
     filter: _base_pb2.Filter
-    group_by: _containers.RepeatedCompositeFieldContainer[_base_pb2.GroupBy]
-    id: str
     paginated: _base_pb2.Paginated
-    sort_by: _base_pb2.SortBy
+    id: str
+    context: _base_pb2.Context
     def __init__(
         self,
         group_by: _Optional[_Iterable[_Union[_base_pb2.GroupBy, _Mapping]]] = ...,
@@ -119,12 +103,12 @@ class TerritoryMatrixReadRequest(_message.Message):
     ) -> None: ...
 
 class TerritoryMatrixReadResponse(_message.Message):
-    __slots__ = ["meta_data", "response_standard", "territory_matrixes"]
-    META_DATA_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["response_standard", "meta_data", "territory_matrixes"]
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
+    META_DATA_FIELD_NUMBER: _ClassVar[int]
     TERRITORY_MATRIXES_FIELD_NUMBER: _ClassVar[int]
-    meta_data: _base_pb2.MetaData
     response_standard: _base_pb2.ResponseStandard
+    meta_data: _base_pb2.MetaData
     territory_matrixes: _containers.RepeatedCompositeFieldContainer[TerritoryMatrix]
     def __init__(
         self,
@@ -134,11 +118,11 @@ class TerritoryMatrixReadResponse(_message.Message):
     ) -> None: ...
 
 class TerritoryMatrixUpdateRequest(_message.Message):
-    __slots__ = ["context", "territory_matrix"]
-    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["territory_matrix", "context"]
     TERRITORY_MATRIX_FIELD_NUMBER: _ClassVar[int]
-    context: _base_pb2.Context
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
     territory_matrix: TerritoryMatrix
+    context: _base_pb2.Context
     def __init__(
         self,
         territory_matrix: _Optional[_Union[TerritoryMatrix, _Mapping]] = ...,
@@ -156,3 +140,19 @@ class TerritoryMatrixUpdateResponse(_message.Message):
         response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
         territory_matrixes: _Optional[_Union[TerritoryMatrix, _Mapping]] = ...,
     ) -> None: ...
+
+class TerritoryMatrixDeleteRequest(_message.Message):
+    __slots__ = ["id", "context"]
+    ID_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    id: str
+    context: _base_pb2.Context
+    def __init__(
+        self, id: _Optional[str] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
+    ) -> None: ...
+
+class TerritoryMatrixDeleteResponse(_message.Message):
+    __slots__ = ["response_standard"]
+    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
+    response_standard: _base_pb2.ResponseStandard
+    def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
