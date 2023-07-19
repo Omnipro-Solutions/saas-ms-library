@@ -6,96 +6,67 @@ from typing import Union as _Union
 
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
-from google.protobuf import struct_pb2 as _struct_pb2
 from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
-class Warehouse(_message.Message):
-    __slots__ = [
-        "id",
-        "name",
-        "code",
-        "country_id",
-        "territory_matrix_value",
-        "address",
-        "complement",
-        "active",
-        "object_audit",
-    ]
+class Attachment(_message.Message):
+    __slots__ = ["id", "doc_id", "name", "type", "active", "object_audit"]
     ID_FIELD_NUMBER: _ClassVar[int]
+    DOC_ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
-    CODE_FIELD_NUMBER: _ClassVar[int]
-    COUNTRY_ID_FIELD_NUMBER: _ClassVar[int]
-    TERRITORY_MATRIX_VALUE_FIELD_NUMBER: _ClassVar[int]
-    ADDRESS_FIELD_NUMBER: _ClassVar[int]
-    COMPLEMENT_FIELD_NUMBER: _ClassVar[int]
+    TYPE_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: int
+    doc_id: str
     name: str
-    code: str
-    country_id: int
-    territory_matrix_value: _struct_pb2.Struct
-    address: str
-    complement: str
+    type: str
     active: _wrappers_pb2.BoolValue
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
         id: _Optional[int] = ...,
+        doc_id: _Optional[str] = ...,
         name: _Optional[str] = ...,
-        code: _Optional[str] = ...,
-        country_id: _Optional[int] = ...,
-        territory_matrix_value: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
-        address: _Optional[str] = ...,
-        complement: _Optional[str] = ...,
+        type: _Optional[str] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
-class WarehouseCreateRequest(_message.Message):
-    __slots__ = ["name", "code", "country_id", "territory_matrix_value", "address", "complement", "context"]
+class AttachmentCreateRequest(_message.Message):
+    __slots__ = ["doc_id", "name", "type", "context"]
+    DOC_ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
-    CODE_FIELD_NUMBER: _ClassVar[int]
-    COUNTRY_ID_FIELD_NUMBER: _ClassVar[int]
-    TERRITORY_MATRIX_VALUE_FIELD_NUMBER: _ClassVar[int]
-    ADDRESS_FIELD_NUMBER: _ClassVar[int]
-    COMPLEMENT_FIELD_NUMBER: _ClassVar[int]
+    TYPE_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    doc_id: str
     name: str
-    code: str
-    country_id: int
-    territory_matrix_value: _struct_pb2.Struct
-    address: str
-    complement: str
+    type: str
     context: _base_pb2.Context
     def __init__(
         self,
+        doc_id: _Optional[str] = ...,
         name: _Optional[str] = ...,
-        code: _Optional[str] = ...,
-        country_id: _Optional[int] = ...,
-        territory_matrix_value: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
-        address: _Optional[str] = ...,
-        complement: _Optional[str] = ...,
+        type: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
-class WarehouseCreateResponse(_message.Message):
-    __slots__ = ["response_standard", "warehouse"]
+class AttachmentCreateResponse(_message.Message):
+    __slots__ = ["response_standard", "attachment"]
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
-    WAREHOUSE_FIELD_NUMBER: _ClassVar[int]
+    ATTACHMENT_FIELD_NUMBER: _ClassVar[int]
     response_standard: _base_pb2.ResponseStandard
-    warehouse: Warehouse
+    attachment: Attachment
     def __init__(
         self,
         response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
-        warehouse: _Optional[_Union[Warehouse, _Mapping]] = ...,
+        attachment: _Optional[_Union[Attachment, _Mapping]] = ...,
     ) -> None: ...
 
-class WarehouseReadRequest(_message.Message):
+class AttachmentReadRequest(_message.Message):
     __slots__ = ["group_by", "sort_by", "fields", "filter", "paginated", "id", "context"]
     GROUP_BY_FIELD_NUMBER: _ClassVar[int]
     SORT_BY_FIELD_NUMBER: _ClassVar[int]
@@ -122,46 +93,46 @@ class WarehouseReadRequest(_message.Message):
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
-class WarehouseReadResponse(_message.Message):
-    __slots__ = ["response_standard", "meta_data", "warehouses"]
+class AttachmentReadResponse(_message.Message):
+    __slots__ = ["response_standard", "meta_data", "attachments"]
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
     META_DATA_FIELD_NUMBER: _ClassVar[int]
-    WAREHOUSES_FIELD_NUMBER: _ClassVar[int]
+    ATTACHMENTS_FIELD_NUMBER: _ClassVar[int]
     response_standard: _base_pb2.ResponseStandard
     meta_data: _base_pb2.MetaData
-    warehouses: _containers.RepeatedCompositeFieldContainer[Warehouse]
+    attachments: _containers.RepeatedCompositeFieldContainer[Attachment]
     def __init__(
         self,
         response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
         meta_data: _Optional[_Union[_base_pb2.MetaData, _Mapping]] = ...,
-        warehouses: _Optional[_Iterable[_Union[Warehouse, _Mapping]]] = ...,
+        attachments: _Optional[_Iterable[_Union[Attachment, _Mapping]]] = ...,
     ) -> None: ...
 
-class WarehouseUpdateRequest(_message.Message):
-    __slots__ = ["warehouse", "context"]
-    WAREHOUSE_FIELD_NUMBER: _ClassVar[int]
+class AttachmentUpdateRequest(_message.Message):
+    __slots__ = ["attachment", "context"]
+    ATTACHMENT_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    warehouse: Warehouse
+    attachment: Attachment
     context: _base_pb2.Context
     def __init__(
         self,
-        warehouse: _Optional[_Union[Warehouse, _Mapping]] = ...,
+        attachment: _Optional[_Union[Attachment, _Mapping]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
-class WarehouseUpdateResponse(_message.Message):
-    __slots__ = ["response_standard", "warehouse"]
+class AttachmentUpdateResponse(_message.Message):
+    __slots__ = ["response_standard", "attachment"]
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
-    WAREHOUSE_FIELD_NUMBER: _ClassVar[int]
+    ATTACHMENT_FIELD_NUMBER: _ClassVar[int]
     response_standard: _base_pb2.ResponseStandard
-    warehouse: Warehouse
+    attachment: Attachment
     def __init__(
         self,
         response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
-        warehouse: _Optional[_Union[Warehouse, _Mapping]] = ...,
+        attachment: _Optional[_Union[Attachment, _Mapping]] = ...,
     ) -> None: ...
 
-class WarehouseDeleteRequest(_message.Message):
+class AttachmentDeleteRequest(_message.Message):
     __slots__ = ["id", "context"]
     ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
@@ -171,7 +142,7 @@ class WarehouseDeleteRequest(_message.Message):
         self, id: _Optional[int] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
     ) -> None: ...
 
-class WarehouseDeleteResponse(_message.Message):
+class AttachmentDeleteResponse(_message.Message):
     __slots__ = ["response_standard"]
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
     response_standard: _base_pb2.ResponseStandard
