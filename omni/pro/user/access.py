@@ -4,6 +4,7 @@ from enum import Enum
 from omni.pro.config import Config
 from omni.pro.logger import LoggerTraceback, configure_logger
 from omni.pro.protos.grpc_connector import Event, GRPClient
+from omni.pro.protos.response import MessageResponse
 from omni.pro.protos.v1.users import user_pb2
 
 logger = configure_logger(name=__name__)
@@ -30,25 +31,29 @@ class Permission(Enum):
     CAN_CHANGE_EMAIL_USER = "CAN_CHANGE_EMAIL_USER"
 
 
-def permission_required(permission_name: Permission) -> callable:
+def permission_required(permission_name: Permission, cls) -> callable:
     def decorador_func(funcion: callable) -> callable:
         def inner(instance, request, context):
-            event = Event(
-                module_grpc="v1.users.user_pb2_grpc",
-                module_pb2="v1.users.user_pb2",
-                stub_classname="UsersServiceStub",
-                rpc_method="HasPermission",
-                request_class="HasPermissionRequest",
-                params={
-                    "username": request.context.user,
-                    "permission": permission_name.value,
-                    "context": {"tenant": request.context.tenant},
-                },
-            )
-            response: user_pb2.HasPermissionResponse = None
-            response, success = GRPClient(Config.SAAS_MS_USER).call_rpc_fuction(event)
-            if not success or not response.has_permission:
-                raise Exception("User has no permission")
+            try:
+                event = Event(
+                    module_grpc="v1.users.user_pb2_grpc",
+                    module_pb2="v1.users.user_pb2",
+                    stub_classname="UsersServiceStub",
+                    rpc_method="HasPermission",
+                    request_class="HasPermissionRequest",
+                    params={
+                        "username": request.context.user,
+                        "permission": permission_name.value,
+                        "context": {"tenant": request.context.tenant},
+                    },
+                )
+                response: user_pb2.HasPermissionResponse = None
+                response, success = GRPClient(Config.SAAS_MS_USER).call_rpc_fuction(event)
+                if not success or not response.has_permission:
+                    return MessageResponse(cls).unauthorized_response()
+            except Exception as e:
+                LoggerTraceback.error("Permission required decorator exception", e, logger)
+                return MessageResponse(cls).internal_response(message="Permission required decorator exception")
             c = funcion(instance, request, context)
             return c
 

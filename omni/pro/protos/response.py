@@ -10,6 +10,7 @@ class MessageCode(object):
     COGNITO_CLIENT_ERROR = "CO001"
     USER_PASSWORD_CHANGED = "US007"
     USER_EMAIL_CHANGED = "US008"
+    USER_UNAUTHORIZED = "US009"
     RESOURCE_CREATED = "RS001"
     RESOURCE_READ = "RS002"
     RESOURCE_FETCHED = "RS002"
@@ -120,5 +121,14 @@ class MessageResponse(object):
             message=message,
             status_code=HTTPStatus.NOT_FOUND,
             message_code=MessageCode.RESOURCE_NOT_FOUND,
+            **kwargs,
+        )
+
+    def unauthorized_response(self, message: str = "User Unauthorized", **kwargs):
+        return self.response(
+            success=False,
+            message=message,
+            status_code=HTTPStatus.UNAUTHORIZED,
+            message_code=MessageCode.USER_UNAUTHORIZED,
             **kwargs,
         )
