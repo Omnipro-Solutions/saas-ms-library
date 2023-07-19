@@ -13,16 +13,16 @@ from omni.pro.protos.v1.rules import category_pb2 as _category_pb2
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class DeliveryCategory(_message.Message):
-    __slots__ = ["active", "category_ids", "id", "name", "object_audit"]
-    ACTIVE_FIELD_NUMBER: _ClassVar[int]
-    CATEGORY_IDS_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["id", "name", "category_ids", "active", "object_audit"]
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
+    CATEGORY_IDS_FIELD_NUMBER: _ClassVar[int]
+    ACTIVE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
-    active: bool
-    category_ids: _containers.RepeatedCompositeFieldContainer[_category_pb2.Category]
     id: str
     name: str
+    category_ids: _containers.RepeatedCompositeFieldContainer[_category_pb2.Category]
+    active: bool
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
@@ -34,13 +34,13 @@ class DeliveryCategory(_message.Message):
     ) -> None: ...
 
 class DeliveryCategoryCreateRequest(_message.Message):
-    __slots__ = ["category_ids", "context", "name"]
+    __slots__ = ["name", "category_ids", "context"]
+    NAME_FIELD_NUMBER: _ClassVar[int]
     CATEGORY_IDS_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    NAME_FIELD_NUMBER: _ClassVar[int]
+    name: str
     category_ids: _containers.RepeatedScalarFieldContainer[str]
     context: _base_pb2.Context
-    name: str
     def __init__(
         self,
         name: _Optional[str] = ...,
@@ -60,38 +60,22 @@ class DeliveryCategoryCreateResponse(_message.Message):
         response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
     ) -> None: ...
 
-class DeliveryCategoryDeleteRequest(_message.Message):
-    __slots__ = ["context", "id"]
-    CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    ID_FIELD_NUMBER: _ClassVar[int]
-    context: _base_pb2.Context
-    id: str
-    def __init__(
-        self, id: _Optional[str] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
-    ) -> None: ...
-
-class DeliveryCategoryDeleteResponse(_message.Message):
-    __slots__ = ["response_standard"]
-    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
-    response_standard: _base_pb2.ResponseStandard
-    def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
-
 class DeliveryCategoryReadRequest(_message.Message):
-    __slots__ = ["context", "fields", "filter", "group_by", "id", "paginated", "sort_by"]
-    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["group_by", "sort_by", "fields", "filter", "paginated", "id", "context"]
+    GROUP_BY_FIELD_NUMBER: _ClassVar[int]
+    SORT_BY_FIELD_NUMBER: _ClassVar[int]
     FIELDS_FIELD_NUMBER: _ClassVar[int]
     FILTER_FIELD_NUMBER: _ClassVar[int]
-    GROUP_BY_FIELD_NUMBER: _ClassVar[int]
-    ID_FIELD_NUMBER: _ClassVar[int]
     PAGINATED_FIELD_NUMBER: _ClassVar[int]
-    SORT_BY_FIELD_NUMBER: _ClassVar[int]
-    context: _base_pb2.Context
+    ID_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    group_by: _containers.RepeatedCompositeFieldContainer[_base_pb2.GroupBy]
+    sort_by: _base_pb2.SortBy
     fields: _base_pb2.Fields
     filter: _base_pb2.Filter
-    group_by: _containers.RepeatedCompositeFieldContainer[_base_pb2.GroupBy]
-    id: str
     paginated: _base_pb2.Paginated
-    sort_by: _base_pb2.SortBy
+    id: str
+    context: _base_pb2.Context
     def __init__(
         self,
         group_by: _Optional[_Iterable[_Union[_base_pb2.GroupBy, _Mapping]]] = ...,
@@ -119,11 +103,11 @@ class DeliveryCategoryReadResponse(_message.Message):
     ) -> None: ...
 
 class DeliveryCategoryUpdateRequest(_message.Message):
-    __slots__ = ["context", "delivery_category"]
-    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["delivery_category", "context"]
     DELIVERY_CATEGORY_FIELD_NUMBER: _ClassVar[int]
-    context: _base_pb2.Context
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
     delivery_category: DeliveryCategory
+    context: _base_pb2.Context
     def __init__(
         self,
         delivery_category: _Optional[_Union[DeliveryCategory, _Mapping]] = ...,
@@ -141,3 +125,19 @@ class DeliveryCategoryUpdateResponse(_message.Message):
         delivery_category: _Optional[_Union[DeliveryCategory, _Mapping]] = ...,
         response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
     ) -> None: ...
+
+class DeliveryCategoryDeleteRequest(_message.Message):
+    __slots__ = ["id", "context"]
+    ID_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    id: str
+    context: _base_pb2.Context
+    def __init__(
+        self, id: _Optional[str] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
+    ) -> None: ...
+
+class DeliveryCategoryDeleteResponse(_message.Message):
+    __slots__ = ["response_standard"]
+    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
+    response_standard: _base_pb2.ResponseStandard
+    def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...

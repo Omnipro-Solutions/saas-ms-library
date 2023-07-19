@@ -13,48 +13,56 @@ from omni.pro.protos.v1.rules import delivery_method_pb2 as _delivery_method_pb2
 from omni.pro.protos.v1.rules import warehouse_pb2 as _warehouse_pb2
 from omni.pro.protos.v1.stock import stock_pb2 as _stock_pb2
 
-DAYS: TimeType
 DESCRIPTOR: _descriptor.FileDescriptor
-HOURS: TimeType
-MINUTES: TimeType
+
+class TimeType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = []
+    UNKNOWN: _ClassVar[TimeType]
+    MINUTES: _ClassVar[TimeType]
+    HOURS: _ClassVar[TimeType]
+    DAYS: _ClassVar[TimeType]
+
 UNKNOWN: TimeType
+MINUTES: TimeType
+HOURS: TimeType
+DAYS: TimeType
 
 class DeliveryShipper(_message.Message):
     __slots__ = [
-        "active",
-        "delivery_method_ids",
         "id",
-        "inversely",
-        "locality_available_id",
         "name",
-        "object_audit",
-        "time_type",
-        "value_max",
-        "value_min",
+        "delivery_method_ids",
         "warehouse_ids",
+        "locality_available_id",
+        "time_type",
+        "value_min",
+        "value_max",
+        "inversely",
+        "active",
+        "object_audit",
     ]
-    ACTIVE_FIELD_NUMBER: _ClassVar[int]
-    DELIVERY_METHOD_IDS_FIELD_NUMBER: _ClassVar[int]
     ID_FIELD_NUMBER: _ClassVar[int]
-    INVERSELY_FIELD_NUMBER: _ClassVar[int]
-    LOCALITY_AVAILABLE_ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
-    OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
-    TIME_TYPE_FIELD_NUMBER: _ClassVar[int]
-    VALUE_MAX_FIELD_NUMBER: _ClassVar[int]
-    VALUE_MIN_FIELD_NUMBER: _ClassVar[int]
+    DELIVERY_METHOD_IDS_FIELD_NUMBER: _ClassVar[int]
     WAREHOUSE_IDS_FIELD_NUMBER: _ClassVar[int]
-    active: bool
-    delivery_method_ids: _containers.RepeatedCompositeFieldContainer[_delivery_method_pb2.DeliveryMethod]
+    LOCALITY_AVAILABLE_ID_FIELD_NUMBER: _ClassVar[int]
+    TIME_TYPE_FIELD_NUMBER: _ClassVar[int]
+    VALUE_MIN_FIELD_NUMBER: _ClassVar[int]
+    VALUE_MAX_FIELD_NUMBER: _ClassVar[int]
+    INVERSELY_FIELD_NUMBER: _ClassVar[int]
+    ACTIVE_FIELD_NUMBER: _ClassVar[int]
+    OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
-    inversely: bool
-    locality_available_id: str
     name: str
-    object_audit: _base_pb2.ObjectAudit
-    time_type: TimeType
-    value_max: str
-    value_min: str
+    delivery_method_ids: _containers.RepeatedCompositeFieldContainer[_delivery_method_pb2.DeliveryMethod]
     warehouse_ids: _containers.RepeatedCompositeFieldContainer[_warehouse_pb2.Warehouse]
+    locality_available_id: str
+    time_type: TimeType
+    value_min: str
+    value_max: str
+    inversely: bool
+    active: bool
+    object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
         id: _Optional[str] = ...,
@@ -71,21 +79,21 @@ class DeliveryShipper(_message.Message):
     ) -> None: ...
 
 class DeliveryShipperCreateRequest(_message.Message):
-    __slots__ = ["context", "inversely", "locality_available_id", "name", "time_type", "value_max", "value_min"]
-    CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    INVERSELY_FIELD_NUMBER: _ClassVar[int]
-    LOCALITY_AVAILABLE_ID_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["name", "locality_available_id", "time_type", "value_min", "value_max", "inversely", "context"]
     NAME_FIELD_NUMBER: _ClassVar[int]
+    LOCALITY_AVAILABLE_ID_FIELD_NUMBER: _ClassVar[int]
     TIME_TYPE_FIELD_NUMBER: _ClassVar[int]
-    VALUE_MAX_FIELD_NUMBER: _ClassVar[int]
     VALUE_MIN_FIELD_NUMBER: _ClassVar[int]
-    context: _base_pb2.Context
-    inversely: bool
-    locality_available_id: str
+    VALUE_MAX_FIELD_NUMBER: _ClassVar[int]
+    INVERSELY_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
+    locality_available_id: str
     time_type: TimeType
-    value_max: str
     value_min: str
+    value_max: str
+    inversely: bool
+    context: _base_pb2.Context
     def __init__(
         self,
         name: _Optional[str] = ...,
@@ -109,38 +117,22 @@ class DeliveryShipperCreateResponse(_message.Message):
         response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
     ) -> None: ...
 
-class DeliveryShipperDeleteRequest(_message.Message):
-    __slots__ = ["context", "id"]
-    CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    ID_FIELD_NUMBER: _ClassVar[int]
-    context: _base_pb2.Context
-    id: int
-    def __init__(
-        self, id: _Optional[int] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
-    ) -> None: ...
-
-class DeliveryShipperDeleteResponse(_message.Message):
-    __slots__ = ["response_standard"]
-    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
-    response_standard: _base_pb2.ResponseStandard
-    def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
-
 class DeliveryShipperReadRequest(_message.Message):
-    __slots__ = ["context", "fields", "filter", "group_by", "id", "paginated", "sort_by"]
-    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["group_by", "sort_by", "fields", "filter", "paginated", "id", "context"]
+    GROUP_BY_FIELD_NUMBER: _ClassVar[int]
+    SORT_BY_FIELD_NUMBER: _ClassVar[int]
     FIELDS_FIELD_NUMBER: _ClassVar[int]
     FILTER_FIELD_NUMBER: _ClassVar[int]
-    GROUP_BY_FIELD_NUMBER: _ClassVar[int]
-    ID_FIELD_NUMBER: _ClassVar[int]
     PAGINATED_FIELD_NUMBER: _ClassVar[int]
-    SORT_BY_FIELD_NUMBER: _ClassVar[int]
-    context: _base_pb2.Context
+    ID_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    group_by: _containers.RepeatedCompositeFieldContainer[_base_pb2.GroupBy]
+    sort_by: _base_pb2.SortBy
     fields: _base_pb2.Fields
     filter: _base_pb2.Filter
-    group_by: _containers.RepeatedCompositeFieldContainer[_base_pb2.GroupBy]
-    id: int
     paginated: _base_pb2.Paginated
-    sort_by: _base_pb2.SortBy
+    id: int
+    context: _base_pb2.Context
     def __init__(
         self,
         group_by: _Optional[_Iterable[_Union[_base_pb2.GroupBy, _Mapping]]] = ...,
@@ -168,11 +160,11 @@ class DeliveryShipperReadResponse(_message.Message):
     ) -> None: ...
 
 class DeliveryShipperUpdateRequest(_message.Message):
-    __slots__ = ["context", "delivery_shipper"]
-    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["delivery_shipper", "context"]
     DELIVERY_SHIPPER_FIELD_NUMBER: _ClassVar[int]
-    context: _base_pb2.Context
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
     delivery_shipper: DeliveryShipper
+    context: _base_pb2.Context
     def __init__(
         self,
         delivery_shipper: _Optional[_Union[DeliveryShipper, _Mapping]] = ...,
@@ -191,5 +183,18 @@ class DeliveryShipperUpdateResponse(_message.Message):
         response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
     ) -> None: ...
 
-class TimeType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
-    __slots__ = []
+class DeliveryShipperDeleteRequest(_message.Message):
+    __slots__ = ["id", "context"]
+    ID_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    id: int
+    context: _base_pb2.Context
+    def __init__(
+        self, id: _Optional[int] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
+    ) -> None: ...
+
+class DeliveryShipperDeleteResponse(_message.Message):
+    __slots__ = ["response_standard"]
+    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
+    response_standard: _base_pb2.ResponseStandard
+    def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...

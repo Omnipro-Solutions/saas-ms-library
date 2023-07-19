@@ -18,28 +18,29 @@ DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
     b'\n&v1/rules/delivery_time_warehouse.proto\x12\x31pro.omni.oms.api.v1.rules.delivery_time_warehouse\x1a\x11\x63ommon/base.proto"\xa4\x01\n\x15\x44\x65liveryTimeWarehouse\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x18\n\x10\x64\x65livery_time_id\x18\x02 \x01(\x05\x12\x14\n\x0cwarehouse_id\x18\x03 \x01(\x05\x12\x0e\n\x06\x61\x63tive\x18\x04 \x01(\x08\x12?\n\x0cobject_audit\x18\x05 \x01(\x0b\x32).pro.omni.oms.api.common.base.ObjectAudit"\x8c\x01\n"DeliveryTimeWarehouseCreateRequest\x12\x18\n\x10\x64\x65livery_time_id\x18\x01 \x01(\x05\x12\x14\n\x0cwarehouse_id\x18\x02 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x03 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xdb\x01\n#DeliveryTimeWarehouseCreateResponse\x12i\n\x17\x64\x65livery_time_warehouse\x18\x01 \x01(\x0b\x32H.pro.omni.oms.api.v1.rules.delivery_time_warehouse.DeliveryTimeWarehouse\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\xfe\x02\n DeliveryTimeWarehouseReadRequest\x12\x37\n\x08group_by\x18\x01 \x03(\x0b\x32%.pro.omni.oms.api.common.base.GroupBy\x12\x35\n\x07sort_by\x18\x02 \x01(\x0b\x32$.pro.omni.oms.api.common.base.SortBy\x12\x34\n\x06\x66ields\x18\x03 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Fields\x12\x34\n\x06\x66ilter\x18\x04 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Filter\x12:\n\tpaginated\x18\x05 \x01(\x0b\x32\'.pro.omni.oms.api.common.base.Paginated\x12\n\n\x02id\x18\x06 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x07 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\x94\x02\n!DeliveryTimeWarehouseReadResponse\x12i\n\x17\x64\x65livery_time_warehouse\x18\x01 \x03(\x0b\x32H.pro.omni.oms.api.v1.rules.delivery_time_warehouse.DeliveryTimeWarehouse\x12\x39\n\tmeta_data\x18\x02 \x01(\x0b\x32&.pro.omni.oms.api.common.base.MetaData\x12I\n\x11response_standard\x18\x03 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\xc7\x01\n"DeliveryTimeWarehouseUpdateRequest\x12i\n\x17\x64\x65livery_time_warehouse\x18\x01 \x01(\x0b\x32H.pro.omni.oms.api.v1.rules.delivery_time_warehouse.DeliveryTimeWarehouse\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xdb\x01\n#DeliveryTimeWarehouseUpdateResponse\x12i\n\x17\x64\x65livery_time_warehouse\x18\x01 \x01(\x0b\x32H.pro.omni.oms.api.v1.rules.delivery_time_warehouse.DeliveryTimeWarehouse\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"h\n"DeliveryTimeWarehouseDeleteRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"p\n#DeliveryTimeWarehouseDeleteResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard2\xdc\x06\n\x1c\x44\x65liveryTimeWarehouseService\x12\xce\x01\n\x1b\x44\x65liveryTimeWarehouseCreate\x12U.pro.omni.oms.api.v1.rules.delivery_time_warehouse.DeliveryTimeWarehouseCreateRequest\x1aV.pro.omni.oms.api.v1.rules.delivery_time_warehouse.DeliveryTimeWarehouseCreateResponse"\x00\x12\xc8\x01\n\x19\x44\x65liveryTimeWarehouseRead\x12S.pro.omni.oms.api.v1.rules.delivery_time_warehouse.DeliveryTimeWarehouseReadRequest\x1aT.pro.omni.oms.api.v1.rules.delivery_time_warehouse.DeliveryTimeWarehouseReadResponse"\x00\x12\xce\x01\n\x1b\x44\x65liveryTimeWarehouseUpdate\x12U.pro.omni.oms.api.v1.rules.delivery_time_warehouse.DeliveryTimeWarehouseUpdateRequest\x1aV.pro.omni.oms.api.v1.rules.delivery_time_warehouse.DeliveryTimeWarehouseUpdateResponse"\x00\x12\xce\x01\n\x1b\x44\x65liveryTimeWarehouseDelete\x12U.pro.omni.oms.api.v1.rules.delivery_time_warehouse.DeliveryTimeWarehouseDeleteRequest\x1aV.pro.omni.oms.api.v1.rules.delivery_time_warehouse.DeliveryTimeWarehouseDeleteResponse"\x00\x62\x06proto3'
 )
 
-_builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
-_builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, "v1.rules.delivery_time_warehouse_pb2", globals())
+_globals = globals()
+_builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
+_builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, "v1.rules.delivery_time_warehouse_pb2", _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
     DESCRIPTOR._options = None
-    _DELIVERYTIMEWAREHOUSE._serialized_start = 113
-    _DELIVERYTIMEWAREHOUSE._serialized_end = 277
-    _DELIVERYTIMEWAREHOUSECREATEREQUEST._serialized_start = 280
-    _DELIVERYTIMEWAREHOUSECREATEREQUEST._serialized_end = 420
-    _DELIVERYTIMEWAREHOUSECREATERESPONSE._serialized_start = 423
-    _DELIVERYTIMEWAREHOUSECREATERESPONSE._serialized_end = 642
-    _DELIVERYTIMEWAREHOUSEREADREQUEST._serialized_start = 645
-    _DELIVERYTIMEWAREHOUSEREADREQUEST._serialized_end = 1027
-    _DELIVERYTIMEWAREHOUSEREADRESPONSE._serialized_start = 1030
-    _DELIVERYTIMEWAREHOUSEREADRESPONSE._serialized_end = 1306
-    _DELIVERYTIMEWAREHOUSEUPDATEREQUEST._serialized_start = 1309
-    _DELIVERYTIMEWAREHOUSEUPDATEREQUEST._serialized_end = 1508
-    _DELIVERYTIMEWAREHOUSEUPDATERESPONSE._serialized_start = 1511
-    _DELIVERYTIMEWAREHOUSEUPDATERESPONSE._serialized_end = 1730
-    _DELIVERYTIMEWAREHOUSEDELETEREQUEST._serialized_start = 1732
-    _DELIVERYTIMEWAREHOUSEDELETEREQUEST._serialized_end = 1836
-    _DELIVERYTIMEWAREHOUSEDELETERESPONSE._serialized_start = 1838
-    _DELIVERYTIMEWAREHOUSEDELETERESPONSE._serialized_end = 1950
-    _DELIVERYTIMEWAREHOUSESERVICE._serialized_start = 1953
-    _DELIVERYTIMEWAREHOUSESERVICE._serialized_end = 2813
+    _globals["_DELIVERYTIMEWAREHOUSE"]._serialized_start = 113
+    _globals["_DELIVERYTIMEWAREHOUSE"]._serialized_end = 277
+    _globals["_DELIVERYTIMEWAREHOUSECREATEREQUEST"]._serialized_start = 280
+    _globals["_DELIVERYTIMEWAREHOUSECREATEREQUEST"]._serialized_end = 420
+    _globals["_DELIVERYTIMEWAREHOUSECREATERESPONSE"]._serialized_start = 423
+    _globals["_DELIVERYTIMEWAREHOUSECREATERESPONSE"]._serialized_end = 642
+    _globals["_DELIVERYTIMEWAREHOUSEREADREQUEST"]._serialized_start = 645
+    _globals["_DELIVERYTIMEWAREHOUSEREADREQUEST"]._serialized_end = 1027
+    _globals["_DELIVERYTIMEWAREHOUSEREADRESPONSE"]._serialized_start = 1030
+    _globals["_DELIVERYTIMEWAREHOUSEREADRESPONSE"]._serialized_end = 1306
+    _globals["_DELIVERYTIMEWAREHOUSEUPDATEREQUEST"]._serialized_start = 1309
+    _globals["_DELIVERYTIMEWAREHOUSEUPDATEREQUEST"]._serialized_end = 1508
+    _globals["_DELIVERYTIMEWAREHOUSEUPDATERESPONSE"]._serialized_start = 1511
+    _globals["_DELIVERYTIMEWAREHOUSEUPDATERESPONSE"]._serialized_end = 1730
+    _globals["_DELIVERYTIMEWAREHOUSEDELETEREQUEST"]._serialized_start = 1732
+    _globals["_DELIVERYTIMEWAREHOUSEDELETEREQUEST"]._serialized_end = 1836
+    _globals["_DELIVERYTIMEWAREHOUSEDELETERESPONSE"]._serialized_start = 1838
+    _globals["_DELIVERYTIMEWAREHOUSEDELETERESPONSE"]._serialized_end = 1950
+    _globals["_DELIVERYTIMEWAREHOUSESERVICE"]._serialized_start = 1953
+    _globals["_DELIVERYTIMEWAREHOUSESERVICE"]._serialized_end = 2813
 # @@protoc_insertion_point(module_scope)

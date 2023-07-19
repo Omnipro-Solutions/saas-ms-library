@@ -15,31 +15,31 @@ DESCRIPTOR: _descriptor.FileDescriptor
 
 class WarehouseHierarchy(_message.Message):
     __slots__ = [
-        "active",
         "id",
+        "warehouse_id",
         "location_id",
-        "object_audit",
         "quantity_security",
         "sequence",
         "sequence_order",
-        "warehouse_id",
+        "active",
+        "object_audit",
     ]
-    ACTIVE_FIELD_NUMBER: _ClassVar[int]
     ID_FIELD_NUMBER: _ClassVar[int]
+    WAREHOUSE_ID_FIELD_NUMBER: _ClassVar[int]
     LOCATION_ID_FIELD_NUMBER: _ClassVar[int]
-    OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     QUANTITY_SECURITY_FIELD_NUMBER: _ClassVar[int]
     SEQUENCE_FIELD_NUMBER: _ClassVar[int]
     SEQUENCE_ORDER_FIELD_NUMBER: _ClassVar[int]
-    WAREHOUSE_ID_FIELD_NUMBER: _ClassVar[int]
-    active: bool
+    ACTIVE_FIELD_NUMBER: _ClassVar[int]
+    OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
+    warehouse_id: _warehouse_pb2.Warehouse
     location_id: _location_pb2.Location
-    object_audit: _base_pb2.ObjectAudit
     quantity_security: float
     sequence: int
     sequence_order: bool
-    warehouse_id: _warehouse_pb2.Warehouse
+    active: bool
+    object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
         id: _Optional[str] = ...,
@@ -53,19 +53,19 @@ class WarehouseHierarchy(_message.Message):
     ) -> None: ...
 
 class WarehouseHierarchyCreateRequest(_message.Message):
-    __slots__ = ["context", "location_id", "quantity_security", "sequence", "sequence_order", "warehouse_id"]
-    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["warehouse_id", "location_id", "quantity_security", "sequence", "sequence_order", "context"]
+    WAREHOUSE_ID_FIELD_NUMBER: _ClassVar[int]
     LOCATION_ID_FIELD_NUMBER: _ClassVar[int]
     QUANTITY_SECURITY_FIELD_NUMBER: _ClassVar[int]
     SEQUENCE_FIELD_NUMBER: _ClassVar[int]
     SEQUENCE_ORDER_FIELD_NUMBER: _ClassVar[int]
-    WAREHOUSE_ID_FIELD_NUMBER: _ClassVar[int]
-    context: _base_pb2.Context
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    warehouse_id: str
     location_id: str
     quantity_security: float
     sequence: int
     sequence_order: bool
-    warehouse_id: str
+    context: _base_pb2.Context
     def __init__(
         self,
         warehouse_id: _Optional[str] = ...,
@@ -77,49 +77,33 @@ class WarehouseHierarchyCreateRequest(_message.Message):
     ) -> None: ...
 
 class WarehouseHierarchyCreateResponse(_message.Message):
-    __slots__ = ["response_standard", "warehouse_hierarchy"]
-    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["warehouse_hierarchy", "response_standard"]
     WAREHOUSE_HIERARCHY_FIELD_NUMBER: _ClassVar[int]
-    response_standard: _base_pb2.ResponseStandard
+    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
     warehouse_hierarchy: WarehouseHierarchy
+    response_standard: _base_pb2.ResponseStandard
     def __init__(
         self,
         warehouse_hierarchy: _Optional[_Union[WarehouseHierarchy, _Mapping]] = ...,
         response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
     ) -> None: ...
 
-class WarehouseHierarchyDeleteRequest(_message.Message):
-    __slots__ = ["context", "id"]
-    CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    ID_FIELD_NUMBER: _ClassVar[int]
-    context: _base_pb2.Context
-    id: str
-    def __init__(
-        self, id: _Optional[str] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
-    ) -> None: ...
-
-class WarehouseHierarchyDeleteResponse(_message.Message):
-    __slots__ = ["response_standard"]
-    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
-    response_standard: _base_pb2.ResponseStandard
-    def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
-
 class WarehouseHierarchyReadRequest(_message.Message):
-    __slots__ = ["context", "fields", "filter", "group_by", "id", "paginated", "sort_by"]
-    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["group_by", "sort_by", "fields", "filter", "paginated", "id", "context"]
+    GROUP_BY_FIELD_NUMBER: _ClassVar[int]
+    SORT_BY_FIELD_NUMBER: _ClassVar[int]
     FIELDS_FIELD_NUMBER: _ClassVar[int]
     FILTER_FIELD_NUMBER: _ClassVar[int]
-    GROUP_BY_FIELD_NUMBER: _ClassVar[int]
-    ID_FIELD_NUMBER: _ClassVar[int]
     PAGINATED_FIELD_NUMBER: _ClassVar[int]
-    SORT_BY_FIELD_NUMBER: _ClassVar[int]
-    context: _base_pb2.Context
+    ID_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    group_by: _containers.RepeatedCompositeFieldContainer[_base_pb2.GroupBy]
+    sort_by: _base_pb2.SortBy
     fields: _base_pb2.Fields
     filter: _base_pb2.Filter
-    group_by: _containers.RepeatedCompositeFieldContainer[_base_pb2.GroupBy]
-    id: str
     paginated: _base_pb2.Paginated
-    sort_by: _base_pb2.SortBy
+    id: str
+    context: _base_pb2.Context
     def __init__(
         self,
         group_by: _Optional[_Iterable[_Union[_base_pb2.GroupBy, _Mapping]]] = ...,
@@ -132,13 +116,13 @@ class WarehouseHierarchyReadRequest(_message.Message):
     ) -> None: ...
 
 class WarehouseHierarchyReadResponse(_message.Message):
-    __slots__ = ["meta_data", "response_standard", "warehouses_hierarchy"]
+    __slots__ = ["warehouses_hierarchy", "meta_data", "response_standard"]
+    WAREHOUSES_HIERARCHY_FIELD_NUMBER: _ClassVar[int]
     META_DATA_FIELD_NUMBER: _ClassVar[int]
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
-    WAREHOUSES_HIERARCHY_FIELD_NUMBER: _ClassVar[int]
+    warehouses_hierarchy: _containers.RepeatedCompositeFieldContainer[WarehouseHierarchy]
     meta_data: _base_pb2.MetaData
     response_standard: _base_pb2.ResponseStandard
-    warehouses_hierarchy: _containers.RepeatedCompositeFieldContainer[WarehouseHierarchy]
     def __init__(
         self,
         warehouses_hierarchy: _Optional[_Iterable[_Union[WarehouseHierarchy, _Mapping]]] = ...,
@@ -147,11 +131,11 @@ class WarehouseHierarchyReadResponse(_message.Message):
     ) -> None: ...
 
 class WarehouseHierarchyUpdateRequest(_message.Message):
-    __slots__ = ["context", "warehouse_hierarchy"]
-    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["warehouse_hierarchy", "context"]
     WAREHOUSE_HIERARCHY_FIELD_NUMBER: _ClassVar[int]
-    context: _base_pb2.Context
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
     warehouse_hierarchy: WarehouseHierarchy
+    context: _base_pb2.Context
     def __init__(
         self,
         warehouse_hierarchy: _Optional[_Union[WarehouseHierarchy, _Mapping]] = ...,
@@ -159,13 +143,29 @@ class WarehouseHierarchyUpdateRequest(_message.Message):
     ) -> None: ...
 
 class WarehouseHierarchyUpdateResponse(_message.Message):
-    __slots__ = ["response_standard", "warehouse_hierarchy"]
-    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["warehouse_hierarchy", "response_standard"]
     WAREHOUSE_HIERARCHY_FIELD_NUMBER: _ClassVar[int]
-    response_standard: _base_pb2.ResponseStandard
+    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
     warehouse_hierarchy: WarehouseHierarchy
+    response_standard: _base_pb2.ResponseStandard
     def __init__(
         self,
         warehouse_hierarchy: _Optional[_Union[WarehouseHierarchy, _Mapping]] = ...,
         response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
     ) -> None: ...
+
+class WarehouseHierarchyDeleteRequest(_message.Message):
+    __slots__ = ["id", "context"]
+    ID_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    id: str
+    context: _base_pb2.Context
+    def __init__(
+        self, id: _Optional[str] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
+    ) -> None: ...
+
+class WarehouseHierarchyDeleteResponse(_message.Message):
+    __slots__ = ["response_standard"]
+    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
+    response_standard: _base_pb2.ResponseStandard
+    def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...

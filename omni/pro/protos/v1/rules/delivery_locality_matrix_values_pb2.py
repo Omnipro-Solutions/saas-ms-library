@@ -18,28 +18,29 @@ DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
     b'\n.v1/rules/delivery_locality_matrix_values.proto\x12\x39pro.omni.oms.api.v1.rules.delivery_locality_matrix_values\x1a\x11\x63ommon/base.proto"\xbd\x01\n\x1c\x44\x65liveryLocalityMatrixValues\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x1c\n\x14\x64\x65livery_locality_id\x18\x02 \x01(\x05\x12"\n\x1aterritory_matrix_values_id\x18\x03 \x01(\x05\x12\x0e\n\x06\x61\x63tive\x18\x04 \x01(\x08\x12?\n\x0cobject_audit\x18\x05 \x01(\x0b\x32).pro.omni.oms.api.common.base.ObjectAudit"\xa5\x01\n)DeliveryLocalityMatrixValuesCreateRequest\x12\x1c\n\x14\x64\x65livery_locality_id\x18\x01 \x01(\x05\x12"\n\x1aterritory_matrix_values_id\x18\x02 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x03 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xfa\x01\n*DeliveryLocalityMatrixValuesCreateResponse\x12\x80\x01\n\x1f\x64\x65livery_locality_matrix_values\x18\x01 \x01(\x0b\x32W.pro.omni.oms.api.v1.rules.delivery_locality_matrix_values.DeliveryLocalityMatrixValues\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\x85\x03\n\'DeliveryLocalityMatrixValuesReadRequest\x12\x37\n\x08group_by\x18\x01 \x03(\x0b\x32%.pro.omni.oms.api.common.base.GroupBy\x12\x35\n\x07sort_by\x18\x02 \x01(\x0b\x32$.pro.omni.oms.api.common.base.SortBy\x12\x34\n\x06\x66ields\x18\x03 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Fields\x12\x34\n\x06\x66ilter\x18\x04 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Filter\x12:\n\tpaginated\x18\x05 \x01(\x0b\x32\'.pro.omni.oms.api.common.base.Paginated\x12\n\n\x02id\x18\x06 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x07 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xb4\x02\n(DeliveryLocalityMatrixValuesReadResponse\x12\x81\x01\n delivery_locality_matrix_valuess\x18\x01 \x03(\x0b\x32W.pro.omni.oms.api.v1.rules.delivery_locality_matrix_values.DeliveryLocalityMatrixValues\x12\x39\n\tmeta_data\x18\x02 \x01(\x0b\x32&.pro.omni.oms.api.common.base.MetaData\x12I\n\x11response_standard\x18\x03 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\xe6\x01\n)DeliveryLocalityMatrixValuesUpdateRequest\x12\x80\x01\n\x1f\x64\x65livery_locality_matrix_values\x18\x01 \x01(\x0b\x32W.pro.omni.oms.api.v1.rules.delivery_locality_matrix_values.DeliveryLocalityMatrixValues\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xfa\x01\n*DeliveryLocalityMatrixValuesUpdateResponse\x12\x80\x01\n\x1f\x64\x65livery_locality_matrix_values\x18\x01 \x01(\x0b\x32W.pro.omni.oms.api.v1.rules.delivery_locality_matrix_values.DeliveryLocalityMatrixValues\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"o\n)DeliveryLocalityMatrixValuesDeleteRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"w\n*DeliveryLocalityMatrixValuesDeleteResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard2\xf7\x07\n#DeliveryLocalityMatrixValuesService\x12\xf3\x01\n"DeliveryLocalityMatrixValuesCreate\x12\x64.pro.omni.oms.api.v1.rules.delivery_locality_matrix_values.DeliveryLocalityMatrixValuesCreateRequest\x1a\x65.pro.omni.oms.api.v1.rules.delivery_locality_matrix_values.DeliveryLocalityMatrixValuesCreateResponse"\x00\x12\xed\x01\n DeliveryLocalityMatrixValuesRead\x12\x62.pro.omni.oms.api.v1.rules.delivery_locality_matrix_values.DeliveryLocalityMatrixValuesReadRequest\x1a\x63.pro.omni.oms.api.v1.rules.delivery_locality_matrix_values.DeliveryLocalityMatrixValuesReadResponse"\x00\x12\xf3\x01\n"DeliveryLocalityMatrixValuesUpdate\x12\x64.pro.omni.oms.api.v1.rules.delivery_locality_matrix_values.DeliveryLocalityMatrixValuesUpdateRequest\x1a\x65.pro.omni.oms.api.v1.rules.delivery_locality_matrix_values.DeliveryLocalityMatrixValuesUpdateResponse"\x00\x12\xf3\x01\n"DeliveryLocalityMatrixValuesDelete\x12\x64.pro.omni.oms.api.v1.rules.delivery_locality_matrix_values.DeliveryLocalityMatrixValuesDeleteRequest\x1a\x65.pro.omni.oms.api.v1.rules.delivery_locality_matrix_values.DeliveryLocalityMatrixValuesDeleteResponse"\x00\x62\x06proto3'
 )
 
-_builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
-_builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, "v1.rules.delivery_locality_matrix_values_pb2", globals())
+_globals = globals()
+_builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
+_builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, "v1.rules.delivery_locality_matrix_values_pb2", _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
     DESCRIPTOR._options = None
-    _DELIVERYLOCALITYMATRIXVALUES._serialized_start = 129
-    _DELIVERYLOCALITYMATRIXVALUES._serialized_end = 318
-    _DELIVERYLOCALITYMATRIXVALUESCREATEREQUEST._serialized_start = 321
-    _DELIVERYLOCALITYMATRIXVALUESCREATEREQUEST._serialized_end = 486
-    _DELIVERYLOCALITYMATRIXVALUESCREATERESPONSE._serialized_start = 489
-    _DELIVERYLOCALITYMATRIXVALUESCREATERESPONSE._serialized_end = 739
-    _DELIVERYLOCALITYMATRIXVALUESREADREQUEST._serialized_start = 742
-    _DELIVERYLOCALITYMATRIXVALUESREADREQUEST._serialized_end = 1131
-    _DELIVERYLOCALITYMATRIXVALUESREADRESPONSE._serialized_start = 1134
-    _DELIVERYLOCALITYMATRIXVALUESREADRESPONSE._serialized_end = 1442
-    _DELIVERYLOCALITYMATRIXVALUESUPDATEREQUEST._serialized_start = 1445
-    _DELIVERYLOCALITYMATRIXVALUESUPDATEREQUEST._serialized_end = 1675
-    _DELIVERYLOCALITYMATRIXVALUESUPDATERESPONSE._serialized_start = 1678
-    _DELIVERYLOCALITYMATRIXVALUESUPDATERESPONSE._serialized_end = 1928
-    _DELIVERYLOCALITYMATRIXVALUESDELETEREQUEST._serialized_start = 1930
-    _DELIVERYLOCALITYMATRIXVALUESDELETEREQUEST._serialized_end = 2041
-    _DELIVERYLOCALITYMATRIXVALUESDELETERESPONSE._serialized_start = 2043
-    _DELIVERYLOCALITYMATRIXVALUESDELETERESPONSE._serialized_end = 2162
-    _DELIVERYLOCALITYMATRIXVALUESSERVICE._serialized_start = 2165
-    _DELIVERYLOCALITYMATRIXVALUESSERVICE._serialized_end = 3180
+    _globals["_DELIVERYLOCALITYMATRIXVALUES"]._serialized_start = 129
+    _globals["_DELIVERYLOCALITYMATRIXVALUES"]._serialized_end = 318
+    _globals["_DELIVERYLOCALITYMATRIXVALUESCREATEREQUEST"]._serialized_start = 321
+    _globals["_DELIVERYLOCALITYMATRIXVALUESCREATEREQUEST"]._serialized_end = 486
+    _globals["_DELIVERYLOCALITYMATRIXVALUESCREATERESPONSE"]._serialized_start = 489
+    _globals["_DELIVERYLOCALITYMATRIXVALUESCREATERESPONSE"]._serialized_end = 739
+    _globals["_DELIVERYLOCALITYMATRIXVALUESREADREQUEST"]._serialized_start = 742
+    _globals["_DELIVERYLOCALITYMATRIXVALUESREADREQUEST"]._serialized_end = 1131
+    _globals["_DELIVERYLOCALITYMATRIXVALUESREADRESPONSE"]._serialized_start = 1134
+    _globals["_DELIVERYLOCALITYMATRIXVALUESREADRESPONSE"]._serialized_end = 1442
+    _globals["_DELIVERYLOCALITYMATRIXVALUESUPDATEREQUEST"]._serialized_start = 1445
+    _globals["_DELIVERYLOCALITYMATRIXVALUESUPDATEREQUEST"]._serialized_end = 1675
+    _globals["_DELIVERYLOCALITYMATRIXVALUESUPDATERESPONSE"]._serialized_start = 1678
+    _globals["_DELIVERYLOCALITYMATRIXVALUESUPDATERESPONSE"]._serialized_end = 1928
+    _globals["_DELIVERYLOCALITYMATRIXVALUESDELETEREQUEST"]._serialized_start = 1930
+    _globals["_DELIVERYLOCALITYMATRIXVALUESDELETEREQUEST"]._serialized_end = 2041
+    _globals["_DELIVERYLOCALITYMATRIXVALUESDELETERESPONSE"]._serialized_start = 2043
+    _globals["_DELIVERYLOCALITYMATRIXVALUESDELETERESPONSE"]._serialized_end = 2162
+    _globals["_DELIVERYLOCALITYMATRIXVALUESSERVICE"]._serialized_start = 2165
+    _globals["_DELIVERYLOCALITYMATRIXVALUESSERVICE"]._serialized_end = 3180
 # @@protoc_insertion_point(module_scope)
