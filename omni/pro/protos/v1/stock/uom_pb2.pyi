@@ -6,96 +6,67 @@ from typing import Union as _Union
 
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
-from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
-class Location(_message.Message):
-    __slots__ = [
-        "id",
-        "name",
-        "parent_id",
-        "code",
-        "type_location",
-        "barcode",
-        "warehouse_id",
-        "active",
-        "object_audit",
-    ]
+class Uom(_message.Message):
+    __slots__ = ["id", "uom_doc_id", "code", "name", "active", "object_audit"]
     ID_FIELD_NUMBER: _ClassVar[int]
-    NAME_FIELD_NUMBER: _ClassVar[int]
-    PARENT_ID_FIELD_NUMBER: _ClassVar[int]
+    UOM_DOC_ID_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
-    TYPE_LOCATION_FIELD_NUMBER: _ClassVar[int]
-    BARCODE_FIELD_NUMBER: _ClassVar[int]
-    WAREHOUSE_ID_FIELD_NUMBER: _ClassVar[int]
+    NAME_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: int
-    name: str
-    parent_id: int
+    uom_doc_id: str
     code: str
-    type_location: str
-    barcode: str
-    warehouse_id: int
+    name: str
     active: _wrappers_pb2.BoolValue
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
         id: _Optional[int] = ...,
-        name: _Optional[str] = ...,
-        parent_id: _Optional[int] = ...,
+        uom_doc_id: _Optional[str] = ...,
         code: _Optional[str] = ...,
-        type_location: _Optional[str] = ...,
-        barcode: _Optional[str] = ...,
-        warehouse_id: _Optional[int] = ...,
+        name: _Optional[str] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
-class LocationCreateRequest(_message.Message):
-    __slots__ = ["name", "parent_id", "code", "type_location", "barcode", "warehouse_id", "context"]
-    NAME_FIELD_NUMBER: _ClassVar[int]
-    PARENT_ID_FIELD_NUMBER: _ClassVar[int]
+class UomCreateRequest(_message.Message):
+    __slots__ = ["uom_doc_id", "code", "name", "context"]
+    UOM_DOC_ID_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
-    TYPE_LOCATION_FIELD_NUMBER: _ClassVar[int]
-    BARCODE_FIELD_NUMBER: _ClassVar[int]
-    WAREHOUSE_ID_FIELD_NUMBER: _ClassVar[int]
+    NAME_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    name: str
-    parent_id: int
+    uom_doc_id: str
     code: str
-    type_location: str
-    barcode: str
-    warehouse_id: int
+    name: str
     context: _base_pb2.Context
     def __init__(
         self,
-        name: _Optional[str] = ...,
-        parent_id: _Optional[int] = ...,
+        uom_doc_id: _Optional[str] = ...,
         code: _Optional[str] = ...,
-        type_location: _Optional[str] = ...,
-        barcode: _Optional[str] = ...,
-        warehouse_id: _Optional[int] = ...,
+        name: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
-class LocationCreateResponse(_message.Message):
-    __slots__ = ["response_standard", "location"]
-    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
-    LOCATION_FIELD_NUMBER: _ClassVar[int]
-    response_standard: _base_pb2.ResponseStandard
-    location: Location
+class UomCreateResponse(_message.Message):
+    __slots__ = ["response", "uom"]
+    RESPONSE_FIELD_NUMBER: _ClassVar[int]
+    UOM_FIELD_NUMBER: _ClassVar[int]
+    response: _base_pb2.ResponseStandard
+    uom: Uom
     def __init__(
         self,
-        response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
-        location: _Optional[_Union[Location, _Mapping]] = ...,
+        response: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
+        uom: _Optional[_Union[Uom, _Mapping]] = ...,
     ) -> None: ...
 
-class LocationReadRequest(_message.Message):
+class UomReadRequest(_message.Message):
     __slots__ = ["group_by", "sort_by", "fields", "filter", "paginated", "id", "context"]
     GROUP_BY_FIELD_NUMBER: _ClassVar[int]
     SORT_BY_FIELD_NUMBER: _ClassVar[int]
@@ -122,46 +93,44 @@ class LocationReadRequest(_message.Message):
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
-class LocationReadResponse(_message.Message):
-    __slots__ = ["response_standard", "meta_data", "locations"]
+class UomReadResponse(_message.Message):
+    __slots__ = ["response_standard", "meta_data", "uoms"]
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
     META_DATA_FIELD_NUMBER: _ClassVar[int]
-    LOCATIONS_FIELD_NUMBER: _ClassVar[int]
+    UOMS_FIELD_NUMBER: _ClassVar[int]
     response_standard: _base_pb2.ResponseStandard
     meta_data: _base_pb2.MetaData
-    locations: _containers.RepeatedCompositeFieldContainer[Location]
+    uoms: _containers.RepeatedCompositeFieldContainer[Uom]
     def __init__(
         self,
         response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
         meta_data: _Optional[_Union[_base_pb2.MetaData, _Mapping]] = ...,
-        locations: _Optional[_Iterable[_Union[Location, _Mapping]]] = ...,
+        uoms: _Optional[_Iterable[_Union[Uom, _Mapping]]] = ...,
     ) -> None: ...
 
-class LocationUpdateRequest(_message.Message):
-    __slots__ = ["location", "context"]
-    LOCATION_FIELD_NUMBER: _ClassVar[int]
+class UomUpdateRequest(_message.Message):
+    __slots__ = ["uom", "context"]
+    UOM_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    location: Location
+    uom: Uom
     context: _base_pb2.Context
     def __init__(
-        self,
-        location: _Optional[_Union[Location, _Mapping]] = ...,
-        context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
+        self, uom: _Optional[_Union[Uom, _Mapping]] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
     ) -> None: ...
 
-class LocationUpdateResponse(_message.Message):
-    __slots__ = ["response_standard", "location"]
-    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
-    LOCATION_FIELD_NUMBER: _ClassVar[int]
-    response_standard: _base_pb2.ResponseStandard
-    location: Location
+class UomUpdateResponse(_message.Message):
+    __slots__ = ["response", "uom"]
+    RESPONSE_FIELD_NUMBER: _ClassVar[int]
+    UOM_FIELD_NUMBER: _ClassVar[int]
+    response: _base_pb2.ResponseStandard
+    uom: Uom
     def __init__(
         self,
-        response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
-        location: _Optional[_Union[Location, _Mapping]] = ...,
+        response: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
+        uom: _Optional[_Union[Uom, _Mapping]] = ...,
     ) -> None: ...
 
-class LocationDeleteRequest(_message.Message):
+class UomDeleteRequest(_message.Message):
     __slots__ = ["id", "context"]
     ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
@@ -171,8 +140,8 @@ class LocationDeleteRequest(_message.Message):
         self, id: _Optional[int] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
     ) -> None: ...
 
-class LocationDeleteResponse(_message.Message):
-    __slots__ = ["response_standard"]
-    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
-    response_standard: _base_pb2.ResponseStandard
-    def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
+class UomDeleteResponse(_message.Message):
+    __slots__ = ["response"]
+    RESPONSE_FIELD_NUMBER: _ClassVar[int]
+    response: _base_pb2.ResponseStandard
+    def __init__(self, response: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...

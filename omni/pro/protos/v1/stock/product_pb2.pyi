@@ -6,96 +6,67 @@ from typing import Union as _Union
 
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
-from google.protobuf import struct_pb2 as _struct_pb2
 from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
-class Warehouse(_message.Message):
-    __slots__ = [
-        "id",
-        "name",
-        "code",
-        "country_id",
-        "territory_matrix_value",
-        "address",
-        "complement",
-        "active",
-        "object_audit",
-    ]
+class Product(_message.Message):
+    __slots__ = ["id", "product_doc_id", "template_doc_id", "name", "active", "object_audit"]
     ID_FIELD_NUMBER: _ClassVar[int]
+    PRODUCT_DOC_ID_FIELD_NUMBER: _ClassVar[int]
+    TEMPLATE_DOC_ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
-    CODE_FIELD_NUMBER: _ClassVar[int]
-    COUNTRY_ID_FIELD_NUMBER: _ClassVar[int]
-    TERRITORY_MATRIX_VALUE_FIELD_NUMBER: _ClassVar[int]
-    ADDRESS_FIELD_NUMBER: _ClassVar[int]
-    COMPLEMENT_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: int
+    product_doc_id: str
+    template_doc_id: str
     name: str
-    code: str
-    country_id: int
-    territory_matrix_value: _struct_pb2.Struct
-    address: str
-    complement: str
     active: _wrappers_pb2.BoolValue
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
         id: _Optional[int] = ...,
+        product_doc_id: _Optional[str] = ...,
+        template_doc_id: _Optional[str] = ...,
         name: _Optional[str] = ...,
-        code: _Optional[str] = ...,
-        country_id: _Optional[int] = ...,
-        territory_matrix_value: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
-        address: _Optional[str] = ...,
-        complement: _Optional[str] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
-class WarehouseCreateRequest(_message.Message):
-    __slots__ = ["name", "code", "country_id", "territory_matrix_value", "address", "complement", "context"]
+class ProductCreateRequest(_message.Message):
+    __slots__ = ["product_doc_id", "template_doc_id", "name", "context"]
+    PRODUCT_DOC_ID_FIELD_NUMBER: _ClassVar[int]
+    TEMPLATE_DOC_ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
-    CODE_FIELD_NUMBER: _ClassVar[int]
-    COUNTRY_ID_FIELD_NUMBER: _ClassVar[int]
-    TERRITORY_MATRIX_VALUE_FIELD_NUMBER: _ClassVar[int]
-    ADDRESS_FIELD_NUMBER: _ClassVar[int]
-    COMPLEMENT_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    product_doc_id: str
+    template_doc_id: str
     name: str
-    code: str
-    country_id: int
-    territory_matrix_value: _struct_pb2.Struct
-    address: str
-    complement: str
     context: _base_pb2.Context
     def __init__(
         self,
+        product_doc_id: _Optional[str] = ...,
+        template_doc_id: _Optional[str] = ...,
         name: _Optional[str] = ...,
-        code: _Optional[str] = ...,
-        country_id: _Optional[int] = ...,
-        territory_matrix_value: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
-        address: _Optional[str] = ...,
-        complement: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
-class WarehouseCreateResponse(_message.Message):
-    __slots__ = ["response_standard", "warehouse"]
+class ProductCreateResponse(_message.Message):
+    __slots__ = ["response_standard", "product"]
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
-    WAREHOUSE_FIELD_NUMBER: _ClassVar[int]
+    PRODUCT_FIELD_NUMBER: _ClassVar[int]
     response_standard: _base_pb2.ResponseStandard
-    warehouse: Warehouse
+    product: Product
     def __init__(
         self,
         response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
-        warehouse: _Optional[_Union[Warehouse, _Mapping]] = ...,
+        product: _Optional[_Union[Product, _Mapping]] = ...,
     ) -> None: ...
 
-class WarehouseReadRequest(_message.Message):
+class ProductReadRequest(_message.Message):
     __slots__ = ["group_by", "sort_by", "fields", "filter", "paginated", "id", "context"]
     GROUP_BY_FIELD_NUMBER: _ClassVar[int]
     SORT_BY_FIELD_NUMBER: _ClassVar[int]
@@ -122,46 +93,46 @@ class WarehouseReadRequest(_message.Message):
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
-class WarehouseReadResponse(_message.Message):
-    __slots__ = ["response_standard", "meta_data", "warehouses"]
+class ProductReadResponse(_message.Message):
+    __slots__ = ["response_standard", "meta_data", "products"]
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
     META_DATA_FIELD_NUMBER: _ClassVar[int]
-    WAREHOUSES_FIELD_NUMBER: _ClassVar[int]
+    PRODUCTS_FIELD_NUMBER: _ClassVar[int]
     response_standard: _base_pb2.ResponseStandard
     meta_data: _base_pb2.MetaData
-    warehouses: _containers.RepeatedCompositeFieldContainer[Warehouse]
+    products: _containers.RepeatedCompositeFieldContainer[Product]
     def __init__(
         self,
         response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
         meta_data: _Optional[_Union[_base_pb2.MetaData, _Mapping]] = ...,
-        warehouses: _Optional[_Iterable[_Union[Warehouse, _Mapping]]] = ...,
+        products: _Optional[_Iterable[_Union[Product, _Mapping]]] = ...,
     ) -> None: ...
 
-class WarehouseUpdateRequest(_message.Message):
-    __slots__ = ["warehouse", "context"]
-    WAREHOUSE_FIELD_NUMBER: _ClassVar[int]
+class ProductUpdateRequest(_message.Message):
+    __slots__ = ["product", "context"]
+    PRODUCT_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    warehouse: Warehouse
+    product: Product
     context: _base_pb2.Context
     def __init__(
         self,
-        warehouse: _Optional[_Union[Warehouse, _Mapping]] = ...,
+        product: _Optional[_Union[Product, _Mapping]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
-class WarehouseUpdateResponse(_message.Message):
-    __slots__ = ["response_standard", "warehouse"]
+class ProductUpdateResponse(_message.Message):
+    __slots__ = ["response_standard", "product"]
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
-    WAREHOUSE_FIELD_NUMBER: _ClassVar[int]
+    PRODUCT_FIELD_NUMBER: _ClassVar[int]
     response_standard: _base_pb2.ResponseStandard
-    warehouse: Warehouse
+    product: Product
     def __init__(
         self,
         response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
-        warehouse: _Optional[_Union[Warehouse, _Mapping]] = ...,
+        product: _Optional[_Union[Product, _Mapping]] = ...,
     ) -> None: ...
 
-class WarehouseDeleteRequest(_message.Message):
+class ProductDeleteRequest(_message.Message):
     __slots__ = ["id", "context"]
     ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
@@ -171,7 +142,7 @@ class WarehouseDeleteRequest(_message.Message):
         self, id: _Optional[int] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
     ) -> None: ...
 
-class WarehouseDeleteResponse(_message.Message):
+class ProductDeleteResponse(_message.Message):
     __slots__ = ["response_standard"]
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
     response_standard: _base_pb2.ResponseStandard
