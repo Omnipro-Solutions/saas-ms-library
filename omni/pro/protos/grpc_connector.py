@@ -39,11 +39,11 @@ class OmniChannel(Channel):
         compression=None,
     ):
         if not Config.DEBUG:
+            credentials = credentials or grpc.ssl_channel_credentials()
             if credentials is None or credentials._credentials is _insecure_channel_credentials:
                 raise ValueError(
                     "secure_channel cannot be called with insecure credentials." + " Call insecure_channel instead."
                 )
-            credentials = credentials or grpc.ssl_channel_credentials()
             credentials = credentials._credentials
             options = options or [("grpc.ssl_target_name_override", "omni.pro")]
 
@@ -56,7 +56,7 @@ class GRPClient(object):
     def __init__(self, service_id: str):
         self.service_id = service_id
 
-    def call_rpc_fuction(self, event: Event):
+    def call_rpc_fuction(self, event: Event, *args, **kwargs):
         """
         function to call rpc function
         :param event: Event with params to call rpc function
@@ -72,7 +72,7 @@ class GRPClient(object):
         response, success = GRPClient(service_id=Config.SERVICE_ID).call_rpc_fuction(event)
         ```
         """
-        with OmniChannel(self.service_id) as channel:
+        with OmniChannel(self.service_id, *args, **kwargs) as channel:
             stub = event.get("service_stub")
             stub_classname = event.get("stub_classname")
             path_module = "omni.pro.protos"
