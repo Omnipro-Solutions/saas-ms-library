@@ -15,49 +15,49 @@ DESCRIPTOR: _descriptor.FileDescriptor
 
 class StockMoveLine(_message.Message):
     __slots__ = [
-        "active",
-        "date",
         "id",
-        "location_dest_id",
-        "location_id",
-        "object_audit",
-        "origin",
-        "picking_id",
-        "product_id",
-        "product_uom_id",
-        "qty_done",
-        "reference",
-        "status",
         "stock_move_id",
+        "picking_id",
+        "status",
+        "reference",
+        "date",
+        "origin",
+        "product_id",
+        "location_id",
+        "location_dest_id",
+        "qty_done",
+        "product_uom_id",
+        "active",
+        "object_audit",
     ]
-    ACTIVE_FIELD_NUMBER: _ClassVar[int]
-    DATE_FIELD_NUMBER: _ClassVar[int]
     ID_FIELD_NUMBER: _ClassVar[int]
-    LOCATION_DEST_ID_FIELD_NUMBER: _ClassVar[int]
-    LOCATION_ID_FIELD_NUMBER: _ClassVar[int]
-    OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
-    ORIGIN_FIELD_NUMBER: _ClassVar[int]
-    PICKING_ID_FIELD_NUMBER: _ClassVar[int]
-    PRODUCT_ID_FIELD_NUMBER: _ClassVar[int]
-    PRODUCT_UOM_ID_FIELD_NUMBER: _ClassVar[int]
-    QTY_DONE_FIELD_NUMBER: _ClassVar[int]
-    REFERENCE_FIELD_NUMBER: _ClassVar[int]
-    STATUS_FIELD_NUMBER: _ClassVar[int]
     STOCK_MOVE_ID_FIELD_NUMBER: _ClassVar[int]
-    active: _wrappers_pb2.BoolValue
-    date: _timestamp_pb2.Timestamp
+    PICKING_ID_FIELD_NUMBER: _ClassVar[int]
+    STATUS_FIELD_NUMBER: _ClassVar[int]
+    REFERENCE_FIELD_NUMBER: _ClassVar[int]
+    DATE_FIELD_NUMBER: _ClassVar[int]
+    ORIGIN_FIELD_NUMBER: _ClassVar[int]
+    PRODUCT_ID_FIELD_NUMBER: _ClassVar[int]
+    LOCATION_ID_FIELD_NUMBER: _ClassVar[int]
+    LOCATION_DEST_ID_FIELD_NUMBER: _ClassVar[int]
+    QTY_DONE_FIELD_NUMBER: _ClassVar[int]
+    PRODUCT_UOM_ID_FIELD_NUMBER: _ClassVar[int]
+    ACTIVE_FIELD_NUMBER: _ClassVar[int]
+    OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: int
-    location_dest_id: int
-    location_id: int
-    object_audit: _base_pb2.ObjectAudit
-    origin: str
-    picking_id: int
-    product_id: int
-    product_uom_id: int
-    qty_done: int
-    reference: str
-    status: str
     stock_move_id: int
+    picking_id: int
+    status: str
+    reference: str
+    date: _timestamp_pb2.Timestamp
+    origin: str
+    product_id: int
+    location_id: int
+    location_dest_id: int
+    qty_done: int
+    product_uom_id: int
+    active: _wrappers_pb2.BoolValue
+    object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
         id: _Optional[int] = ...,
@@ -78,43 +78,43 @@ class StockMoveLine(_message.Message):
 
 class StockMoveLineCreateRequest(_message.Message):
     __slots__ = [
-        "context",
-        "date",
-        "location_dest_id",
-        "location_id",
-        "origin",
-        "picking_id",
-        "product_id",
-        "product_uom_id",
-        "qty_done",
-        "reference",
-        "status",
         "stock_move_id",
+        "picking_id",
+        "status",
+        "reference",
+        "date",
+        "origin",
+        "product_id",
+        "location_id",
+        "location_dest_id",
+        "qty_done",
+        "product_uom_id",
+        "context",
     ]
-    CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    DATE_FIELD_NUMBER: _ClassVar[int]
-    LOCATION_DEST_ID_FIELD_NUMBER: _ClassVar[int]
-    LOCATION_ID_FIELD_NUMBER: _ClassVar[int]
-    ORIGIN_FIELD_NUMBER: _ClassVar[int]
-    PICKING_ID_FIELD_NUMBER: _ClassVar[int]
-    PRODUCT_ID_FIELD_NUMBER: _ClassVar[int]
-    PRODUCT_UOM_ID_FIELD_NUMBER: _ClassVar[int]
-    QTY_DONE_FIELD_NUMBER: _ClassVar[int]
-    REFERENCE_FIELD_NUMBER: _ClassVar[int]
-    STATUS_FIELD_NUMBER: _ClassVar[int]
     STOCK_MOVE_ID_FIELD_NUMBER: _ClassVar[int]
-    context: _base_pb2.Context
-    date: _timestamp_pb2.Timestamp
-    location_dest_id: int
-    location_id: int
-    origin: str
-    picking_id: int
-    product_id: int
-    product_uom_id: int
-    qty_done: int
-    reference: str
-    status: str
+    PICKING_ID_FIELD_NUMBER: _ClassVar[int]
+    STATUS_FIELD_NUMBER: _ClassVar[int]
+    REFERENCE_FIELD_NUMBER: _ClassVar[int]
+    DATE_FIELD_NUMBER: _ClassVar[int]
+    ORIGIN_FIELD_NUMBER: _ClassVar[int]
+    PRODUCT_ID_FIELD_NUMBER: _ClassVar[int]
+    LOCATION_ID_FIELD_NUMBER: _ClassVar[int]
+    LOCATION_DEST_ID_FIELD_NUMBER: _ClassVar[int]
+    QTY_DONE_FIELD_NUMBER: _ClassVar[int]
+    PRODUCT_UOM_ID_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
     stock_move_id: int
+    picking_id: int
+    status: str
+    reference: str
+    date: _timestamp_pb2.Timestamp
+    origin: str
+    product_id: int
+    location_id: int
+    location_dest_id: int
+    qty_done: int
+    product_uom_id: int
+    context: _base_pb2.Context
     def __init__(
         self,
         stock_move_id: _Optional[int] = ...,
@@ -143,38 +143,22 @@ class StockMoveLineCreateResponse(_message.Message):
         stock_move_line: _Optional[_Union[StockMoveLine, _Mapping]] = ...,
     ) -> None: ...
 
-class StockMoveLineDeleteRequest(_message.Message):
-    __slots__ = ["context", "id"]
-    CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    ID_FIELD_NUMBER: _ClassVar[int]
-    context: _base_pb2.Context
-    id: int
-    def __init__(
-        self, id: _Optional[int] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
-    ) -> None: ...
-
-class StockMoveLineDeleteResponse(_message.Message):
-    __slots__ = ["response_standard"]
-    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
-    response_standard: _base_pb2.ResponseStandard
-    def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
-
 class StockMoveLineReadRequest(_message.Message):
-    __slots__ = ["context", "fields", "filter", "group_by", "id", "paginated", "sort_by"]
-    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["group_by", "sort_by", "fields", "filter", "paginated", "id", "context"]
+    GROUP_BY_FIELD_NUMBER: _ClassVar[int]
+    SORT_BY_FIELD_NUMBER: _ClassVar[int]
     FIELDS_FIELD_NUMBER: _ClassVar[int]
     FILTER_FIELD_NUMBER: _ClassVar[int]
-    GROUP_BY_FIELD_NUMBER: _ClassVar[int]
-    ID_FIELD_NUMBER: _ClassVar[int]
     PAGINATED_FIELD_NUMBER: _ClassVar[int]
-    SORT_BY_FIELD_NUMBER: _ClassVar[int]
-    context: _base_pb2.Context
+    ID_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    group_by: _containers.RepeatedCompositeFieldContainer[_base_pb2.GroupBy]
+    sort_by: _base_pb2.SortBy
     fields: _base_pb2.Fields
     filter: _base_pb2.Filter
-    group_by: _containers.RepeatedCompositeFieldContainer[_base_pb2.GroupBy]
-    id: int
     paginated: _base_pb2.Paginated
-    sort_by: _base_pb2.SortBy
+    id: int
+    context: _base_pb2.Context
     def __init__(
         self,
         group_by: _Optional[_Iterable[_Union[_base_pb2.GroupBy, _Mapping]]] = ...,
@@ -187,12 +171,12 @@ class StockMoveLineReadRequest(_message.Message):
     ) -> None: ...
 
 class StockMoveLineReadResponse(_message.Message):
-    __slots__ = ["meta_data", "response_standard", "stock_move_lines"]
-    META_DATA_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["response_standard", "meta_data", "stock_move_lines"]
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
+    META_DATA_FIELD_NUMBER: _ClassVar[int]
     STOCK_MOVE_LINES_FIELD_NUMBER: _ClassVar[int]
-    meta_data: _base_pb2.MetaData
     response_standard: _base_pb2.ResponseStandard
+    meta_data: _base_pb2.MetaData
     stock_move_lines: _containers.RepeatedCompositeFieldContainer[StockMoveLine]
     def __init__(
         self,
@@ -202,11 +186,11 @@ class StockMoveLineReadResponse(_message.Message):
     ) -> None: ...
 
 class StockMoveLineUpdateRequest(_message.Message):
-    __slots__ = ["context", "stock_move_line"]
-    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["stock_move_line", "context"]
     STOCK_MOVE_LINE_FIELD_NUMBER: _ClassVar[int]
-    context: _base_pb2.Context
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
     stock_move_line: StockMoveLine
+    context: _base_pb2.Context
     def __init__(
         self,
         stock_move_line: _Optional[_Union[StockMoveLine, _Mapping]] = ...,
@@ -224,3 +208,19 @@ class StockMoveLineUpdateResponse(_message.Message):
         response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
         stock_move_line: _Optional[_Union[StockMoveLine, _Mapping]] = ...,
     ) -> None: ...
+
+class StockMoveLineDeleteRequest(_message.Message):
+    __slots__ = ["id", "context"]
+    ID_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    id: int
+    context: _base_pb2.Context
+    def __init__(
+        self, id: _Optional[int] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
+    ) -> None: ...
+
+class StockMoveLineDeleteResponse(_message.Message):
+    __slots__ = ["response_standard"]
+    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
+    response_standard: _base_pb2.ResponseStandard
+    def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...

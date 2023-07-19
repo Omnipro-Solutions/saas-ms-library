@@ -3,6 +3,8 @@ import secrets
 import string
 from functools import reduce
 
+DEFAULT_RECORD_LIMIT = 10000
+
 
 def generate_strong_password(length=12):
     if length < 8:

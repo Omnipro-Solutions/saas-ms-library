@@ -198,5 +198,8 @@ class BaseModel(Model):
     def to_proto(self, *args, **kwargs):
         raise NotImplementedError
 
+    def sync_data(self, *args, **kwargs):
+        raise NotImplementedError
+
     def get_document_info(self, *args, **kwargs):
         raise NotImplementedError

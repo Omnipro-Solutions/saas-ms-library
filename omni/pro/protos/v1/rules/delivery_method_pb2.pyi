@@ -16,63 +16,80 @@ from omni.pro.protos.v1.rules import delivery_schedule_pb2 as _delivery_schedule
 from omni.pro.protos.v1.rules import location_pb2 as _location_pb2
 from omni.pro.protos.v1.rules import warehouse_pb2 as _warehouse_pb2
 
-CONSOLIDATED: TypePickingTransfer
 DESCRIPTOR: _descriptor.FileDescriptor
-OPTIONAL: ValidateWarehouseCode
+
+class TypePickingTransfer(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = []
+    PARTIAL: _ClassVar[TypePickingTransfer]
+    CONSOLIDATED: _ClassVar[TypePickingTransfer]
+
+class ValidateWarehouseCode(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = []
+    OPTIONAL: _ClassVar[ValidateWarehouseCode]
+    REQUIRED: _ClassVar[ValidateWarehouseCode]
+    UNNECESSARY: _ClassVar[ValidateWarehouseCode]
+
+class TypeDelivery(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = []
+    STORE: _ClassVar[TypeDelivery]
+    SHIPPING: _ClassVar[TypeDelivery]
+
 PARTIAL: TypePickingTransfer
+CONSOLIDATED: TypePickingTransfer
+OPTIONAL: ValidateWarehouseCode
 REQUIRED: ValidateWarehouseCode
-SHIPPING: TypeDelivery
-STORE: TypeDelivery
 UNNECESSARY: ValidateWarehouseCode
+STORE: TypeDelivery
+SHIPPING: TypeDelivery
 
 class DeliveryMethod(_message.Message):
     __slots__ = [
-        "active",
-        "category_template_id",
-        "code",
-        "delivery_location_id",
-        "delivery_warehouse_ids",
         "id",
-        "locality_available_id",
         "name",
-        "object_audit",
-        "quantity_security",
-        "schedule_template_id",
-        "transfer_template_id",
-        "type_delivery",
+        "delivery_warehouse_ids",
         "type_picking_transfer",
         "validate_warehouse_code",
+        "quantity_security",
+        "code",
+        "type_delivery",
+        "delivery_location_id",
+        "transfer_template_id",
+        "category_template_id",
+        "locality_available_id",
+        "schedule_template_id",
+        "active",
+        "object_audit",
     ]
-    ACTIVE_FIELD_NUMBER: _ClassVar[int]
-    CATEGORY_TEMPLATE_ID_FIELD_NUMBER: _ClassVar[int]
-    CODE_FIELD_NUMBER: _ClassVar[int]
-    DELIVERY_LOCATION_ID_FIELD_NUMBER: _ClassVar[int]
-    DELIVERY_WAREHOUSE_IDS_FIELD_NUMBER: _ClassVar[int]
     ID_FIELD_NUMBER: _ClassVar[int]
-    LOCALITY_AVAILABLE_ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
-    OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
-    QUANTITY_SECURITY_FIELD_NUMBER: _ClassVar[int]
-    SCHEDULE_TEMPLATE_ID_FIELD_NUMBER: _ClassVar[int]
-    TRANSFER_TEMPLATE_ID_FIELD_NUMBER: _ClassVar[int]
-    TYPE_DELIVERY_FIELD_NUMBER: _ClassVar[int]
+    DELIVERY_WAREHOUSE_IDS_FIELD_NUMBER: _ClassVar[int]
     TYPE_PICKING_TRANSFER_FIELD_NUMBER: _ClassVar[int]
     VALIDATE_WAREHOUSE_CODE_FIELD_NUMBER: _ClassVar[int]
-    active: bool
-    category_template_id: _delivery_category_pb2.DeliveryCategory
-    code: str
-    delivery_location_id: _location_pb2.Location
-    delivery_warehouse_ids: _containers.RepeatedCompositeFieldContainer[_warehouse_pb2.Warehouse]
+    QUANTITY_SECURITY_FIELD_NUMBER: _ClassVar[int]
+    CODE_FIELD_NUMBER: _ClassVar[int]
+    TYPE_DELIVERY_FIELD_NUMBER: _ClassVar[int]
+    DELIVERY_LOCATION_ID_FIELD_NUMBER: _ClassVar[int]
+    TRANSFER_TEMPLATE_ID_FIELD_NUMBER: _ClassVar[int]
+    CATEGORY_TEMPLATE_ID_FIELD_NUMBER: _ClassVar[int]
+    LOCALITY_AVAILABLE_ID_FIELD_NUMBER: _ClassVar[int]
+    SCHEDULE_TEMPLATE_ID_FIELD_NUMBER: _ClassVar[int]
+    ACTIVE_FIELD_NUMBER: _ClassVar[int]
+    OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
-    locality_available_id: _delivery_locality_pb2.DeliveryLocality
     name: str
-    object_audit: _base_pb2.ObjectAudit
-    quantity_security: float
-    schedule_template_id: _delivery_schedule_pb2.DeliverySchedule
-    transfer_template_id: _delivery_method_warehouse_pb2.DeliveryMethodWarehouse
-    type_delivery: TypeDelivery
+    delivery_warehouse_ids: _containers.RepeatedCompositeFieldContainer[_warehouse_pb2.Warehouse]
     type_picking_transfer: TypePickingTransfer
     validate_warehouse_code: ValidateWarehouseCode
+    quantity_security: float
+    code: str
+    type_delivery: TypeDelivery
+    delivery_location_id: _location_pb2.Location
+    transfer_template_id: _delivery_method_warehouse_pb2.DeliveryMethodWarehouse
+    category_template_id: _delivery_category_pb2.DeliveryCategory
+    locality_available_id: _delivery_locality_pb2.DeliveryLocality
+    schedule_template_id: _delivery_schedule_pb2.DeliverySchedule
+    active: bool
+    object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
         id: _Optional[str] = ...,
@@ -94,46 +111,46 @@ class DeliveryMethod(_message.Message):
 
 class DeliveryMethodCreateRequest(_message.Message):
     __slots__ = [
-        "category_template_id",
-        "code",
-        "context",
-        "delivery_location_id",
-        "delivery_warehouse_ids",
-        "locality_available_id",
         "name",
-        "quantity_security",
-        "schedule_template_id",
-        "transfer_template_id",
-        "type_delivery",
+        "delivery_warehouse_ids",
         "type_picking_transfer",
         "validate_warehouse_code",
+        "quantity_security",
+        "code",
+        "type_delivery",
+        "delivery_location_id",
+        "transfer_template_id",
+        "category_template_id",
+        "locality_available_id",
+        "schedule_template_id",
+        "context",
     ]
-    CATEGORY_TEMPLATE_ID_FIELD_NUMBER: _ClassVar[int]
-    CODE_FIELD_NUMBER: _ClassVar[int]
-    CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    DELIVERY_LOCATION_ID_FIELD_NUMBER: _ClassVar[int]
-    DELIVERY_WAREHOUSE_IDS_FIELD_NUMBER: _ClassVar[int]
-    LOCALITY_AVAILABLE_ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
-    QUANTITY_SECURITY_FIELD_NUMBER: _ClassVar[int]
-    SCHEDULE_TEMPLATE_ID_FIELD_NUMBER: _ClassVar[int]
-    TRANSFER_TEMPLATE_ID_FIELD_NUMBER: _ClassVar[int]
-    TYPE_DELIVERY_FIELD_NUMBER: _ClassVar[int]
+    DELIVERY_WAREHOUSE_IDS_FIELD_NUMBER: _ClassVar[int]
     TYPE_PICKING_TRANSFER_FIELD_NUMBER: _ClassVar[int]
     VALIDATE_WAREHOUSE_CODE_FIELD_NUMBER: _ClassVar[int]
-    category_template_id: str
-    code: str
-    context: _base_pb2.Context
-    delivery_location_id: str
-    delivery_warehouse_ids: _containers.RepeatedScalarFieldContainer[str]
-    locality_available_id: str
+    QUANTITY_SECURITY_FIELD_NUMBER: _ClassVar[int]
+    CODE_FIELD_NUMBER: _ClassVar[int]
+    TYPE_DELIVERY_FIELD_NUMBER: _ClassVar[int]
+    DELIVERY_LOCATION_ID_FIELD_NUMBER: _ClassVar[int]
+    TRANSFER_TEMPLATE_ID_FIELD_NUMBER: _ClassVar[int]
+    CATEGORY_TEMPLATE_ID_FIELD_NUMBER: _ClassVar[int]
+    LOCALITY_AVAILABLE_ID_FIELD_NUMBER: _ClassVar[int]
+    SCHEDULE_TEMPLATE_ID_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
-    quantity_security: float
-    schedule_template_id: str
-    transfer_template_id: str
-    type_delivery: TypeDelivery
+    delivery_warehouse_ids: _containers.RepeatedScalarFieldContainer[str]
     type_picking_transfer: TypePickingTransfer
     validate_warehouse_code: ValidateWarehouseCode
+    quantity_security: float
+    code: str
+    type_delivery: TypeDelivery
+    delivery_location_id: str
+    transfer_template_id: str
+    category_template_id: str
+    locality_available_id: str
+    schedule_template_id: str
+    context: _base_pb2.Context
     def __init__(
         self,
         name: _Optional[str] = ...,
@@ -163,38 +180,22 @@ class DeliveryMethodCreateResponse(_message.Message):
         response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
     ) -> None: ...
 
-class DeliveryMethodDeleteRequest(_message.Message):
-    __slots__ = ["context", "id"]
-    CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    ID_FIELD_NUMBER: _ClassVar[int]
-    context: _base_pb2.Context
-    id: str
-    def __init__(
-        self, id: _Optional[str] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
-    ) -> None: ...
-
-class DeliveryMethodDeleteResponse(_message.Message):
-    __slots__ = ["response_standard"]
-    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
-    response_standard: _base_pb2.ResponseStandard
-    def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
-
 class DeliveryMethodReadRequest(_message.Message):
-    __slots__ = ["context", "fields", "filter", "group_by", "id", "paginated", "sort_by"]
-    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["group_by", "sort_by", "fields", "filter", "paginated", "id", "context"]
+    GROUP_BY_FIELD_NUMBER: _ClassVar[int]
+    SORT_BY_FIELD_NUMBER: _ClassVar[int]
     FIELDS_FIELD_NUMBER: _ClassVar[int]
     FILTER_FIELD_NUMBER: _ClassVar[int]
-    GROUP_BY_FIELD_NUMBER: _ClassVar[int]
-    ID_FIELD_NUMBER: _ClassVar[int]
     PAGINATED_FIELD_NUMBER: _ClassVar[int]
-    SORT_BY_FIELD_NUMBER: _ClassVar[int]
-    context: _base_pb2.Context
+    ID_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    group_by: _containers.RepeatedCompositeFieldContainer[_base_pb2.GroupBy]
+    sort_by: _base_pb2.SortBy
     fields: _base_pb2.Fields
     filter: _base_pb2.Filter
-    group_by: _containers.RepeatedCompositeFieldContainer[_base_pb2.GroupBy]
-    id: str
     paginated: _base_pb2.Paginated
-    sort_by: _base_pb2.SortBy
+    id: str
+    context: _base_pb2.Context
     def __init__(
         self,
         group_by: _Optional[_Iterable[_Union[_base_pb2.GroupBy, _Mapping]]] = ...,
@@ -222,11 +223,11 @@ class DeliveryMethodReadResponse(_message.Message):
     ) -> None: ...
 
 class DeliveryMethodUpdateRequest(_message.Message):
-    __slots__ = ["context", "delivery_method"]
-    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["delivery_method", "context"]
     DELIVERY_METHOD_FIELD_NUMBER: _ClassVar[int]
-    context: _base_pb2.Context
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
     delivery_method: DeliveryMethod
+    context: _base_pb2.Context
     def __init__(
         self,
         delivery_method: _Optional[_Union[DeliveryMethod, _Mapping]] = ...,
@@ -245,11 +246,18 @@ class DeliveryMethodUpdateResponse(_message.Message):
         response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
     ) -> None: ...
 
-class TypePickingTransfer(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
-    __slots__ = []
+class DeliveryMethodDeleteRequest(_message.Message):
+    __slots__ = ["id", "context"]
+    ID_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    id: str
+    context: _base_pb2.Context
+    def __init__(
+        self, id: _Optional[str] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
+    ) -> None: ...
 
-class ValidateWarehouseCode(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
-    __slots__ = []
-
-class TypeDelivery(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
-    __slots__ = []
+class DeliveryMethodDeleteResponse(_message.Message):
+    __slots__ = ["response_standard"]
+    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
+    response_standard: _base_pb2.ResponseStandard
+    def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...

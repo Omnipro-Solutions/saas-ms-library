@@ -22,3 +22,7 @@ class Config(object):
     USER_MS_HOST = os.environ.get("USER_MS_HOST") or "localhost"
     SERVICE_NAME_BALANCER = os.environ.get("SERVICE_NAME_BALANCER")
     SAAS_MS_USER = os.environ.get("SAAS_MS_USER")
+    SAAS_MS_CATALOG = os.environ.get("SAAS_MS_CATALOG")
+    SAAS_MS_UTILITIES = os.environ.get("SAAS_MS_UTILITIES")
+    SAAS_MS_STOCK = os.environ.get("SAAS_MS_STOCK")
+    SAAS_MS_CLIENT = os.environ.get("SAAS_MS_CLIENT")

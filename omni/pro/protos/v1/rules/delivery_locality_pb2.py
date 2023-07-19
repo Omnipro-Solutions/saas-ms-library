@@ -18,28 +18,29 @@ DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
     b'\n v1/rules/delivery_locality.proto\x12+pro.omni.oms.api.v1.rules.delivery_locality\x1a\x11\x63ommon/base.proto"\xd3\x01\n\x10\x44\x65liveryLocality\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x12\n\ncountry_id\x18\x03 \x01(\t\x12\x1b\n\x13territory_matrix_id\x18\x04 \x01(\t\x12#\n\x1bterritory_matrix_values_ids\x18\x05 \x03(\t\x12\x0e\n\x06\x61\x63tive\x18\x06 \x01(\x08\x12?\n\x0cobject_audit\x18\x07 \x01(\x0b\x32).pro.omni.oms.api.common.base.ObjectAudit"\xbb\x01\n\x1d\x44\x65liveryLocalityCreateRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x12\n\ncountry_id\x18\x02 \x01(\t\x12\x1b\n\x13territory_matrix_id\x18\x03 \x01(\t\x12#\n\x1bterritory_matrix_values_ids\x18\x04 \x03(\t\x12\x36\n\x07\x63ontext\x18\x05 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xc5\x01\n\x1e\x44\x65liveryLocalityCreateResponse\x12X\n\x11\x64\x65livery_locality\x18\x01 \x01(\x0b\x32=.pro.omni.oms.api.v1.rules.delivery_locality.DeliveryLocality\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\xf9\x02\n\x1b\x44\x65liveryLocalityReadRequest\x12\x37\n\x08group_by\x18\x01 \x03(\x0b\x32%.pro.omni.oms.api.common.base.GroupBy\x12\x35\n\x07sort_by\x18\x02 \x01(\x0b\x32$.pro.omni.oms.api.common.base.SortBy\x12\x34\n\x06\x66ields\x18\x03 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Fields\x12\x34\n\x06\x66ilter\x18\x04 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Filter\x12:\n\tpaginated\x18\x05 \x01(\x0b\x32\'.pro.omni.oms.api.common.base.Paginated\x12\n\n\x02id\x18\x06 \x01(\t\x12\x36\n\x07\x63ontext\x18\x07 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\x80\x02\n\x1c\x44\x65liveryLocalityReadResponse\x12Z\n\x13\x64\x65livery_localities\x18\x01 \x03(\x0b\x32=.pro.omni.oms.api.v1.rules.delivery_locality.DeliveryLocality\x12\x39\n\tmeta_data\x18\x02 \x01(\x0b\x32&.pro.omni.oms.api.common.base.MetaData\x12I\n\x11response_standard\x18\x03 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\xb1\x01\n\x1d\x44\x65liveryLocalityUpdateRequest\x12X\n\x11\x64\x65livery_locality\x18\x01 \x01(\x0b\x32=.pro.omni.oms.api.v1.rules.delivery_locality.DeliveryLocality\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xc5\x01\n\x1e\x44\x65liveryLocalityUpdateResponse\x12X\n\x11\x64\x65livery_locality\x18\x01 \x01(\x0b\x32=.pro.omni.oms.api.v1.rules.delivery_locality.DeliveryLocality\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"c\n\x1d\x44\x65liveryLocalityDeleteRequest\x12\n\n\x02id\x18\x01 \x01(\t\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"k\n\x1e\x44\x65liveryLocalityDeleteResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard2\xeb\x05\n\x17\x44\x65liveryLocalityService\x12\xb3\x01\n\x16\x44\x65liveryLocalityCreate\x12J.pro.omni.oms.api.v1.rules.delivery_locality.DeliveryLocalityCreateRequest\x1aK.pro.omni.oms.api.v1.rules.delivery_locality.DeliveryLocalityCreateResponse"\x00\x12\xad\x01\n\x14\x44\x65liveryLocalityRead\x12H.pro.omni.oms.api.v1.rules.delivery_locality.DeliveryLocalityReadRequest\x1aI.pro.omni.oms.api.v1.rules.delivery_locality.DeliveryLocalityReadResponse"\x00\x12\xb3\x01\n\x16\x44\x65liveryLocalityUpdate\x12J.pro.omni.oms.api.v1.rules.delivery_locality.DeliveryLocalityUpdateRequest\x1aK.pro.omni.oms.api.v1.rules.delivery_locality.DeliveryLocalityUpdateResponse"\x00\x12\xb3\x01\n\x16\x44\x65liveryLocalityDelete\x12J.pro.omni.oms.api.v1.rules.delivery_locality.DeliveryLocalityDeleteRequest\x1aK.pro.omni.oms.api.v1.rules.delivery_locality.DeliveryLocalityDeleteResponse"\x00\x62\x06proto3'
 )
 
-_builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
-_builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, "v1.rules.delivery_locality_pb2", globals())
+_globals = globals()
+_builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
+_builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, "v1.rules.delivery_locality_pb2", _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
     DESCRIPTOR._options = None
-    _DELIVERYLOCALITY._serialized_start = 101
-    _DELIVERYLOCALITY._serialized_end = 312
-    _DELIVERYLOCALITYCREATEREQUEST._serialized_start = 315
-    _DELIVERYLOCALITYCREATEREQUEST._serialized_end = 502
-    _DELIVERYLOCALITYCREATERESPONSE._serialized_start = 505
-    _DELIVERYLOCALITYCREATERESPONSE._serialized_end = 702
-    _DELIVERYLOCALITYREADREQUEST._serialized_start = 705
-    _DELIVERYLOCALITYREADREQUEST._serialized_end = 1082
-    _DELIVERYLOCALITYREADRESPONSE._serialized_start = 1085
-    _DELIVERYLOCALITYREADRESPONSE._serialized_end = 1341
-    _DELIVERYLOCALITYUPDATEREQUEST._serialized_start = 1344
-    _DELIVERYLOCALITYUPDATEREQUEST._serialized_end = 1521
-    _DELIVERYLOCALITYUPDATERESPONSE._serialized_start = 1524
-    _DELIVERYLOCALITYUPDATERESPONSE._serialized_end = 1721
-    _DELIVERYLOCALITYDELETEREQUEST._serialized_start = 1723
-    _DELIVERYLOCALITYDELETEREQUEST._serialized_end = 1822
-    _DELIVERYLOCALITYDELETERESPONSE._serialized_start = 1824
-    _DELIVERYLOCALITYDELETERESPONSE._serialized_end = 1931
-    _DELIVERYLOCALITYSERVICE._serialized_start = 1934
-    _DELIVERYLOCALITYSERVICE._serialized_end = 2681
+    _globals["_DELIVERYLOCALITY"]._serialized_start = 101
+    _globals["_DELIVERYLOCALITY"]._serialized_end = 312
+    _globals["_DELIVERYLOCALITYCREATEREQUEST"]._serialized_start = 315
+    _globals["_DELIVERYLOCALITYCREATEREQUEST"]._serialized_end = 502
+    _globals["_DELIVERYLOCALITYCREATERESPONSE"]._serialized_start = 505
+    _globals["_DELIVERYLOCALITYCREATERESPONSE"]._serialized_end = 702
+    _globals["_DELIVERYLOCALITYREADREQUEST"]._serialized_start = 705
+    _globals["_DELIVERYLOCALITYREADREQUEST"]._serialized_end = 1082
+    _globals["_DELIVERYLOCALITYREADRESPONSE"]._serialized_start = 1085
+    _globals["_DELIVERYLOCALITYREADRESPONSE"]._serialized_end = 1341
+    _globals["_DELIVERYLOCALITYUPDATEREQUEST"]._serialized_start = 1344
+    _globals["_DELIVERYLOCALITYUPDATEREQUEST"]._serialized_end = 1521
+    _globals["_DELIVERYLOCALITYUPDATERESPONSE"]._serialized_start = 1524
+    _globals["_DELIVERYLOCALITYUPDATERESPONSE"]._serialized_end = 1721
+    _globals["_DELIVERYLOCALITYDELETEREQUEST"]._serialized_start = 1723
+    _globals["_DELIVERYLOCALITYDELETEREQUEST"]._serialized_end = 1822
+    _globals["_DELIVERYLOCALITYDELETERESPONSE"]._serialized_start = 1824
+    _globals["_DELIVERYLOCALITYDELETERESPONSE"]._serialized_end = 1931
+    _globals["_DELIVERYLOCALITYSERVICE"]._serialized_start = 1934
+    _globals["_DELIVERYLOCALITYSERVICE"]._serialized_end = 2681
 # @@protoc_insertion_point(module_scope)

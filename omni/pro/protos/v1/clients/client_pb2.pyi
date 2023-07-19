@@ -14,37 +14,37 @@ DESCRIPTOR: _descriptor.FileDescriptor
 
 class Client(_message.Message):
     __slots__ = [
-        "active",
-        "addresses",
-        "country",
-        "document",
-        "email",
         "id",
-        "mobile",
         "name",
-        "object_audit",
         "type_document",
+        "document",
+        "mobile",
+        "email",
+        "country",
+        "addresses",
+        "active",
+        "object_audit",
     ]
-    ACTIVE_FIELD_NUMBER: _ClassVar[int]
-    ADDRESSES_FIELD_NUMBER: _ClassVar[int]
-    COUNTRY_FIELD_NUMBER: _ClassVar[int]
-    DOCUMENT_FIELD_NUMBER: _ClassVar[int]
-    EMAIL_FIELD_NUMBER: _ClassVar[int]
     ID_FIELD_NUMBER: _ClassVar[int]
-    MOBILE_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
-    OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     TYPE_DOCUMENT_FIELD_NUMBER: _ClassVar[int]
-    active: bool
-    addresses: _containers.RepeatedCompositeFieldContainer[_address_pb2.Address]
-    country: _base_pb2.Object
-    document: str
-    email: str
+    DOCUMENT_FIELD_NUMBER: _ClassVar[int]
+    MOBILE_FIELD_NUMBER: _ClassVar[int]
+    EMAIL_FIELD_NUMBER: _ClassVar[int]
+    COUNTRY_FIELD_NUMBER: _ClassVar[int]
+    ADDRESSES_FIELD_NUMBER: _ClassVar[int]
+    ACTIVE_FIELD_NUMBER: _ClassVar[int]
+    OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
-    mobile: str
     name: str
-    object_audit: _base_pb2.ObjectAudit
     type_document: _base_pb2.Object
+    document: str
+    mobile: str
+    email: str
+    country: _base_pb2.Object
+    addresses: _containers.RepeatedCompositeFieldContainer[_address_pb2.Address]
+    active: bool
+    object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
         id: _Optional[str] = ...,
@@ -60,21 +60,21 @@ class Client(_message.Message):
     ) -> None: ...
 
 class ClientCreateRequest(_message.Message):
-    __slots__ = ["context", "country", "document", "email", "mobile", "name", "type_document"]
-    CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    COUNTRY_FIELD_NUMBER: _ClassVar[int]
-    DOCUMENT_FIELD_NUMBER: _ClassVar[int]
-    EMAIL_FIELD_NUMBER: _ClassVar[int]
-    MOBILE_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["name", "type_document", "document", "mobile", "email", "country", "context"]
     NAME_FIELD_NUMBER: _ClassVar[int]
     TYPE_DOCUMENT_FIELD_NUMBER: _ClassVar[int]
-    context: _base_pb2.Context
-    country: _base_pb2.Object
-    document: str
-    email: str
-    mobile: str
+    DOCUMENT_FIELD_NUMBER: _ClassVar[int]
+    MOBILE_FIELD_NUMBER: _ClassVar[int]
+    EMAIL_FIELD_NUMBER: _ClassVar[int]
+    COUNTRY_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     type_document: _base_pb2.Object
+    document: str
+    mobile: str
+    email: str
+    country: _base_pb2.Object
+    context: _base_pb2.Context
     def __init__(
         self,
         name: _Optional[str] = ...,
@@ -87,49 +87,33 @@ class ClientCreateRequest(_message.Message):
     ) -> None: ...
 
 class ClientCreateResponse(_message.Message):
-    __slots__ = ["client", "response_standard"]
-    CLIENT_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["response_standard", "client"]
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
-    client: Client
+    CLIENT_FIELD_NUMBER: _ClassVar[int]
     response_standard: _base_pb2.ResponseStandard
+    client: Client
     def __init__(
         self,
         response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
         client: _Optional[_Union[Client, _Mapping]] = ...,
     ) -> None: ...
 
-class ClientDeleteRequest(_message.Message):
-    __slots__ = ["context", "id"]
-    CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    ID_FIELD_NUMBER: _ClassVar[int]
-    context: _base_pb2.Context
-    id: str
-    def __init__(
-        self, id: _Optional[str] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
-    ) -> None: ...
-
-class ClientDeleteResponse(_message.Message):
-    __slots__ = ["response_standard"]
-    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
-    response_standard: _base_pb2.ResponseStandard
-    def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
-
 class ClientReadRequest(_message.Message):
-    __slots__ = ["context", "fields", "filter", "group_by", "id", "paginated", "sort_by"]
-    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["group_by", "sort_by", "fields", "filter", "paginated", "id", "context"]
+    GROUP_BY_FIELD_NUMBER: _ClassVar[int]
+    SORT_BY_FIELD_NUMBER: _ClassVar[int]
     FIELDS_FIELD_NUMBER: _ClassVar[int]
     FILTER_FIELD_NUMBER: _ClassVar[int]
-    GROUP_BY_FIELD_NUMBER: _ClassVar[int]
-    ID_FIELD_NUMBER: _ClassVar[int]
     PAGINATED_FIELD_NUMBER: _ClassVar[int]
-    SORT_BY_FIELD_NUMBER: _ClassVar[int]
-    context: _base_pb2.Context
+    ID_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    group_by: _containers.RepeatedCompositeFieldContainer[_base_pb2.GroupBy]
+    sort_by: _base_pb2.SortBy
     fields: _base_pb2.Fields
     filter: _base_pb2.Filter
-    group_by: _containers.RepeatedCompositeFieldContainer[_base_pb2.GroupBy]
-    id: str
     paginated: _base_pb2.Paginated
-    sort_by: _base_pb2.SortBy
+    id: str
+    context: _base_pb2.Context
     def __init__(
         self,
         group_by: _Optional[_Iterable[_Union[_base_pb2.GroupBy, _Mapping]]] = ...,
@@ -142,13 +126,13 @@ class ClientReadRequest(_message.Message):
     ) -> None: ...
 
 class ClientReadResponse(_message.Message):
-    __slots__ = ["clients", "meta_data", "response_standard"]
-    CLIENTS_FIELD_NUMBER: _ClassVar[int]
-    META_DATA_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["response_standard", "meta_data", "clients"]
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
-    clients: _containers.RepeatedCompositeFieldContainer[Client]
-    meta_data: _base_pb2.MetaData
+    META_DATA_FIELD_NUMBER: _ClassVar[int]
+    CLIENTS_FIELD_NUMBER: _ClassVar[int]
     response_standard: _base_pb2.ResponseStandard
+    meta_data: _base_pb2.MetaData
+    clients: _containers.RepeatedCompositeFieldContainer[Client]
     def __init__(
         self,
         response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
@@ -169,13 +153,29 @@ class ClientUpdateRequest(_message.Message):
     ) -> None: ...
 
 class ClientUpdateResponse(_message.Message):
-    __slots__ = ["client", "response_standard"]
-    CLIENT_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["response_standard", "client"]
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
-    client: Client
+    CLIENT_FIELD_NUMBER: _ClassVar[int]
     response_standard: _base_pb2.ResponseStandard
+    client: Client
     def __init__(
         self,
         response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
         client: _Optional[_Union[Client, _Mapping]] = ...,
     ) -> None: ...
+
+class ClientDeleteRequest(_message.Message):
+    __slots__ = ["id", "context"]
+    ID_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    id: str
+    context: _base_pb2.Context
+    def __init__(
+        self, id: _Optional[str] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
+    ) -> None: ...
+
+class ClientDeleteResponse(_message.Message):
+    __slots__ = ["response_standard"]
+    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
+    response_standard: _base_pb2.ResponseStandard
+    def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...

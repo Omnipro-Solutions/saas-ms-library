@@ -12,13 +12,36 @@ from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
-class Context(_message.Message):
-    __slots__ = ["tenant", "user"]
-    TENANT_FIELD_NUMBER: _ClassVar[int]
-    USER_FIELD_NUMBER: _ClassVar[int]
-    tenant: str
-    user: str
-    def __init__(self, tenant: _Optional[str] = ..., user: _Optional[str] = ...) -> None: ...
+class Object(_message.Message):
+    __slots__ = ["code_name", "code"]
+    CODE_NAME_FIELD_NUMBER: _ClassVar[int]
+    CODE_FIELD_NUMBER: _ClassVar[int]
+    code_name: str
+    code: str
+    def __init__(self, code_name: _Optional[str] = ..., code: _Optional[str] = ...) -> None: ...
+
+class GroupBy(_message.Message):
+    __slots__ = ["name_field"]
+    NAME_FIELD_FIELD_NUMBER: _ClassVar[int]
+    name_field: str
+    def __init__(self, name_field: _Optional[str] = ...) -> None: ...
+
+class SortBy(_message.Message):
+    __slots__ = ["name_field", "type"]
+
+    class SortType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+        __slots__ = []
+        ASC: _ClassVar[SortBy.SortType]
+        DESC: _ClassVar[SortBy.SortType]
+    ASC: SortBy.SortType
+    DESC: SortBy.SortType
+    NAME_FIELD_FIELD_NUMBER: _ClassVar[int]
+    TYPE_FIELD_NUMBER: _ClassVar[int]
+    name_field: str
+    type: SortBy.SortType
+    def __init__(
+        self, name_field: _Optional[str] = ..., type: _Optional[_Union[SortBy.SortType, str]] = ...
+    ) -> None: ...
 
 class Fields(_message.Message):
     __slots__ = ["name_field"]
@@ -32,39 +55,45 @@ class Filter(_message.Message):
     filter: str
     def __init__(self, filter: _Optional[str] = ...) -> None: ...
 
-class GroupBy(_message.Message):
-    __slots__ = ["name_field"]
-    NAME_FIELD_FIELD_NUMBER: _ClassVar[int]
-    name_field: str
-    def __init__(self, name_field: _Optional[str] = ...) -> None: ...
+class Paginated(_message.Message):
+    __slots__ = ["offset", "limit"]
+    OFFSET_FIELD_NUMBER: _ClassVar[int]
+    LIMIT_FIELD_NUMBER: _ClassVar[int]
+    offset: int
+    limit: int
+    def __init__(self, offset: _Optional[int] = ..., limit: _Optional[int] = ...) -> None: ...
 
 class LinkPage(_message.Message):
-    __slots__ = ["link", "type"]
+    __slots__ = ["type", "link"]
 
     class LinkType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = []
-    FIRST: LinkPage.LinkType
-    LAST: LinkPage.LinkType
-    LINK_FIELD_NUMBER: _ClassVar[int]
+        NEXT: _ClassVar[LinkPage.LinkType]
+        PREV: _ClassVar[LinkPage.LinkType]
+        LAST: _ClassVar[LinkPage.LinkType]
+        FIRST: _ClassVar[LinkPage.LinkType]
     NEXT: LinkPage.LinkType
     PREV: LinkPage.LinkType
+    LAST: LinkPage.LinkType
+    FIRST: LinkPage.LinkType
     TYPE_FIELD_NUMBER: _ClassVar[int]
-    link: str
+    LINK_FIELD_NUMBER: _ClassVar[int]
     type: LinkPage.LinkType
+    link: str
     def __init__(self, type: _Optional[_Union[LinkPage.LinkType, str]] = ..., link: _Optional[str] = ...) -> None: ...
 
 class MetaData(_message.Message):
-    __slots__ = ["count", "limit", "link_page", "offset", "total"]
-    COUNT_FIELD_NUMBER: _ClassVar[int]
-    LIMIT_FIELD_NUMBER: _ClassVar[int]
-    LINK_PAGE_FIELD_NUMBER: _ClassVar[int]
-    OFFSET_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["total", "offset", "limit", "count", "link_page"]
     TOTAL_FIELD_NUMBER: _ClassVar[int]
-    count: int
-    limit: int
-    link_page: _containers.RepeatedCompositeFieldContainer[LinkPage]
-    offset: int
+    OFFSET_FIELD_NUMBER: _ClassVar[int]
+    LIMIT_FIELD_NUMBER: _ClassVar[int]
+    COUNT_FIELD_NUMBER: _ClassVar[int]
+    LINK_PAGE_FIELD_NUMBER: _ClassVar[int]
     total: int
+    offset: int
+    limit: int
+    count: int
+    link_page: _containers.RepeatedCompositeFieldContainer[LinkPage]
     def __init__(
         self,
         total: _Optional[int] = ...,
@@ -74,28 +103,38 @@ class MetaData(_message.Message):
         link_page: _Optional[_Iterable[_Union[LinkPage, _Mapping]]] = ...,
     ) -> None: ...
 
-class Object(_message.Message):
-    __slots__ = ["code", "code_name"]
-    CODE_FIELD_NUMBER: _ClassVar[int]
-    CODE_NAME_FIELD_NUMBER: _ClassVar[int]
-    code: str
-    code_name: str
-    def __init__(self, code_name: _Optional[str] = ..., code: _Optional[str] = ...) -> None: ...
+class ResponseStandard(_message.Message):
+    __slots__ = ["success", "message", "status_code", "message_code"]
+    SUCCESS_FIELD_NUMBER: _ClassVar[int]
+    MESSAGE_FIELD_NUMBER: _ClassVar[int]
+    STATUS_CODE_FIELD_NUMBER: _ClassVar[int]
+    MESSAGE_CODE_FIELD_NUMBER: _ClassVar[int]
+    success: bool
+    message: str
+    status_code: int
+    message_code: str
+    def __init__(
+        self,
+        success: bool = ...,
+        message: _Optional[str] = ...,
+        status_code: _Optional[int] = ...,
+        message_code: _Optional[str] = ...,
+    ) -> None: ...
 
 class ObjectAudit(_message.Message):
-    __slots__ = ["created_at", "created_by", "deleted_at", "deleted_by", "updated_at", "updated_by"]
-    CREATED_AT_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["created_by", "updated_by", "deleted_by", "created_at", "updated_at", "deleted_at"]
     CREATED_BY_FIELD_NUMBER: _ClassVar[int]
-    DELETED_AT_FIELD_NUMBER: _ClassVar[int]
-    DELETED_BY_FIELD_NUMBER: _ClassVar[int]
-    UPDATED_AT_FIELD_NUMBER: _ClassVar[int]
     UPDATED_BY_FIELD_NUMBER: _ClassVar[int]
-    created_at: _timestamp_pb2.Timestamp
+    DELETED_BY_FIELD_NUMBER: _ClassVar[int]
+    CREATED_AT_FIELD_NUMBER: _ClassVar[int]
+    UPDATED_AT_FIELD_NUMBER: _ClassVar[int]
+    DELETED_AT_FIELD_NUMBER: _ClassVar[int]
     created_by: str
-    deleted_at: _timestamp_pb2.Timestamp
-    deleted_by: str
-    updated_at: _timestamp_pb2.Timestamp
     updated_by: str
+    deleted_by: str
+    created_at: _timestamp_pb2.Timestamp
+    updated_at: _timestamp_pb2.Timestamp
+    deleted_at: _timestamp_pb2.Timestamp
     def __init__(
         self,
         created_by: _Optional[str] = ...,
@@ -106,67 +145,10 @@ class ObjectAudit(_message.Message):
         deleted_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
     ) -> None: ...
 
-class Paginated(_message.Message):
-    __slots__ = ["limit", "offset"]
-    LIMIT_FIELD_NUMBER: _ClassVar[int]
-    OFFSET_FIELD_NUMBER: _ClassVar[int]
-    limit: int
-    offset: int
-    def __init__(self, offset: _Optional[int] = ..., limit: _Optional[int] = ...) -> None: ...
-
-class ReadRequest(_message.Message):
-    __slots__ = ["fields", "filter", "group_by", "id", "paginated", "sort_by"]
-    FIELDS_FIELD_NUMBER: _ClassVar[int]
-    FILTER_FIELD_NUMBER: _ClassVar[int]
-    GROUP_BY_FIELD_NUMBER: _ClassVar[int]
-    ID_FIELD_NUMBER: _ClassVar[int]
-    PAGINATED_FIELD_NUMBER: _ClassVar[int]
-    SORT_BY_FIELD_NUMBER: _ClassVar[int]
-    fields: Fields
-    filter: Filter
-    group_by: _containers.RepeatedCompositeFieldContainer[GroupBy]
-    id: str
-    paginated: Paginated
-    sort_by: SortBy
-    def __init__(
-        self,
-        group_by: _Optional[_Iterable[_Union[GroupBy, _Mapping]]] = ...,
-        sort_by: _Optional[_Union[SortBy, _Mapping]] = ...,
-        fields: _Optional[_Union[Fields, _Mapping]] = ...,
-        filter: _Optional[_Union[Filter, _Mapping]] = ...,
-        paginated: _Optional[_Union[Paginated, _Mapping]] = ...,
-        id: _Optional[str] = ...,
-    ) -> None: ...
-
-class ResponseStandard(_message.Message):
-    __slots__ = ["message", "message_code", "status_code", "success"]
-    MESSAGE_CODE_FIELD_NUMBER: _ClassVar[int]
-    MESSAGE_FIELD_NUMBER: _ClassVar[int]
-    STATUS_CODE_FIELD_NUMBER: _ClassVar[int]
-    SUCCESS_FIELD_NUMBER: _ClassVar[int]
-    message: str
-    message_code: str
-    status_code: int
-    success: bool
-    def __init__(
-        self,
-        success: bool = ...,
-        message: _Optional[str] = ...,
-        status_code: _Optional[int] = ...,
-        message_code: _Optional[str] = ...,
-    ) -> None: ...
-
-class SortBy(_message.Message):
-    __slots__ = ["name_field", "type"]
-
-    class SortType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
-        __slots__ = []
-    ASC: SortBy.SortType
-    DESC: SortBy.SortType
-    NAME_FIELD_FIELD_NUMBER: _ClassVar[int]
-    TYPE_FIELD_NUMBER: _ClassVar[int]
-    name_field: str
-    type: SortBy.SortType
-    def __init__(
-        self, name_field: _Optional[str] = ..., type: _Optional[_Union[SortBy.SortType, str]] = ...
-    ) -> None: ...
+class Context(_message.Message):
+    __slots__ = ["tenant", "user"]
+    TENANT_FIELD_NUMBER: _ClassVar[int]
+    USER_FIELD_NUMBER: _ClassVar[int]
+    tenant: str
+    user: str
+    def __init__(self, tenant: _Optional[str] = ..., user: _Optional[str] = ...) -> None: ...
