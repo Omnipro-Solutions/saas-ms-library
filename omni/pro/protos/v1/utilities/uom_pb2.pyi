@@ -22,7 +22,7 @@ class Uom(_message.Message):
     ROUNDING_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
-    id: int
+    id: str
     category: str
     code: str
     name: str
@@ -32,7 +32,7 @@ class Uom(_message.Message):
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
-        id: _Optional[int] = ...,
+        id: _Optional[str] = ...,
         category: _Optional[str] = ...,
         code: _Optional[str] = ...,
         name: _Optional[str] = ...,
