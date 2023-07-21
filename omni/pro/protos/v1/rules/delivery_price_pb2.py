@@ -15,10 +15,9 @@ _sym_db = _symbol_database.Default()
 from omni.pro.protos.common import base_pb2 as common_dot_base__pb2
 from omni.pro.protos.v1.rules import delivery_method_pb2 as v1_dot_rules_dot_delivery__method__pb2
 from omni.pro.protos.v1.rules import warehouse_pb2 as v1_dot_rules_dot_warehouse__pb2
-from omni.pro.protos.v1.stock import stock_pb2 as v1_dot_stock_dot_stock__pb2
 
 DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
-    b'\n\x1dv1/rules/delivery_price.proto\x12(pro.omni.oms.api.v1.rules.delivery_price\x1a\x11\x63ommon/base.proto\x1a\x1ev1/rules/delivery_method.proto\x1a\x14v1/stock/stock.proto\x1a\x18v1/rules/warehouse.proto"\xb8\x03\n\rDeliveryPrice\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12V\n\x13\x64\x65livery_method_ids\x18\x03 \x03(\x0b\x32\x39.pro.omni.oms.api.v1.rules.delivery_method.DeliveryMethod\x12\x45\n\rwarehouse_ids\x18\x04 \x03(\x0b\x32..pro.omni.oms.api.v1.rules.warehouse.Warehouse\x12\x1d\n\x15locality_available_id\x18\x05 \x01(\t\x12\x45\n\ttime_type\x18\x06 \x01(\x0e\x32\x32.pro.omni.oms.api.v1.rules.delivery_price.TimeType\x12\x11\n\tvalue_min\x18\x07 \x01(\t\x12\x11\n\tvalue_max\x18\x08 \x01(\t\x12\x11\n\tinversely\x18\t \x01(\x08\x12\x0e\n\x06\x61\x63tive\x18\n \x01(\x08\x12?\n\x0cobject_audit\x18\x0b \x01(\x0b\x32).pro.omni.oms.api.common.base.ObjectAudit"\x81\x02\n\x1a\x44\x65liveryPriceCreateRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x1d\n\x15locality_available_id\x18\x02 \x01(\t\x12\x45\n\ttime_type\x18\x03 \x01(\x0e\x32\x32.pro.omni.oms.api.v1.rules.delivery_price.TimeType\x12\x11\n\tvalue_min\x18\x04 \x01(\t\x12\x11\n\tvalue_max\x18\x05 \x01(\t\x12\x11\n\tinversely\x18\x06 \x01(\x08\x12\x36\n\x07\x63ontext\x18\x07 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xb9\x01\n\x1b\x44\x65liveryPriceCreateResponse\x12O\n\x0e\x64\x65livery_price\x18\x01 \x01(\x0b\x32\x37.pro.omni.oms.api.v1.rules.delivery_price.DeliveryPrice\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\xf6\x02\n\x18\x44\x65liveryPriceReadRequest\x12\x37\n\x08group_by\x18\x01 \x03(\x0b\x32%.pro.omni.oms.api.common.base.GroupBy\x12\x35\n\x07sort_by\x18\x02 \x01(\x0b\x32$.pro.omni.oms.api.common.base.SortBy\x12\x34\n\x06\x66ields\x18\x03 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Fields\x12\x34\n\x06\x66ilter\x18\x04 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Filter\x12:\n\tpaginated\x18\x05 \x01(\x0b\x32\'.pro.omni.oms.api.common.base.Paginated\x12\n\n\x02id\x18\x06 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x07 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xf3\x01\n\x19\x44\x65liveryPriceReadResponse\x12P\n\x0f\x64\x65livery_prices\x18\x01 \x03(\x0b\x32\x37.pro.omni.oms.api.v1.rules.delivery_price.DeliveryPrice\x12\x39\n\tmeta_data\x18\x02 \x01(\x0b\x32&.pro.omni.oms.api.common.base.MetaData\x12I\n\x11response_standard\x18\x03 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\xa5\x01\n\x1a\x44\x65liveryPriceUpdateRequest\x12O\n\x0e\x64\x65livery_price\x18\x01 \x01(\x0b\x32\x37.pro.omni.oms.api.v1.rules.delivery_price.DeliveryPrice\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xb9\x01\n\x1b\x44\x65liveryPriceUpdateResponse\x12O\n\x0e\x64\x65livery_price\x18\x01 \x01(\x0b\x32\x37.pro.omni.oms.api.v1.rules.delivery_price.DeliveryPrice\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"`\n\x1a\x44\x65liveryPriceDeleteRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"h\n\x1b\x44\x65liveryPriceDeleteResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard*9\n\x08TimeType\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07MINUTES\x10\x01\x12\t\n\x05HOURS\x10\x02\x12\x08\n\x04\x44\x41YS\x10\x03\x32\xac\x05\n\x14\x44\x65liveryPriceService\x12\xa4\x01\n\x13\x44\x65liveryPriceCreate\x12\x44.pro.omni.oms.api.v1.rules.delivery_price.DeliveryPriceCreateRequest\x1a\x45.pro.omni.oms.api.v1.rules.delivery_price.DeliveryPriceCreateResponse"\x00\x12\x9e\x01\n\x11\x44\x65liveryPriceRead\x12\x42.pro.omni.oms.api.v1.rules.delivery_price.DeliveryPriceReadRequest\x1a\x43.pro.omni.oms.api.v1.rules.delivery_price.DeliveryPriceReadResponse"\x00\x12\xa4\x01\n\x13\x44\x65liveryPriceUpdate\x12\x44.pro.omni.oms.api.v1.rules.delivery_price.DeliveryPriceUpdateRequest\x1a\x45.pro.omni.oms.api.v1.rules.delivery_price.DeliveryPriceUpdateResponse"\x00\x12\xa4\x01\n\x13\x44\x65liveryPriceDelete\x12\x44.pro.omni.oms.api.v1.rules.delivery_price.DeliveryPriceDeleteRequest\x1a\x45.pro.omni.oms.api.v1.rules.delivery_price.DeliveryPriceDeleteResponse"\x00\x62\x06proto3'
+    b'\n\x1dv1/rules/delivery_price.proto\x12(pro.omni.oms.api.v1.rules.delivery_price\x1a\x11\x63ommon/base.proto\x1a\x1ev1/rules/delivery_method.proto\x1a\x18v1/rules/warehouse.proto"\xb8\x03\n\rDeliveryPrice\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12V\n\x13\x64\x65livery_method_ids\x18\x03 \x03(\x0b\x32\x39.pro.omni.oms.api.v1.rules.delivery_method.DeliveryMethod\x12\x45\n\rwarehouse_ids\x18\x04 \x03(\x0b\x32..pro.omni.oms.api.v1.rules.warehouse.Warehouse\x12\x1d\n\x15locality_available_id\x18\x05 \x01(\t\x12\x45\n\ttime_type\x18\x06 \x01(\x0e\x32\x32.pro.omni.oms.api.v1.rules.delivery_price.TimeType\x12\x11\n\tvalue_min\x18\x07 \x01(\t\x12\x11\n\tvalue_max\x18\x08 \x01(\t\x12\x11\n\tinversely\x18\t \x01(\x08\x12\x0e\n\x06\x61\x63tive\x18\n \x01(\x08\x12?\n\x0cobject_audit\x18\x0b \x01(\x0b\x32).pro.omni.oms.api.common.base.ObjectAudit"\x81\x02\n\x1a\x44\x65liveryPriceCreateRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x1d\n\x15locality_available_id\x18\x02 \x01(\t\x12\x45\n\ttime_type\x18\x03 \x01(\x0e\x32\x32.pro.omni.oms.api.v1.rules.delivery_price.TimeType\x12\x11\n\tvalue_min\x18\x04 \x01(\t\x12\x11\n\tvalue_max\x18\x05 \x01(\t\x12\x11\n\tinversely\x18\x06 \x01(\x08\x12\x36\n\x07\x63ontext\x18\x07 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xb9\x01\n\x1b\x44\x65liveryPriceCreateResponse\x12O\n\x0e\x64\x65livery_price\x18\x01 \x01(\x0b\x32\x37.pro.omni.oms.api.v1.rules.delivery_price.DeliveryPrice\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\xf6\x02\n\x18\x44\x65liveryPriceReadRequest\x12\x37\n\x08group_by\x18\x01 \x03(\x0b\x32%.pro.omni.oms.api.common.base.GroupBy\x12\x35\n\x07sort_by\x18\x02 \x01(\x0b\x32$.pro.omni.oms.api.common.base.SortBy\x12\x34\n\x06\x66ields\x18\x03 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Fields\x12\x34\n\x06\x66ilter\x18\x04 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Filter\x12:\n\tpaginated\x18\x05 \x01(\x0b\x32\'.pro.omni.oms.api.common.base.Paginated\x12\n\n\x02id\x18\x06 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x07 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xf3\x01\n\x19\x44\x65liveryPriceReadResponse\x12P\n\x0f\x64\x65livery_prices\x18\x01 \x03(\x0b\x32\x37.pro.omni.oms.api.v1.rules.delivery_price.DeliveryPrice\x12\x39\n\tmeta_data\x18\x02 \x01(\x0b\x32&.pro.omni.oms.api.common.base.MetaData\x12I\n\x11response_standard\x18\x03 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\xa5\x01\n\x1a\x44\x65liveryPriceUpdateRequest\x12O\n\x0e\x64\x65livery_price\x18\x01 \x01(\x0b\x32\x37.pro.omni.oms.api.v1.rules.delivery_price.DeliveryPrice\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xb9\x01\n\x1b\x44\x65liveryPriceUpdateResponse\x12O\n\x0e\x64\x65livery_price\x18\x01 \x01(\x0b\x32\x37.pro.omni.oms.api.v1.rules.delivery_price.DeliveryPrice\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"`\n\x1a\x44\x65liveryPriceDeleteRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"h\n\x1b\x44\x65liveryPriceDeleteResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard*9\n\x08TimeType\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07MINUTES\x10\x01\x12\t\n\x05HOURS\x10\x02\x12\x08\n\x04\x44\x41YS\x10\x03\x32\xac\x05\n\x14\x44\x65liveryPriceService\x12\xa4\x01\n\x13\x44\x65liveryPriceCreate\x12\x44.pro.omni.oms.api.v1.rules.delivery_price.DeliveryPriceCreateRequest\x1a\x45.pro.omni.oms.api.v1.rules.delivery_price.DeliveryPriceCreateResponse"\x00\x12\x9e\x01\n\x11\x44\x65liveryPriceRead\x12\x42.pro.omni.oms.api.v1.rules.delivery_price.DeliveryPriceReadRequest\x1a\x43.pro.omni.oms.api.v1.rules.delivery_price.DeliveryPriceReadResponse"\x00\x12\xa4\x01\n\x13\x44\x65liveryPriceUpdate\x12\x44.pro.omni.oms.api.v1.rules.delivery_price.DeliveryPriceUpdateRequest\x1a\x45.pro.omni.oms.api.v1.rules.delivery_price.DeliveryPriceUpdateResponse"\x00\x12\xa4\x01\n\x13\x44\x65liveryPriceDelete\x12\x44.pro.omni.oms.api.v1.rules.delivery_price.DeliveryPriceDeleteRequest\x1a\x45.pro.omni.oms.api.v1.rules.delivery_price.DeliveryPriceDeleteResponse"\x00\x62\x06proto3'
 )
 
 _globals = globals()
@@ -26,26 +25,26 @@ _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, "v1.rules.delivery_price_pb2", _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
     DESCRIPTOR._options = None
-    _globals["_TIMETYPE"]._serialized_start = 2248
-    _globals["_TIMETYPE"]._serialized_end = 2305
-    _globals["_DELIVERYPRICE"]._serialized_start = 175
-    _globals["_DELIVERYPRICE"]._serialized_end = 615
-    _globals["_DELIVERYPRICECREATEREQUEST"]._serialized_start = 618
-    _globals["_DELIVERYPRICECREATEREQUEST"]._serialized_end = 875
-    _globals["_DELIVERYPRICECREATERESPONSE"]._serialized_start = 878
-    _globals["_DELIVERYPRICECREATERESPONSE"]._serialized_end = 1063
-    _globals["_DELIVERYPRICEREADREQUEST"]._serialized_start = 1066
-    _globals["_DELIVERYPRICEREADREQUEST"]._serialized_end = 1440
-    _globals["_DELIVERYPRICEREADRESPONSE"]._serialized_start = 1443
-    _globals["_DELIVERYPRICEREADRESPONSE"]._serialized_end = 1686
-    _globals["_DELIVERYPRICEUPDATEREQUEST"]._serialized_start = 1689
-    _globals["_DELIVERYPRICEUPDATEREQUEST"]._serialized_end = 1854
-    _globals["_DELIVERYPRICEUPDATERESPONSE"]._serialized_start = 1857
-    _globals["_DELIVERYPRICEUPDATERESPONSE"]._serialized_end = 2042
-    _globals["_DELIVERYPRICEDELETEREQUEST"]._serialized_start = 2044
-    _globals["_DELIVERYPRICEDELETEREQUEST"]._serialized_end = 2140
-    _globals["_DELIVERYPRICEDELETERESPONSE"]._serialized_start = 2142
-    _globals["_DELIVERYPRICEDELETERESPONSE"]._serialized_end = 2246
-    _globals["_DELIVERYPRICESERVICE"]._serialized_start = 2308
-    _globals["_DELIVERYPRICESERVICE"]._serialized_end = 2992
+    _globals["_TIMETYPE"]._serialized_start = 2226
+    _globals["_TIMETYPE"]._serialized_end = 2283
+    _globals["_DELIVERYPRICE"]._serialized_start = 153
+    _globals["_DELIVERYPRICE"]._serialized_end = 593
+    _globals["_DELIVERYPRICECREATEREQUEST"]._serialized_start = 596
+    _globals["_DELIVERYPRICECREATEREQUEST"]._serialized_end = 853
+    _globals["_DELIVERYPRICECREATERESPONSE"]._serialized_start = 856
+    _globals["_DELIVERYPRICECREATERESPONSE"]._serialized_end = 1041
+    _globals["_DELIVERYPRICEREADREQUEST"]._serialized_start = 1044
+    _globals["_DELIVERYPRICEREADREQUEST"]._serialized_end = 1418
+    _globals["_DELIVERYPRICEREADRESPONSE"]._serialized_start = 1421
+    _globals["_DELIVERYPRICEREADRESPONSE"]._serialized_end = 1664
+    _globals["_DELIVERYPRICEUPDATEREQUEST"]._serialized_start = 1667
+    _globals["_DELIVERYPRICEUPDATEREQUEST"]._serialized_end = 1832
+    _globals["_DELIVERYPRICEUPDATERESPONSE"]._serialized_start = 1835
+    _globals["_DELIVERYPRICEUPDATERESPONSE"]._serialized_end = 2020
+    _globals["_DELIVERYPRICEDELETEREQUEST"]._serialized_start = 2022
+    _globals["_DELIVERYPRICEDELETEREQUEST"]._serialized_end = 2118
+    _globals["_DELIVERYPRICEDELETERESPONSE"]._serialized_start = 2120
+    _globals["_DELIVERYPRICEDELETERESPONSE"]._serialized_end = 2224
+    _globals["_DELIVERYPRICESERVICE"]._serialized_start = 2286
+    _globals["_DELIVERYPRICESERVICE"]._serialized_end = 2970
 # @@protoc_insertion_point(module_scope)

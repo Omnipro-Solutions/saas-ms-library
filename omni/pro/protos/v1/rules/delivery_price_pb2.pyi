@@ -11,7 +11,6 @@ from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
 from omni.pro.protos.common import base_pb2 as _base_pb2
 from omni.pro.protos.v1.rules import delivery_method_pb2 as _delivery_method_pb2
 from omni.pro.protos.v1.rules import warehouse_pb2 as _warehouse_pb2
-from omni.pro.protos.v1.stock import stock_pb2 as _stock_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
