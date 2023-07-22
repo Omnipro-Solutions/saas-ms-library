@@ -1,10 +1,9 @@
 from google.protobuf import struct_pb2
-from peewee import CharField, ForeignKeyField
-from playhouse.postgres_ext import JSONField
-
 from omni.pro.models.base import BaseModel
 from omni.pro.models.sql.utilities.country import Country
-from omni.pro.protos.v1.stock.stock_pb2 import Warehouse as WarehouseProto
+from omni.pro.protos.v1.stock.warehouse_pb2 import Warehouse as WarehouseProto
+from peewee import CharField, ForeignKeyField
+from playhouse.postgres_ext import JSONField
 
 
 class Warehouse(BaseModel):

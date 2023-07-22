@@ -1,10 +1,9 @@
 import grpc
-from peewee import CharField
-
 from omni.pro.config import Config
 from omni.pro.models.base import BaseModel
-from omni.pro.protos.v1.stock.picking_pb2 import User as UserProto
+from omni.pro.protos.v1.stock.user_pb2 import User as UserProto
 from omni.pro.protos.v1.users import user_pb2, user_pb2_grpc
+from peewee import CharField
 
 
 class User(BaseModel):

@@ -1,6 +1,4 @@
 from google.protobuf.timestamp_pb2 import Timestamp
-from peewee import CharField, DateTimeField, DecimalField, ForeignKeyField
-
 from omni.pro.models.base import BaseModel
 from omni.pro.models.stock.attachment import Attachment
 from omni.pro.models.stock.carrier import Carrier
@@ -9,6 +7,7 @@ from omni.pro.models.stock.picking_type import PickingType
 from omni.pro.models.stock.procurement_group import ProcurementGroup
 from omni.pro.models.stock.user import User
 from omni.pro.protos.v1.stock.picking_pb2 import Picking as PickingProto
+from peewee import CharField, DateTimeField, DecimalField, ForeignKeyField
 
 
 class Picking(BaseModel):
