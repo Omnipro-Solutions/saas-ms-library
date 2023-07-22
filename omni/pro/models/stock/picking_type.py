@@ -1,10 +1,9 @@
-from peewee import BooleanField, CharField, ForeignKeyField, IntegerField
-
 from omni.pro.models.base import BaseModel
 from omni.pro.models.stock.location import Location
 from omni.pro.models.stock.uom import Uom as Uom
 from omni.pro.models.stock.warehouse import Warehouse
-from omni.pro.protos.v1.stock.stock_pb2 import PickingType as PickingTypeProto
+from omni.pro.protos.v1.stock.picking_type_pb2 import PickingType as PickingTypeProto
+from peewee import BooleanField, CharField, ForeignKeyField, IntegerField
 
 
 class PickingType(BaseModel):

@@ -4,7 +4,7 @@ import grpc
 from omni.pro.protos.v1.stock import uom_pb2 as v1_dot_stock_dot_uom__pb2
 
 
-class ProductServiceStub(object):
+class UomServiceStub(object):
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -14,28 +14,28 @@ class ProductServiceStub(object):
             channel: A grpc.Channel.
         """
         self.UomCreate = channel.unary_unary(
-            "/pro.omni.oms.api.v1.stock.uom.ProductService/UomCreate",
+            "/pro.omni.oms.api.v1.stock.uom.UomService/UomCreate",
             request_serializer=v1_dot_stock_dot_uom__pb2.UomCreateRequest.SerializeToString,
             response_deserializer=v1_dot_stock_dot_uom__pb2.UomCreateResponse.FromString,
         )
         self.UomRead = channel.unary_unary(
-            "/pro.omni.oms.api.v1.stock.uom.ProductService/UomRead",
+            "/pro.omni.oms.api.v1.stock.uom.UomService/UomRead",
             request_serializer=v1_dot_stock_dot_uom__pb2.UomReadRequest.SerializeToString,
             response_deserializer=v1_dot_stock_dot_uom__pb2.UomReadResponse.FromString,
         )
         self.UomUpdate = channel.unary_unary(
-            "/pro.omni.oms.api.v1.stock.uom.ProductService/UomUpdate",
+            "/pro.omni.oms.api.v1.stock.uom.UomService/UomUpdate",
             request_serializer=v1_dot_stock_dot_uom__pb2.UomUpdateRequest.SerializeToString,
             response_deserializer=v1_dot_stock_dot_uom__pb2.UomUpdateResponse.FromString,
         )
         self.UomDelete = channel.unary_unary(
-            "/pro.omni.oms.api.v1.stock.uom.ProductService/UomDelete",
+            "/pro.omni.oms.api.v1.stock.uom.UomService/UomDelete",
             request_serializer=v1_dot_stock_dot_uom__pb2.UomDeleteRequest.SerializeToString,
             response_deserializer=v1_dot_stock_dot_uom__pb2.UomDeleteResponse.FromString,
         )
 
 
-class ProductServiceServicer(object):
+class UomServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def UomCreate(self, request, context):
@@ -63,7 +63,7 @@ class ProductServiceServicer(object):
         raise NotImplementedError("Method not implemented!")
 
 
-def add_ProductServiceServicer_to_server(servicer, server):
+def add_UomServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
         "UomCreate": grpc.unary_unary_rpc_method_handler(
             servicer.UomCreate,
@@ -87,13 +87,13 @@ def add_ProductServiceServicer_to_server(servicer, server):
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-        "pro.omni.oms.api.v1.stock.uom.ProductService", rpc_method_handlers
+        "pro.omni.oms.api.v1.stock.uom.UomService", rpc_method_handlers
     )
     server.add_generic_rpc_handlers((generic_handler,))
 
 
 # This class is part of an EXPERIMENTAL API.
-class ProductService(object):
+class UomService(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
@@ -112,7 +112,7 @@ class ProductService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            "/pro.omni.oms.api.v1.stock.uom.ProductService/UomCreate",
+            "/pro.omni.oms.api.v1.stock.uom.UomService/UomCreate",
             v1_dot_stock_dot_uom__pb2.UomCreateRequest.SerializeToString,
             v1_dot_stock_dot_uom__pb2.UomCreateResponse.FromString,
             options,
@@ -141,7 +141,7 @@ class ProductService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            "/pro.omni.oms.api.v1.stock.uom.ProductService/UomRead",
+            "/pro.omni.oms.api.v1.stock.uom.UomService/UomRead",
             v1_dot_stock_dot_uom__pb2.UomReadRequest.SerializeToString,
             v1_dot_stock_dot_uom__pb2.UomReadResponse.FromString,
             options,
@@ -170,7 +170,7 @@ class ProductService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            "/pro.omni.oms.api.v1.stock.uom.ProductService/UomUpdate",
+            "/pro.omni.oms.api.v1.stock.uom.UomService/UomUpdate",
             v1_dot_stock_dot_uom__pb2.UomUpdateRequest.SerializeToString,
             v1_dot_stock_dot_uom__pb2.UomUpdateResponse.FromString,
             options,
@@ -199,7 +199,7 @@ class ProductService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            "/pro.omni.oms.api.v1.stock.uom.ProductService/UomDelete",
+            "/pro.omni.oms.api.v1.stock.uom.UomService/UomDelete",
             v1_dot_stock_dot_uom__pb2.UomDeleteRequest.SerializeToString,
             v1_dot_stock_dot_uom__pb2.UomDeleteResponse.FromString,
             options,

@@ -1,7 +1,6 @@
-from peewee import CharField
-
 from omni.pro.models.base import BaseModel
-from omni.pro.protos.v1.stock.stock_pb2 import Product as ProductProto
+from omni.pro.protos.v1.stock.product_pb2 import Product as ProductProto
+from peewee import CharField
 
 
 class Product(BaseModel):

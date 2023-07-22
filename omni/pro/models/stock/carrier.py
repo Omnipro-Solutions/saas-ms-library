@@ -1,7 +1,6 @@
-from peewee import CharField
-
 from omni.pro.models.base import BaseModel
-from omni.pro.protos.v1.stock.picking_pb2 import Carrier as CarrierProto
+from omni.pro.protos.v1.stock.carrier_pb2 import Carrier as CarrierProto
+from peewee import CharField
 
 
 class Carrier(BaseModel):

@@ -1,6 +1,6 @@
 from omni.pro.models.base import BaseModel
 from omni.pro.models.stock.warehouse import Warehouse
-from omni.pro.protos.v1.stock.stock_pb2 import Location as LocationProto
+from omni.pro.protos.v1.stock.location_pb2 import Location as LocationProto
 from peewee import BooleanField, CharField, ForeignKeyField
 
 
