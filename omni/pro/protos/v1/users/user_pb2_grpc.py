@@ -108,6 +108,26 @@ class UsersServiceStub(object):
             request_serializer=v1_dot_users_dot_user__pb2.HasPermissionRequest.SerializeToString,
             response_deserializer=v1_dot_users_dot_user__pb2.HasPermissionResponse.FromString,
         )
+        self.Login = channel.unary_unary(
+            "/pro.omni.oms.api.v1.users.user.UsersService/Login",
+            request_serializer=v1_dot_users_dot_user__pb2.LoginRequest.SerializeToString,
+            response_deserializer=v1_dot_users_dot_user__pb2.LoginResponse.FromString,
+        )
+        self.RefreshToken = channel.unary_unary(
+            "/pro.omni.oms.api.v1.users.user.UsersService/RefreshToken",
+            request_serializer=v1_dot_users_dot_user__pb2.RefreshTokenRequest.SerializeToString,
+            response_deserializer=v1_dot_users_dot_user__pb2.RefreshTokenResponse.FromString,
+        )
+        self.AddAccessToGroup = channel.unary_unary(
+            "/pro.omni.oms.api.v1.users.user.UsersService/AddAccessToGroup",
+            request_serializer=v1_dot_users_dot_user__pb2.AccessGroupRequest.SerializeToString,
+            response_deserializer=v1_dot_users_dot_user__pb2.AccessGroupResponse.FromString,
+        )
+        self.RemoveAccessFromGroup = channel.unary_unary(
+            "/pro.omni.oms.api.v1.users.user.UsersService/RemoveAccessFromGroup",
+            request_serializer=v1_dot_users_dot_user__pb2.AccessGroupRequest.SerializeToString,
+            response_deserializer=v1_dot_users_dot_user__pb2.AccessGroupResponse.FromString,
+        )
 
 
 class UsersServiceServicer(object):
@@ -227,6 +247,30 @@ class UsersServiceServicer(object):
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
+    def Login(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def RefreshToken(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def AddAccessToGroup(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def RemoveAccessFromGroup(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
 
 def add_UsersServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -324,6 +368,26 @@ def add_UsersServiceServicer_to_server(servicer, server):
             servicer.HasPermission,
             request_deserializer=v1_dot_users_dot_user__pb2.HasPermissionRequest.FromString,
             response_serializer=v1_dot_users_dot_user__pb2.HasPermissionResponse.SerializeToString,
+        ),
+        "Login": grpc.unary_unary_rpc_method_handler(
+            servicer.Login,
+            request_deserializer=v1_dot_users_dot_user__pb2.LoginRequest.FromString,
+            response_serializer=v1_dot_users_dot_user__pb2.LoginResponse.SerializeToString,
+        ),
+        "RefreshToken": grpc.unary_unary_rpc_method_handler(
+            servicer.RefreshToken,
+            request_deserializer=v1_dot_users_dot_user__pb2.RefreshTokenRequest.FromString,
+            response_serializer=v1_dot_users_dot_user__pb2.RefreshTokenResponse.SerializeToString,
+        ),
+        "AddAccessToGroup": grpc.unary_unary_rpc_method_handler(
+            servicer.AddAccessToGroup,
+            request_deserializer=v1_dot_users_dot_user__pb2.AccessGroupRequest.FromString,
+            response_serializer=v1_dot_users_dot_user__pb2.AccessGroupResponse.SerializeToString,
+        ),
+        "RemoveAccessFromGroup": grpc.unary_unary_rpc_method_handler(
+            servicer.RemoveAccessFromGroup,
+            request_deserializer=v1_dot_users_dot_user__pb2.AccessGroupRequest.FromString,
+            response_serializer=v1_dot_users_dot_user__pb2.AccessGroupResponse.SerializeToString,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -877,6 +941,122 @@ class UsersService(object):
             "/pro.omni.oms.api.v1.users.user.UsersService/HasPermission",
             v1_dot_users_dot_user__pb2.HasPermissionRequest.SerializeToString,
             v1_dot_users_dot_user__pb2.HasPermissionResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
+
+    @staticmethod
+    def Login(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            "/pro.omni.oms.api.v1.users.user.UsersService/Login",
+            v1_dot_users_dot_user__pb2.LoginRequest.SerializeToString,
+            v1_dot_users_dot_user__pb2.LoginResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
+
+    @staticmethod
+    def RefreshToken(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            "/pro.omni.oms.api.v1.users.user.UsersService/RefreshToken",
+            v1_dot_users_dot_user__pb2.RefreshTokenRequest.SerializeToString,
+            v1_dot_users_dot_user__pb2.RefreshTokenResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
+
+    @staticmethod
+    def AddAccessToGroup(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            "/pro.omni.oms.api.v1.users.user.UsersService/AddAccessToGroup",
+            v1_dot_users_dot_user__pb2.AccessGroupRequest.SerializeToString,
+            v1_dot_users_dot_user__pb2.AccessGroupResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
+
+    @staticmethod
+    def RemoveAccessFromGroup(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            "/pro.omni.oms.api.v1.users.user.UsersService/RemoveAccessFromGroup",
+            v1_dot_users_dot_user__pb2.AccessGroupRequest.SerializeToString,
+            v1_dot_users_dot_user__pb2.AccessGroupResponse.FromString,
             options,
             channel_credentials,
             insecure,

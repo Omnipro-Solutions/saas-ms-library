@@ -69,7 +69,7 @@ class DatabaseManager(object):
 
     def update_document(self, db_name: str, document_class, id: str, **kwargs) -> object:
         document = document_class.objects(id=id).first()
-        document_class.objects(id=document.id).update_one(**kwargs)
+        document_class.objects(id=document.id).first().update(**kwargs)
         document.reload()
         return document
 
@@ -345,6 +345,7 @@ class RedisManager(object):
             "aws_access_key_id": config.get("aws_access_key_id"),
             "aws_secret_access_key": config.get("aws_secret_access_key"),
             "user_pool_id": nested(config, "aws.cognito.user_pool_id"),
+            "client_id": nested(config, "aws.cognito.client_id"),
         }
 
     def get_mongodb_config(self, service_id: str, tenant_code: str) -> dict:

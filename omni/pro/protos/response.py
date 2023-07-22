@@ -1,7 +1,12 @@
 from typing import Optional as _Optional
 
+from omni.pro.database import DBUtil
+from omni.pro.logger import LoggerTraceback, configure_logger
 from omni.pro.protos.common import base_pb2
+from omni.pro.stack import ExitStackDocument
 from omni.pro.util import HTTPStatus
+
+logger = configure_logger(name=__name__)
 
 
 class MessageCode(object):
@@ -30,7 +35,7 @@ class MessageResponse(object):
         success: bool,
         status_code: int = HTTPStatus.OK,
         message_code: _Optional[str] = ...,
-        **kwargs
+        **kwargs,
     ):
         return self.cls(
             response_standard=base_pb2.ResponseStandard(
@@ -132,3 +137,65 @@ class MessageResponse(object):
             message_code=MessageCode.USER_UNAUTHORIZED,
             **kwargs,
         )
+
+    def method_not_allowed_response(self, message: str = "Method Not Allowed", **kwargs):
+        return self.response(
+            success=False,
+            message=message,
+            status_code=HTTPStatus.METHOD_NOT_ALLOWED,
+            message_code=MessageCode.USER_UNAUTHORIZED,
+            **kwargs,
+        )
+
+
+def read_response(
+    request,
+    context,
+    document_class,
+    reference_list: list,
+    message_response: MessageResponse,
+    msg_success: str,
+    msg_exception: str,
+    entry_field_name: str,
+    **kwargs,
+):
+    """
+    :param request: request is a Message grpc\n
+    :param context: context is a Message grpc with db_manager, db_name field\n
+    :param document_class: document_class is a Document class\n
+    :param reference_list: reference_list is a list of Document class\n
+    :param message_response: message_response is a MessageResponse instance\n
+    :param msg_success: msg_success is a success message\n
+    :param msg_exception: msg_exception is a exception message\n
+    :return: MessageResponse cls param
+    """
+    try:
+        with ExitStackDocument(document_classes=reference_list, db_alias=context.db_name):
+            data = DBUtil.db_prepared_statement(
+                request.id,
+                request.fields,
+                request.filter,
+                request.paginated,
+                None,
+                request.sort_by,
+            )
+            list_docs, total = context.db_manager.list_documents(
+                context.db_name,
+                request.context.tenant,
+                document_class,
+                **data,
+            )
+            kwargs_return = {
+                f"{entry_field_name}": [doc.to_proto() for doc in list_docs],
+            } | kwargs
+            return message_response.fetched_response(
+                message=msg_success,
+                total=total,
+                count=len(list_docs),
+                id=request.id,
+                paginated=request.paginated,
+                **kwargs_return,
+            )
+    except Exception as e:
+        LoggerTraceback.error(msg_exception, e, logger)
+        return message_response.internal_response(message=msg_exception)

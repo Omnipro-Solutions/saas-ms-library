@@ -28,6 +28,7 @@ class User(_message.Message):
         "active",
         "mfa",
         "object_audit",
+        "permissions",
     ]
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
@@ -42,6 +43,7 @@ class User(_message.Message):
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     MFA_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
+    PERMISSIONS_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
     sub: str
@@ -55,6 +57,7 @@ class User(_message.Message):
     active: _wrappers_pb2.BoolValue
     mfa: _wrappers_pb2.BoolValue
     object_audit: _base_pb2.ObjectAudit
+    permissions: _containers.RepeatedScalarFieldContainer[str]
     def __init__(
         self,
         id: _Optional[str] = ...,
@@ -70,6 +73,7 @@ class User(_message.Message):
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         mfa: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
+        permissions: _Optional[_Iterable[str]] = ...,
     ) -> None: ...
 
 class Group(_message.Message):
@@ -694,6 +698,27 @@ class AccessDeleteResponse(_message.Message):
     response_standard: _base_pb2.ResponseStandard
     def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
 
+class AccessGroupRequest(_message.Message):
+    __slots__ = ["access_id", "group_id", "context"]
+    ACCESS_ID_FIELD_NUMBER: _ClassVar[int]
+    GROUP_ID_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    access_id: str
+    group_id: str
+    context: _base_pb2.Context
+    def __init__(
+        self,
+        access_id: _Optional[str] = ...,
+        group_id: _Optional[str] = ...,
+        context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
+    ) -> None: ...
+
+class AccessGroupResponse(_message.Message):
+    __slots__ = ["response_standard"]
+    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
+    response_standard: _base_pb2.ResponseStandard
+    def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
+
 class HasPermissionRequest(_message.Message):
     __slots__ = ["username", "permission", "context"]
     USERNAME_FIELD_NUMBER: _ClassVar[int]
@@ -722,4 +747,68 @@ class HasPermissionResponse(_message.Message):
         response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
         has_permission: bool = ...,
         user: _Optional[_Union[User, _Mapping]] = ...,
+    ) -> None: ...
+
+class LoginRequest(_message.Message):
+    __slots__ = ["username", "password", "context"]
+    USERNAME_FIELD_NUMBER: _ClassVar[int]
+    PASSWORD_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    username: str
+    password: str
+    context: _base_pb2.Context
+    def __init__(
+        self,
+        username: _Optional[str] = ...,
+        password: _Optional[str] = ...,
+        context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
+    ) -> None: ...
+
+class AuthenticationResult(_message.Message):
+    __slots__ = ["token", "refresh_token", "expires_in"]
+    TOKEN_FIELD_NUMBER: _ClassVar[int]
+    REFRESH_TOKEN_FIELD_NUMBER: _ClassVar[int]
+    EXPIRES_IN_FIELD_NUMBER: _ClassVar[int]
+    token: str
+    refresh_token: str
+    expires_in: int
+    def __init__(
+        self, token: _Optional[str] = ..., refresh_token: _Optional[str] = ..., expires_in: _Optional[int] = ...
+    ) -> None: ...
+
+class LoginResponse(_message.Message):
+    __slots__ = ["response_standard", "authentication_result", "user"]
+    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
+    AUTHENTICATION_RESULT_FIELD_NUMBER: _ClassVar[int]
+    USER_FIELD_NUMBER: _ClassVar[int]
+    response_standard: _base_pb2.ResponseStandard
+    authentication_result: AuthenticationResult
+    user: User
+    def __init__(
+        self,
+        response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
+        authentication_result: _Optional[_Union[AuthenticationResult, _Mapping]] = ...,
+        user: _Optional[_Union[User, _Mapping]] = ...,
+    ) -> None: ...
+
+class RefreshTokenRequest(_message.Message):
+    __slots__ = ["context", "refresh_token"]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    REFRESH_TOKEN_FIELD_NUMBER: _ClassVar[int]
+    context: _base_pb2.Context
+    refresh_token: str
+    def __init__(
+        self, context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ..., refresh_token: _Optional[str] = ...
+    ) -> None: ...
+
+class RefreshTokenResponse(_message.Message):
+    __slots__ = ["response_standard", "authentication_result"]
+    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
+    AUTHENTICATION_RESULT_FIELD_NUMBER: _ClassVar[int]
+    response_standard: _base_pb2.ResponseStandard
+    authentication_result: AuthenticationResult
+    def __init__(
+        self,
+        response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
+        authentication_result: _Optional[_Union[AuthenticationResult, _Mapping]] = ...,
     ) -> None: ...
