@@ -699,16 +699,16 @@ class AccessDeleteResponse(_message.Message):
     def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
 
 class AccessGroupRequest(_message.Message):
-    __slots__ = ["access_id", "group_id", "context"]
-    ACCESS_ID_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["access_ids", "group_id", "context"]
+    ACCESS_IDS_FIELD_NUMBER: _ClassVar[int]
     GROUP_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    access_id: str
+    access_ids: _containers.RepeatedScalarFieldContainer[str]
     group_id: str
     context: _base_pb2.Context
     def __init__(
         self,
-        access_id: _Optional[str] = ...,
+        access_ids: _Optional[_Iterable[str]] = ...,
         group_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
