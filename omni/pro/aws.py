@@ -1,4 +1,5 @@
 import boto3
+from botocore.exceptions import ClientError
 from omni.pro.util import HTTPStatus, generate_strong_password, nested
 
 
@@ -37,7 +38,13 @@ class AWSClient(object):
 
 class AWSCognitoClient(AWSClient):
     def __init__(
-        self, region_name: str, aws_access_key_id: str, aws_secret_access_key: str, user_pool_id: str, **kwargs
+        self,
+        region_name: str,
+        aws_access_key_id: str,
+        aws_secret_access_key: str,
+        user_pool_id: str,
+        client_id: str,
+        **kwargs,
     ) -> None:
         """
         :type user_pool_id: str
@@ -58,6 +65,7 @@ class AWSCognitoClient(AWSClient):
             **kwargs,
         )
         self.user_pool_id = user_pool_id
+        self.client_id = client_id
 
     def get_user(self, username: str) -> dict:
         return self.client.admin_get_user(UserPoolId=self.user_pool_id, Username=username)
@@ -133,6 +141,65 @@ class AWSCognitoClient(AWSClient):
             for user in users:
                 list_user.append(user)
         return list_user, starting_token
+
+    def init_auth(self, username: str, password: str) -> dict:
+        auth_result = {}
+        status_code = HTTPStatus.BAD_REQUEST
+        message = ""
+        try:
+            result = self.get_client().initiate_auth(
+                ClientId=self.client_id,
+                AuthFlow="USER_PASSWORD_AUTH",
+                AuthParameters={
+                    "USERNAME": username,
+                    "PASSWORD": password,
+                },
+            )
+        except ClientError as e:
+            if e.response["Error"]["Code"] == "NotAuthorizedException":
+                status_code = HTTPStatus.UNAUTHORIZED
+                message = "Invalid auth data"
+            elif e.response["Error"]["Code"] == "InvalidParameterException":
+                status_code = HTTPStatus.BAD_REQUEST
+                message = "Missing or empty parameters in request"
+            else:
+                status_code = HTTPStatus.UNAUTHORIZED
+                message = str(e)
+        else:
+            message = "Success"
+            status_code = HTTPStatus.OK
+            auth_result = {
+                "token": result["AuthenticationResult"]["IdToken"],
+                "refresh_token": result["AuthenticationResult"]["RefreshToken"],
+                "expires_in": result["AuthenticationResult"]["ExpiresIn"],
+            }
+
+        return status_code, auth_result, message
+
+    def refresh_token(self, refresh_token):
+        auth_result = {}
+        status_code = HTTPStatus.BAD_REQUEST
+        message = ""
+        try:
+            new_tokens_response = self.get_client().initiate_auth(
+                ClientId=self.client_id,
+                AuthFlow="REFRESH_TOKEN_AUTH",
+                AuthParameters={"REFRESH_TOKEN": refresh_token},
+            )
+        except ClientError as e:
+            status_code = HTTPStatus.UNAUTHORIZED
+            if e.response["Error"]["Code"] == "NotAuthorizedException":
+                message = "Invalid refresh token"
+            else:
+                message = str(e)
+        else:
+            status_code = HTTPStatus.OK
+            message = "Success"
+            auth_result = {
+                "token": new_tokens_response["AuthenticationResult"]["IdToken"],
+                "expires_in": new_tokens_response["AuthenticationResult"]["ExpiresIn"],
+            }
+        return status_code, auth_result, message
 
 
 class S3Client(AWSClient):

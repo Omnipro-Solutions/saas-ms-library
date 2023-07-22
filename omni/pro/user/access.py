@@ -1,7 +1,6 @@
 # create a decorator to check if the user has permission to access the resource
-from enum import Enum
+from enum import Enum, unique
 
-from omni.pro.config import Config
 from omni.pro.logger import LoggerTraceback, configure_logger
 from omni.pro.protos.grpc_connector import Event, GRPClient
 from omni.pro.protos.response import MessageResponse
@@ -10,15 +9,15 @@ from omni.pro.protos.v1.users import user_pb2
 logger = configure_logger(name=__name__)
 
 
+@unique
 class Permission(Enum):
+    CAN_CREATE_ACTION = "CAN_CREATE_ACTION"
+    CAN_READ_ACTION = "CAN_READ_ACTION"
+    CAN_UPDATE_ACTION = "CAN_UPDATE_ACTION"
     CAN_CREATE_ACCESS = "CAN_CREATE_ACCESS"
     CAN_UPDATE_ACCESS = "CAN_UPDATE_ACCESS"
     CAN_READ_ACCESS = "CAN_READ_ACCESS"
     CAN_DELETE_ACCESS = "CAN_DELETE_ACCESS"
-    CAN_CREATE_ACTION = "CAN_CREATE_ACTION"
-    CAN_READ_ACTION = "CAN_READ_ACTION"
-    CAN_UPDATE_ACTION = "CAN_UPDATE_ACTION"
-    CAN_DELETE_ACTION = "CAN_DELETE_ACTION"
     CAN_CREATE_GROUP = "CAN_CREATE_GROUP"
     CAN_READ_GROUP = "CAN_READ_GROUP"
     CAN_UPDATE_GROUP = "CAN_UPDATE_GROUP"
@@ -29,6 +28,15 @@ class Permission(Enum):
     CAN_DELETE_USER = "CAN_DELETE_USER"
     CAN_CHANGE_PASSWORD_USER = "CAN_CHAMGE_PASSWORD_USER"
     CAN_CHANGE_EMAIL_USER = "CAN_CHANGE_EMAIL_USER"
+
+
+@unique
+class MicroService(Enum):
+    SAAS_MS_USER = "saas-ms-user"
+    SAAS_MS_CATALOG = "saas-ms-catalog"
+    SAAS_MS_UTILITIES = "saas-ms-utilities"
+    SAAS_MS_STOCK = "saas-ms-stock"
+    SAAS_MS_CLIENT = "saas-ms-client"
 
 
 def permission_required(permission_name: Permission, cls) -> callable:
@@ -48,7 +56,7 @@ def permission_required(permission_name: Permission, cls) -> callable:
                     },
                 )
                 response: user_pb2.HasPermissionResponse = None
-                response, success = GRPClient(Config.SAAS_MS_USER).call_rpc_fuction(event)
+                response, success = GRPClient(MicroService.SAAS_MS_USER.value).call_rpc_fuction(event)
                 if not success or not response.has_permission:
                     return MessageResponse(cls).unauthorized_response()
             except Exception as e:
