@@ -128,6 +128,16 @@ class UsersServiceStub(object):
             request_serializer=v1_dot_users_dot_user__pb2.AccessGroupRequest.SerializeToString,
             response_deserializer=v1_dot_users_dot_user__pb2.AccessGroupResponse.FromString,
         )
+        self.AddGroupToUser = channel.unary_unary(
+            "/pro.omni.oms.api.v1.users.user.UsersService/AddGroupToUser",
+            request_serializer=v1_dot_users_dot_user__pb2.GroupUserRequest.SerializeToString,
+            response_deserializer=v1_dot_users_dot_user__pb2.GroupUserResponse.FromString,
+        )
+        self.RemoveGroupFromUser = channel.unary_unary(
+            "/pro.omni.oms.api.v1.users.user.UsersService/RemoveGroupFromUser",
+            request_serializer=v1_dot_users_dot_user__pb2.GroupUserRequest.SerializeToString,
+            response_deserializer=v1_dot_users_dot_user__pb2.GroupUserResponse.FromString,
+        )
 
 
 class UsersServiceServicer(object):
@@ -271,6 +281,18 @@ class UsersServiceServicer(object):
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
+    def AddGroupToUser(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def RemoveGroupFromUser(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
 
 def add_UsersServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -388,6 +410,16 @@ def add_UsersServiceServicer_to_server(servicer, server):
             servicer.RemoveAccessFromGroup,
             request_deserializer=v1_dot_users_dot_user__pb2.AccessGroupRequest.FromString,
             response_serializer=v1_dot_users_dot_user__pb2.AccessGroupResponse.SerializeToString,
+        ),
+        "AddGroupToUser": grpc.unary_unary_rpc_method_handler(
+            servicer.AddGroupToUser,
+            request_deserializer=v1_dot_users_dot_user__pb2.GroupUserRequest.FromString,
+            response_serializer=v1_dot_users_dot_user__pb2.GroupUserResponse.SerializeToString,
+        ),
+        "RemoveGroupFromUser": grpc.unary_unary_rpc_method_handler(
+            servicer.RemoveGroupFromUser,
+            request_deserializer=v1_dot_users_dot_user__pb2.GroupUserRequest.FromString,
+            response_serializer=v1_dot_users_dot_user__pb2.GroupUserResponse.SerializeToString,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -1057,6 +1089,64 @@ class UsersService(object):
             "/pro.omni.oms.api.v1.users.user.UsersService/RemoveAccessFromGroup",
             v1_dot_users_dot_user__pb2.AccessGroupRequest.SerializeToString,
             v1_dot_users_dot_user__pb2.AccessGroupResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
+
+    @staticmethod
+    def AddGroupToUser(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            "/pro.omni.oms.api.v1.users.user.UsersService/AddGroupToUser",
+            v1_dot_users_dot_user__pb2.GroupUserRequest.SerializeToString,
+            v1_dot_users_dot_user__pb2.GroupUserResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
+
+    @staticmethod
+    def RemoveGroupFromUser(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            "/pro.omni.oms.api.v1.users.user.UsersService/RemoveGroupFromUser",
+            v1_dot_users_dot_user__pb2.GroupUserRequest.SerializeToString,
+            v1_dot_users_dot_user__pb2.GroupUserResponse.FromString,
             options,
             channel_credentials,
             insecure,
