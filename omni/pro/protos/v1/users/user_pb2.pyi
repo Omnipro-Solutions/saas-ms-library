@@ -703,17 +703,38 @@ class AccessGroupRequest(_message.Message):
     ACCESS_IDS_FIELD_NUMBER: _ClassVar[int]
     GROUP_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    access_ids: _containers.RepeatedScalarFieldContainer[str]
+    access_ids: _struct_pb2.ListValue
     group_id: str
     context: _base_pb2.Context
     def __init__(
         self,
-        access_ids: _Optional[_Iterable[str]] = ...,
+        access_ids: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
         group_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
 class AccessGroupResponse(_message.Message):
+    __slots__ = ["response_standard"]
+    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
+    response_standard: _base_pb2.ResponseStandard
+    def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
+
+class GroupUserRequest(_message.Message):
+    __slots__ = ["group_ids", "user_id", "context"]
+    GROUP_IDS_FIELD_NUMBER: _ClassVar[int]
+    USER_ID_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    group_ids: _struct_pb2.ListValue
+    user_id: str
+    context: _base_pb2.Context
+    def __init__(
+        self,
+        group_ids: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
+        user_id: _Optional[str] = ...,
+        context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
+    ) -> None: ...
+
+class GroupUserResponse(_message.Message):
     __slots__ = ["response_standard"]
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
     response_standard: _base_pb2.ResponseStandard
