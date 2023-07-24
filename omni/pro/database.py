@@ -536,11 +536,14 @@ class QueryBuilder:
         total = model.select(*query_fields).where(query).count()
 
         if paginated.ListFields():
-            model_select = (
-                model.select(*query_fields)
-                .where(query)
-                .paginate(paginated.offset, paginated.limit or cls.DEFAULT_PAGE_SIZE)
-            )
+            if paginated.limit != 0:
+                model_select = (
+                    model.select(*query_fields)
+                    .where(query)
+                    .paginate(paginated.offset, paginated.limit or cls.DEFAULT_PAGE_SIZE)
+                )
+            else:
+                model_select = model.select(*query_fields).where(query)
         else:
             model_select = model.select(*query_fields).where(query).paginate(1, cls.DEFAULT_PAGE_SIZE)
 
