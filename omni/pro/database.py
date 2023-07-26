@@ -387,6 +387,8 @@ class PolishNotationToMongoDB:
             "in": "$in",
             "nin": "$nin",
             "!=": "$ne",
+            "!like": "$not",
+            "like": "$regex",
         }
 
     def is_logical_operator(self, token):
@@ -414,7 +416,12 @@ class PolishNotationToMongoDB:
             elif self.is_tuple(token):
                 field, old_operator, value = token
                 if old_operator in self.operators_comparison:
-                    operand_stack.append({field: {self.operators_comparison[old_operator]: value}})
+                    options = {}
+                    if old_operator == "like":
+                        options = {"$options": "i"}
+                    elif old_operator == "!like":
+                        options = {self.operators_comparison[old_operator]: {"$regex": value, "$options": "i"}}
+                    operand_stack.append({field: {self.operators_comparison[old_operator]: value} | options})
                 else:
                     raise ValueError(f"Unexpected operator: {old_operator}")
             else:
@@ -451,6 +458,10 @@ class DBUtil(object):
             if ft:
                 str_filter = filter.filter.replace("true", "True").replace("false", "False")
                 expression = ast.literal_eval(str_filter)
+                # reemplace filter id by _id and convert to ObjectId
+                for idx, exp in enumerate(expression):
+                    if isinstance(exp, tuple) and len(exp) == 3 and exp[0] == "id":
+                        expression[idx] = ("_id", exp[1], cls.generate_object_id(exp[2]))
             filter_custom = PolishNotationToMongoDB(expression=expression).convert()
             prepared_statement["filter"] = filter_custom
         if group_by:
