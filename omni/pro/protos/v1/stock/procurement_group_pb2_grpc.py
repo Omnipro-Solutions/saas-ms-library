@@ -14,22 +14,22 @@ class ProcurementGroupServiceStub(object):
             channel: A grpc.Channel.
         """
         self.ProcurementGroupCreate = channel.unary_unary(
-            "/pro.omni.oms.api.v1.stock.procurement.group.ProcurementGroupService/ProcurementGroupCreate",
+            "/pro.omni.oms.api.v1.stock.procurement_group.ProcurementGroupService/ProcurementGroupCreate",
             request_serializer=v1_dot_stock_dot_procurement__group__pb2.ProcurementGroupCreateRequest.SerializeToString,
             response_deserializer=v1_dot_stock_dot_procurement__group__pb2.ProcurementGroupCreateResponse.FromString,
         )
         self.ProcurementGroupRead = channel.unary_unary(
-            "/pro.omni.oms.api.v1.stock.procurement.group.ProcurementGroupService/ProcurementGroupRead",
+            "/pro.omni.oms.api.v1.stock.procurement_group.ProcurementGroupService/ProcurementGroupRead",
             request_serializer=v1_dot_stock_dot_procurement__group__pb2.ProcurementGroupReadRequest.SerializeToString,
             response_deserializer=v1_dot_stock_dot_procurement__group__pb2.ProcurementGroupReadResponse.FromString,
         )
         self.ProcurementGroupUpdate = channel.unary_unary(
-            "/pro.omni.oms.api.v1.stock.procurement.group.ProcurementGroupService/ProcurementGroupUpdate",
+            "/pro.omni.oms.api.v1.stock.procurement_group.ProcurementGroupService/ProcurementGroupUpdate",
             request_serializer=v1_dot_stock_dot_procurement__group__pb2.ProcurementGroupUpdateRequest.SerializeToString,
             response_deserializer=v1_dot_stock_dot_procurement__group__pb2.ProcurementGroupUpdateResponse.FromString,
         )
         self.ProcurementGroupDelete = channel.unary_unary(
-            "/pro.omni.oms.api.v1.stock.procurement.group.ProcurementGroupService/ProcurementGroupDelete",
+            "/pro.omni.oms.api.v1.stock.procurement_group.ProcurementGroupService/ProcurementGroupDelete",
             request_serializer=v1_dot_stock_dot_procurement__group__pb2.ProcurementGroupDeleteRequest.SerializeToString,
             response_deserializer=v1_dot_stock_dot_procurement__group__pb2.ProcurementGroupDeleteResponse.FromString,
         )
@@ -87,7 +87,7 @@ def add_ProcurementGroupServiceServicer_to_server(servicer, server):
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-        "pro.omni.oms.api.v1.stock.procurement.group.ProcurementGroupService", rpc_method_handlers
+        "pro.omni.oms.api.v1.stock.procurement_group.ProcurementGroupService", rpc_method_handlers
     )
     server.add_generic_rpc_handlers((generic_handler,))
 
@@ -112,7 +112,7 @@ class ProcurementGroupService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            "/pro.omni.oms.api.v1.stock.procurement.group.ProcurementGroupService/ProcurementGroupCreate",
+            "/pro.omni.oms.api.v1.stock.procurement_group.ProcurementGroupService/ProcurementGroupCreate",
             v1_dot_stock_dot_procurement__group__pb2.ProcurementGroupCreateRequest.SerializeToString,
             v1_dot_stock_dot_procurement__group__pb2.ProcurementGroupCreateResponse.FromString,
             options,
@@ -141,7 +141,7 @@ class ProcurementGroupService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            "/pro.omni.oms.api.v1.stock.procurement.group.ProcurementGroupService/ProcurementGroupRead",
+            "/pro.omni.oms.api.v1.stock.procurement_group.ProcurementGroupService/ProcurementGroupRead",
             v1_dot_stock_dot_procurement__group__pb2.ProcurementGroupReadRequest.SerializeToString,
             v1_dot_stock_dot_procurement__group__pb2.ProcurementGroupReadResponse.FromString,
             options,
@@ -170,7 +170,7 @@ class ProcurementGroupService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            "/pro.omni.oms.api.v1.stock.procurement.group.ProcurementGroupService/ProcurementGroupUpdate",
+            "/pro.omni.oms.api.v1.stock.procurement_group.ProcurementGroupService/ProcurementGroupUpdate",
             v1_dot_stock_dot_procurement__group__pb2.ProcurementGroupUpdateRequest.SerializeToString,
             v1_dot_stock_dot_procurement__group__pb2.ProcurementGroupUpdateResponse.FromString,
             options,
@@ -199,7 +199,7 @@ class ProcurementGroupService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            "/pro.omni.oms.api.v1.stock.procurement.group.ProcurementGroupService/ProcurementGroupDelete",
+            "/pro.omni.oms.api.v1.stock.procurement_group.ProcurementGroupService/ProcurementGroupDelete",
             v1_dot_stock_dot_procurement__group__pb2.ProcurementGroupDeleteRequest.SerializeToString,
             v1_dot_stock_dot_procurement__group__pb2.ProcurementGroupDeleteResponse.FromString,
             options,

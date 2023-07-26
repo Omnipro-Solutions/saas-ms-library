@@ -10,6 +10,9 @@ from google.protobuf import struct_pb2 as _struct_pb2
 from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
+from omni.pro.protos.v1.stock import country_pb2 as _country_pb2
+from omni.pro.protos.v1.stock import location_pb2 as _location_pb2
+from omni.pro.protos.v1.stock import picking_type_pb2 as _picking_type_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
@@ -23,6 +26,18 @@ class Warehouse(_message.Message):
         "address",
         "complement",
         "active",
+        "delivery_steps",
+        "receptions_steps",
+        "view_location_id",
+        "wh_input_stock_lic_id",
+        "wh_qc_stock_loc_id",
+        "wh_pack_stock_loc_id",
+        "wh_output_stock_loc_id",
+        "in_type_id",
+        "int_type_id",
+        "pick_type_id",
+        "pack_type_id",
+        "out_type_id",
         "object_audit",
     ]
     ID_FIELD_NUMBER: _ClassVar[int]
@@ -33,37 +48,105 @@ class Warehouse(_message.Message):
     ADDRESS_FIELD_NUMBER: _ClassVar[int]
     COMPLEMENT_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
+    DELIVERY_STEPS_FIELD_NUMBER: _ClassVar[int]
+    RECEPTIONS_STEPS_FIELD_NUMBER: _ClassVar[int]
+    VIEW_LOCATION_ID_FIELD_NUMBER: _ClassVar[int]
+    WH_INPUT_STOCK_LIC_ID_FIELD_NUMBER: _ClassVar[int]
+    WH_QC_STOCK_LOC_ID_FIELD_NUMBER: _ClassVar[int]
+    WH_PACK_STOCK_LOC_ID_FIELD_NUMBER: _ClassVar[int]
+    WH_OUTPUT_STOCK_LOC_ID_FIELD_NUMBER: _ClassVar[int]
+    IN_TYPE_ID_FIELD_NUMBER: _ClassVar[int]
+    INT_TYPE_ID_FIELD_NUMBER: _ClassVar[int]
+    PICK_TYPE_ID_FIELD_NUMBER: _ClassVar[int]
+    PACK_TYPE_ID_FIELD_NUMBER: _ClassVar[int]
+    OUT_TYPE_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: int
     name: str
     code: str
-    country_id: int
+    country_id: _country_pb2.Country
     territory_matrix_value: _struct_pb2.Struct
     address: str
     complement: str
     active: _wrappers_pb2.BoolValue
+    delivery_steps: str
+    receptions_steps: str
+    view_location_id: _location_pb2.Location
+    wh_input_stock_lic_id: _location_pb2.Location
+    wh_qc_stock_loc_id: _location_pb2.Location
+    wh_pack_stock_loc_id: _location_pb2.Location
+    wh_output_stock_loc_id: _location_pb2.Location
+    in_type_id: _picking_type_pb2.PickingType
+    int_type_id: _picking_type_pb2.PickingType
+    pick_type_id: _picking_type_pb2.PickingType
+    pack_type_id: _picking_type_pb2.PickingType
+    out_type_id: _picking_type_pb2.PickingType
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
         id: _Optional[int] = ...,
         name: _Optional[str] = ...,
         code: _Optional[str] = ...,
-        country_id: _Optional[int] = ...,
+        country_id: _Optional[_Union[_country_pb2.Country, _Mapping]] = ...,
         territory_matrix_value: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         address: _Optional[str] = ...,
         complement: _Optional[str] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        delivery_steps: _Optional[str] = ...,
+        receptions_steps: _Optional[str] = ...,
+        view_location_id: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
+        wh_input_stock_lic_id: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
+        wh_qc_stock_loc_id: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
+        wh_pack_stock_loc_id: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
+        wh_output_stock_loc_id: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
+        in_type_id: _Optional[_Union[_picking_type_pb2.PickingType, _Mapping]] = ...,
+        int_type_id: _Optional[_Union[_picking_type_pb2.PickingType, _Mapping]] = ...,
+        pick_type_id: _Optional[_Union[_picking_type_pb2.PickingType, _Mapping]] = ...,
+        pack_type_id: _Optional[_Union[_picking_type_pb2.PickingType, _Mapping]] = ...,
+        out_type_id: _Optional[_Union[_picking_type_pb2.PickingType, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
 class WarehouseCreateRequest(_message.Message):
-    __slots__ = ["name", "code", "country_id", "territory_matrix_value", "address", "complement", "context"]
+    __slots__ = [
+        "name",
+        "code",
+        "country_id",
+        "territory_matrix_value",
+        "address",
+        "complement",
+        "delivery_steps",
+        "receptions_steps",
+        "view_location_id",
+        "wh_input_stock_lic_id",
+        "wh_qc_stock_loc_id",
+        "wh_pack_stock_loc_id",
+        "wh_output_stock_loc_id",
+        "in_type_id",
+        "int_type_id",
+        "pick_type_id",
+        "pack_type_id",
+        "out_type_id",
+        "context",
+    ]
     NAME_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
     COUNTRY_ID_FIELD_NUMBER: _ClassVar[int]
     TERRITORY_MATRIX_VALUE_FIELD_NUMBER: _ClassVar[int]
     ADDRESS_FIELD_NUMBER: _ClassVar[int]
     COMPLEMENT_FIELD_NUMBER: _ClassVar[int]
+    DELIVERY_STEPS_FIELD_NUMBER: _ClassVar[int]
+    RECEPTIONS_STEPS_FIELD_NUMBER: _ClassVar[int]
+    VIEW_LOCATION_ID_FIELD_NUMBER: _ClassVar[int]
+    WH_INPUT_STOCK_LIC_ID_FIELD_NUMBER: _ClassVar[int]
+    WH_QC_STOCK_LOC_ID_FIELD_NUMBER: _ClassVar[int]
+    WH_PACK_STOCK_LOC_ID_FIELD_NUMBER: _ClassVar[int]
+    WH_OUTPUT_STOCK_LOC_ID_FIELD_NUMBER: _ClassVar[int]
+    IN_TYPE_ID_FIELD_NUMBER: _ClassVar[int]
+    INT_TYPE_ID_FIELD_NUMBER: _ClassVar[int]
+    PICK_TYPE_ID_FIELD_NUMBER: _ClassVar[int]
+    PACK_TYPE_ID_FIELD_NUMBER: _ClassVar[int]
+    OUT_TYPE_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     code: str
@@ -71,6 +154,18 @@ class WarehouseCreateRequest(_message.Message):
     territory_matrix_value: _struct_pb2.Struct
     address: str
     complement: str
+    delivery_steps: str
+    receptions_steps: str
+    view_location_id: _location_pb2.Location
+    wh_input_stock_lic_id: _location_pb2.Location
+    wh_qc_stock_loc_id: _location_pb2.Location
+    wh_pack_stock_loc_id: _location_pb2.Location
+    wh_output_stock_loc_id: _location_pb2.Location
+    in_type_id: _picking_type_pb2.PickingType
+    int_type_id: _picking_type_pb2.PickingType
+    pick_type_id: _picking_type_pb2.PickingType
+    pack_type_id: _picking_type_pb2.PickingType
+    out_type_id: _picking_type_pb2.PickingType
     context: _base_pb2.Context
     def __init__(
         self,
@@ -80,6 +175,18 @@ class WarehouseCreateRequest(_message.Message):
         territory_matrix_value: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         address: _Optional[str] = ...,
         complement: _Optional[str] = ...,
+        delivery_steps: _Optional[str] = ...,
+        receptions_steps: _Optional[str] = ...,
+        view_location_id: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
+        wh_input_stock_lic_id: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
+        wh_qc_stock_loc_id: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
+        wh_pack_stock_loc_id: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
+        wh_output_stock_loc_id: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
+        in_type_id: _Optional[_Union[_picking_type_pb2.PickingType, _Mapping]] = ...,
+        int_type_id: _Optional[_Union[_picking_type_pb2.PickingType, _Mapping]] = ...,
+        pick_type_id: _Optional[_Union[_picking_type_pb2.PickingType, _Mapping]] = ...,
+        pack_type_id: _Optional[_Union[_picking_type_pb2.PickingType, _Mapping]] = ...,
+        out_type_id: _Optional[_Union[_picking_type_pb2.PickingType, _Mapping]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 

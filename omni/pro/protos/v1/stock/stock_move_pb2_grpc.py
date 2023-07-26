@@ -14,22 +14,22 @@ class StockMoveServiceStub(object):
             channel: A grpc.Channel.
         """
         self.StockMoveCreate = channel.unary_unary(
-            "/pro.omni.oms.api.v1.stock.stock.move.StockMoveService/StockMoveCreate",
+            "/pro.omni.oms.api.v1.stock.stock_move.StockMoveService/StockMoveCreate",
             request_serializer=v1_dot_stock_dot_stock__move__pb2.StockMoveCreateRequest.SerializeToString,
             response_deserializer=v1_dot_stock_dot_stock__move__pb2.StockMoveCreateResponse.FromString,
         )
         self.StockMoveRead = channel.unary_unary(
-            "/pro.omni.oms.api.v1.stock.stock.move.StockMoveService/StockMoveRead",
+            "/pro.omni.oms.api.v1.stock.stock_move.StockMoveService/StockMoveRead",
             request_serializer=v1_dot_stock_dot_stock__move__pb2.StockMoveReadRequest.SerializeToString,
             response_deserializer=v1_dot_stock_dot_stock__move__pb2.StockMoveReadResponse.FromString,
         )
         self.StockMoveUpdate = channel.unary_unary(
-            "/pro.omni.oms.api.v1.stock.stock.move.StockMoveService/StockMoveUpdate",
+            "/pro.omni.oms.api.v1.stock.stock_move.StockMoveService/StockMoveUpdate",
             request_serializer=v1_dot_stock_dot_stock__move__pb2.StockMoveUpdateRequest.SerializeToString,
             response_deserializer=v1_dot_stock_dot_stock__move__pb2.StockMoveUpdateResponse.FromString,
         )
         self.StockMoveDelete = channel.unary_unary(
-            "/pro.omni.oms.api.v1.stock.stock.move.StockMoveService/StockMoveDelete",
+            "/pro.omni.oms.api.v1.stock.stock_move.StockMoveService/StockMoveDelete",
             request_serializer=v1_dot_stock_dot_stock__move__pb2.StockMoveDeleteRequest.SerializeToString,
             response_deserializer=v1_dot_stock_dot_stock__move__pb2.StockMoveDeleteResponse.FromString,
         )
@@ -87,7 +87,7 @@ def add_StockMoveServiceServicer_to_server(servicer, server):
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-        "pro.omni.oms.api.v1.stock.stock.move.StockMoveService", rpc_method_handlers
+        "pro.omni.oms.api.v1.stock.stock_move.StockMoveService", rpc_method_handlers
     )
     server.add_generic_rpc_handlers((generic_handler,))
 
@@ -112,7 +112,7 @@ class StockMoveService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            "/pro.omni.oms.api.v1.stock.stock.move.StockMoveService/StockMoveCreate",
+            "/pro.omni.oms.api.v1.stock.stock_move.StockMoveService/StockMoveCreate",
             v1_dot_stock_dot_stock__move__pb2.StockMoveCreateRequest.SerializeToString,
             v1_dot_stock_dot_stock__move__pb2.StockMoveCreateResponse.FromString,
             options,
@@ -141,7 +141,7 @@ class StockMoveService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            "/pro.omni.oms.api.v1.stock.stock.move.StockMoveService/StockMoveRead",
+            "/pro.omni.oms.api.v1.stock.stock_move.StockMoveService/StockMoveRead",
             v1_dot_stock_dot_stock__move__pb2.StockMoveReadRequest.SerializeToString,
             v1_dot_stock_dot_stock__move__pb2.StockMoveReadResponse.FromString,
             options,
@@ -170,7 +170,7 @@ class StockMoveService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            "/pro.omni.oms.api.v1.stock.stock.move.StockMoveService/StockMoveUpdate",
+            "/pro.omni.oms.api.v1.stock.stock_move.StockMoveService/StockMoveUpdate",
             v1_dot_stock_dot_stock__move__pb2.StockMoveUpdateRequest.SerializeToString,
             v1_dot_stock_dot_stock__move__pb2.StockMoveUpdateResponse.FromString,
             options,
@@ -199,7 +199,7 @@ class StockMoveService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            "/pro.omni.oms.api.v1.stock.stock.move.StockMoveService/StockMoveDelete",
+            "/pro.omni.oms.api.v1.stock.stock_move.StockMoveService/StockMoveDelete",
             v1_dot_stock_dot_stock__move__pb2.StockMoveDeleteRequest.SerializeToString,
             v1_dot_stock_dot_stock__move__pb2.StockMoveDeleteResponse.FromString,
             options,
