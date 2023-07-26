@@ -14,22 +14,22 @@ class StockMoveLineServiceStub(object):
             channel: A grpc.Channel.
         """
         self.StockMoveLineCreate = channel.unary_unary(
-            "/pro.omni.oms.api.v1.stock.stock.line.StockMoveLineService/StockMoveLineCreate",
+            "/pro.omni.oms.api.v1.stock.stock_move_line.StockMoveLineService/StockMoveLineCreate",
             request_serializer=v1_dot_stock_dot_stock__move__line__pb2.StockMoveLineCreateRequest.SerializeToString,
             response_deserializer=v1_dot_stock_dot_stock__move__line__pb2.StockMoveLineCreateResponse.FromString,
         )
         self.StockMoveLineRead = channel.unary_unary(
-            "/pro.omni.oms.api.v1.stock.stock.line.StockMoveLineService/StockMoveLineRead",
+            "/pro.omni.oms.api.v1.stock.stock_move_line.StockMoveLineService/StockMoveLineRead",
             request_serializer=v1_dot_stock_dot_stock__move__line__pb2.StockMoveLineReadRequest.SerializeToString,
             response_deserializer=v1_dot_stock_dot_stock__move__line__pb2.StockMoveLineReadResponse.FromString,
         )
         self.StockMoveLineUpdate = channel.unary_unary(
-            "/pro.omni.oms.api.v1.stock.stock.line.StockMoveLineService/StockMoveLineUpdate",
+            "/pro.omni.oms.api.v1.stock.stock_move_line.StockMoveLineService/StockMoveLineUpdate",
             request_serializer=v1_dot_stock_dot_stock__move__line__pb2.StockMoveLineUpdateRequest.SerializeToString,
             response_deserializer=v1_dot_stock_dot_stock__move__line__pb2.StockMoveLineUpdateResponse.FromString,
         )
         self.StockMoveLineDelete = channel.unary_unary(
-            "/pro.omni.oms.api.v1.stock.stock.line.StockMoveLineService/StockMoveLineDelete",
+            "/pro.omni.oms.api.v1.stock.stock_move_line.StockMoveLineService/StockMoveLineDelete",
             request_serializer=v1_dot_stock_dot_stock__move__line__pb2.StockMoveLineDeleteRequest.SerializeToString,
             response_deserializer=v1_dot_stock_dot_stock__move__line__pb2.StockMoveLineDeleteResponse.FromString,
         )
@@ -87,7 +87,7 @@ def add_StockMoveLineServiceServicer_to_server(servicer, server):
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-        "pro.omni.oms.api.v1.stock.stock.line.StockMoveLineService", rpc_method_handlers
+        "pro.omni.oms.api.v1.stock.stock_move_line.StockMoveLineService", rpc_method_handlers
     )
     server.add_generic_rpc_handlers((generic_handler,))
 
@@ -112,7 +112,7 @@ class StockMoveLineService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            "/pro.omni.oms.api.v1.stock.stock.line.StockMoveLineService/StockMoveLineCreate",
+            "/pro.omni.oms.api.v1.stock.stock_move_line.StockMoveLineService/StockMoveLineCreate",
             v1_dot_stock_dot_stock__move__line__pb2.StockMoveLineCreateRequest.SerializeToString,
             v1_dot_stock_dot_stock__move__line__pb2.StockMoveLineCreateResponse.FromString,
             options,
@@ -141,7 +141,7 @@ class StockMoveLineService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            "/pro.omni.oms.api.v1.stock.stock.line.StockMoveLineService/StockMoveLineRead",
+            "/pro.omni.oms.api.v1.stock.stock_move_line.StockMoveLineService/StockMoveLineRead",
             v1_dot_stock_dot_stock__move__line__pb2.StockMoveLineReadRequest.SerializeToString,
             v1_dot_stock_dot_stock__move__line__pb2.StockMoveLineReadResponse.FromString,
             options,
@@ -170,7 +170,7 @@ class StockMoveLineService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            "/pro.omni.oms.api.v1.stock.stock.line.StockMoveLineService/StockMoveLineUpdate",
+            "/pro.omni.oms.api.v1.stock.stock_move_line.StockMoveLineService/StockMoveLineUpdate",
             v1_dot_stock_dot_stock__move__line__pb2.StockMoveLineUpdateRequest.SerializeToString,
             v1_dot_stock_dot_stock__move__line__pb2.StockMoveLineUpdateResponse.FromString,
             options,
@@ -199,7 +199,7 @@ class StockMoveLineService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            "/pro.omni.oms.api.v1.stock.stock.line.StockMoveLineService/StockMoveLineDelete",
+            "/pro.omni.oms.api.v1.stock.stock_move_line.StockMoveLineService/StockMoveLineDelete",
             v1_dot_stock_dot_stock__move__line__pb2.StockMoveLineDeleteRequest.SerializeToString,
             v1_dot_stock_dot_stock__move__line__pb2.StockMoveLineDeleteResponse.FromString,
             options,
