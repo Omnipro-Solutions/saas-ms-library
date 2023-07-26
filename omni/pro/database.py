@@ -387,7 +387,7 @@ class PolishNotationToMongoDB:
             "in": "$in",
             "nin": "$nin",
             "!=": "$ne",
-            "not like": "$not",
+            "!like": "$not",
             "like": "$regex",
         }
 
@@ -419,7 +419,7 @@ class PolishNotationToMongoDB:
                     options = {}
                     if old_operator == "like":
                         options = {"$options": "i"}
-                    elif old_operator == "not like":
+                    elif old_operator == "!like":
                         options = {self.operators_comparison[old_operator]: {"$regex": value, "$options": "i"}}
                     operand_stack.append({field: {self.operators_comparison[old_operator]: value} | options})
                 else:
