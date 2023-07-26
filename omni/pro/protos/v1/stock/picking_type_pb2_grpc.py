@@ -14,22 +14,22 @@ class PickingTypeServiceStub(object):
             channel: A grpc.Channel.
         """
         self.PickingTypeCreate = channel.unary_unary(
-            "/pro.omni.oms.api.v1.stock.picking.type.PickingTypeService/PickingTypeCreate",
+            "/pro.omni.oms.api.v1.stock.picking_type.PickingTypeService/PickingTypeCreate",
             request_serializer=v1_dot_stock_dot_picking__type__pb2.PickingTypeCreateRequest.SerializeToString,
             response_deserializer=v1_dot_stock_dot_picking__type__pb2.PickingTypeCreateResponse.FromString,
         )
         self.PickingTypeRead = channel.unary_unary(
-            "/pro.omni.oms.api.v1.stock.picking.type.PickingTypeService/PickingTypeRead",
+            "/pro.omni.oms.api.v1.stock.picking_type.PickingTypeService/PickingTypeRead",
             request_serializer=v1_dot_stock_dot_picking__type__pb2.PickingTypeReadRequest.SerializeToString,
             response_deserializer=v1_dot_stock_dot_picking__type__pb2.PickingTypeReadResponse.FromString,
         )
         self.PickingTypeUpdate = channel.unary_unary(
-            "/pro.omni.oms.api.v1.stock.picking.type.PickingTypeService/PickingTypeUpdate",
+            "/pro.omni.oms.api.v1.stock.picking_type.PickingTypeService/PickingTypeUpdate",
             request_serializer=v1_dot_stock_dot_picking__type__pb2.PickingTypeUpdateRequest.SerializeToString,
             response_deserializer=v1_dot_stock_dot_picking__type__pb2.PickingTypeUpdateResponse.FromString,
         )
         self.PickingTypeDelete = channel.unary_unary(
-            "/pro.omni.oms.api.v1.stock.picking.type.PickingTypeService/PickingTypeDelete",
+            "/pro.omni.oms.api.v1.stock.picking_type.PickingTypeService/PickingTypeDelete",
             request_serializer=v1_dot_stock_dot_picking__type__pb2.PickingTypeDeleteRequest.SerializeToString,
             response_deserializer=v1_dot_stock_dot_picking__type__pb2.PickingTypeDeleteResponse.FromString,
         )
@@ -87,7 +87,7 @@ def add_PickingTypeServiceServicer_to_server(servicer, server):
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-        "pro.omni.oms.api.v1.stock.picking.type.PickingTypeService", rpc_method_handlers
+        "pro.omni.oms.api.v1.stock.picking_type.PickingTypeService", rpc_method_handlers
     )
     server.add_generic_rpc_handlers((generic_handler,))
 
@@ -112,7 +112,7 @@ class PickingTypeService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            "/pro.omni.oms.api.v1.stock.picking.type.PickingTypeService/PickingTypeCreate",
+            "/pro.omni.oms.api.v1.stock.picking_type.PickingTypeService/PickingTypeCreate",
             v1_dot_stock_dot_picking__type__pb2.PickingTypeCreateRequest.SerializeToString,
             v1_dot_stock_dot_picking__type__pb2.PickingTypeCreateResponse.FromString,
             options,
@@ -141,7 +141,7 @@ class PickingTypeService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            "/pro.omni.oms.api.v1.stock.picking.type.PickingTypeService/PickingTypeRead",
+            "/pro.omni.oms.api.v1.stock.picking_type.PickingTypeService/PickingTypeRead",
             v1_dot_stock_dot_picking__type__pb2.PickingTypeReadRequest.SerializeToString,
             v1_dot_stock_dot_picking__type__pb2.PickingTypeReadResponse.FromString,
             options,
@@ -170,7 +170,7 @@ class PickingTypeService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            "/pro.omni.oms.api.v1.stock.picking.type.PickingTypeService/PickingTypeUpdate",
+            "/pro.omni.oms.api.v1.stock.picking_type.PickingTypeService/PickingTypeUpdate",
             v1_dot_stock_dot_picking__type__pb2.PickingTypeUpdateRequest.SerializeToString,
             v1_dot_stock_dot_picking__type__pb2.PickingTypeUpdateResponse.FromString,
             options,
@@ -199,7 +199,7 @@ class PickingTypeService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            "/pro.omni.oms.api.v1.stock.picking.type.PickingTypeService/PickingTypeDelete",
+            "/pro.omni.oms.api.v1.stock.picking_type.PickingTypeService/PickingTypeDelete",
             v1_dot_stock_dot_picking__type__pb2.PickingTypeDeleteRequest.SerializeToString,
             v1_dot_stock_dot_picking__type__pb2.PickingTypeDeleteResponse.FromString,
             options,

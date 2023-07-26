@@ -196,6 +196,9 @@ def read_response(
                 paginated=request.paginated,
                 **kwargs_return,
             )
+    except ValueError as e:
+        LoggerTraceback.error("Input request data validation error", e, logger)
+        return message_response.input_validator_response(message=str(e))
     except Exception as e:
         LoggerTraceback.error(msg_exception, e, logger)
         return message_response.internal_response(message=msg_exception)
