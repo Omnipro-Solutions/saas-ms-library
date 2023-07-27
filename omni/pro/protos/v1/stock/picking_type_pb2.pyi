@@ -6,7 +6,6 @@ from typing import Union as _Union
 
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
-from google.protobuf import struct_pb2 as _struct_pb2
 from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
@@ -25,10 +24,6 @@ class PickingType(_message.Message):
         "show_reserved",
         "default_location_src_id",
         "default_location_dest_id",
-        "prefix",
-        "padding",
-        "number_increment",
-        "number_next_actual",
         "active",
         "object_audit",
     ]
@@ -42,10 +37,6 @@ class PickingType(_message.Message):
     SHOW_RESERVED_FIELD_NUMBER: _ClassVar[int]
     DEFAULT_LOCATION_SRC_ID_FIELD_NUMBER: _ClassVar[int]
     DEFAULT_LOCATION_DEST_ID_FIELD_NUMBER: _ClassVar[int]
-    PREFIX_FIELD_NUMBER: _ClassVar[int]
-    PADDING_FIELD_NUMBER: _ClassVar[int]
-    NUMBER_INCREMENT_FIELD_NUMBER: _ClassVar[int]
-    NUMBER_NEXT_ACTUAL_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: int
@@ -58,10 +49,6 @@ class PickingType(_message.Message):
     show_reserved: _wrappers_pb2.BoolValue
     default_location_src_id: int
     default_location_dest_id: int
-    prefix: str
-    padding: int
-    number_increment: int
-    number_next_actual: int
     active: _wrappers_pb2.BoolValue
     object_audit: _base_pb2.ObjectAudit
     def __init__(
@@ -76,10 +63,6 @@ class PickingType(_message.Message):
         show_reserved: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         default_location_src_id: _Optional[int] = ...,
         default_location_dest_id: _Optional[int] = ...,
-        prefix: _Optional[str] = ...,
-        padding: _Optional[int] = ...,
-        number_increment: _Optional[int] = ...,
-        number_next_actual: _Optional[int] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
@@ -95,10 +78,6 @@ class PickingTypeCreateRequest(_message.Message):
         "show_reserved",
         "default_location_src_id",
         "default_location_dest_id",
-        "prefix",
-        "padding",
-        "number_increment",
-        "number_next_actual",
         "context",
     ]
     NAME_FIELD_NUMBER: _ClassVar[int]
@@ -110,10 +89,6 @@ class PickingTypeCreateRequest(_message.Message):
     SHOW_RESERVED_FIELD_NUMBER: _ClassVar[int]
     DEFAULT_LOCATION_SRC_ID_FIELD_NUMBER: _ClassVar[int]
     DEFAULT_LOCATION_DEST_ID_FIELD_NUMBER: _ClassVar[int]
-    PREFIX_FIELD_NUMBER: _ClassVar[int]
-    PADDING_FIELD_NUMBER: _ClassVar[int]
-    NUMBER_INCREMENT_FIELD_NUMBER: _ClassVar[int]
-    NUMBER_NEXT_ACTUAL_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     sequence_code: str
@@ -124,10 +99,6 @@ class PickingTypeCreateRequest(_message.Message):
     show_reserved: _wrappers_pb2.BoolValue
     default_location_src_id: int
     default_location_dest_id: int
-    prefix: str
-    padding: int
-    number_increment: int
-    number_next_actual: int
     context: _base_pb2.Context
     def __init__(
         self,
@@ -140,10 +111,6 @@ class PickingTypeCreateRequest(_message.Message):
         show_reserved: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         default_location_src_id: _Optional[int] = ...,
         default_location_dest_id: _Optional[int] = ...,
-        prefix: _Optional[str] = ...,
-        padding: _Optional[int] = ...,
-        number_increment: _Optional[int] = ...,
-        number_next_actual: _Optional[int] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
