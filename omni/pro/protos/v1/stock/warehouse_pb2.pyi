@@ -29,7 +29,8 @@ class Warehouse(_message.Message):
         "delivery_steps",
         "receptions_steps",
         "view_location_id",
-        "wh_input_stock_lic_id",
+        "lot_stock_id",
+        "wh_input_stock_loc_id",
         "wh_qc_stock_loc_id",
         "wh_pack_stock_loc_id",
         "wh_output_stock_loc_id",
@@ -51,7 +52,8 @@ class Warehouse(_message.Message):
     DELIVERY_STEPS_FIELD_NUMBER: _ClassVar[int]
     RECEPTIONS_STEPS_FIELD_NUMBER: _ClassVar[int]
     VIEW_LOCATION_ID_FIELD_NUMBER: _ClassVar[int]
-    WH_INPUT_STOCK_LIC_ID_FIELD_NUMBER: _ClassVar[int]
+    LOT_STOCK_ID_FIELD_NUMBER: _ClassVar[int]
+    WH_INPUT_STOCK_LOC_ID_FIELD_NUMBER: _ClassVar[int]
     WH_QC_STOCK_LOC_ID_FIELD_NUMBER: _ClassVar[int]
     WH_PACK_STOCK_LOC_ID_FIELD_NUMBER: _ClassVar[int]
     WH_OUTPUT_STOCK_LOC_ID_FIELD_NUMBER: _ClassVar[int]
@@ -72,7 +74,8 @@ class Warehouse(_message.Message):
     delivery_steps: str
     receptions_steps: str
     view_location_id: _location_pb2.Location
-    wh_input_stock_lic_id: _location_pb2.Location
+    lot_stock_id: _location_pb2.Location
+    wh_input_stock_loc_id: _location_pb2.Location
     wh_qc_stock_loc_id: _location_pb2.Location
     wh_pack_stock_loc_id: _location_pb2.Location
     wh_output_stock_loc_id: _location_pb2.Location
@@ -95,7 +98,8 @@ class Warehouse(_message.Message):
         delivery_steps: _Optional[str] = ...,
         receptions_steps: _Optional[str] = ...,
         view_location_id: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
-        wh_input_stock_lic_id: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
+        lot_stock_id: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
+        wh_input_stock_loc_id: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
         wh_qc_stock_loc_id: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
         wh_pack_stock_loc_id: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
         wh_output_stock_loc_id: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
@@ -118,7 +122,8 @@ class WarehouseCreateRequest(_message.Message):
         "delivery_steps",
         "receptions_steps",
         "view_location_id",
-        "wh_input_stock_lic_id",
+        "lot_stock_id",
+        "wh_input_stock_loc_id",
         "wh_qc_stock_loc_id",
         "wh_pack_stock_loc_id",
         "wh_output_stock_loc_id",
@@ -138,7 +143,8 @@ class WarehouseCreateRequest(_message.Message):
     DELIVERY_STEPS_FIELD_NUMBER: _ClassVar[int]
     RECEPTIONS_STEPS_FIELD_NUMBER: _ClassVar[int]
     VIEW_LOCATION_ID_FIELD_NUMBER: _ClassVar[int]
-    WH_INPUT_STOCK_LIC_ID_FIELD_NUMBER: _ClassVar[int]
+    LOT_STOCK_ID_FIELD_NUMBER: _ClassVar[int]
+    WH_INPUT_STOCK_LOC_ID_FIELD_NUMBER: _ClassVar[int]
     WH_QC_STOCK_LOC_ID_FIELD_NUMBER: _ClassVar[int]
     WH_PACK_STOCK_LOC_ID_FIELD_NUMBER: _ClassVar[int]
     WH_OUTPUT_STOCK_LOC_ID_FIELD_NUMBER: _ClassVar[int]
@@ -156,16 +162,17 @@ class WarehouseCreateRequest(_message.Message):
     complement: str
     delivery_steps: str
     receptions_steps: str
-    view_location_id: _location_pb2.Location
-    wh_input_stock_lic_id: _location_pb2.Location
-    wh_qc_stock_loc_id: _location_pb2.Location
-    wh_pack_stock_loc_id: _location_pb2.Location
-    wh_output_stock_loc_id: _location_pb2.Location
-    in_type_id: _picking_type_pb2.PickingType
-    int_type_id: _picking_type_pb2.PickingType
-    pick_type_id: _picking_type_pb2.PickingType
-    pack_type_id: _picking_type_pb2.PickingType
-    out_type_id: _picking_type_pb2.PickingType
+    view_location_id: int
+    lot_stock_id: int
+    wh_input_stock_loc_id: int
+    wh_qc_stock_loc_id: int
+    wh_pack_stock_loc_id: int
+    wh_output_stock_loc_id: int
+    in_type_id: int
+    int_type_id: int
+    pick_type_id: int
+    pack_type_id: int
+    out_type_id: int
     context: _base_pb2.Context
     def __init__(
         self,
@@ -177,16 +184,17 @@ class WarehouseCreateRequest(_message.Message):
         complement: _Optional[str] = ...,
         delivery_steps: _Optional[str] = ...,
         receptions_steps: _Optional[str] = ...,
-        view_location_id: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
-        wh_input_stock_lic_id: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
-        wh_qc_stock_loc_id: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
-        wh_pack_stock_loc_id: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
-        wh_output_stock_loc_id: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
-        in_type_id: _Optional[_Union[_picking_type_pb2.PickingType, _Mapping]] = ...,
-        int_type_id: _Optional[_Union[_picking_type_pb2.PickingType, _Mapping]] = ...,
-        pick_type_id: _Optional[_Union[_picking_type_pb2.PickingType, _Mapping]] = ...,
-        pack_type_id: _Optional[_Union[_picking_type_pb2.PickingType, _Mapping]] = ...,
-        out_type_id: _Optional[_Union[_picking_type_pb2.PickingType, _Mapping]] = ...,
+        view_location_id: _Optional[int] = ...,
+        lot_stock_id: _Optional[int] = ...,
+        wh_input_stock_loc_id: _Optional[int] = ...,
+        wh_qc_stock_loc_id: _Optional[int] = ...,
+        wh_pack_stock_loc_id: _Optional[int] = ...,
+        wh_output_stock_loc_id: _Optional[int] = ...,
+        in_type_id: _Optional[int] = ...,
+        int_type_id: _Optional[int] = ...,
+        pick_type_id: _Optional[int] = ...,
+        pack_type_id: _Optional[int] = ...,
+        out_type_id: _Optional[int] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
