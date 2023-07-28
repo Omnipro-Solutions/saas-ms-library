@@ -9,6 +9,7 @@ from google.protobuf import message as _message
 from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
+from omni.pro.protos.v1.stock import location_pb2 as _location_pb2
 from omni.pro.protos.v1.stock import sequence_pb2 as _sequence_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
@@ -56,8 +57,8 @@ class PickingType(_message.Message):
     return_picking_type_id: int
     show_operations: _wrappers_pb2.BoolValue
     show_reserved: _wrappers_pb2.BoolValue
-    default_location_src_id: int
-    default_location_dest_id: int
+    default_location_src_id: _location_pb2.Location
+    default_location_dest_id: _location_pb2.Location
     sequence_id: _sequence_pb2.Sequence
     barcode: str
     reservation_method: str
@@ -74,8 +75,8 @@ class PickingType(_message.Message):
         return_picking_type_id: _Optional[int] = ...,
         show_operations: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         show_reserved: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
-        default_location_src_id: _Optional[int] = ...,
-        default_location_dest_id: _Optional[int] = ...,
+        default_location_src_id: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
+        default_location_dest_id: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
         sequence_id: _Optional[_Union[_sequence_pb2.Sequence, _Mapping]] = ...,
         barcode: _Optional[str] = ...,
         reservation_method: _Optional[str] = ...,
