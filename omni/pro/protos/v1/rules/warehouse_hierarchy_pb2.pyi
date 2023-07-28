@@ -6,6 +6,7 @@ from typing import Union as _Union
 
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
+from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
 from omni.pro.protos.v1.rules import location_pb2 as _location_pb2
@@ -37,8 +38,8 @@ class WarehouseHierarchy(_message.Message):
     location_id: _location_pb2.Location
     quantity_security: float
     sequence: int
-    sequence_order: bool
-    active: bool
+    sequence_order: _wrappers_pb2.BoolValue
+    active: _wrappers_pb2.BoolValue
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
@@ -47,8 +48,8 @@ class WarehouseHierarchy(_message.Message):
         location_id: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
         quantity_security: _Optional[float] = ...,
         sequence: _Optional[int] = ...,
-        sequence_order: bool = ...,
-        active: bool = ...,
+        sequence_order: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
@@ -64,7 +65,7 @@ class WarehouseHierarchyCreateRequest(_message.Message):
     location_id: str
     quantity_security: float
     sequence: int
-    sequence_order: bool
+    sequence_order: _wrappers_pb2.BoolValue
     context: _base_pb2.Context
     def __init__(
         self,
@@ -72,7 +73,7 @@ class WarehouseHierarchyCreateRequest(_message.Message):
         location_id: _Optional[str] = ...,
         quantity_security: _Optional[float] = ...,
         sequence: _Optional[int] = ...,
-        sequence_order: bool = ...,
+        sequence_order: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 

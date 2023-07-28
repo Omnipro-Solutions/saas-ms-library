@@ -21,7 +21,7 @@ class Warehouse(_message.Message):
         "id",
         "name",
         "code",
-        "country_id",
+        "country",
         "territory_matrix_value",
         "address",
         "complement",
@@ -44,7 +44,7 @@ class Warehouse(_message.Message):
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
-    COUNTRY_ID_FIELD_NUMBER: _ClassVar[int]
+    COUNTRY_FIELD_NUMBER: _ClassVar[int]
     TERRITORY_MATRIX_VALUE_FIELD_NUMBER: _ClassVar[int]
     ADDRESS_FIELD_NUMBER: _ClassVar[int]
     COMPLEMENT_FIELD_NUMBER: _ClassVar[int]
@@ -66,7 +66,7 @@ class Warehouse(_message.Message):
     id: int
     name: str
     code: str
-    country_id: _country_pb2.Country
+    country: _country_pb2.Country
     territory_matrix_value: _struct_pb2.Struct
     address: str
     complement: str
@@ -90,7 +90,7 @@ class Warehouse(_message.Message):
         id: _Optional[int] = ...,
         name: _Optional[str] = ...,
         code: _Optional[str] = ...,
-        country_id: _Optional[_Union[_country_pb2.Country, _Mapping]] = ...,
+        country: _Optional[_Union[_country_pb2.Country, _Mapping]] = ...,
         territory_matrix_value: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         address: _Optional[str] = ...,
         complement: _Optional[str] = ...,
@@ -115,7 +115,7 @@ class WarehouseCreateRequest(_message.Message):
     __slots__ = [
         "name",
         "code",
-        "country_id",
+        "country_code",
         "territory_matrix_value",
         "address",
         "complement",
@@ -136,7 +136,7 @@ class WarehouseCreateRequest(_message.Message):
     ]
     NAME_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
-    COUNTRY_ID_FIELD_NUMBER: _ClassVar[int]
+    COUNTRY_CODE_FIELD_NUMBER: _ClassVar[int]
     TERRITORY_MATRIX_VALUE_FIELD_NUMBER: _ClassVar[int]
     ADDRESS_FIELD_NUMBER: _ClassVar[int]
     COMPLEMENT_FIELD_NUMBER: _ClassVar[int]
@@ -156,7 +156,7 @@ class WarehouseCreateRequest(_message.Message):
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     code: str
-    country_id: int
+    country_code: str
     territory_matrix_value: _struct_pb2.Struct
     address: str
     complement: str
@@ -178,7 +178,7 @@ class WarehouseCreateRequest(_message.Message):
         self,
         name: _Optional[str] = ...,
         code: _Optional[str] = ...,
-        country_id: _Optional[int] = ...,
+        country_code: _Optional[str] = ...,
         territory_matrix_value: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         address: _Optional[str] = ...,
         complement: _Optional[str] = ...,

@@ -9,6 +9,7 @@ from google.protobuf import message as _message
 from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
+from omni.pro.protos.v1.stock import sequence_pb2 as _sequence_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
@@ -24,6 +25,10 @@ class PickingType(_message.Message):
         "show_reserved",
         "default_location_src_id",
         "default_location_dest_id",
+        "sequence_id",
+        "barcode",
+        "reservation_method",
+        "type_code",
         "active",
         "object_audit",
     ]
@@ -37,6 +42,10 @@ class PickingType(_message.Message):
     SHOW_RESERVED_FIELD_NUMBER: _ClassVar[int]
     DEFAULT_LOCATION_SRC_ID_FIELD_NUMBER: _ClassVar[int]
     DEFAULT_LOCATION_DEST_ID_FIELD_NUMBER: _ClassVar[int]
+    SEQUENCE_ID_FIELD_NUMBER: _ClassVar[int]
+    BARCODE_FIELD_NUMBER: _ClassVar[int]
+    RESERVATION_METHOD_FIELD_NUMBER: _ClassVar[int]
+    TYPE_CODE_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: int
@@ -49,6 +58,10 @@ class PickingType(_message.Message):
     show_reserved: _wrappers_pb2.BoolValue
     default_location_src_id: int
     default_location_dest_id: int
+    sequence_id: _sequence_pb2.Sequence
+    barcode: str
+    reservation_method: str
+    type_code: str
     active: _wrappers_pb2.BoolValue
     object_audit: _base_pb2.ObjectAudit
     def __init__(
@@ -63,6 +76,10 @@ class PickingType(_message.Message):
         show_reserved: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         default_location_src_id: _Optional[int] = ...,
         default_location_dest_id: _Optional[int] = ...,
+        sequence_id: _Optional[_Union[_sequence_pb2.Sequence, _Mapping]] = ...,
+        barcode: _Optional[str] = ...,
+        reservation_method: _Optional[str] = ...,
+        type_code: _Optional[str] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
@@ -78,6 +95,10 @@ class PickingTypeCreateRequest(_message.Message):
         "show_reserved",
         "default_location_src_id",
         "default_location_dest_id",
+        "barcode",
+        "reservation_method",
+        "type_code",
+        "sequence_id",
         "context",
     ]
     NAME_FIELD_NUMBER: _ClassVar[int]
@@ -89,6 +110,10 @@ class PickingTypeCreateRequest(_message.Message):
     SHOW_RESERVED_FIELD_NUMBER: _ClassVar[int]
     DEFAULT_LOCATION_SRC_ID_FIELD_NUMBER: _ClassVar[int]
     DEFAULT_LOCATION_DEST_ID_FIELD_NUMBER: _ClassVar[int]
+    BARCODE_FIELD_NUMBER: _ClassVar[int]
+    RESERVATION_METHOD_FIELD_NUMBER: _ClassVar[int]
+    TYPE_CODE_FIELD_NUMBER: _ClassVar[int]
+    SEQUENCE_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     sequence_code: str
@@ -99,6 +124,10 @@ class PickingTypeCreateRequest(_message.Message):
     show_reserved: _wrappers_pb2.BoolValue
     default_location_src_id: int
     default_location_dest_id: int
+    barcode: str
+    reservation_method: str
+    type_code: str
+    sequence_id: int
     context: _base_pb2.Context
     def __init__(
         self,
@@ -111,6 +140,10 @@ class PickingTypeCreateRequest(_message.Message):
         show_reserved: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         default_location_src_id: _Optional[int] = ...,
         default_location_dest_id: _Optional[int] = ...,
+        barcode: _Optional[str] = ...,
+        reservation_method: _Optional[str] = ...,
+        type_code: _Optional[str] = ...,
+        sequence_id: _Optional[int] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 

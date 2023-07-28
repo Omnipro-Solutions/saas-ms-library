@@ -12,11 +12,12 @@ from google.protobuf.internal import builder as _builder
 _sym_db = _symbol_database.Default()
 
 
+from google.protobuf import struct_pb2 as google_dot_protobuf_dot_struct__pb2
 from google.protobuf import wrappers_pb2 as google_dot_protobuf_dot_wrappers__pb2
 from omni.pro.protos.common import base_pb2 as common_dot_base__pb2
 
 DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
-    b'\n#v1/utilities/territory_matrix.proto\x12.pro.omni.oms.api.v1.utilities.territory_matrix\x1a\x11\x63ommon/base.proto\x1a\x1egoogle/protobuf/wrappers.proto"\xcc\x01\n\x0fTerritoryMatrix\x12\n\n\x02id\x18\x01 \x01(\t\x12\x10\n\x08sequence\x18\x02 \x01(\x05\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\x0c\n\x04\x63ode\x18\x04 \x01(\t\x12*\n\x06\x61\x63tive\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12\x12\n\ncountry_id\x18\x06 \x01(\t\x12?\n\x0cobject_audit\x18\x07 \x01(\x0b\x32).pro.omni.oms.api.common.base.ObjectAudit"\xc1\x01\n\x19TerritoryMatrixAddRequest\x12\x12\n\ncountry_id\x18\x01 \x01(\t\x12\x10\n\x08sequence\x18\x02 \x01(\x05\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\x0c\n\x04\x63ode\x18\x04 \x01(\t\x12*\n\x06\x61\x63tive\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12\x36\n\x07\x63ontext\x18\x06 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xc4\x01\n\x1aTerritoryMatrixAddResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard\x12[\n\x12territory_matrixes\x18\x02 \x01(\x0b\x32?.pro.omni.oms.api.v1.utilities.territory_matrix.TerritoryMatrix"\xf8\x02\n\x1aTerritoryMatrixReadRequest\x12\x37\n\x08group_by\x18\x01 \x03(\x0b\x32%.pro.omni.oms.api.common.base.GroupBy\x12\x35\n\x07sort_by\x18\x02 \x01(\x0b\x32$.pro.omni.oms.api.common.base.SortBy\x12\x34\n\x06\x66ields\x18\x03 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Fields\x12\x34\n\x06\x66ilter\x18\x04 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Filter\x12:\n\tpaginated\x18\x05 \x01(\x0b\x32\'.pro.omni.oms.api.common.base.Paginated\x12\n\n\x02id\x18\x06 \x01(\t\x12\x36\n\x07\x63ontext\x18\x07 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\x80\x02\n\x1bTerritoryMatrixReadResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard\x12\x39\n\tmeta_data\x18\x02 \x01(\x0b\x32&.pro.omni.oms.api.common.base.MetaData\x12[\n\x12territory_matrixes\x18\x03 \x03(\x0b\x32?.pro.omni.oms.api.v1.utilities.territory_matrix.TerritoryMatrix"\xb1\x01\n\x1cTerritoryMatrixUpdateRequest\x12Y\n\x10territory_matrix\x18\x01 \x01(\x0b\x32?.pro.omni.oms.api.v1.utilities.territory_matrix.TerritoryMatrix\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xc7\x01\n\x1dTerritoryMatrixUpdateResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard\x12[\n\x12territory_matrixes\x18\x02 \x01(\x0b\x32?.pro.omni.oms.api.v1.utilities.territory_matrix.TerritoryMatrix"b\n\x1cTerritoryMatrixDeleteRequest\x12\n\n\x02id\x18\x01 \x01(\t\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"j\n\x1dTerritoryMatrixDeleteResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard2\xed\x05\n\x16TerritoryMatrixService\x12\xad\x01\n\x12TerritoryMatrixAdd\x12I.pro.omni.oms.api.v1.utilities.territory_matrix.TerritoryMatrixAddRequest\x1aJ.pro.omni.oms.api.v1.utilities.territory_matrix.TerritoryMatrixAddResponse"\x00\x12\xb0\x01\n\x13TerritoryMatrixRead\x12J.pro.omni.oms.api.v1.utilities.territory_matrix.TerritoryMatrixReadRequest\x1aK.pro.omni.oms.api.v1.utilities.territory_matrix.TerritoryMatrixReadResponse"\x00\x12\xb6\x01\n\x15TerritoryMatrixUpdate\x12L.pro.omni.oms.api.v1.utilities.territory_matrix.TerritoryMatrixUpdateRequest\x1aM.pro.omni.oms.api.v1.utilities.territory_matrix.TerritoryMatrixUpdateResponse"\x00\x12\xb6\x01\n\x15TerritoryMatrixDelete\x12L.pro.omni.oms.api.v1.utilities.territory_matrix.TerritoryMatrixDeleteRequest\x1aM.pro.omni.oms.api.v1.utilities.territory_matrix.TerritoryMatrixDeleteResponse"\x00\x62\x06proto3'
+    b'\n#v1/utilities/territory_matrix.proto\x12.pro.omni.oms.api.v1.utilities.territory_matrix\x1a\x11\x63ommon/base.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x1cgoogle/protobuf/struct.proto"\xcc\x01\n\x0fTerritoryMatrix\x12\n\n\x02id\x18\x01 \x01(\t\x12\x10\n\x08sequence\x18\x02 \x01(\x05\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\x0c\n\x04\x63ode\x18\x04 \x01(\t\x12*\n\x06\x61\x63tive\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12\x12\n\ncountry_id\x18\x06 \x01(\t\x12?\n\x0cobject_audit\x18\x07 \x01(\x0b\x32).pro.omni.oms.api.common.base.ObjectAudit"\xc1\x01\n\x19TerritoryMatrixAddRequest\x12\x12\n\ncountry_id\x18\x01 \x01(\t\x12\x10\n\x08sequence\x18\x02 \x01(\x05\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\x0c\n\x04\x63ode\x18\x04 \x01(\t\x12*\n\x06\x61\x63tive\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12\x36\n\x07\x63ontext\x18\x06 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xc4\x01\n\x1aTerritoryMatrixAddResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard\x12[\n\x12territory_matrixes\x18\x02 \x01(\x0b\x32?.pro.omni.oms.api.v1.utilities.territory_matrix.TerritoryMatrix"\xf8\x02\n\x1aTerritoryMatrixReadRequest\x12\x37\n\x08group_by\x18\x01 \x03(\x0b\x32%.pro.omni.oms.api.common.base.GroupBy\x12\x35\n\x07sort_by\x18\x02 \x01(\x0b\x32$.pro.omni.oms.api.common.base.SortBy\x12\x34\n\x06\x66ields\x18\x03 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Fields\x12\x34\n\x06\x66ilter\x18\x04 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Filter\x12:\n\tpaginated\x18\x05 \x01(\x0b\x32\'.pro.omni.oms.api.common.base.Paginated\x12\n\n\x02id\x18\x06 \x01(\t\x12\x36\n\x07\x63ontext\x18\x07 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\x80\x02\n\x1bTerritoryMatrixReadResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard\x12\x39\n\tmeta_data\x18\x02 \x01(\x0b\x32&.pro.omni.oms.api.common.base.MetaData\x12[\n\x12territory_matrixes\x18\x03 \x03(\x0b\x32?.pro.omni.oms.api.v1.utilities.territory_matrix.TerritoryMatrix"\xb1\x01\n\x1cTerritoryMatrixUpdateRequest\x12Y\n\x10territory_matrix\x18\x01 \x01(\x0b\x32?.pro.omni.oms.api.v1.utilities.territory_matrix.TerritoryMatrix\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xc7\x01\n\x1dTerritoryMatrixUpdateResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard\x12[\n\x12territory_matrixes\x18\x02 \x01(\x0b\x32?.pro.omni.oms.api.v1.utilities.territory_matrix.TerritoryMatrix"b\n\x1cTerritoryMatrixDeleteRequest\x12\n\n\x02id\x18\x01 \x01(\t\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"j\n\x1dTerritoryMatrixDeleteResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"|\n\x1aTerritoryMatrixLoadRequest\x12\x14\n\x0c\x63ountry_code\x18\x01 \x01(\t\x12\x10\n\x08\x63sv_name\x18\x02 \x01(\t\x12\x36\n\x07\x63ontext\x18\x03 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"h\n\x1bTerritoryMatrixLoadResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\xc8\x01\n\x1fTerritoryMatrixStructureRequest\x12X\n\x0fterritorymatrix\x18\x01 \x01(\x0b\x32?.pro.omni.oms.api.v1.utilities.territory_matrix.TerritoryMatrix\x12\x13\n\x0bparent_code\x18\x02 \x01(\t\x12\x36\n\x07\x63ontext\x18\x03 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xa5\x01\n TerritoryMatrixStructureResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard\x12\x36\n\x12territory_matrixes\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.ListValue2\xe2\x08\n\x16TerritoryMatrixService\x12\xad\x01\n\x12TerritoryMatrixAdd\x12I.pro.omni.oms.api.v1.utilities.territory_matrix.TerritoryMatrixAddRequest\x1aJ.pro.omni.oms.api.v1.utilities.territory_matrix.TerritoryMatrixAddResponse"\x00\x12\xb0\x01\n\x13TerritoryMatrixRead\x12J.pro.omni.oms.api.v1.utilities.territory_matrix.TerritoryMatrixReadRequest\x1aK.pro.omni.oms.api.v1.utilities.territory_matrix.TerritoryMatrixReadResponse"\x00\x12\xb6\x01\n\x15TerritoryMatrixUpdate\x12L.pro.omni.oms.api.v1.utilities.territory_matrix.TerritoryMatrixUpdateRequest\x1aM.pro.omni.oms.api.v1.utilities.territory_matrix.TerritoryMatrixUpdateResponse"\x00\x12\xb6\x01\n\x15TerritoryMatrixDelete\x12L.pro.omni.oms.api.v1.utilities.territory_matrix.TerritoryMatrixDeleteRequest\x1aM.pro.omni.oms.api.v1.utilities.territory_matrix.TerritoryMatrixDeleteResponse"\x00\x12\xb0\x01\n\x13TerritoryMatrixLoad\x12J.pro.omni.oms.api.v1.utilities.territory_matrix.TerritoryMatrixLoadRequest\x1aK.pro.omni.oms.api.v1.utilities.territory_matrix.TerritoryMatrixLoadResponse"\x00\x12\xbf\x01\n\x18TerritoryMatrixStructure\x12O.pro.omni.oms.api.v1.utilities.territory_matrix.TerritoryMatrixStructureRequest\x1aP.pro.omni.oms.api.v1.utilities.territory_matrix.TerritoryMatrixStructureResponse"\x00\x62\x06proto3'
 )
 
 _globals = globals()
@@ -24,24 +25,32 @@ _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, "v1.utilities.territory_matrix_pb2", _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
     DESCRIPTOR._options = None
-    _globals["_TERRITORYMATRIX"]._serialized_start = 139
-    _globals["_TERRITORYMATRIX"]._serialized_end = 343
-    _globals["_TERRITORYMATRIXADDREQUEST"]._serialized_start = 346
-    _globals["_TERRITORYMATRIXADDREQUEST"]._serialized_end = 539
-    _globals["_TERRITORYMATRIXADDRESPONSE"]._serialized_start = 542
-    _globals["_TERRITORYMATRIXADDRESPONSE"]._serialized_end = 738
-    _globals["_TERRITORYMATRIXREADREQUEST"]._serialized_start = 741
-    _globals["_TERRITORYMATRIXREADREQUEST"]._serialized_end = 1117
-    _globals["_TERRITORYMATRIXREADRESPONSE"]._serialized_start = 1120
-    _globals["_TERRITORYMATRIXREADRESPONSE"]._serialized_end = 1376
-    _globals["_TERRITORYMATRIXUPDATEREQUEST"]._serialized_start = 1379
-    _globals["_TERRITORYMATRIXUPDATEREQUEST"]._serialized_end = 1556
-    _globals["_TERRITORYMATRIXUPDATERESPONSE"]._serialized_start = 1559
-    _globals["_TERRITORYMATRIXUPDATERESPONSE"]._serialized_end = 1758
-    _globals["_TERRITORYMATRIXDELETEREQUEST"]._serialized_start = 1760
-    _globals["_TERRITORYMATRIXDELETEREQUEST"]._serialized_end = 1858
-    _globals["_TERRITORYMATRIXDELETERESPONSE"]._serialized_start = 1860
-    _globals["_TERRITORYMATRIXDELETERESPONSE"]._serialized_end = 1966
-    _globals["_TERRITORYMATRIXSERVICE"]._serialized_start = 1969
-    _globals["_TERRITORYMATRIXSERVICE"]._serialized_end = 2718
+    _globals["_TERRITORYMATRIX"]._serialized_start = 169
+    _globals["_TERRITORYMATRIX"]._serialized_end = 373
+    _globals["_TERRITORYMATRIXADDREQUEST"]._serialized_start = 376
+    _globals["_TERRITORYMATRIXADDREQUEST"]._serialized_end = 569
+    _globals["_TERRITORYMATRIXADDRESPONSE"]._serialized_start = 572
+    _globals["_TERRITORYMATRIXADDRESPONSE"]._serialized_end = 768
+    _globals["_TERRITORYMATRIXREADREQUEST"]._serialized_start = 771
+    _globals["_TERRITORYMATRIXREADREQUEST"]._serialized_end = 1147
+    _globals["_TERRITORYMATRIXREADRESPONSE"]._serialized_start = 1150
+    _globals["_TERRITORYMATRIXREADRESPONSE"]._serialized_end = 1406
+    _globals["_TERRITORYMATRIXUPDATEREQUEST"]._serialized_start = 1409
+    _globals["_TERRITORYMATRIXUPDATEREQUEST"]._serialized_end = 1586
+    _globals["_TERRITORYMATRIXUPDATERESPONSE"]._serialized_start = 1589
+    _globals["_TERRITORYMATRIXUPDATERESPONSE"]._serialized_end = 1788
+    _globals["_TERRITORYMATRIXDELETEREQUEST"]._serialized_start = 1790
+    _globals["_TERRITORYMATRIXDELETEREQUEST"]._serialized_end = 1888
+    _globals["_TERRITORYMATRIXDELETERESPONSE"]._serialized_start = 1890
+    _globals["_TERRITORYMATRIXDELETERESPONSE"]._serialized_end = 1996
+    _globals["_TERRITORYMATRIXLOADREQUEST"]._serialized_start = 1998
+    _globals["_TERRITORYMATRIXLOADREQUEST"]._serialized_end = 2122
+    _globals["_TERRITORYMATRIXLOADRESPONSE"]._serialized_start = 2124
+    _globals["_TERRITORYMATRIXLOADRESPONSE"]._serialized_end = 2228
+    _globals["_TERRITORYMATRIXSTRUCTUREREQUEST"]._serialized_start = 2231
+    _globals["_TERRITORYMATRIXSTRUCTUREREQUEST"]._serialized_end = 2431
+    _globals["_TERRITORYMATRIXSTRUCTURERESPONSE"]._serialized_start = 2434
+    _globals["_TERRITORYMATRIXSTRUCTURERESPONSE"]._serialized_end = 2599
+    _globals["_TERRITORYMATRIXSERVICE"]._serialized_start = 2602
+    _globals["_TERRITORYMATRIXSERVICE"]._serialized_end = 3724
 # @@protoc_insertion_point(module_scope)

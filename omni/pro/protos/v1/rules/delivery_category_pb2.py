@@ -12,11 +12,12 @@ from google.protobuf.internal import builder as _builder
 _sym_db = _symbol_database.Default()
 
 
+from google.protobuf import wrappers_pb2 as google_dot_protobuf_dot_wrappers__pb2
 from omni.pro.protos.common import base_pb2 as common_dot_base__pb2
 from omni.pro.protos.v1.rules import category_pb2 as v1_dot_rules_dot_category__pb2
 
 DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
-    b'\n v1/rules/delivery_category.proto\x12+pro.omni.oms.api.v1.rules.delivery_category\x1a\x11\x63ommon/base.proto\x1a\x17v1/rules/category.proto"\xc1\x01\n\x10\x44\x65liveryCategory\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x42\n\x0c\x63\x61tegory_ids\x18\x03 \x03(\x0b\x32,.pro.omni.oms.api.v1.rules.category.Category\x12\x0e\n\x06\x61\x63tive\x18\x04 \x01(\x08\x12?\n\x0cobject_audit\x18\x05 \x01(\x0b\x32).pro.omni.oms.api.common.base.ObjectAudit"{\n\x1d\x44\x65liveryCategoryCreateRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x63\x61tegory_ids\x18\x02 \x03(\t\x12\x36\n\x07\x63ontext\x18\x03 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xc5\x01\n\x1e\x44\x65liveryCategoryCreateResponse\x12X\n\x11\x64\x65livery_category\x18\x01 \x01(\x0b\x32=.pro.omni.oms.api.v1.rules.delivery_category.DeliveryCategory\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\xf9\x02\n\x1b\x44\x65liveryCategoryReadRequest\x12\x37\n\x08group_by\x18\x01 \x03(\x0b\x32%.pro.omni.oms.api.common.base.GroupBy\x12\x35\n\x07sort_by\x18\x02 \x01(\x0b\x32$.pro.omni.oms.api.common.base.SortBy\x12\x34\n\x06\x66ields\x18\x03 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Fields\x12\x34\n\x06\x66ilter\x18\x04 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Filter\x12:\n\tpaginated\x18\x05 \x01(\x0b\x32\'.pro.omni.oms.api.common.base.Paginated\x12\n\n\x02id\x18\x06 \x01(\t\x12\x36\n\x07\x63ontext\x18\x07 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\x80\x02\n\x1c\x44\x65liveryCategoryReadResponse\x12Z\n\x13\x64\x65livery_categories\x18\x01 \x03(\x0b\x32=.pro.omni.oms.api.v1.rules.delivery_category.DeliveryCategory\x12\x39\n\tmeta_data\x18\x02 \x01(\x0b\x32&.pro.omni.oms.api.common.base.MetaData\x12I\n\x11response_standard\x18\x03 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\xb1\x01\n\x1d\x44\x65liveryCategoryUpdateRequest\x12X\n\x11\x64\x65livery_category\x18\x01 \x01(\x0b\x32=.pro.omni.oms.api.v1.rules.delivery_category.DeliveryCategory\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xc5\x01\n\x1e\x44\x65liveryCategoryUpdateResponse\x12X\n\x11\x64\x65livery_category\x18\x01 \x01(\x0b\x32=.pro.omni.oms.api.v1.rules.delivery_category.DeliveryCategory\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"c\n\x1d\x44\x65liveryCategoryDeleteRequest\x12\n\n\x02id\x18\x01 \x01(\t\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"k\n\x1e\x44\x65liveryCategoryDeleteResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard2\xeb\x05\n\x17\x44\x65liveryCategoryService\x12\xb3\x01\n\x16\x44\x65liveryCategoryCreate\x12J.pro.omni.oms.api.v1.rules.delivery_category.DeliveryCategoryCreateRequest\x1aK.pro.omni.oms.api.v1.rules.delivery_category.DeliveryCategoryCreateResponse"\x00\x12\xad\x01\n\x14\x44\x65liveryCategoryRead\x12H.pro.omni.oms.api.v1.rules.delivery_category.DeliveryCategoryReadRequest\x1aI.pro.omni.oms.api.v1.rules.delivery_category.DeliveryCategoryReadResponse"\x00\x12\xb3\x01\n\x16\x44\x65liveryCategoryUpdate\x12J.pro.omni.oms.api.v1.rules.delivery_category.DeliveryCategoryUpdateRequest\x1aK.pro.omni.oms.api.v1.rules.delivery_category.DeliveryCategoryUpdateResponse"\x00\x12\xb3\x01\n\x16\x44\x65liveryCategoryDelete\x12J.pro.omni.oms.api.v1.rules.delivery_category.DeliveryCategoryDeleteRequest\x1aK.pro.omni.oms.api.v1.rules.delivery_category.DeliveryCategoryDeleteResponse"\x00\x62\x06proto3'
+    b'\n v1/rules/delivery_category.proto\x12+pro.omni.oms.api.v1.rules.delivery_category\x1a\x11\x63ommon/base.proto\x1a\x17v1/rules/category.proto\x1a\x1egoogle/protobuf/wrappers.proto"\xdb\x01\n\x10\x44\x65liveryCategory\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12@\n\ncategories\x18\x03 \x03(\x0b\x32,.pro.omni.oms.api.v1.rules.category.Category\x12*\n\x06\x61\x63tive\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12?\n\x0cobject_audit\x18\x05 \x01(\x0b\x32).pro.omni.oms.api.common.base.ObjectAudit"{\n\x1d\x44\x65liveryCategoryCreateRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x63\x61tegory_ids\x18\x02 \x03(\t\x12\x36\n\x07\x63ontext\x18\x03 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xc5\x01\n\x1e\x44\x65liveryCategoryCreateResponse\x12X\n\x11\x64\x65livery_category\x18\x01 \x01(\x0b\x32=.pro.omni.oms.api.v1.rules.delivery_category.DeliveryCategory\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\xf9\x02\n\x1b\x44\x65liveryCategoryReadRequest\x12\x37\n\x08group_by\x18\x01 \x03(\x0b\x32%.pro.omni.oms.api.common.base.GroupBy\x12\x35\n\x07sort_by\x18\x02 \x01(\x0b\x32$.pro.omni.oms.api.common.base.SortBy\x12\x34\n\x06\x66ields\x18\x03 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Fields\x12\x34\n\x06\x66ilter\x18\x04 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Filter\x12:\n\tpaginated\x18\x05 \x01(\x0b\x32\'.pro.omni.oms.api.common.base.Paginated\x12\n\n\x02id\x18\x06 \x01(\t\x12\x36\n\x07\x63ontext\x18\x07 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\x80\x02\n\x1c\x44\x65liveryCategoryReadResponse\x12Z\n\x13\x64\x65livery_categories\x18\x01 \x03(\x0b\x32=.pro.omni.oms.api.v1.rules.delivery_category.DeliveryCategory\x12\x39\n\tmeta_data\x18\x02 \x01(\x0b\x32&.pro.omni.oms.api.common.base.MetaData\x12I\n\x11response_standard\x18\x03 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\xb1\x01\n\x1d\x44\x65liveryCategoryUpdateRequest\x12X\n\x11\x64\x65livery_category\x18\x01 \x01(\x0b\x32=.pro.omni.oms.api.v1.rules.delivery_category.DeliveryCategory\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xc5\x01\n\x1e\x44\x65liveryCategoryUpdateResponse\x12X\n\x11\x64\x65livery_category\x18\x01 \x01(\x0b\x32=.pro.omni.oms.api.v1.rules.delivery_category.DeliveryCategory\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"c\n\x1d\x44\x65liveryCategoryDeleteRequest\x12\n\n\x02id\x18\x01 \x01(\t\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"k\n\x1e\x44\x65liveryCategoryDeleteResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard2\xeb\x05\n\x17\x44\x65liveryCategoryService\x12\xb3\x01\n\x16\x44\x65liveryCategoryCreate\x12J.pro.omni.oms.api.v1.rules.delivery_category.DeliveryCategoryCreateRequest\x1aK.pro.omni.oms.api.v1.rules.delivery_category.DeliveryCategoryCreateResponse"\x00\x12\xad\x01\n\x14\x44\x65liveryCategoryRead\x12H.pro.omni.oms.api.v1.rules.delivery_category.DeliveryCategoryReadRequest\x1aI.pro.omni.oms.api.v1.rules.delivery_category.DeliveryCategoryReadResponse"\x00\x12\xb3\x01\n\x16\x44\x65liveryCategoryUpdate\x12J.pro.omni.oms.api.v1.rules.delivery_category.DeliveryCategoryUpdateRequest\x1aK.pro.omni.oms.api.v1.rules.delivery_category.DeliveryCategoryUpdateResponse"\x00\x12\xb3\x01\n\x16\x44\x65liveryCategoryDelete\x12J.pro.omni.oms.api.v1.rules.delivery_category.DeliveryCategoryDeleteRequest\x1aK.pro.omni.oms.api.v1.rules.delivery_category.DeliveryCategoryDeleteResponse"\x00\x62\x06proto3'
 )
 
 _globals = globals()
@@ -24,24 +25,24 @@ _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, "v1.rules.delivery_category_pb2", _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
     DESCRIPTOR._options = None
-    _globals["_DELIVERYCATEGORY"]._serialized_start = 126
-    _globals["_DELIVERYCATEGORY"]._serialized_end = 319
-    _globals["_DELIVERYCATEGORYCREATEREQUEST"]._serialized_start = 321
-    _globals["_DELIVERYCATEGORYCREATEREQUEST"]._serialized_end = 444
-    _globals["_DELIVERYCATEGORYCREATERESPONSE"]._serialized_start = 447
-    _globals["_DELIVERYCATEGORYCREATERESPONSE"]._serialized_end = 644
-    _globals["_DELIVERYCATEGORYREADREQUEST"]._serialized_start = 647
-    _globals["_DELIVERYCATEGORYREADREQUEST"]._serialized_end = 1024
-    _globals["_DELIVERYCATEGORYREADRESPONSE"]._serialized_start = 1027
-    _globals["_DELIVERYCATEGORYREADRESPONSE"]._serialized_end = 1283
-    _globals["_DELIVERYCATEGORYUPDATEREQUEST"]._serialized_start = 1286
-    _globals["_DELIVERYCATEGORYUPDATEREQUEST"]._serialized_end = 1463
-    _globals["_DELIVERYCATEGORYUPDATERESPONSE"]._serialized_start = 1466
-    _globals["_DELIVERYCATEGORYUPDATERESPONSE"]._serialized_end = 1663
-    _globals["_DELIVERYCATEGORYDELETEREQUEST"]._serialized_start = 1665
-    _globals["_DELIVERYCATEGORYDELETEREQUEST"]._serialized_end = 1764
-    _globals["_DELIVERYCATEGORYDELETERESPONSE"]._serialized_start = 1766
-    _globals["_DELIVERYCATEGORYDELETERESPONSE"]._serialized_end = 1873
-    _globals["_DELIVERYCATEGORYSERVICE"]._serialized_start = 1876
-    _globals["_DELIVERYCATEGORYSERVICE"]._serialized_end = 2623
+    _globals["_DELIVERYCATEGORY"]._serialized_start = 158
+    _globals["_DELIVERYCATEGORY"]._serialized_end = 377
+    _globals["_DELIVERYCATEGORYCREATEREQUEST"]._serialized_start = 379
+    _globals["_DELIVERYCATEGORYCREATEREQUEST"]._serialized_end = 502
+    _globals["_DELIVERYCATEGORYCREATERESPONSE"]._serialized_start = 505
+    _globals["_DELIVERYCATEGORYCREATERESPONSE"]._serialized_end = 702
+    _globals["_DELIVERYCATEGORYREADREQUEST"]._serialized_start = 705
+    _globals["_DELIVERYCATEGORYREADREQUEST"]._serialized_end = 1082
+    _globals["_DELIVERYCATEGORYREADRESPONSE"]._serialized_start = 1085
+    _globals["_DELIVERYCATEGORYREADRESPONSE"]._serialized_end = 1341
+    _globals["_DELIVERYCATEGORYUPDATEREQUEST"]._serialized_start = 1344
+    _globals["_DELIVERYCATEGORYUPDATEREQUEST"]._serialized_end = 1521
+    _globals["_DELIVERYCATEGORYUPDATERESPONSE"]._serialized_start = 1524
+    _globals["_DELIVERYCATEGORYUPDATERESPONSE"]._serialized_end = 1721
+    _globals["_DELIVERYCATEGORYDELETEREQUEST"]._serialized_start = 1723
+    _globals["_DELIVERYCATEGORYDELETEREQUEST"]._serialized_end = 1822
+    _globals["_DELIVERYCATEGORYDELETERESPONSE"]._serialized_start = 1824
+    _globals["_DELIVERYCATEGORYDELETERESPONSE"]._serialized_end = 1931
+    _globals["_DELIVERYCATEGORYSERVICE"]._serialized_start = 1934
+    _globals["_DELIVERYCATEGORYSERVICE"]._serialized_end = 2681
 # @@protoc_insertion_point(module_scope)
