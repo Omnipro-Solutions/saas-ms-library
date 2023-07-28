@@ -7,6 +7,7 @@ from typing import Union as _Union
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
+from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
 from omni.pro.protos.common import base_pb2 as _base_pb2
@@ -43,7 +44,7 @@ class ScheduleWorkLine(_message.Message):
     day: Day
     opening_time: _timestamp_pb2.Timestamp
     closing_time: _timestamp_pb2.Timestamp
-    active: bool
+    active: _wrappers_pb2.BoolValue
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
@@ -51,7 +52,7 @@ class ScheduleWorkLine(_message.Message):
         day: _Optional[_Union[Day, str]] = ...,
         opening_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
         closing_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
-        active: bool = ...,
+        active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
