@@ -78,6 +78,11 @@ class BaseDocument(Document):
         "strict": False,
     }
 
+    @classmethod
+    @property
+    def db(cls):
+        return cls._get_db()
+
     def save(self, *args, **kwargs):
         if not self.context:
             self.context = Context()

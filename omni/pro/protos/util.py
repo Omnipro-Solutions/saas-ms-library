@@ -1,4 +1,4 @@
-from google.protobuf import json_format
+from google.protobuf import json_format, struct_pb2
 
 
 # FIXME: change param including_default_value_fields to default_values when invoking util.MessageToDict
@@ -18,5 +18,39 @@ def MessageToDict(message, default_values=False, including_default_value_fields=
     )
 
 
-def format_request(data, request, proto) -> object:
-    return json_format.ParseDict(data, getattr(proto, request)())
+def format_request(data, request, proto, **kwargs) -> object:
+    return json_format.ParseDict(data, getattr(proto, request)(), **kwargs)
+
+
+def to_value(obj):
+    """
+    Use condictional expression to convert a object to a `Value`.
+    """
+    if isinstance(obj, dict):
+        return struct_pb2.Value(struct_value=to_struct(obj))
+    elif isinstance(obj, list):
+        return struct_pb2.Value(list_value=to_list_value(obj))
+    elif isinstance(obj, bool):
+        return struct_pb2.Value(bool_value=obj)
+    elif isinstance(obj, int) or isinstance(obj, float):
+        return struct_pb2.Value(number_value=obj)
+    elif obj is None:
+        return struct_pb2.Value(null_value=struct_pb2.NullValue.NULL_VALUE)
+    else:
+        return struct_pb2.Value(string_value=str(obj))
+
+
+def to_struct(d):
+    return struct_pb2.Struct(fields={k: to_value(v) for k, v in d.items()})
+
+
+def to_list_value(lst):
+    """Converts a list of dictionaries to a `ListValue`.
+
+    Args:
+      lst: A list of dictionaries.
+
+    Returns:
+      A `ListValue`.
+    """
+    return struct_pb2.ListValue(values=[to_value(x) for x in lst])

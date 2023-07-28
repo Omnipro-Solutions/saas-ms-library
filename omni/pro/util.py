@@ -1,6 +1,7 @@
 import math
 import secrets
 import string
+import unicodedata
 from functools import reduce
 
 DEFAULT_RECORD_LIMIT = 10000
@@ -112,6 +113,10 @@ def parse_bool(value):
 def to_camel_case(text: str):
     # Divide el texto por guiones bajos y une cada palabra con la primera letra en mayúsculas
     return "".join(word.capitalize() for word in text.split("_"))
+
+
+def normalize(value):
+    return unicodedata.normalize("NFKD", str(value).strip()).encode("ascii", "ignore").decode("UTF-8")
 
 
 class HTTPStatus(object):
