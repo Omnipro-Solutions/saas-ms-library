@@ -6,13 +6,14 @@ from typing import Union as _Union
 
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
+from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
 from omni.pro.protos.common import base_pb2 as _base_pb2
 from omni.pro.protos.v1.rules import delivery_category_pb2 as _delivery_category_pb2
 from omni.pro.protos.v1.rules import delivery_locality_pb2 as _delivery_locality_pb2
-from omni.pro.protos.v1.rules import delivery_method_warehouse_pb2 as _delivery_method_warehouse_pb2
 from omni.pro.protos.v1.rules import delivery_schedule_pb2 as _delivery_schedule_pb2
+from omni.pro.protos.v1.rules import delivery_warehouse_pb2 as _delivery_warehouse_pb2
 from omni.pro.protos.v1.rules import location_pb2 as _location_pb2
 from omni.pro.protos.v1.rules import warehouse_pb2 as _warehouse_pb2
 
@@ -46,7 +47,7 @@ class DeliveryMethod(_message.Message):
     __slots__ = [
         "id",
         "name",
-        "delivery_warehouse_ids",
+        "delivery_warehouses",
         "type_picking_transfer",
         "validate_warehouse_code",
         "quantity_security",
@@ -62,7 +63,7 @@ class DeliveryMethod(_message.Message):
     ]
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
-    DELIVERY_WAREHOUSE_IDS_FIELD_NUMBER: _ClassVar[int]
+    DELIVERY_WAREHOUSES_FIELD_NUMBER: _ClassVar[int]
     TYPE_PICKING_TRANSFER_FIELD_NUMBER: _ClassVar[int]
     VALIDATE_WAREHOUSE_CODE_FIELD_NUMBER: _ClassVar[int]
     QUANTITY_SECURITY_FIELD_NUMBER: _ClassVar[int]
@@ -77,35 +78,35 @@ class DeliveryMethod(_message.Message):
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
-    delivery_warehouse_ids: _containers.RepeatedCompositeFieldContainer[_warehouse_pb2.Warehouse]
+    delivery_warehouses: _containers.RepeatedCompositeFieldContainer[_warehouse_pb2.Warehouse]
     type_picking_transfer: TypePickingTransfer
     validate_warehouse_code: ValidateWarehouseCode
     quantity_security: float
     code: str
     type_delivery: TypeDelivery
     delivery_location_id: _location_pb2.Location
-    transfer_template_id: _delivery_method_warehouse_pb2.DeliveryMethodWarehouse
+    transfer_template_id: _delivery_warehouse_pb2.DeliveryWarehouse
     category_template_id: _delivery_category_pb2.DeliveryCategory
     locality_available_id: _delivery_locality_pb2.DeliveryLocality
     schedule_template_id: _delivery_schedule_pb2.DeliverySchedule
-    active: bool
+    active: _wrappers_pb2.BoolValue
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
         id: _Optional[str] = ...,
         name: _Optional[str] = ...,
-        delivery_warehouse_ids: _Optional[_Iterable[_Union[_warehouse_pb2.Warehouse, _Mapping]]] = ...,
+        delivery_warehouses: _Optional[_Iterable[_Union[_warehouse_pb2.Warehouse, _Mapping]]] = ...,
         type_picking_transfer: _Optional[_Union[TypePickingTransfer, str]] = ...,
         validate_warehouse_code: _Optional[_Union[ValidateWarehouseCode, str]] = ...,
         quantity_security: _Optional[float] = ...,
         code: _Optional[str] = ...,
         type_delivery: _Optional[_Union[TypeDelivery, str]] = ...,
         delivery_location_id: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
-        transfer_template_id: _Optional[_Union[_delivery_method_warehouse_pb2.DeliveryMethodWarehouse, _Mapping]] = ...,
+        transfer_template_id: _Optional[_Union[_delivery_warehouse_pb2.DeliveryWarehouse, _Mapping]] = ...,
         category_template_id: _Optional[_Union[_delivery_category_pb2.DeliveryCategory, _Mapping]] = ...,
         locality_available_id: _Optional[_Union[_delivery_locality_pb2.DeliveryLocality, _Mapping]] = ...,
         schedule_template_id: _Optional[_Union[_delivery_schedule_pb2.DeliverySchedule, _Mapping]] = ...,
-        active: bool = ...,
+        active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 

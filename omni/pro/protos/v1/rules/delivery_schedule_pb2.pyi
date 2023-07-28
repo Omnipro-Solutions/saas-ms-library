@@ -6,6 +6,7 @@ from typing import Union as _Union
 
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
+from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
 from omni.pro.protos.v1.rules import schedule_work_pb2 as _schedule_work_pb2
@@ -14,46 +15,38 @@ from omni.pro.protos.v1.rules import warehouse_hierarchy_pb2 as _warehouse_hiera
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class DeliverySchedule(_message.Message):
-    __slots__ = ["id", "name", "schedule_work_id", "transfer_warehouse_ids", "active", "object_audit"]
+    __slots__ = ["id", "name", "schedule_work_id", "active", "object_audit"]
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     SCHEDULE_WORK_ID_FIELD_NUMBER: _ClassVar[int]
-    TRANSFER_WAREHOUSE_IDS_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
     schedule_work_id: _schedule_work_pb2.ScheduleWork
-    transfer_warehouse_ids: _containers.RepeatedCompositeFieldContainer[_warehouse_hierarchy_pb2.WarehouseHierarchy]
-    active: bool
+    active: _wrappers_pb2.BoolValue
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
         id: _Optional[str] = ...,
         name: _Optional[str] = ...,
         schedule_work_id: _Optional[_Union[_schedule_work_pb2.ScheduleWork, _Mapping]] = ...,
-        transfer_warehouse_ids: _Optional[
-            _Iterable[_Union[_warehouse_hierarchy_pb2.WarehouseHierarchy, _Mapping]]
-        ] = ...,
-        active: bool = ...,
+        active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
 class DeliveryScheduleCreateRequest(_message.Message):
-    __slots__ = ["name", "schedule_work_id", "transfer_warehouse_ids", "context"]
+    __slots__ = ["name", "schedule_work_id", "context"]
     NAME_FIELD_NUMBER: _ClassVar[int]
     SCHEDULE_WORK_ID_FIELD_NUMBER: _ClassVar[int]
-    TRANSFER_WAREHOUSE_IDS_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     schedule_work_id: str
-    transfer_warehouse_ids: _containers.RepeatedScalarFieldContainer[str]
     context: _base_pb2.Context
     def __init__(
         self,
         name: _Optional[str] = ...,
         schedule_work_id: _Optional[str] = ...,
-        transfer_warehouse_ids: _Optional[_Iterable[str]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
