@@ -6,6 +6,7 @@ from typing import Union as _Union
 
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
+from google.protobuf import struct_pb2 as _struct_pb2
 from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
@@ -156,3 +157,51 @@ class TerritoryMatrixDeleteResponse(_message.Message):
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
     response_standard: _base_pb2.ResponseStandard
     def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
+
+class TerritoryMatrixLoadRequest(_message.Message):
+    __slots__ = ["country_code", "csv_name", "context"]
+    COUNTRY_CODE_FIELD_NUMBER: _ClassVar[int]
+    CSV_NAME_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    country_code: str
+    csv_name: str
+    context: _base_pb2.Context
+    def __init__(
+        self,
+        country_code: _Optional[str] = ...,
+        csv_name: _Optional[str] = ...,
+        context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
+    ) -> None: ...
+
+class TerritoryMatrixLoadResponse(_message.Message):
+    __slots__ = ["response_standard"]
+    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
+    response_standard: _base_pb2.ResponseStandard
+    def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
+
+class TerritoryMatrixStructureRequest(_message.Message):
+    __slots__ = ["territorymatrix", "parent_code", "context"]
+    TERRITORYMATRIX_FIELD_NUMBER: _ClassVar[int]
+    PARENT_CODE_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    territorymatrix: TerritoryMatrix
+    parent_code: str
+    context: _base_pb2.Context
+    def __init__(
+        self,
+        territorymatrix: _Optional[_Union[TerritoryMatrix, _Mapping]] = ...,
+        parent_code: _Optional[str] = ...,
+        context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
+    ) -> None: ...
+
+class TerritoryMatrixStructureResponse(_message.Message):
+    __slots__ = ["response_standard", "territory_matrixes"]
+    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
+    TERRITORY_MATRIXES_FIELD_NUMBER: _ClassVar[int]
+    response_standard: _base_pb2.ResponseStandard
+    territory_matrixes: _struct_pb2.ListValue
+    def __init__(
+        self,
+        response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
+        territory_matrixes: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
+    ) -> None: ...

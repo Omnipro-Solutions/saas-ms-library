@@ -12,12 +12,13 @@ from google.protobuf.internal import builder as _builder
 _sym_db = _symbol_database.Default()
 
 
+from google.protobuf import wrappers_pb2 as google_dot_protobuf_dot_wrappers__pb2
 from omni.pro.protos.common import base_pb2 as common_dot_base__pb2
 from omni.pro.protos.v1.rules import calendar_pb2 as v1_dot_rules_dot_calendar__pb2
 from omni.pro.protos.v1.rules import schedule_work_line_pb2 as v1_dot_rules_dot_schedule__work__line__pb2
 
 DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
-    b'\n\x1cv1/rules/schedule_work.proto\x12\'pro.omni.oms.api.v1.rules.schedule_work\x1a\x11\x63ommon/base.proto\x1a!v1/rules/schedule_work_line.proto\x1a\x17v1/rules/calendar.proto"\x9c\x02\n\x0cScheduleWork\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x41\n\x0b\x63\x61lendar_id\x18\x03 \x01(\x0b\x32,.pro.omni.oms.api.v1.rules.calendar.Calendar\x12^\n\x16schedule_work_line_ids\x18\x04 \x03(\x0b\x32>.pro.omni.oms.api.v1.rules.schedule_work_line.ScheduleWorkLine\x12\x0e\n\x06\x61\x63tive\x18\x05 \x01(\x08\x12?\n\x0cobject_audit\x18\x06 \x01(\x0b\x32).pro.omni.oms.api.common.base.ObjectAudit"\x96\x01\n\x19ScheduleWorkCreateRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x63\x61lendar_id\x18\x02 \x01(\t\x12\x1e\n\x16schedule_work_line_ids\x18\x03 \x03(\t\x12\x36\n\x07\x63ontext\x18\x04 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xb5\x01\n\x1aScheduleWorkCreateResponse\x12L\n\rschedule_work\x18\x01 \x01(\x0b\x32\x35.pro.omni.oms.api.v1.rules.schedule_work.ScheduleWork\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\xf5\x02\n\x17ScheduleWorkReadRequest\x12\x37\n\x08group_by\x18\x01 \x03(\x0b\x32%.pro.omni.oms.api.common.base.GroupBy\x12\x35\n\x07sort_by\x18\x02 \x01(\x0b\x32$.pro.omni.oms.api.common.base.SortBy\x12\x34\n\x06\x66ields\x18\x03 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Fields\x12\x34\n\x06\x66ilter\x18\x04 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Filter\x12:\n\tpaginated\x18\x05 \x01(\x0b\x32\'.pro.omni.oms.api.common.base.Paginated\x12\n\n\x02id\x18\x06 \x01(\t\x12\x36\n\x07\x63ontext\x18\x07 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xef\x01\n\x18ScheduleWorkReadResponse\x12M\n\x0eschedules_work\x18\x01 \x03(\x0b\x32\x35.pro.omni.oms.api.v1.rules.schedule_work.ScheduleWork\x12\x39\n\tmeta_data\x18\x02 \x01(\x0b\x32&.pro.omni.oms.api.common.base.MetaData\x12I\n\x11response_standard\x18\x03 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\xa1\x01\n\x19ScheduleWorkUpdateRequest\x12L\n\rschedule_work\x18\x01 \x01(\x0b\x32\x35.pro.omni.oms.api.v1.rules.schedule_work.ScheduleWork\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xb5\x01\n\x1aScheduleWorkUpdateResponse\x12L\n\rschedule_work\x18\x01 \x01(\x0b\x32\x35.pro.omni.oms.api.v1.rules.schedule_work.ScheduleWork\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"_\n\x19ScheduleWorkDeleteRequest\x12\n\n\x02id\x18\x01 \x01(\t\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"g\n\x1aScheduleWorkDeleteResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard2\x97\x05\n\x13ScheduleWorkService\x12\x9f\x01\n\x12ScheduleWorkCreate\x12\x42.pro.omni.oms.api.v1.rules.schedule_work.ScheduleWorkCreateRequest\x1a\x43.pro.omni.oms.api.v1.rules.schedule_work.ScheduleWorkCreateResponse"\x00\x12\x99\x01\n\x10ScheduleWorkRead\x12@.pro.omni.oms.api.v1.rules.schedule_work.ScheduleWorkReadRequest\x1a\x41.pro.omni.oms.api.v1.rules.schedule_work.ScheduleWorkReadResponse"\x00\x12\x9f\x01\n\x12ScheduleWorkUpdate\x12\x42.pro.omni.oms.api.v1.rules.schedule_work.ScheduleWorkUpdateRequest\x1a\x43.pro.omni.oms.api.v1.rules.schedule_work.ScheduleWorkUpdateResponse"\x00\x12\x9f\x01\n\x12ScheduleWorkDelete\x12\x42.pro.omni.oms.api.v1.rules.schedule_work.ScheduleWorkDeleteRequest\x1a\x43.pro.omni.oms.api.v1.rules.schedule_work.ScheduleWorkDeleteResponse"\x00\x62\x06proto3'
+    b'\n\x1cv1/rules/schedule_work.proto\x12\'pro.omni.oms.api.v1.rules.schedule_work\x1a\x11\x63ommon/base.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a!v1/rules/schedule_work_line.proto\x1a\x17v1/rules/calendar.proto"\xb5\x02\n\x0cScheduleWork\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x41\n\x0b\x63\x61lendar_id\x18\x03 \x01(\x0b\x32,.pro.omni.oms.api.v1.rules.calendar.Calendar\x12[\n\x13schedule_work_lines\x18\x04 \x03(\x0b\x32>.pro.omni.oms.api.v1.rules.schedule_work_line.ScheduleWorkLine\x12*\n\x06\x61\x63tive\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12?\n\x0cobject_audit\x18\x06 \x01(\x0b\x32).pro.omni.oms.api.common.base.ObjectAudit"\x96\x01\n\x19ScheduleWorkCreateRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x63\x61lendar_id\x18\x02 \x01(\t\x12\x1e\n\x16schedule_work_line_ids\x18\x03 \x03(\t\x12\x36\n\x07\x63ontext\x18\x04 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xb5\x01\n\x1aScheduleWorkCreateResponse\x12L\n\rschedule_work\x18\x01 \x01(\x0b\x32\x35.pro.omni.oms.api.v1.rules.schedule_work.ScheduleWork\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\xf5\x02\n\x17ScheduleWorkReadRequest\x12\x37\n\x08group_by\x18\x01 \x03(\x0b\x32%.pro.omni.oms.api.common.base.GroupBy\x12\x35\n\x07sort_by\x18\x02 \x01(\x0b\x32$.pro.omni.oms.api.common.base.SortBy\x12\x34\n\x06\x66ields\x18\x03 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Fields\x12\x34\n\x06\x66ilter\x18\x04 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Filter\x12:\n\tpaginated\x18\x05 \x01(\x0b\x32\'.pro.omni.oms.api.common.base.Paginated\x12\n\n\x02id\x18\x06 \x01(\t\x12\x36\n\x07\x63ontext\x18\x07 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xef\x01\n\x18ScheduleWorkReadResponse\x12M\n\x0eschedules_work\x18\x01 \x03(\x0b\x32\x35.pro.omni.oms.api.v1.rules.schedule_work.ScheduleWork\x12\x39\n\tmeta_data\x18\x02 \x01(\x0b\x32&.pro.omni.oms.api.common.base.MetaData\x12I\n\x11response_standard\x18\x03 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\xa1\x01\n\x19ScheduleWorkUpdateRequest\x12L\n\rschedule_work\x18\x01 \x01(\x0b\x32\x35.pro.omni.oms.api.v1.rules.schedule_work.ScheduleWork\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xb5\x01\n\x1aScheduleWorkUpdateResponse\x12L\n\rschedule_work\x18\x01 \x01(\x0b\x32\x35.pro.omni.oms.api.v1.rules.schedule_work.ScheduleWork\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"_\n\x19ScheduleWorkDeleteRequest\x12\n\n\x02id\x18\x01 \x01(\t\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"g\n\x1aScheduleWorkDeleteResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard2\x97\x05\n\x13ScheduleWorkService\x12\x9f\x01\n\x12ScheduleWorkCreate\x12\x42.pro.omni.oms.api.v1.rules.schedule_work.ScheduleWorkCreateRequest\x1a\x43.pro.omni.oms.api.v1.rules.schedule_work.ScheduleWorkCreateResponse"\x00\x12\x99\x01\n\x10ScheduleWorkRead\x12@.pro.omni.oms.api.v1.rules.schedule_work.ScheduleWorkReadRequest\x1a\x41.pro.omni.oms.api.v1.rules.schedule_work.ScheduleWorkReadResponse"\x00\x12\x9f\x01\n\x12ScheduleWorkUpdate\x12\x42.pro.omni.oms.api.v1.rules.schedule_work.ScheduleWorkUpdateRequest\x1a\x43.pro.omni.oms.api.v1.rules.schedule_work.ScheduleWorkUpdateResponse"\x00\x12\x9f\x01\n\x12ScheduleWorkDelete\x12\x42.pro.omni.oms.api.v1.rules.schedule_work.ScheduleWorkDeleteRequest\x1a\x43.pro.omni.oms.api.v1.rules.schedule_work.ScheduleWorkDeleteResponse"\x00\x62\x06proto3'
 )
 
 _globals = globals()
@@ -25,24 +26,24 @@ _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, "v1.rules.schedule_work_pb2", _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
     DESCRIPTOR._options = None
-    _globals["_SCHEDULEWORK"]._serialized_start = 153
-    _globals["_SCHEDULEWORK"]._serialized_end = 437
-    _globals["_SCHEDULEWORKCREATEREQUEST"]._serialized_start = 440
-    _globals["_SCHEDULEWORKCREATEREQUEST"]._serialized_end = 590
-    _globals["_SCHEDULEWORKCREATERESPONSE"]._serialized_start = 593
-    _globals["_SCHEDULEWORKCREATERESPONSE"]._serialized_end = 774
-    _globals["_SCHEDULEWORKREADREQUEST"]._serialized_start = 777
-    _globals["_SCHEDULEWORKREADREQUEST"]._serialized_end = 1150
-    _globals["_SCHEDULEWORKREADRESPONSE"]._serialized_start = 1153
-    _globals["_SCHEDULEWORKREADRESPONSE"]._serialized_end = 1392
-    _globals["_SCHEDULEWORKUPDATEREQUEST"]._serialized_start = 1395
-    _globals["_SCHEDULEWORKUPDATEREQUEST"]._serialized_end = 1556
-    _globals["_SCHEDULEWORKUPDATERESPONSE"]._serialized_start = 1559
-    _globals["_SCHEDULEWORKUPDATERESPONSE"]._serialized_end = 1740
-    _globals["_SCHEDULEWORKDELETEREQUEST"]._serialized_start = 1742
-    _globals["_SCHEDULEWORKDELETEREQUEST"]._serialized_end = 1837
-    _globals["_SCHEDULEWORKDELETERESPONSE"]._serialized_start = 1839
-    _globals["_SCHEDULEWORKDELETERESPONSE"]._serialized_end = 1942
-    _globals["_SCHEDULEWORKSERVICE"]._serialized_start = 1945
-    _globals["_SCHEDULEWORKSERVICE"]._serialized_end = 2608
+    _globals["_SCHEDULEWORK"]._serialized_start = 185
+    _globals["_SCHEDULEWORK"]._serialized_end = 494
+    _globals["_SCHEDULEWORKCREATEREQUEST"]._serialized_start = 497
+    _globals["_SCHEDULEWORKCREATEREQUEST"]._serialized_end = 647
+    _globals["_SCHEDULEWORKCREATERESPONSE"]._serialized_start = 650
+    _globals["_SCHEDULEWORKCREATERESPONSE"]._serialized_end = 831
+    _globals["_SCHEDULEWORKREADREQUEST"]._serialized_start = 834
+    _globals["_SCHEDULEWORKREADREQUEST"]._serialized_end = 1207
+    _globals["_SCHEDULEWORKREADRESPONSE"]._serialized_start = 1210
+    _globals["_SCHEDULEWORKREADRESPONSE"]._serialized_end = 1449
+    _globals["_SCHEDULEWORKUPDATEREQUEST"]._serialized_start = 1452
+    _globals["_SCHEDULEWORKUPDATEREQUEST"]._serialized_end = 1613
+    _globals["_SCHEDULEWORKUPDATERESPONSE"]._serialized_start = 1616
+    _globals["_SCHEDULEWORKUPDATERESPONSE"]._serialized_end = 1797
+    _globals["_SCHEDULEWORKDELETEREQUEST"]._serialized_start = 1799
+    _globals["_SCHEDULEWORKDELETEREQUEST"]._serialized_end = 1894
+    _globals["_SCHEDULEWORKDELETERESPONSE"]._serialized_start = 1896
+    _globals["_SCHEDULEWORKDELETERESPONSE"]._serialized_end = 1999
+    _globals["_SCHEDULEWORKSERVICE"]._serialized_start = 2002
+    _globals["_SCHEDULEWORKSERVICE"]._serialized_end = 2665
 # @@protoc_insertion_point(module_scope)

@@ -6,60 +6,67 @@ from typing import Union as _Union
 
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
+from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
-class ScheduleWorkScheduleWorkLine(_message.Message):
-    __slots__ = ["id", "schedule_work_id", "schedule_work_line_id", "active", "object_audit"]
+class Country(_message.Message):
+    __slots__ = ["id", "name", "code", "country_doc_id", "active", "object_audit"]
     ID_FIELD_NUMBER: _ClassVar[int]
-    SCHEDULE_WORK_ID_FIELD_NUMBER: _ClassVar[int]
-    SCHEDULE_WORK_LINE_ID_FIELD_NUMBER: _ClassVar[int]
+    NAME_FIELD_NUMBER: _ClassVar[int]
+    CODE_FIELD_NUMBER: _ClassVar[int]
+    COUNTRY_DOC_ID_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
-    id: int
-    schedule_work_id: int
-    schedule_work_line_id: int
-    active: bool
+    id: str
+    name: str
+    code: str
+    country_doc_id: str
+    active: _wrappers_pb2.BoolValue
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
-        id: _Optional[int] = ...,
-        schedule_work_id: _Optional[int] = ...,
-        schedule_work_line_id: _Optional[int] = ...,
-        active: bool = ...,
+        id: _Optional[str] = ...,
+        name: _Optional[str] = ...,
+        code: _Optional[str] = ...,
+        country_doc_id: _Optional[str] = ...,
+        active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
-class ScheduleWorkScheduleWorkLineCreateRequest(_message.Message):
-    __slots__ = ["schedule_work_id", "schedule_work_line_id", "context"]
-    SCHEDULE_WORK_ID_FIELD_NUMBER: _ClassVar[int]
-    SCHEDULE_WORK_LINE_ID_FIELD_NUMBER: _ClassVar[int]
+class CountryCreateRequest(_message.Message):
+    __slots__ = ["name", "code", "category_doc_id", "context"]
+    NAME_FIELD_NUMBER: _ClassVar[int]
+    CODE_FIELD_NUMBER: _ClassVar[int]
+    CATEGORY_DOC_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    schedule_work_id: int
-    schedule_work_line_id: int
+    name: str
+    code: str
+    category_doc_id: str
     context: _base_pb2.Context
     def __init__(
         self,
-        schedule_work_id: _Optional[int] = ...,
-        schedule_work_line_id: _Optional[int] = ...,
+        name: _Optional[str] = ...,
+        code: _Optional[str] = ...,
+        category_doc_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
-class ScheduleWorkScheduleWorkLineCreateResponse(_message.Message):
-    __slots__ = ["schedule_work_schedule_work_line", "response_standard"]
-    SCHEDULE_WORK_SCHEDULE_WORK_LINE_FIELD_NUMBER: _ClassVar[int]
+class CountryCreateResponse(_message.Message):
+    __slots__ = ["country", "response_standard"]
+    COUNTRY_FIELD_NUMBER: _ClassVar[int]
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
-    schedule_work_schedule_work_line: ScheduleWorkScheduleWorkLine
+    country: Country
     response_standard: _base_pb2.ResponseStandard
     def __init__(
         self,
-        schedule_work_schedule_work_line: _Optional[_Union[ScheduleWorkScheduleWorkLine, _Mapping]] = ...,
+        country: _Optional[_Union[Country, _Mapping]] = ...,
         response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
     ) -> None: ...
 
-class ScheduleWorkScheduleWorkLineReadRequest(_message.Message):
+class CountryReadRequest(_message.Message):
     __slots__ = ["group_by", "sort_by", "fields", "filter", "paginated", "id", "context"]
     GROUP_BY_FIELD_NUMBER: _ClassVar[int]
     SORT_BY_FIELD_NUMBER: _ClassVar[int]
@@ -73,7 +80,7 @@ class ScheduleWorkScheduleWorkLineReadRequest(_message.Message):
     fields: _base_pb2.Fields
     filter: _base_pb2.Filter
     paginated: _base_pb2.Paginated
-    id: int
+    id: str
     context: _base_pb2.Context
     def __init__(
         self,
@@ -82,60 +89,60 @@ class ScheduleWorkScheduleWorkLineReadRequest(_message.Message):
         fields: _Optional[_Union[_base_pb2.Fields, _Mapping]] = ...,
         filter: _Optional[_Union[_base_pb2.Filter, _Mapping]] = ...,
         paginated: _Optional[_Union[_base_pb2.Paginated, _Mapping]] = ...,
-        id: _Optional[int] = ...,
+        id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
-class ScheduleWorkScheduleWorkLineReadResponse(_message.Message):
-    __slots__ = ["schedule_work_schedule_work_line", "meta_data", "response_standard"]
-    SCHEDULE_WORK_SCHEDULE_WORK_LINE_FIELD_NUMBER: _ClassVar[int]
+class CountryReadResponse(_message.Message):
+    __slots__ = ["countries", "meta_data", "response_standard"]
+    COUNTRIES_FIELD_NUMBER: _ClassVar[int]
     META_DATA_FIELD_NUMBER: _ClassVar[int]
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
-    schedule_work_schedule_work_line: _containers.RepeatedCompositeFieldContainer[ScheduleWorkScheduleWorkLine]
+    countries: _containers.RepeatedCompositeFieldContainer[Country]
     meta_data: _base_pb2.MetaData
     response_standard: _base_pb2.ResponseStandard
     def __init__(
         self,
-        schedule_work_schedule_work_line: _Optional[_Iterable[_Union[ScheduleWorkScheduleWorkLine, _Mapping]]] = ...,
+        countries: _Optional[_Iterable[_Union[Country, _Mapping]]] = ...,
         meta_data: _Optional[_Union[_base_pb2.MetaData, _Mapping]] = ...,
         response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
     ) -> None: ...
 
-class ScheduleWorkScheduleWorkLineUpdateRequest(_message.Message):
-    __slots__ = ["schedule_work_schedule_work_line", "context"]
-    SCHEDULE_WORK_SCHEDULE_WORK_LINE_FIELD_NUMBER: _ClassVar[int]
+class CountryUpdateRequest(_message.Message):
+    __slots__ = ["country", "context"]
+    COUNTRY_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    schedule_work_schedule_work_line: ScheduleWorkScheduleWorkLine
+    country: Country
     context: _base_pb2.Context
     def __init__(
         self,
-        schedule_work_schedule_work_line: _Optional[_Union[ScheduleWorkScheduleWorkLine, _Mapping]] = ...,
+        country: _Optional[_Union[Country, _Mapping]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
-class ScheduleWorkScheduleWorkLineUpdateResponse(_message.Message):
-    __slots__ = ["schedule_work_schedule_work_line", "response_standard"]
-    SCHEDULE_WORK_SCHEDULE_WORK_LINE_FIELD_NUMBER: _ClassVar[int]
+class CountryUpdateResponse(_message.Message):
+    __slots__ = ["country", "response_standard"]
+    COUNTRY_FIELD_NUMBER: _ClassVar[int]
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
-    schedule_work_schedule_work_line: ScheduleWorkScheduleWorkLine
+    country: Country
     response_standard: _base_pb2.ResponseStandard
     def __init__(
         self,
-        schedule_work_schedule_work_line: _Optional[_Union[ScheduleWorkScheduleWorkLine, _Mapping]] = ...,
+        country: _Optional[_Union[Country, _Mapping]] = ...,
         response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
     ) -> None: ...
 
-class ScheduleWorkScheduleWorkLineDeleteRequest(_message.Message):
+class CountryDeleteRequest(_message.Message):
     __slots__ = ["id", "context"]
     ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    id: int
+    id: str
     context: _base_pb2.Context
     def __init__(
-        self, id: _Optional[int] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
+        self, id: _Optional[str] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
     ) -> None: ...
 
-class ScheduleWorkScheduleWorkLineDeleteResponse(_message.Message):
+class CountryDeleteResponse(_message.Message):
     __slots__ = ["response_standard"]
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
     response_standard: _base_pb2.ResponseStandard

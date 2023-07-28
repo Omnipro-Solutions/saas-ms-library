@@ -33,6 +33,16 @@ class TerritoryMatrixServiceStub(object):
             request_serializer=v1_dot_utilities_dot_territory__matrix__pb2.TerritoryMatrixDeleteRequest.SerializeToString,
             response_deserializer=v1_dot_utilities_dot_territory__matrix__pb2.TerritoryMatrixDeleteResponse.FromString,
         )
+        self.TerritoryMatrixLoad = channel.unary_unary(
+            "/pro.omni.oms.api.v1.utilities.territory_matrix.TerritoryMatrixService/TerritoryMatrixLoad",
+            request_serializer=v1_dot_utilities_dot_territory__matrix__pb2.TerritoryMatrixLoadRequest.SerializeToString,
+            response_deserializer=v1_dot_utilities_dot_territory__matrix__pb2.TerritoryMatrixLoadResponse.FromString,
+        )
+        self.TerritoryMatrixStructure = channel.unary_unary(
+            "/pro.omni.oms.api.v1.utilities.territory_matrix.TerritoryMatrixService/TerritoryMatrixStructure",
+            request_serializer=v1_dot_utilities_dot_territory__matrix__pb2.TerritoryMatrixStructureRequest.SerializeToString,
+            response_deserializer=v1_dot_utilities_dot_territory__matrix__pb2.TerritoryMatrixStructureResponse.FromString,
+        )
 
 
 class TerritoryMatrixServiceServicer(object):
@@ -62,6 +72,18 @@ class TerritoryMatrixServiceServicer(object):
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
+    def TerritoryMatrixLoad(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def TerritoryMatrixStructure(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
 
 def add_TerritoryMatrixServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -84,6 +106,16 @@ def add_TerritoryMatrixServiceServicer_to_server(servicer, server):
             servicer.TerritoryMatrixDelete,
             request_deserializer=v1_dot_utilities_dot_territory__matrix__pb2.TerritoryMatrixDeleteRequest.FromString,
             response_serializer=v1_dot_utilities_dot_territory__matrix__pb2.TerritoryMatrixDeleteResponse.SerializeToString,
+        ),
+        "TerritoryMatrixLoad": grpc.unary_unary_rpc_method_handler(
+            servicer.TerritoryMatrixLoad,
+            request_deserializer=v1_dot_utilities_dot_territory__matrix__pb2.TerritoryMatrixLoadRequest.FromString,
+            response_serializer=v1_dot_utilities_dot_territory__matrix__pb2.TerritoryMatrixLoadResponse.SerializeToString,
+        ),
+        "TerritoryMatrixStructure": grpc.unary_unary_rpc_method_handler(
+            servicer.TerritoryMatrixStructure,
+            request_deserializer=v1_dot_utilities_dot_territory__matrix__pb2.TerritoryMatrixStructureRequest.FromString,
+            response_serializer=v1_dot_utilities_dot_territory__matrix__pb2.TerritoryMatrixStructureResponse.SerializeToString,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -202,6 +234,64 @@ class TerritoryMatrixService(object):
             "/pro.omni.oms.api.v1.utilities.territory_matrix.TerritoryMatrixService/TerritoryMatrixDelete",
             v1_dot_utilities_dot_territory__matrix__pb2.TerritoryMatrixDeleteRequest.SerializeToString,
             v1_dot_utilities_dot_territory__matrix__pb2.TerritoryMatrixDeleteResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
+
+    @staticmethod
+    def TerritoryMatrixLoad(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            "/pro.omni.oms.api.v1.utilities.territory_matrix.TerritoryMatrixService/TerritoryMatrixLoad",
+            v1_dot_utilities_dot_territory__matrix__pb2.TerritoryMatrixLoadRequest.SerializeToString,
+            v1_dot_utilities_dot_territory__matrix__pb2.TerritoryMatrixLoadResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
+
+    @staticmethod
+    def TerritoryMatrixStructure(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            "/pro.omni.oms.api.v1.utilities.territory_matrix.TerritoryMatrixService/TerritoryMatrixStructure",
+            v1_dot_utilities_dot_territory__matrix__pb2.TerritoryMatrixStructureRequest.SerializeToString,
+            v1_dot_utilities_dot_territory__matrix__pb2.TerritoryMatrixStructureResponse.FromString,
             options,
             channel_credentials,
             insecure,
