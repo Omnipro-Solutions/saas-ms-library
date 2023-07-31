@@ -25,7 +25,7 @@ def measure_time(function):
     return measured_function
 
 
-def register_connection():
+def ms_register_connection():
     redis_manager = redis.get_redis_manager()
     tenants = redis_manager.get_tenant_codes()
     # Registrar todas las conexiones
@@ -38,7 +38,7 @@ def register_connection():
         if not all(eval_conn.values()):
             continue
 
-        register_connection(
+        mongo.register_connection(
             alias=f"{tenant}_{conn['name']}",
             name=conn["name"],
             host=conn["host"],
@@ -49,7 +49,7 @@ def register_connection():
         )
 
         if idx == 0:
-            register_connection(
+            mongo.register_connection(
                 alias=mongo.DEFAULT_CONNECTION_NAME,
                 name=mongo.DEFAULT_CONNECTION_NAME,
                 host=conn["host"],
