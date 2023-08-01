@@ -132,7 +132,7 @@ class SequenceReadRequest(_message.Message):
     fields: _base_pb2.Fields
     filter: _base_pb2.Filter
     paginated: _base_pb2.Paginated
-    id: int
+    id: str
     context: _base_pb2.Context
     def __init__(
         self,
@@ -141,7 +141,7 @@ class SequenceReadRequest(_message.Message):
         fields: _Optional[_Union[_base_pb2.Fields, _Mapping]] = ...,
         filter: _Optional[_Union[_base_pb2.Filter, _Mapping]] = ...,
         paginated: _Optional[_Union[_base_pb2.Paginated, _Mapping]] = ...,
-        id: _Optional[int] = ...,
+        id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
@@ -199,3 +199,29 @@ class SequenceDeleteResponse(_message.Message):
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
     response_standard: _base_pb2.ResponseStandard
     def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
+
+class NextByIdRequest(_message.Message):
+    __slots__ = ["id", "context"]
+    ID_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    id: str
+    context: _base_pb2.Context
+    def __init__(
+        self, id: _Optional[str] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
+    ) -> None: ...
+
+class NextByCodeRequest(_message.Message):
+    __slots__ = ["code", "context"]
+    CODE_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    code: str
+    context: _base_pb2.Context
+    def __init__(
+        self, code: _Optional[str] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
+    ) -> None: ...
+
+class NextResponse(_message.Message):
+    __slots__ = ["next"]
+    NEXT_FIELD_NUMBER: _ClassVar[int]
+    next: str
+    def __init__(self, next: _Optional[str] = ...) -> None: ...
