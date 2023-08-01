@@ -27,7 +27,7 @@ class Warehouse(_message.Message):
         "complement",
         "active",
         "delivery_steps",
-        "receptions_steps",
+        "reception_steps",
         "view_location_id",
         "lot_stock_id",
         "wh_input_stock_loc_id",
@@ -50,7 +50,7 @@ class Warehouse(_message.Message):
     COMPLEMENT_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     DELIVERY_STEPS_FIELD_NUMBER: _ClassVar[int]
-    RECEPTIONS_STEPS_FIELD_NUMBER: _ClassVar[int]
+    RECEPTION_STEPS_FIELD_NUMBER: _ClassVar[int]
     VIEW_LOCATION_ID_FIELD_NUMBER: _ClassVar[int]
     LOT_STOCK_ID_FIELD_NUMBER: _ClassVar[int]
     WH_INPUT_STOCK_LOC_ID_FIELD_NUMBER: _ClassVar[int]
@@ -72,7 +72,7 @@ class Warehouse(_message.Message):
     complement: str
     active: _wrappers_pb2.BoolValue
     delivery_steps: str
-    receptions_steps: str
+    reception_steps: str
     view_location_id: _location_pb2.Location
     lot_stock_id: _location_pb2.Location
     wh_input_stock_loc_id: _location_pb2.Location
@@ -96,7 +96,7 @@ class Warehouse(_message.Message):
         complement: _Optional[str] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         delivery_steps: _Optional[str] = ...,
-        receptions_steps: _Optional[str] = ...,
+        reception_steps: _Optional[str] = ...,
         view_location_id: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
         lot_stock_id: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
         wh_input_stock_loc_id: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
@@ -120,7 +120,7 @@ class WarehouseCreateRequest(_message.Message):
         "address",
         "complement",
         "delivery_steps",
-        "receptions_steps",
+        "reception_steps",
         "view_location_id",
         "lot_stock_id",
         "wh_input_stock_loc_id",
@@ -141,7 +141,7 @@ class WarehouseCreateRequest(_message.Message):
     ADDRESS_FIELD_NUMBER: _ClassVar[int]
     COMPLEMENT_FIELD_NUMBER: _ClassVar[int]
     DELIVERY_STEPS_FIELD_NUMBER: _ClassVar[int]
-    RECEPTIONS_STEPS_FIELD_NUMBER: _ClassVar[int]
+    RECEPTION_STEPS_FIELD_NUMBER: _ClassVar[int]
     VIEW_LOCATION_ID_FIELD_NUMBER: _ClassVar[int]
     LOT_STOCK_ID_FIELD_NUMBER: _ClassVar[int]
     WH_INPUT_STOCK_LOC_ID_FIELD_NUMBER: _ClassVar[int]
@@ -161,7 +161,7 @@ class WarehouseCreateRequest(_message.Message):
     address: str
     complement: str
     delivery_steps: str
-    receptions_steps: str
+    reception_steps: str
     view_location_id: int
     lot_stock_id: int
     wh_input_stock_loc_id: int
@@ -183,7 +183,7 @@ class WarehouseCreateRequest(_message.Message):
         address: _Optional[str] = ...,
         complement: _Optional[str] = ...,
         delivery_steps: _Optional[str] = ...,
-        receptions_steps: _Optional[str] = ...,
+        reception_steps: _Optional[str] = ...,
         view_location_id: _Optional[int] = ...,
         lot_stock_id: _Optional[int] = ...,
         wh_input_stock_loc_id: _Optional[int] = ...,
