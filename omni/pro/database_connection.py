@@ -12,7 +12,7 @@ def ms_register_connection():
     # Registrar todas las conexiones
     for idx, tenant in enumerate(tenants):
         logger.info(f"Register connection for tenant {tenant}")
-        conn = redis.get_mongodb_config(Config.SERVICE_ID, tenant)
+        conn = manager.get_mongodb_config(Config.SERVICE_ID, tenant)
         eval_conn = conn.copy()
         if Config.DEBUG:
             del eval_conn["complement"]
