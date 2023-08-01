@@ -6,6 +6,7 @@ import time
 import mongoengine as mongo
 import redis
 from bson import ObjectId
+from omni.pro.config import Config
 from omni.pro.logger import configure_logger
 from omni.pro.protos.common import base_pb2
 from omni.pro.util import nested
@@ -22,6 +23,41 @@ def measure_time(function):
         return c
 
     return measured_function
+
+
+def ms_register_connection():
+    redis_manager = redis.get_redis_manager()
+    tenants = redis_manager.get_tenant_codes()
+    # Registrar todas las conexiones
+    for idx, tenant in enumerate(tenants):
+        logger.info(f"Register connection for tenant {tenant}")
+        conn = redis_manager.get_mongodb_config(Config.SERVICE_ID, tenant)
+        eval_conn = conn.copy()
+        if Config.DEBUG:
+            del eval_conn["complement"]
+        if not all(eval_conn.values()):
+            continue
+
+        mongo.register_connection(
+            alias=f"{tenant}_{conn['name']}",
+            name=conn["name"],
+            host=conn["host"],
+            port=int(conn["port"]),
+            username=conn["user"],
+            password=conn["password"],
+            **conn["complement"],
+        )
+
+        if idx == 0:
+            mongo.register_connection(
+                alias=mongo.DEFAULT_CONNECTION_NAME,
+                name=mongo.DEFAULT_CONNECTION_NAME,
+                host=conn["host"],
+                port=int(conn["port"]),
+                username=conn["user"],
+                password=conn["password"],
+                **conn["complement"],
+            )
 
 
 class DatabaseManager(object):
