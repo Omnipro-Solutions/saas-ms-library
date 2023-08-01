@@ -33,6 +33,16 @@ class SequenceServiceStub(object):
             request_serializer=v1_dot_utilities_dot_sequence__pb2.SequenceDeleteRequest.SerializeToString,
             response_deserializer=v1_dot_utilities_dot_sequence__pb2.SequenceDeleteResponse.FromString,
         )
+        self.NextById = channel.unary_unary(
+            "/pro.omni.oms.api.v1.utilities.sequence.SequenceService/NextById",
+            request_serializer=v1_dot_utilities_dot_sequence__pb2.NextByIdRequest.SerializeToString,
+            response_deserializer=v1_dot_utilities_dot_sequence__pb2.NextResponse.FromString,
+        )
+        self.NextByCode = channel.unary_unary(
+            "/pro.omni.oms.api.v1.utilities.sequence.SequenceService/NextByCode",
+            request_serializer=v1_dot_utilities_dot_sequence__pb2.NextByCodeRequest.SerializeToString,
+            response_deserializer=v1_dot_utilities_dot_sequence__pb2.NextResponse.FromString,
+        )
 
 
 class SequenceServiceServicer(object):
@@ -62,6 +72,18 @@ class SequenceServiceServicer(object):
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
+    def NextById(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def NextByCode(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
 
 def add_SequenceServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -84,6 +106,16 @@ def add_SequenceServiceServicer_to_server(servicer, server):
             servicer.SequenceDelete,
             request_deserializer=v1_dot_utilities_dot_sequence__pb2.SequenceDeleteRequest.FromString,
             response_serializer=v1_dot_utilities_dot_sequence__pb2.SequenceDeleteResponse.SerializeToString,
+        ),
+        "NextById": grpc.unary_unary_rpc_method_handler(
+            servicer.NextById,
+            request_deserializer=v1_dot_utilities_dot_sequence__pb2.NextByIdRequest.FromString,
+            response_serializer=v1_dot_utilities_dot_sequence__pb2.NextResponse.SerializeToString,
+        ),
+        "NextByCode": grpc.unary_unary_rpc_method_handler(
+            servicer.NextByCode,
+            request_deserializer=v1_dot_utilities_dot_sequence__pb2.NextByCodeRequest.FromString,
+            response_serializer=v1_dot_utilities_dot_sequence__pb2.NextResponse.SerializeToString,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -202,6 +234,64 @@ class SequenceService(object):
             "/pro.omni.oms.api.v1.utilities.sequence.SequenceService/SequenceDelete",
             v1_dot_utilities_dot_sequence__pb2.SequenceDeleteRequest.SerializeToString,
             v1_dot_utilities_dot_sequence__pb2.SequenceDeleteResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
+
+    @staticmethod
+    def NextById(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            "/pro.omni.oms.api.v1.utilities.sequence.SequenceService/NextById",
+            v1_dot_utilities_dot_sequence__pb2.NextByIdRequest.SerializeToString,
+            v1_dot_utilities_dot_sequence__pb2.NextResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
+
+    @staticmethod
+    def NextByCode(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            "/pro.omni.oms.api.v1.utilities.sequence.SequenceService/NextByCode",
+            v1_dot_utilities_dot_sequence__pb2.NextByCodeRequest.SerializeToString,
+            v1_dot_utilities_dot_sequence__pb2.NextResponse.FromString,
             options,
             channel_credentials,
             insecure,
