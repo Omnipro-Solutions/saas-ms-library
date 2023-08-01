@@ -1,4 +1,5 @@
 from google.protobuf import json_format, struct_pb2
+from pymongo.cursor import Cursor
 
 
 # FIXME: change param including_default_value_fields to default_values when invoking util.MessageToDict
@@ -28,7 +29,7 @@ def to_value(obj):
     """
     if isinstance(obj, dict):
         return struct_pb2.Value(struct_value=to_struct(obj))
-    elif isinstance(obj, list):
+    elif isinstance(obj, list) or isinstance(obj, Cursor):
         return struct_pb2.Value(list_value=to_list_value(obj))
     elif isinstance(obj, bool):
         return struct_pb2.Value(bool_value=obj)
