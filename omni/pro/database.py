@@ -5,7 +5,9 @@ import time
 
 import mongoengine as mongo
 import redis
+import fakeredis
 from bson import ObjectId
+from omni.pro.config import Config
 from omni.pro.logger import configure_logger
 from omni.pro.protos.common import base_pb2
 from omni.pro.util import nested
@@ -315,6 +317,8 @@ class RedisManager(object):
         self._connection = RedisConnection(host=self.host, port=self.port, db=self.db)
 
     def get_connection(self) -> RedisConnection:
+        if Config.TESTING:
+            return fakeredis.FakeStrictRedis()
         return self._connection
 
     def set_connection(self, connection: RedisConnection) -> None:
