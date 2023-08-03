@@ -6,6 +6,7 @@ from typing import Union as _Union
 
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
+from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
 
@@ -21,7 +22,6 @@ class OrderLine(_message.Message):
         "price_unit",
         "tax_id",
         "discount",
-        "price_subtotal",
         "price_total",
         "active",
         "object_audit",
@@ -34,7 +34,6 @@ class OrderLine(_message.Message):
     PRICE_UNIT_FIELD_NUMBER: _ClassVar[int]
     TAX_ID_FIELD_NUMBER: _ClassVar[int]
     DISCOUNT_FIELD_NUMBER: _ClassVar[int]
-    PRICE_SUBTOTAL_FIELD_NUMBER: _ClassVar[int]
     PRICE_TOTAL_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
@@ -46,9 +45,8 @@ class OrderLine(_message.Message):
     price_unit: float
     tax_id: int
     discount: float
-    price_subtotal: float
     price_total: float
-    active: bool
+    active: _wrappers_pb2.BoolValue
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
@@ -60,9 +58,8 @@ class OrderLine(_message.Message):
         price_unit: _Optional[float] = ...,
         tax_id: _Optional[int] = ...,
         discount: _Optional[float] = ...,
-        price_subtotal: _Optional[float] = ...,
         price_total: _Optional[float] = ...,
-        active: bool = ...,
+        active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
@@ -75,7 +72,6 @@ class OrderLineCreateRequest(_message.Message):
         "price_unit",
         "tax_id",
         "discount",
-        "price_subtotal",
         "price_total",
         "context",
     ]
@@ -86,7 +82,6 @@ class OrderLineCreateRequest(_message.Message):
     PRICE_UNIT_FIELD_NUMBER: _ClassVar[int]
     TAX_ID_FIELD_NUMBER: _ClassVar[int]
     DISCOUNT_FIELD_NUMBER: _ClassVar[int]
-    PRICE_SUBTOTAL_FIELD_NUMBER: _ClassVar[int]
     PRICE_TOTAL_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     order_id: int
@@ -96,7 +91,6 @@ class OrderLineCreateRequest(_message.Message):
     price_unit: float
     tax_id: int
     discount: float
-    price_subtotal: float
     price_total: float
     context: _base_pb2.Context
     def __init__(
@@ -108,7 +102,6 @@ class OrderLineCreateRequest(_message.Message):
         price_unit: _Optional[float] = ...,
         tax_id: _Optional[int] = ...,
         discount: _Optional[float] = ...,
-        price_subtotal: _Optional[float] = ...,
         price_total: _Optional[float] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
