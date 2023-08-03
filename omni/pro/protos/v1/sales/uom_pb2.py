@@ -12,10 +12,11 @@ from google.protobuf.internal import builder as _builder
 _sym_db = _symbol_database.Default()
 
 
+from google.protobuf import wrappers_pb2 as google_dot_protobuf_dot_wrappers__pb2
 from omni.pro.protos.common import base_pb2 as common_dot_base__pb2
 
 DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
-    b'\n\x12v1/sales/uom.proto\x12\x1dpro.omni.oms.api.v1.sales.uom\x1a\x11\x63ommon/base.proto"\x92\x01\n\x03Uom\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x12\n\nuom_doc_id\x18\x02 \x01(\t\x12\x0c\n\x04\x63ode\x18\x03 \x01(\t\x12\x0c\n\x04name\x18\x04 \x01(\t\x12\x0e\n\x06\x61\x63tive\x18\x05 \x01(\x08\x12?\n\x0cobject_audit\x18\x06 \x01(\x0b\x32).pro.omni.oms.api.common.base.ObjectAudit"z\n\x10UomCreateRequest\x12\x12\n\nuom_doc_id\x18\x01 \x01(\t\x12\x0c\n\x04\x63ode\x18\x02 \x01(\t\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\x36\n\x07\x63ontext\x18\x04 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\x8f\x01\n\x11UomCreateResponse\x12/\n\x03uom\x18\x01 \x01(\x0b\x32".pro.omni.oms.api.v1.sales.uom.Uom\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\xec\x02\n\x0eUomReadRequest\x12\x37\n\x08group_by\x18\x01 \x03(\x0b\x32%.pro.omni.oms.api.common.base.GroupBy\x12\x35\n\x07sort_by\x18\x02 \x01(\x0b\x32$.pro.omni.oms.api.common.base.SortBy\x12\x34\n\x06\x66ields\x18\x03 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Fields\x12\x34\n\x06\x66ilter\x18\x04 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Filter\x12:\n\tpaginated\x18\x05 \x01(\x0b\x32\'.pro.omni.oms.api.common.base.Paginated\x12\n\n\x02id\x18\x06 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x07 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xc8\x01\n\x0fUomReadResponse\x12/\n\x03uom\x18\x01 \x03(\x0b\x32".pro.omni.oms.api.v1.sales.uom.Uom\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard\x12\x39\n\tmeta_data\x18\x03 \x01(\x0b\x32&.pro.omni.oms.api.common.base.MetaData"{\n\x10UomUpdateRequest\x12/\n\x03uom\x18\x01 \x01(\x0b\x32".pro.omni.oms.api.v1.sales.uom.Uom\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\x8f\x01\n\x11UomUpdateResponse\x12/\n\x03uom\x18\x01 \x01(\x0b\x32".pro.omni.oms.api.v1.sales.uom.Uom\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"V\n\x10UomDeleteRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"^\n\x11UomDeleteResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard2\xce\x03\n\nUomService\x12p\n\tUomCreate\x12/.pro.omni.oms.api.v1.sales.uom.UomCreateRequest\x1a\x30.pro.omni.oms.api.v1.sales.uom.UomCreateResponse"\x00\x12j\n\x07UomRead\x12-.pro.omni.oms.api.v1.sales.uom.UomReadRequest\x1a..pro.omni.oms.api.v1.sales.uom.UomReadResponse"\x00\x12p\n\tUomUpdate\x12/.pro.omni.oms.api.v1.sales.uom.UomUpdateRequest\x1a\x30.pro.omni.oms.api.v1.sales.uom.UomUpdateResponse"\x00\x12p\n\tUomDelete\x12/.pro.omni.oms.api.v1.sales.uom.UomDeleteRequest\x1a\x30.pro.omni.oms.api.v1.sales.uom.UomDeleteResponse"\x00\x62\x06proto3'
+    b'\n\x12v1/sales/uom.proto\x12\x1dpro.omni.oms.api.v1.sales.uom\x1a\x11\x63ommon/base.proto\x1a\x1egoogle/protobuf/wrappers.proto"\xae\x01\n\x03Uom\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x12\n\nuom_doc_id\x18\x02 \x01(\t\x12\x0c\n\x04\x63ode\x18\x03 \x01(\t\x12\x0c\n\x04name\x18\x04 \x01(\t\x12*\n\x06\x61\x63tive\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12?\n\x0cobject_audit\x18\x06 \x01(\x0b\x32).pro.omni.oms.api.common.base.ObjectAudit"z\n\x10UomCreateRequest\x12\x12\n\nuom_doc_id\x18\x01 \x01(\t\x12\x0c\n\x04\x63ode\x18\x02 \x01(\t\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\x36\n\x07\x63ontext\x18\x04 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\x8f\x01\n\x11UomCreateResponse\x12/\n\x03uom\x18\x01 \x01(\x0b\x32".pro.omni.oms.api.v1.sales.uom.Uom\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\xec\x02\n\x0eUomReadRequest\x12\x37\n\x08group_by\x18\x01 \x03(\x0b\x32%.pro.omni.oms.api.common.base.GroupBy\x12\x35\n\x07sort_by\x18\x02 \x01(\x0b\x32$.pro.omni.oms.api.common.base.SortBy\x12\x34\n\x06\x66ields\x18\x03 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Fields\x12\x34\n\x06\x66ilter\x18\x04 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Filter\x12:\n\tpaginated\x18\x05 \x01(\x0b\x32\'.pro.omni.oms.api.common.base.Paginated\x12\n\n\x02id\x18\x06 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x07 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xc8\x01\n\x0fUomReadResponse\x12/\n\x03uom\x18\x01 \x03(\x0b\x32".pro.omni.oms.api.v1.sales.uom.Uom\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard\x12\x39\n\tmeta_data\x18\x03 \x01(\x0b\x32&.pro.omni.oms.api.common.base.MetaData"{\n\x10UomUpdateRequest\x12/\n\x03uom\x18\x01 \x01(\x0b\x32".pro.omni.oms.api.v1.sales.uom.Uom\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\x8f\x01\n\x11UomUpdateResponse\x12/\n\x03uom\x18\x01 \x01(\x0b\x32".pro.omni.oms.api.v1.sales.uom.Uom\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"V\n\x10UomDeleteRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"^\n\x11UomDeleteResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard2\xce\x03\n\nUomService\x12p\n\tUomCreate\x12/.pro.omni.oms.api.v1.sales.uom.UomCreateRequest\x1a\x30.pro.omni.oms.api.v1.sales.uom.UomCreateResponse"\x00\x12j\n\x07UomRead\x12-.pro.omni.oms.api.v1.sales.uom.UomReadRequest\x1a..pro.omni.oms.api.v1.sales.uom.UomReadResponse"\x00\x12p\n\tUomUpdate\x12/.pro.omni.oms.api.v1.sales.uom.UomUpdateRequest\x1a\x30.pro.omni.oms.api.v1.sales.uom.UomUpdateResponse"\x00\x12p\n\tUomDelete\x12/.pro.omni.oms.api.v1.sales.uom.UomDeleteRequest\x1a\x30.pro.omni.oms.api.v1.sales.uom.UomDeleteResponse"\x00\x62\x06proto3'
 )
 
 _globals = globals()
@@ -23,24 +24,24 @@ _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, "v1.sales.uom_pb2", _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
     DESCRIPTOR._options = None
-    _globals["_UOM"]._serialized_start = 73
-    _globals["_UOM"]._serialized_end = 219
-    _globals["_UOMCREATEREQUEST"]._serialized_start = 221
-    _globals["_UOMCREATEREQUEST"]._serialized_end = 343
-    _globals["_UOMCREATERESPONSE"]._serialized_start = 346
-    _globals["_UOMCREATERESPONSE"]._serialized_end = 489
-    _globals["_UOMREADREQUEST"]._serialized_start = 492
-    _globals["_UOMREADREQUEST"]._serialized_end = 856
-    _globals["_UOMREADRESPONSE"]._serialized_start = 859
-    _globals["_UOMREADRESPONSE"]._serialized_end = 1059
-    _globals["_UOMUPDATEREQUEST"]._serialized_start = 1061
-    _globals["_UOMUPDATEREQUEST"]._serialized_end = 1184
-    _globals["_UOMUPDATERESPONSE"]._serialized_start = 1187
-    _globals["_UOMUPDATERESPONSE"]._serialized_end = 1330
-    _globals["_UOMDELETEREQUEST"]._serialized_start = 1332
-    _globals["_UOMDELETEREQUEST"]._serialized_end = 1418
-    _globals["_UOMDELETERESPONSE"]._serialized_start = 1420
-    _globals["_UOMDELETERESPONSE"]._serialized_end = 1514
-    _globals["_UOMSERVICE"]._serialized_start = 1517
-    _globals["_UOMSERVICE"]._serialized_end = 1979
+    _globals["_UOM"]._serialized_start = 105
+    _globals["_UOM"]._serialized_end = 279
+    _globals["_UOMCREATEREQUEST"]._serialized_start = 281
+    _globals["_UOMCREATEREQUEST"]._serialized_end = 403
+    _globals["_UOMCREATERESPONSE"]._serialized_start = 406
+    _globals["_UOMCREATERESPONSE"]._serialized_end = 549
+    _globals["_UOMREADREQUEST"]._serialized_start = 552
+    _globals["_UOMREADREQUEST"]._serialized_end = 916
+    _globals["_UOMREADRESPONSE"]._serialized_start = 919
+    _globals["_UOMREADRESPONSE"]._serialized_end = 1119
+    _globals["_UOMUPDATEREQUEST"]._serialized_start = 1121
+    _globals["_UOMUPDATEREQUEST"]._serialized_end = 1244
+    _globals["_UOMUPDATERESPONSE"]._serialized_start = 1247
+    _globals["_UOMUPDATERESPONSE"]._serialized_end = 1390
+    _globals["_UOMDELETEREQUEST"]._serialized_start = 1392
+    _globals["_UOMDELETEREQUEST"]._serialized_end = 1478
+    _globals["_UOMDELETERESPONSE"]._serialized_start = 1480
+    _globals["_UOMDELETERESPONSE"]._serialized_end = 1574
+    _globals["_UOMSERVICE"]._serialized_start = 1577
+    _globals["_UOMSERVICE"]._serialized_end = 2039
 # @@protoc_insertion_point(module_scope)

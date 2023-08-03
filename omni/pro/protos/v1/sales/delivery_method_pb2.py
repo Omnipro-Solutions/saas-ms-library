@@ -12,10 +12,11 @@ from google.protobuf.internal import builder as _builder
 _sym_db = _symbol_database.Default()
 
 
+from google.protobuf import wrappers_pb2 as google_dot_protobuf_dot_wrappers__pb2
 from omni.pro.protos.common import base_pb2 as common_dot_base__pb2
 
 DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
-    b'\n\x1ev1/sales/delivery_method.proto\x12)pro.omni.oms.api.v1.sales.delivery.method\x1a\x11\x63ommon/base.proto"\x89\x01\n\x0e\x44\x65liveryMethod\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0c\n\x04\x63ode\x18\x03 \x01(\t\x12\x0e\n\x06\x61\x63tive\x18\x04 \x01(\x08\x12?\n\x0cobject_audit\x18\x05 \x01(\x0b\x32).pro.omni.oms.api.common.base.ObjectAudit"q\n\x1b\x44\x65liveryMethodCreateRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0c\n\x04\x63ode\x18\x02 \x01(\t\x12\x36\n\x07\x63ontext\x18\x03 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xbd\x01\n\x1c\x44\x65liveryMethodCreateResponse\x12R\n\x0f\x64\x65livery_method\x18\x01 \x01(\x0b\x32\x39.pro.omni.oms.api.v1.sales.delivery.method.DeliveryMethod\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\xf7\x02\n\x19\x44\x65liveryMethodReadRequest\x12\x37\n\x08group_by\x18\x01 \x03(\x0b\x32%.pro.omni.oms.api.common.base.GroupBy\x12\x35\n\x07sort_by\x18\x02 \x01(\x0b\x32$.pro.omni.oms.api.common.base.SortBy\x12\x34\n\x06\x66ields\x18\x03 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Fields\x12\x34\n\x06\x66ilter\x18\x04 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Filter\x12:\n\tpaginated\x18\x05 \x01(\x0b\x32\'.pro.omni.oms.api.common.base.Paginated\x12\n\n\x02id\x18\x06 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x07 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xf7\x01\n\x1a\x44\x65liveryMethodReadResponse\x12S\n\x10\x64\x65livery_methods\x18\x01 \x03(\x0b\x32\x39.pro.omni.oms.api.v1.sales.delivery.method.DeliveryMethod\x12\x39\n\tmeta_data\x18\x02 \x01(\x0b\x32&.pro.omni.oms.api.common.base.MetaData\x12I\n\x11response_standard\x18\x03 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\xa9\x01\n\x1b\x44\x65liveryMethodUpdateRequest\x12R\n\x0f\x64\x65livery_method\x18\x01 \x01(\x0b\x32\x39.pro.omni.oms.api.v1.sales.delivery.method.DeliveryMethod\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xbd\x01\n\x1c\x44\x65liveryMethodUpdateResponse\x12R\n\x0f\x64\x65livery_method\x18\x01 \x01(\x0b\x32\x39.pro.omni.oms.api.v1.sales.delivery.method.DeliveryMethod\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"a\n\x1b\x44\x65liveryMethodDeleteRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"i\n\x1c\x44\x65liveryMethodDeleteResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard2\xc5\x05\n\x15\x44\x65liveryMethodService\x12\xaa\x01\n\x15\x44\x65liveryServiceCreate\x12\x46.pro.omni.oms.api.v1.sales.delivery.method.DeliveryMethodCreateRequest\x1aG.pro.omni.oms.api.v1.sales.delivery.method.DeliveryMethodCreateResponse"\x00\x12\xa4\x01\n\x13\x44\x65liveryServiceRead\x12\x44.pro.omni.oms.api.v1.sales.delivery.method.DeliveryMethodReadRequest\x1a\x45.pro.omni.oms.api.v1.sales.delivery.method.DeliveryMethodReadResponse"\x00\x12\xaa\x01\n\x15\x44\x65liveryServiceUpdate\x12\x46.pro.omni.oms.api.v1.sales.delivery.method.DeliveryMethodUpdateRequest\x1aG.pro.omni.oms.api.v1.sales.delivery.method.DeliveryMethodUpdateResponse"\x00\x12\xaa\x01\n\x15\x44\x65liveryServiceDelete\x12\x46.pro.omni.oms.api.v1.sales.delivery.method.DeliveryMethodDeleteRequest\x1aG.pro.omni.oms.api.v1.sales.delivery.method.DeliveryMethodDeleteResponse"\x00\x62\x06proto3'
+    b'\n\x1ev1/sales/delivery_method.proto\x12)pro.omni.oms.api.v1.sales.delivery.method\x1a\x11\x63ommon/base.proto\x1a\x1egoogle/protobuf/wrappers.proto"\xa5\x01\n\x0e\x44\x65liveryMethod\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0c\n\x04\x63ode\x18\x03 \x01(\t\x12*\n\x06\x61\x63tive\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12?\n\x0cobject_audit\x18\x05 \x01(\x0b\x32).pro.omni.oms.api.common.base.ObjectAudit"q\n\x1b\x44\x65liveryMethodCreateRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0c\n\x04\x63ode\x18\x02 \x01(\t\x12\x36\n\x07\x63ontext\x18\x03 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xbd\x01\n\x1c\x44\x65liveryMethodCreateResponse\x12R\n\x0f\x64\x65livery_method\x18\x01 \x01(\x0b\x32\x39.pro.omni.oms.api.v1.sales.delivery.method.DeliveryMethod\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\xf7\x02\n\x19\x44\x65liveryMethodReadRequest\x12\x37\n\x08group_by\x18\x01 \x03(\x0b\x32%.pro.omni.oms.api.common.base.GroupBy\x12\x35\n\x07sort_by\x18\x02 \x01(\x0b\x32$.pro.omni.oms.api.common.base.SortBy\x12\x34\n\x06\x66ields\x18\x03 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Fields\x12\x34\n\x06\x66ilter\x18\x04 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Filter\x12:\n\tpaginated\x18\x05 \x01(\x0b\x32\'.pro.omni.oms.api.common.base.Paginated\x12\n\n\x02id\x18\x06 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x07 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xf7\x01\n\x1a\x44\x65liveryMethodReadResponse\x12S\n\x10\x64\x65livery_methods\x18\x01 \x03(\x0b\x32\x39.pro.omni.oms.api.v1.sales.delivery.method.DeliveryMethod\x12\x39\n\tmeta_data\x18\x02 \x01(\x0b\x32&.pro.omni.oms.api.common.base.MetaData\x12I\n\x11response_standard\x18\x03 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\xa9\x01\n\x1b\x44\x65liveryMethodUpdateRequest\x12R\n\x0f\x64\x65livery_method\x18\x01 \x01(\x0b\x32\x39.pro.omni.oms.api.v1.sales.delivery.method.DeliveryMethod\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xbd\x01\n\x1c\x44\x65liveryMethodUpdateResponse\x12R\n\x0f\x64\x65livery_method\x18\x01 \x01(\x0b\x32\x39.pro.omni.oms.api.v1.sales.delivery.method.DeliveryMethod\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"a\n\x1b\x44\x65liveryMethodDeleteRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"i\n\x1c\x44\x65liveryMethodDeleteResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard2\xc5\x05\n\x15\x44\x65liveryMethodService\x12\xaa\x01\n\x15\x44\x65liveryServiceCreate\x12\x46.pro.omni.oms.api.v1.sales.delivery.method.DeliveryMethodCreateRequest\x1aG.pro.omni.oms.api.v1.sales.delivery.method.DeliveryMethodCreateResponse"\x00\x12\xa4\x01\n\x13\x44\x65liveryServiceRead\x12\x44.pro.omni.oms.api.v1.sales.delivery.method.DeliveryMethodReadRequest\x1a\x45.pro.omni.oms.api.v1.sales.delivery.method.DeliveryMethodReadResponse"\x00\x12\xaa\x01\n\x15\x44\x65liveryServiceUpdate\x12\x46.pro.omni.oms.api.v1.sales.delivery.method.DeliveryMethodUpdateRequest\x1aG.pro.omni.oms.api.v1.sales.delivery.method.DeliveryMethodUpdateResponse"\x00\x12\xaa\x01\n\x15\x44\x65liveryServiceDelete\x12\x46.pro.omni.oms.api.v1.sales.delivery.method.DeliveryMethodDeleteRequest\x1aG.pro.omni.oms.api.v1.sales.delivery.method.DeliveryMethodDeleteResponse"\x00\x62\x06proto3'
 )
 
 _globals = globals()
@@ -23,24 +24,24 @@ _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, "v1.sales.delivery_method_pb2", _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
     DESCRIPTOR._options = None
-    _globals["_DELIVERYMETHOD"]._serialized_start = 97
-    _globals["_DELIVERYMETHOD"]._serialized_end = 234
-    _globals["_DELIVERYMETHODCREATEREQUEST"]._serialized_start = 236
-    _globals["_DELIVERYMETHODCREATEREQUEST"]._serialized_end = 349
-    _globals["_DELIVERYMETHODCREATERESPONSE"]._serialized_start = 352
-    _globals["_DELIVERYMETHODCREATERESPONSE"]._serialized_end = 541
-    _globals["_DELIVERYMETHODREADREQUEST"]._serialized_start = 544
-    _globals["_DELIVERYMETHODREADREQUEST"]._serialized_end = 919
-    _globals["_DELIVERYMETHODREADRESPONSE"]._serialized_start = 922
-    _globals["_DELIVERYMETHODREADRESPONSE"]._serialized_end = 1169
-    _globals["_DELIVERYMETHODUPDATEREQUEST"]._serialized_start = 1172
-    _globals["_DELIVERYMETHODUPDATEREQUEST"]._serialized_end = 1341
-    _globals["_DELIVERYMETHODUPDATERESPONSE"]._serialized_start = 1344
-    _globals["_DELIVERYMETHODUPDATERESPONSE"]._serialized_end = 1533
-    _globals["_DELIVERYMETHODDELETEREQUEST"]._serialized_start = 1535
-    _globals["_DELIVERYMETHODDELETEREQUEST"]._serialized_end = 1632
-    _globals["_DELIVERYMETHODDELETERESPONSE"]._serialized_start = 1634
-    _globals["_DELIVERYMETHODDELETERESPONSE"]._serialized_end = 1739
-    _globals["_DELIVERYMETHODSERVICE"]._serialized_start = 1742
-    _globals["_DELIVERYMETHODSERVICE"]._serialized_end = 2451
+    _globals["_DELIVERYMETHOD"]._serialized_start = 129
+    _globals["_DELIVERYMETHOD"]._serialized_end = 294
+    _globals["_DELIVERYMETHODCREATEREQUEST"]._serialized_start = 296
+    _globals["_DELIVERYMETHODCREATEREQUEST"]._serialized_end = 409
+    _globals["_DELIVERYMETHODCREATERESPONSE"]._serialized_start = 412
+    _globals["_DELIVERYMETHODCREATERESPONSE"]._serialized_end = 601
+    _globals["_DELIVERYMETHODREADREQUEST"]._serialized_start = 604
+    _globals["_DELIVERYMETHODREADREQUEST"]._serialized_end = 979
+    _globals["_DELIVERYMETHODREADRESPONSE"]._serialized_start = 982
+    _globals["_DELIVERYMETHODREADRESPONSE"]._serialized_end = 1229
+    _globals["_DELIVERYMETHODUPDATEREQUEST"]._serialized_start = 1232
+    _globals["_DELIVERYMETHODUPDATEREQUEST"]._serialized_end = 1401
+    _globals["_DELIVERYMETHODUPDATERESPONSE"]._serialized_start = 1404
+    _globals["_DELIVERYMETHODUPDATERESPONSE"]._serialized_end = 1593
+    _globals["_DELIVERYMETHODDELETEREQUEST"]._serialized_start = 1595
+    _globals["_DELIVERYMETHODDELETEREQUEST"]._serialized_end = 1692
+    _globals["_DELIVERYMETHODDELETERESPONSE"]._serialized_start = 1694
+    _globals["_DELIVERYMETHODDELETERESPONSE"]._serialized_end = 1799
+    _globals["_DELIVERYMETHODSERVICE"]._serialized_start = 1802
+    _globals["_DELIVERYMETHODSERVICE"]._serialized_end = 2511
 # @@protoc_insertion_point(module_scope)

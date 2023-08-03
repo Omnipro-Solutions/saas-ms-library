@@ -12,10 +12,11 @@ from google.protobuf.internal import builder as _builder
 _sym_db = _symbol_database.Default()
 
 
+from google.protobuf import wrappers_pb2 as google_dot_protobuf_dot_wrappers__pb2
 from omni.pro.protos.common import base_pb2 as common_dot_base__pb2
 
 DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
-    b'\n\x19v1/sales/order_line.proto\x12$pro.omni.oms.api.v1.sales.order.line\x1a\x11\x63ommon/base.proto"\x93\x02\n\tOrderLine\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x10\n\x08order_id\x18\x02 \x01(\x05\x12\x12\n\nproduct_id\x18\x03 \x01(\x05\x12\x10\n\x08quantity\x18\x04 \x01(\x02\x12\x0e\n\x06uom_id\x18\x05 \x01(\x05\x12\x12\n\nprice_unit\x18\x06 \x01(\x02\x12\x0e\n\x06tax_id\x18\x07 \x01(\x05\x12\x10\n\x08\x64iscount\x18\x08 \x01(\x02\x12\x16\n\x0eprice_subtotal\x18\t \x01(\x02\x12\x13\n\x0bprice_total\x18\n \x01(\x02\x12\x0e\n\x06\x61\x63tive\x18\x0b \x01(\x08\x12?\n\x0cobject_audit\x18\x0c \x01(\x0b\x32).pro.omni.oms.api.common.base.ObjectAudit"\xfb\x01\n\x16OrderLineCreateRequest\x12\x10\n\x08order_id\x18\x01 \x01(\x05\x12\x12\n\nproduct_id\x18\x02 \x01(\x05\x12\x10\n\x08quantity\x18\x03 \x01(\x02\x12\x0e\n\x06uom_id\x18\x04 \x01(\x05\x12\x12\n\nprice_unit\x18\x05 \x01(\x02\x12\x0e\n\x06tax_id\x18\x06 \x01(\x05\x12\x10\n\x08\x64iscount\x18\x07 \x01(\x02\x12\x16\n\x0eprice_subtotal\x18\x08 \x01(\x02\x12\x13\n\x0bprice_total\x18\t \x01(\x02\x12\x36\n\x07\x63ontext\x18\n \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xa9\x01\n\x17OrderLineCreateResponse\x12\x43\n\norder_line\x18\x01 \x01(\x0b\x32/.pro.omni.oms.api.v1.sales.order.line.OrderLine\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\xf2\x02\n\x14OrderLineReadRequest\x12\x37\n\x08group_by\x18\x01 \x03(\x0b\x32%.pro.omni.oms.api.common.base.GroupBy\x12\x35\n\x07sort_by\x18\x02 \x01(\x0b\x32$.pro.omni.oms.api.common.base.SortBy\x12\x34\n\x06\x66ields\x18\x03 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Fields\x12\x34\n\x06\x66ilter\x18\x04 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Filter\x12:\n\tpaginated\x18\x05 \x01(\x0b\x32\'.pro.omni.oms.api.common.base.Paginated\x12\n\n\x02id\x18\x06 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x07 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xe3\x01\n\x15OrderLineReadResponse\x12\x44\n\x0border_lines\x18\x01 \x03(\x0b\x32/.pro.omni.oms.api.v1.sales.order.line.OrderLine\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard\x12\x39\n\tmeta_data\x18\x03 \x01(\x0b\x32&.pro.omni.oms.api.common.base.MetaData"\x95\x01\n\x16OrderLineUpdateRequest\x12\x43\n\norder_line\x18\x01 \x01(\x0b\x32/.pro.omni.oms.api.v1.sales.order.line.OrderLine\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xa9\x01\n\x17OrderLineUpdateResponse\x12\x43\n\norder_line\x18\x01 \x01(\x0b\x32/.pro.omni.oms.api.v1.sales.order.line.OrderLine\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\\\n\x16OrderLineDeleteRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"d\n\x17OrderLineDeleteResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard2\xd8\x04\n\x10OrderLineService\x12\x90\x01\n\x0fOrderLineCreate\x12<.pro.omni.oms.api.v1.sales.order.line.OrderLineCreateRequest\x1a=.pro.omni.oms.api.v1.sales.order.line.OrderLineCreateResponse"\x00\x12\x8a\x01\n\rOrderLineRead\x12:.pro.omni.oms.api.v1.sales.order.line.OrderLineReadRequest\x1a;.pro.omni.oms.api.v1.sales.order.line.OrderLineReadResponse"\x00\x12\x90\x01\n\x0fOrderLineUpdate\x12<.pro.omni.oms.api.v1.sales.order.line.OrderLineUpdateRequest\x1a=.pro.omni.oms.api.v1.sales.order.line.OrderLineUpdateResponse"\x00\x12\x90\x01\n\x0fOrderLineDelete\x12<.pro.omni.oms.api.v1.sales.order.line.OrderLineDeleteRequest\x1a=.pro.omni.oms.api.v1.sales.order.line.OrderLineDeleteResponse"\x00\x62\x06proto3'
+    b'\n\x19v1/sales/order_line.proto\x12$pro.omni.oms.api.v1.sales.order.line\x1a\x11\x63ommon/base.proto\x1a\x1egoogle/protobuf/wrappers.proto"\x97\x02\n\tOrderLine\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x10\n\x08order_id\x18\x02 \x01(\x05\x12\x12\n\nproduct_id\x18\x03 \x01(\x05\x12\x10\n\x08quantity\x18\x04 \x01(\x02\x12\x0e\n\x06uom_id\x18\x05 \x01(\x05\x12\x12\n\nprice_unit\x18\x06 \x01(\x02\x12\x0e\n\x06tax_id\x18\x07 \x01(\x05\x12\x10\n\x08\x64iscount\x18\x08 \x01(\x02\x12\x13\n\x0bprice_total\x18\t \x01(\x02\x12*\n\x06\x61\x63tive\x18\n \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12?\n\x0cobject_audit\x18\x0b \x01(\x0b\x32).pro.omni.oms.api.common.base.ObjectAudit"\xe3\x01\n\x16OrderLineCreateRequest\x12\x10\n\x08order_id\x18\x01 \x01(\x05\x12\x12\n\nproduct_id\x18\x02 \x01(\x05\x12\x10\n\x08quantity\x18\x03 \x01(\x02\x12\x0e\n\x06uom_id\x18\x04 \x01(\x05\x12\x12\n\nprice_unit\x18\x05 \x01(\x02\x12\x0e\n\x06tax_id\x18\x06 \x01(\x05\x12\x10\n\x08\x64iscount\x18\x07 \x01(\x02\x12\x13\n\x0bprice_total\x18\x08 \x01(\x02\x12\x36\n\x07\x63ontext\x18\t \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xa9\x01\n\x17OrderLineCreateResponse\x12\x43\n\norder_line\x18\x01 \x01(\x0b\x32/.pro.omni.oms.api.v1.sales.order.line.OrderLine\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\xf2\x02\n\x14OrderLineReadRequest\x12\x37\n\x08group_by\x18\x01 \x03(\x0b\x32%.pro.omni.oms.api.common.base.GroupBy\x12\x35\n\x07sort_by\x18\x02 \x01(\x0b\x32$.pro.omni.oms.api.common.base.SortBy\x12\x34\n\x06\x66ields\x18\x03 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Fields\x12\x34\n\x06\x66ilter\x18\x04 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Filter\x12:\n\tpaginated\x18\x05 \x01(\x0b\x32\'.pro.omni.oms.api.common.base.Paginated\x12\n\n\x02id\x18\x06 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x07 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xe3\x01\n\x15OrderLineReadResponse\x12\x44\n\x0border_lines\x18\x01 \x03(\x0b\x32/.pro.omni.oms.api.v1.sales.order.line.OrderLine\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard\x12\x39\n\tmeta_data\x18\x03 \x01(\x0b\x32&.pro.omni.oms.api.common.base.MetaData"\x95\x01\n\x16OrderLineUpdateRequest\x12\x43\n\norder_line\x18\x01 \x01(\x0b\x32/.pro.omni.oms.api.v1.sales.order.line.OrderLine\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xa9\x01\n\x17OrderLineUpdateResponse\x12\x43\n\norder_line\x18\x01 \x01(\x0b\x32/.pro.omni.oms.api.v1.sales.order.line.OrderLine\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\\\n\x16OrderLineDeleteRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"d\n\x17OrderLineDeleteResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard2\xd8\x04\n\x10OrderLineService\x12\x90\x01\n\x0fOrderLineCreate\x12<.pro.omni.oms.api.v1.sales.order.line.OrderLineCreateRequest\x1a=.pro.omni.oms.api.v1.sales.order.line.OrderLineCreateResponse"\x00\x12\x8a\x01\n\rOrderLineRead\x12:.pro.omni.oms.api.v1.sales.order.line.OrderLineReadRequest\x1a;.pro.omni.oms.api.v1.sales.order.line.OrderLineReadResponse"\x00\x12\x90\x01\n\x0fOrderLineUpdate\x12<.pro.omni.oms.api.v1.sales.order.line.OrderLineUpdateRequest\x1a=.pro.omni.oms.api.v1.sales.order.line.OrderLineUpdateResponse"\x00\x12\x90\x01\n\x0fOrderLineDelete\x12<.pro.omni.oms.api.v1.sales.order.line.OrderLineDeleteRequest\x1a=.pro.omni.oms.api.v1.sales.order.line.OrderLineDeleteResponse"\x00\x62\x06proto3'
 )
 
 _globals = globals()
@@ -23,24 +24,24 @@ _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, "v1.sales.order_line_pb2", _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
     DESCRIPTOR._options = None
-    _globals["_ORDERLINE"]._serialized_start = 87
-    _globals["_ORDERLINE"]._serialized_end = 362
-    _globals["_ORDERLINECREATEREQUEST"]._serialized_start = 365
-    _globals["_ORDERLINECREATEREQUEST"]._serialized_end = 616
-    _globals["_ORDERLINECREATERESPONSE"]._serialized_start = 619
-    _globals["_ORDERLINECREATERESPONSE"]._serialized_end = 788
-    _globals["_ORDERLINEREADREQUEST"]._serialized_start = 791
-    _globals["_ORDERLINEREADREQUEST"]._serialized_end = 1161
-    _globals["_ORDERLINEREADRESPONSE"]._serialized_start = 1164
-    _globals["_ORDERLINEREADRESPONSE"]._serialized_end = 1391
-    _globals["_ORDERLINEUPDATEREQUEST"]._serialized_start = 1394
-    _globals["_ORDERLINEUPDATEREQUEST"]._serialized_end = 1543
-    _globals["_ORDERLINEUPDATERESPONSE"]._serialized_start = 1546
-    _globals["_ORDERLINEUPDATERESPONSE"]._serialized_end = 1715
-    _globals["_ORDERLINEDELETEREQUEST"]._serialized_start = 1717
-    _globals["_ORDERLINEDELETEREQUEST"]._serialized_end = 1809
-    _globals["_ORDERLINEDELETERESPONSE"]._serialized_start = 1811
-    _globals["_ORDERLINEDELETERESPONSE"]._serialized_end = 1911
-    _globals["_ORDERLINESERVICE"]._serialized_start = 1914
-    _globals["_ORDERLINESERVICE"]._serialized_end = 2514
+    _globals["_ORDERLINE"]._serialized_start = 119
+    _globals["_ORDERLINE"]._serialized_end = 398
+    _globals["_ORDERLINECREATEREQUEST"]._serialized_start = 401
+    _globals["_ORDERLINECREATEREQUEST"]._serialized_end = 628
+    _globals["_ORDERLINECREATERESPONSE"]._serialized_start = 631
+    _globals["_ORDERLINECREATERESPONSE"]._serialized_end = 800
+    _globals["_ORDERLINEREADREQUEST"]._serialized_start = 803
+    _globals["_ORDERLINEREADREQUEST"]._serialized_end = 1173
+    _globals["_ORDERLINEREADRESPONSE"]._serialized_start = 1176
+    _globals["_ORDERLINEREADRESPONSE"]._serialized_end = 1403
+    _globals["_ORDERLINEUPDATEREQUEST"]._serialized_start = 1406
+    _globals["_ORDERLINEUPDATEREQUEST"]._serialized_end = 1555
+    _globals["_ORDERLINEUPDATERESPONSE"]._serialized_start = 1558
+    _globals["_ORDERLINEUPDATERESPONSE"]._serialized_end = 1727
+    _globals["_ORDERLINEDELETEREQUEST"]._serialized_start = 1729
+    _globals["_ORDERLINEDELETEREQUEST"]._serialized_end = 1821
+    _globals["_ORDERLINEDELETERESPONSE"]._serialized_start = 1823
+    _globals["_ORDERLINEDELETERESPONSE"]._serialized_end = 1923
+    _globals["_ORDERLINESERVICE"]._serialized_start = 1926
+    _globals["_ORDERLINESERVICE"]._serialized_end = 2526
 # @@protoc_insertion_point(module_scope)

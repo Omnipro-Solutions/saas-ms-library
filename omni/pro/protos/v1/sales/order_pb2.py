@@ -12,10 +12,11 @@ from google.protobuf.internal import builder as _builder
 _sym_db = _symbol_database.Default()
 
 
+from google.protobuf import wrappers_pb2 as google_dot_protobuf_dot_wrappers__pb2
 from omni.pro.protos.common import base_pb2 as common_dot_base__pb2
 
 DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
-    b'\n\x14v1/sales/order.proto\x12\x1fpro.omni.oms.api.v1.sales.order\x1a\x11\x63ommon/base.proto"\x9b\x02\n\x05Order\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0f\n\x07sale_id\x18\x03 \x01(\x05\x12\x17\n\x0fship_address_id\x18\x04 \x01(\x05\x12\x1a\n\x12\x64\x65livery_method_id\x18\x05 \x01(\x05\x12\x12\n\ncarrier_id\x18\x06 \x01(\x05\x12\x19\n\x11payment_method_id\x18\x07 \x01(\x05\x12\x11\n\ttax_total\x18\x08 \x01(\x02\x12\x10\n\x08subtotal\x18\t \x01(\x02\x12\r\n\x05total\x18\n \x01(\x02\x12\x0e\n\x06\x61\x63tive\x18\x0b \x01(\x08\x12?\n\x0cobject_audit\x18\x0c \x01(\x0b\x32).pro.omni.oms.api.common.base.ObjectAudit"\x83\x02\n\x12OrderCreateRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0f\n\x07sale_id\x18\x02 \x01(\x05\x12\x17\n\x0fship_address_id\x18\x03 \x01(\x05\x12\x1a\n\x12\x64\x65livery_method_id\x18\x04 \x01(\x05\x12\x12\n\ncarrier_id\x18\x05 \x01(\x05\x12\x19\n\x11payment_method_id\x18\x06 \x01(\x05\x12\x11\n\ttax_total\x18\x07 \x01(\x02\x12\x10\n\x08subtotal\x18\x08 \x01(\x02\x12\r\n\x05total\x18\t \x01(\x02\x12\x36\n\x07\x63ontext\x18\n \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\x97\x01\n\x13OrderCreateResponse\x12\x35\n\x05order\x18\x01 \x01(\x0b\x32&.pro.omni.oms.api.v1.sales.order.Order\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\xee\x02\n\x10OrderReadRequest\x12\x37\n\x08group_by\x18\x01 \x03(\x0b\x32%.pro.omni.oms.api.common.base.GroupBy\x12\x35\n\x07sort_by\x18\x02 \x01(\x0b\x32$.pro.omni.oms.api.common.base.SortBy\x12\x34\n\x06\x66ields\x18\x03 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Fields\x12\x34\n\x06\x66ilter\x18\x04 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Filter\x12:\n\tpaginated\x18\x05 \x01(\x0b\x32\'.pro.omni.oms.api.common.base.Paginated\x12\n\n\x02id\x18\x06 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x07 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xd0\x01\n\x11OrderReadResponse\x12\x35\n\x05order\x18\x01 \x03(\x0b\x32&.pro.omni.oms.api.v1.sales.order.Order\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard\x12\x39\n\tmeta_data\x18\x03 \x01(\x0b\x32&.pro.omni.oms.api.common.base.MetaData"\x83\x01\n\x12OrderUpdateRequest\x12\x35\n\x05order\x18\x01 \x01(\x0b\x32&.pro.omni.oms.api.v1.sales.order.Order\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\x97\x01\n\x13OrderUpdateResponse\x12\x35\n\x05order\x18\x01 \x01(\x0b\x32&.pro.omni.oms.api.v1.sales.order.Order\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"X\n\x12OrderDeleteRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"`\n\x13OrderDeleteResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard2\xf8\x03\n\x0cOrderService\x12z\n\x0bOrderCreate\x12\x33.pro.omni.oms.api.v1.sales.order.OrderCreateRequest\x1a\x34.pro.omni.oms.api.v1.sales.order.OrderCreateResponse"\x00\x12t\n\tOrderRead\x12\x31.pro.omni.oms.api.v1.sales.order.OrderReadRequest\x1a\x32.pro.omni.oms.api.v1.sales.order.OrderReadResponse"\x00\x12z\n\x0bOrderUpdate\x12\x33.pro.omni.oms.api.v1.sales.order.OrderUpdateRequest\x1a\x34.pro.omni.oms.api.v1.sales.order.OrderUpdateResponse"\x00\x12z\n\x0bOrderDelete\x12\x33.pro.omni.oms.api.v1.sales.order.OrderDeleteRequest\x1a\x34.pro.omni.oms.api.v1.sales.order.OrderDeleteResponse"\x00\x62\x06proto3'
+    b'\n\x14v1/sales/order.proto\x12\x1fpro.omni.oms.api.v1.sales.order\x1a\x11\x63ommon/base.proto\x1a\x1egoogle/protobuf/wrappers.proto"\xb7\x02\n\x05Order\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0f\n\x07sale_id\x18\x03 \x01(\x05\x12\x17\n\x0fship_address_id\x18\x04 \x01(\x05\x12\x1a\n\x12\x64\x65livery_method_id\x18\x05 \x01(\x05\x12\x12\n\ncarrier_id\x18\x06 \x01(\x05\x12\x19\n\x11payment_method_id\x18\x07 \x01(\x05\x12\x11\n\ttax_total\x18\x08 \x01(\x02\x12\x10\n\x08subtotal\x18\t \x01(\x02\x12\r\n\x05total\x18\n \x01(\x02\x12*\n\x06\x61\x63tive\x18\x0b \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12?\n\x0cobject_audit\x18\x0c \x01(\x0b\x32).pro.omni.oms.api.common.base.ObjectAudit"\x83\x02\n\x12OrderCreateRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0f\n\x07sale_id\x18\x02 \x01(\x05\x12\x17\n\x0fship_address_id\x18\x03 \x01(\x05\x12\x1a\n\x12\x64\x65livery_method_id\x18\x04 \x01(\x05\x12\x12\n\ncarrier_id\x18\x05 \x01(\x05\x12\x19\n\x11payment_method_id\x18\x06 \x01(\x05\x12\x11\n\ttax_total\x18\x07 \x01(\x02\x12\x10\n\x08subtotal\x18\x08 \x01(\x02\x12\r\n\x05total\x18\t \x01(\x02\x12\x36\n\x07\x63ontext\x18\n \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\x97\x01\n\x13OrderCreateResponse\x12\x35\n\x05order\x18\x01 \x01(\x0b\x32&.pro.omni.oms.api.v1.sales.order.Order\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\xee\x02\n\x10OrderReadRequest\x12\x37\n\x08group_by\x18\x01 \x03(\x0b\x32%.pro.omni.oms.api.common.base.GroupBy\x12\x35\n\x07sort_by\x18\x02 \x01(\x0b\x32$.pro.omni.oms.api.common.base.SortBy\x12\x34\n\x06\x66ields\x18\x03 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Fields\x12\x34\n\x06\x66ilter\x18\x04 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Filter\x12:\n\tpaginated\x18\x05 \x01(\x0b\x32\'.pro.omni.oms.api.common.base.Paginated\x12\n\n\x02id\x18\x06 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x07 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xd0\x01\n\x11OrderReadResponse\x12\x35\n\x05order\x18\x01 \x03(\x0b\x32&.pro.omni.oms.api.v1.sales.order.Order\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard\x12\x39\n\tmeta_data\x18\x03 \x01(\x0b\x32&.pro.omni.oms.api.common.base.MetaData"\x83\x01\n\x12OrderUpdateRequest\x12\x35\n\x05order\x18\x01 \x01(\x0b\x32&.pro.omni.oms.api.v1.sales.order.Order\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\x97\x01\n\x13OrderUpdateResponse\x12\x35\n\x05order\x18\x01 \x01(\x0b\x32&.pro.omni.oms.api.v1.sales.order.Order\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"X\n\x12OrderDeleteRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"`\n\x13OrderDeleteResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard2\xf8\x03\n\x0cOrderService\x12z\n\x0bOrderCreate\x12\x33.pro.omni.oms.api.v1.sales.order.OrderCreateRequest\x1a\x34.pro.omni.oms.api.v1.sales.order.OrderCreateResponse"\x00\x12t\n\tOrderRead\x12\x31.pro.omni.oms.api.v1.sales.order.OrderReadRequest\x1a\x32.pro.omni.oms.api.v1.sales.order.OrderReadResponse"\x00\x12z\n\x0bOrderUpdate\x12\x33.pro.omni.oms.api.v1.sales.order.OrderUpdateRequest\x1a\x34.pro.omni.oms.api.v1.sales.order.OrderUpdateResponse"\x00\x12z\n\x0bOrderDelete\x12\x33.pro.omni.oms.api.v1.sales.order.OrderDeleteRequest\x1a\x34.pro.omni.oms.api.v1.sales.order.OrderDeleteResponse"\x00\x62\x06proto3'
 )
 
 _globals = globals()
@@ -23,24 +24,24 @@ _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, "v1.sales.order_pb2", _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
     DESCRIPTOR._options = None
-    _globals["_ORDER"]._serialized_start = 77
-    _globals["_ORDER"]._serialized_end = 360
-    _globals["_ORDERCREATEREQUEST"]._serialized_start = 363
-    _globals["_ORDERCREATEREQUEST"]._serialized_end = 622
-    _globals["_ORDERCREATERESPONSE"]._serialized_start = 625
-    _globals["_ORDERCREATERESPONSE"]._serialized_end = 776
-    _globals["_ORDERREADREQUEST"]._serialized_start = 779
-    _globals["_ORDERREADREQUEST"]._serialized_end = 1145
-    _globals["_ORDERREADRESPONSE"]._serialized_start = 1148
-    _globals["_ORDERREADRESPONSE"]._serialized_end = 1356
-    _globals["_ORDERUPDATEREQUEST"]._serialized_start = 1359
-    _globals["_ORDERUPDATEREQUEST"]._serialized_end = 1490
-    _globals["_ORDERUPDATERESPONSE"]._serialized_start = 1493
-    _globals["_ORDERUPDATERESPONSE"]._serialized_end = 1644
-    _globals["_ORDERDELETEREQUEST"]._serialized_start = 1646
-    _globals["_ORDERDELETEREQUEST"]._serialized_end = 1734
-    _globals["_ORDERDELETERESPONSE"]._serialized_start = 1736
-    _globals["_ORDERDELETERESPONSE"]._serialized_end = 1832
-    _globals["_ORDERSERVICE"]._serialized_start = 1835
-    _globals["_ORDERSERVICE"]._serialized_end = 2339
+    _globals["_ORDER"]._serialized_start = 109
+    _globals["_ORDER"]._serialized_end = 420
+    _globals["_ORDERCREATEREQUEST"]._serialized_start = 423
+    _globals["_ORDERCREATEREQUEST"]._serialized_end = 682
+    _globals["_ORDERCREATERESPONSE"]._serialized_start = 685
+    _globals["_ORDERCREATERESPONSE"]._serialized_end = 836
+    _globals["_ORDERREADREQUEST"]._serialized_start = 839
+    _globals["_ORDERREADREQUEST"]._serialized_end = 1205
+    _globals["_ORDERREADRESPONSE"]._serialized_start = 1208
+    _globals["_ORDERREADRESPONSE"]._serialized_end = 1416
+    _globals["_ORDERUPDATEREQUEST"]._serialized_start = 1419
+    _globals["_ORDERUPDATEREQUEST"]._serialized_end = 1550
+    _globals["_ORDERUPDATERESPONSE"]._serialized_start = 1553
+    _globals["_ORDERUPDATERESPONSE"]._serialized_end = 1704
+    _globals["_ORDERDELETEREQUEST"]._serialized_start = 1706
+    _globals["_ORDERDELETEREQUEST"]._serialized_end = 1794
+    _globals["_ORDERDELETERESPONSE"]._serialized_start = 1796
+    _globals["_ORDERDELETERESPONSE"]._serialized_end = 1892
+    _globals["_ORDERSERVICE"]._serialized_start = 1895
+    _globals["_ORDERSERVICE"]._serialized_end = 2399
 # @@protoc_insertion_point(module_scope)
