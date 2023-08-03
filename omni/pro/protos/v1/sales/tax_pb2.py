@@ -12,10 +12,11 @@ from google.protobuf.internal import builder as _builder
 _sym_db = _symbol_database.Default()
 
 
+from google.protobuf import wrappers_pb2 as google_dot_protobuf_dot_wrappers__pb2
 from omni.pro.protos.common import base_pb2 as common_dot_base__pb2
 
 DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
-    b'\n\x12v1/sales/tax.proto\x12\x1dpro.omni.oms.api.v1.sales.tax\x1a\x11\x63ommon/base.proto"\x92\x01\n\x03Tax\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x12\n\ntax_doc_id\x18\x02 \x01(\t\x12\x0c\n\x04\x63ode\x18\x03 \x01(\t\x12\x0c\n\x04name\x18\x04 \x01(\t\x12\x0e\n\x06\x61\x63tive\x18\x05 \x01(\x08\x12?\n\x0cobject_audit\x18\x06 \x01(\x0b\x32).pro.omni.oms.api.common.base.ObjectAudit"z\n\x10TaxCreateRequest\x12\x12\n\ntax_doc_id\x18\x01 \x01(\t\x12\x0c\n\x04\x63ode\x18\x02 \x01(\t\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\x36\n\x07\x63ontext\x18\x04 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\x8f\x01\n\x11TaxCreateResponse\x12/\n\x03tax\x18\x01 \x01(\x0b\x32".pro.omni.oms.api.v1.sales.tax.Tax\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\xec\x02\n\x0eTaxReadRequest\x12\x37\n\x08group_by\x18\x01 \x03(\x0b\x32%.pro.omni.oms.api.common.base.GroupBy\x12\x35\n\x07sort_by\x18\x02 \x01(\x0b\x32$.pro.omni.oms.api.common.base.SortBy\x12\x34\n\x06\x66ields\x18\x03 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Fields\x12\x34\n\x06\x66ilter\x18\x04 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Filter\x12:\n\tpaginated\x18\x05 \x01(\x0b\x32\'.pro.omni.oms.api.common.base.Paginated\x12\n\n\x02id\x18\x06 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x07 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xc8\x01\n\x0fTaxReadResponse\x12/\n\x03tax\x18\x01 \x03(\x0b\x32".pro.omni.oms.api.v1.sales.tax.Tax\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard\x12\x39\n\tmeta_data\x18\x03 \x01(\x0b\x32&.pro.omni.oms.api.common.base.MetaData"{\n\x10TaxUpdateRequest\x12/\n\x03tax\x18\x01 \x01(\x0b\x32".pro.omni.oms.api.v1.sales.tax.Tax\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\x8f\x01\n\x11TaxUpdateResponse\x12/\n\x03tax\x18\x01 \x01(\x0b\x32".pro.omni.oms.api.v1.sales.tax.Tax\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"V\n\x10TaxDeleteRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"^\n\x11TaxDeleteResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard2\xce\x03\n\nTaxService\x12p\n\tTaxCreate\x12/.pro.omni.oms.api.v1.sales.tax.TaxCreateRequest\x1a\x30.pro.omni.oms.api.v1.sales.tax.TaxCreateResponse"\x00\x12j\n\x07TaxRead\x12-.pro.omni.oms.api.v1.sales.tax.TaxReadRequest\x1a..pro.omni.oms.api.v1.sales.tax.TaxReadResponse"\x00\x12p\n\tTaxUpdate\x12/.pro.omni.oms.api.v1.sales.tax.TaxUpdateRequest\x1a\x30.pro.omni.oms.api.v1.sales.tax.TaxUpdateResponse"\x00\x12p\n\tTaxDelete\x12/.pro.omni.oms.api.v1.sales.tax.TaxDeleteRequest\x1a\x30.pro.omni.oms.api.v1.sales.tax.TaxDeleteResponse"\x00\x62\x06proto3'
+    b'\n\x12v1/sales/tax.proto\x12\x1dpro.omni.oms.api.v1.sales.tax\x1a\x11\x63ommon/base.proto\x1a\x1egoogle/protobuf/wrappers.proto"\xae\x01\n\x03Tax\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x12\n\ntax_doc_id\x18\x02 \x01(\t\x12\x0c\n\x04\x63ode\x18\x03 \x01(\t\x12\x0c\n\x04name\x18\x04 \x01(\t\x12*\n\x06\x61\x63tive\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12?\n\x0cobject_audit\x18\x06 \x01(\x0b\x32).pro.omni.oms.api.common.base.ObjectAudit"z\n\x10TaxCreateRequest\x12\x12\n\ntax_doc_id\x18\x01 \x01(\t\x12\x0c\n\x04\x63ode\x18\x02 \x01(\t\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\x36\n\x07\x63ontext\x18\x04 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\x8f\x01\n\x11TaxCreateResponse\x12/\n\x03tax\x18\x01 \x01(\x0b\x32".pro.omni.oms.api.v1.sales.tax.Tax\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\xec\x02\n\x0eTaxReadRequest\x12\x37\n\x08group_by\x18\x01 \x03(\x0b\x32%.pro.omni.oms.api.common.base.GroupBy\x12\x35\n\x07sort_by\x18\x02 \x01(\x0b\x32$.pro.omni.oms.api.common.base.SortBy\x12\x34\n\x06\x66ields\x18\x03 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Fields\x12\x34\n\x06\x66ilter\x18\x04 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Filter\x12:\n\tpaginated\x18\x05 \x01(\x0b\x32\'.pro.omni.oms.api.common.base.Paginated\x12\n\n\x02id\x18\x06 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x07 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xc8\x01\n\x0fTaxReadResponse\x12/\n\x03tax\x18\x01 \x03(\x0b\x32".pro.omni.oms.api.v1.sales.tax.Tax\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard\x12\x39\n\tmeta_data\x18\x03 \x01(\x0b\x32&.pro.omni.oms.api.common.base.MetaData"{\n\x10TaxUpdateRequest\x12/\n\x03tax\x18\x01 \x01(\x0b\x32".pro.omni.oms.api.v1.sales.tax.Tax\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\x8f\x01\n\x11TaxUpdateResponse\x12/\n\x03tax\x18\x01 \x01(\x0b\x32".pro.omni.oms.api.v1.sales.tax.Tax\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"V\n\x10TaxDeleteRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"^\n\x11TaxDeleteResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard2\xce\x03\n\nTaxService\x12p\n\tTaxCreate\x12/.pro.omni.oms.api.v1.sales.tax.TaxCreateRequest\x1a\x30.pro.omni.oms.api.v1.sales.tax.TaxCreateResponse"\x00\x12j\n\x07TaxRead\x12-.pro.omni.oms.api.v1.sales.tax.TaxReadRequest\x1a..pro.omni.oms.api.v1.sales.tax.TaxReadResponse"\x00\x12p\n\tTaxUpdate\x12/.pro.omni.oms.api.v1.sales.tax.TaxUpdateRequest\x1a\x30.pro.omni.oms.api.v1.sales.tax.TaxUpdateResponse"\x00\x12p\n\tTaxDelete\x12/.pro.omni.oms.api.v1.sales.tax.TaxDeleteRequest\x1a\x30.pro.omni.oms.api.v1.sales.tax.TaxDeleteResponse"\x00\x62\x06proto3'
 )
 
 _globals = globals()
@@ -23,24 +24,24 @@ _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, "v1.sales.tax_pb2", _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
     DESCRIPTOR._options = None
-    _globals["_TAX"]._serialized_start = 73
-    _globals["_TAX"]._serialized_end = 219
-    _globals["_TAXCREATEREQUEST"]._serialized_start = 221
-    _globals["_TAXCREATEREQUEST"]._serialized_end = 343
-    _globals["_TAXCREATERESPONSE"]._serialized_start = 346
-    _globals["_TAXCREATERESPONSE"]._serialized_end = 489
-    _globals["_TAXREADREQUEST"]._serialized_start = 492
-    _globals["_TAXREADREQUEST"]._serialized_end = 856
-    _globals["_TAXREADRESPONSE"]._serialized_start = 859
-    _globals["_TAXREADRESPONSE"]._serialized_end = 1059
-    _globals["_TAXUPDATEREQUEST"]._serialized_start = 1061
-    _globals["_TAXUPDATEREQUEST"]._serialized_end = 1184
-    _globals["_TAXUPDATERESPONSE"]._serialized_start = 1187
-    _globals["_TAXUPDATERESPONSE"]._serialized_end = 1330
-    _globals["_TAXDELETEREQUEST"]._serialized_start = 1332
-    _globals["_TAXDELETEREQUEST"]._serialized_end = 1418
-    _globals["_TAXDELETERESPONSE"]._serialized_start = 1420
-    _globals["_TAXDELETERESPONSE"]._serialized_end = 1514
-    _globals["_TAXSERVICE"]._serialized_start = 1517
-    _globals["_TAXSERVICE"]._serialized_end = 1979
+    _globals["_TAX"]._serialized_start = 105
+    _globals["_TAX"]._serialized_end = 279
+    _globals["_TAXCREATEREQUEST"]._serialized_start = 281
+    _globals["_TAXCREATEREQUEST"]._serialized_end = 403
+    _globals["_TAXCREATERESPONSE"]._serialized_start = 406
+    _globals["_TAXCREATERESPONSE"]._serialized_end = 549
+    _globals["_TAXREADREQUEST"]._serialized_start = 552
+    _globals["_TAXREADREQUEST"]._serialized_end = 916
+    _globals["_TAXREADRESPONSE"]._serialized_start = 919
+    _globals["_TAXREADRESPONSE"]._serialized_end = 1119
+    _globals["_TAXUPDATEREQUEST"]._serialized_start = 1121
+    _globals["_TAXUPDATEREQUEST"]._serialized_end = 1244
+    _globals["_TAXUPDATERESPONSE"]._serialized_start = 1247
+    _globals["_TAXUPDATERESPONSE"]._serialized_end = 1390
+    _globals["_TAXDELETEREQUEST"]._serialized_start = 1392
+    _globals["_TAXDELETEREQUEST"]._serialized_end = 1478
+    _globals["_TAXDELETERESPONSE"]._serialized_start = 1480
+    _globals["_TAXDELETERESPONSE"]._serialized_end = 1574
+    _globals["_TAXSERVICE"]._serialized_start = 1577
+    _globals["_TAXSERVICE"]._serialized_end = 2039
 # @@protoc_insertion_point(module_scope)

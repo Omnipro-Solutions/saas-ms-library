@@ -37,24 +37,32 @@ class Location(_message.Message):
     ) -> None: ...
 
 class LocationCreateRequest(_message.Message):
-    __slots__ = ["name", "context"]
+    __slots__ = ["name", "code", "location_sql_id", "context"]
     NAME_FIELD_NUMBER: _ClassVar[int]
+    CODE_FIELD_NUMBER: _ClassVar[int]
+    LOCATION_SQL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
+    code: str
+    location_sql_id: str
     context: _base_pb2.Context
     def __init__(
-        self, name: _Optional[str] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
+        self,
+        name: _Optional[str] = ...,
+        code: _Optional[str] = ...,
+        location_sql_id: _Optional[str] = ...,
+        context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
 class LocationCreateResponse(_message.Message):
-    __slots__ = ["Location", "response_standard"]
+    __slots__ = ["location", "response_standard"]
     LOCATION_FIELD_NUMBER: _ClassVar[int]
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
-    Location: Location
+    location: Location
     response_standard: _base_pb2.ResponseStandard
     def __init__(
         self,
-        Location: _Optional[_Union[Location, _Mapping]] = ...,
+        location: _Optional[_Union[Location, _Mapping]] = ...,
         response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
     ) -> None: ...
 
@@ -86,41 +94,41 @@ class LocationReadRequest(_message.Message):
     ) -> None: ...
 
 class LocationReadResponse(_message.Message):
-    __slots__ = ["Locations", "meta_data", "response_standard"]
+    __slots__ = ["locations", "meta_data", "response_standard"]
     LOCATIONS_FIELD_NUMBER: _ClassVar[int]
     META_DATA_FIELD_NUMBER: _ClassVar[int]
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
-    Locations: _containers.RepeatedCompositeFieldContainer[Location]
+    locations: _containers.RepeatedCompositeFieldContainer[Location]
     meta_data: _base_pb2.MetaData
     response_standard: _base_pb2.ResponseStandard
     def __init__(
         self,
-        Locations: _Optional[_Iterable[_Union[Location, _Mapping]]] = ...,
+        locations: _Optional[_Iterable[_Union[Location, _Mapping]]] = ...,
         meta_data: _Optional[_Union[_base_pb2.MetaData, _Mapping]] = ...,
         response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
     ) -> None: ...
 
 class LocationUpdateRequest(_message.Message):
-    __slots__ = ["Location", "context"]
+    __slots__ = ["location", "context"]
     LOCATION_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    Location: Location
+    location: Location
     context: _base_pb2.Context
     def __init__(
         self,
-        Location: _Optional[_Union[Location, _Mapping]] = ...,
+        location: _Optional[_Union[Location, _Mapping]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
 class LocationUpdateResponse(_message.Message):
-    __slots__ = ["Location", "response_standard"]
+    __slots__ = ["location", "response_standard"]
     LOCATION_FIELD_NUMBER: _ClassVar[int]
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
-    Location: Location
+    location: Location
     response_standard: _base_pb2.ResponseStandard
     def __init__(
         self,
-        Location: _Optional[_Union[Location, _Mapping]] = ...,
+        location: _Optional[_Union[Location, _Mapping]] = ...,
         response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
     ) -> None: ...
 

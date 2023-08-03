@@ -13,10 +13,11 @@ _sym_db = _symbol_database.Default()
 
 
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
+from google.protobuf import wrappers_pb2 as google_dot_protobuf_dot_wrappers__pb2
 from omni.pro.protos.common import base_pb2 as common_dot_base__pb2
 
 DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
-    b'\n\x13v1/sales/sale.proto\x12\x1epro.omni.oms.api.v1.sales.sale\x1a\x11\x63ommon/base.proto\x1a\x1fgoogle/protobuf/timestamp.proto"\xf6\x02\n\x04Sale\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\x12.\n\ndate_order\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x0e\n\x06origin\x18\x04 \x01(\t\x12\x12\n\nchannel_id\x18\x05 \x01(\x05\x12\x13\n\x0b\x63urrency_id\x18\x06 \x01(\x05\x12\x30\n\x0c\x63onfirm_date\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x11\n\tclient_id\x18\x08 \x01(\x05\x12\x17\n\x0f\x62ill_address_id\x18\t \x01(\x05\x12\x12\n\ncountry_id\x18\n \x01(\x05\x12\x14\n\x0cwarehouse_id\x18\x0b \x01(\x05\x12\x12\n\njson_order\x18\x0c \x01(\t\x12\x0e\n\x06\x61\x63tive\x18\r \x01(\x08\x12?\n\x0cobject_audit\x18\x0e \x01(\x0b\x32).pro.omni.oms.api.common.base.ObjectAudit"\xde\x02\n\x11SaleCreateRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12.\n\ndate_order\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x0e\n\x06origin\x18\x03 \x01(\t\x12\x12\n\nchannel_id\x18\x04 \x01(\x05\x12\x13\n\x0b\x63urrency_id\x18\x05 \x01(\x05\x12\x30\n\x0c\x63onfirm_date\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x11\n\tclient_id\x18\x07 \x01(\x05\x12\x17\n\x0f\x62ill_address_id\x18\x08 \x01(\x05\x12\x12\n\ncountry_id\x18\t \x01(\x05\x12\x14\n\x0cwarehouse_id\x18\n \x01(\x05\x12\x12\n\njson_order\x18\x0b \x01(\t\x12\x36\n\x07\x63ontext\x18\x0c \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\x93\x01\n\x12SaleCreateResponse\x12\x32\n\x04sale\x18\x01 \x01(\x0b\x32$.pro.omni.oms.api.v1.sales.sale.Sale\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\xed\x02\n\x0fSaleReadRequest\x12\x37\n\x08group_by\x18\x01 \x03(\x0b\x32%.pro.omni.oms.api.common.base.GroupBy\x12\x35\n\x07sort_by\x18\x02 \x01(\x0b\x32$.pro.omni.oms.api.common.base.SortBy\x12\x34\n\x06\x66ields\x18\x03 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Fields\x12\x34\n\x06\x66ilter\x18\x04 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Filter\x12:\n\tpaginated\x18\x05 \x01(\x0b\x32\'.pro.omni.oms.api.common.base.Paginated\x12\n\n\x02id\x18\x06 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x07 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xcc\x01\n\x10SaleReadResponse\x12\x32\n\x04sale\x18\x01 \x03(\x0b\x32$.pro.omni.oms.api.v1.sales.sale.Sale\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard\x12\x39\n\tmeta_data\x18\x03 \x01(\x0b\x32&.pro.omni.oms.api.common.base.MetaData"\x7f\n\x11SaleUpdateRequest\x12\x32\n\x04sale\x18\x01 \x01(\x0b\x32$.pro.omni.oms.api.v1.sales.sale.Sale\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\x93\x01\n\x12SaleUpdateResponse\x12\x32\n\x04sale\x18\x01 \x01(\x0b\x32$.pro.omni.oms.api.v1.sales.sale.Sale\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"W\n\x11SaleDeleteRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"_\n\x12SaleDeleteResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard2\xe3\x03\n\x0bSaleService\x12u\n\nSaleCreate\x12\x31.pro.omni.oms.api.v1.sales.sale.SaleCreateRequest\x1a\x32.pro.omni.oms.api.v1.sales.sale.SaleCreateResponse"\x00\x12o\n\x08SaleRead\x12/.pro.omni.oms.api.v1.sales.sale.SaleReadRequest\x1a\x30.pro.omni.oms.api.v1.sales.sale.SaleReadResponse"\x00\x12u\n\nSaleUpdate\x12\x31.pro.omni.oms.api.v1.sales.sale.SaleUpdateRequest\x1a\x32.pro.omni.oms.api.v1.sales.sale.SaleUpdateResponse"\x00\x12u\n\nSaleDelete\x12\x31.pro.omni.oms.api.v1.sales.sale.SaleDeleteRequest\x1a\x32.pro.omni.oms.api.v1.sales.sale.SaleDeleteResponse"\x00\x62\x06proto3'
+    b'\n\x13v1/sales/sale.proto\x12\x1epro.omni.oms.api.v1.sales.sale\x1a\x11\x63ommon/base.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/wrappers.proto"\x92\x03\n\x04Sale\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\x12.\n\ndate_order\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x0e\n\x06origin\x18\x04 \x01(\t\x12\x12\n\nchannel_id\x18\x05 \x01(\x05\x12\x13\n\x0b\x63urrency_id\x18\x06 \x01(\x05\x12\x30\n\x0c\x63onfirm_date\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x11\n\tclient_id\x18\x08 \x01(\x05\x12\x17\n\x0f\x62ill_address_id\x18\t \x01(\x05\x12\x12\n\ncountry_id\x18\n \x01(\x05\x12\x14\n\x0cwarehouse_id\x18\x0b \x01(\x05\x12\x12\n\njson_order\x18\x0c \x01(\t\x12*\n\x06\x61\x63tive\x18\r \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12?\n\x0cobject_audit\x18\x0e \x01(\x0b\x32).pro.omni.oms.api.common.base.ObjectAudit"\xde\x02\n\x11SaleCreateRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12.\n\ndate_order\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x0e\n\x06origin\x18\x03 \x01(\t\x12\x12\n\nchannel_id\x18\x04 \x01(\x05\x12\x13\n\x0b\x63urrency_id\x18\x05 \x01(\x05\x12\x30\n\x0c\x63onfirm_date\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x11\n\tclient_id\x18\x07 \x01(\x05\x12\x17\n\x0f\x62ill_address_id\x18\x08 \x01(\x05\x12\x12\n\ncountry_id\x18\t \x01(\x05\x12\x14\n\x0cwarehouse_id\x18\n \x01(\x05\x12\x12\n\njson_order\x18\x0b \x01(\t\x12\x36\n\x07\x63ontext\x18\x0c \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\x93\x01\n\x12SaleCreateResponse\x12\x32\n\x04sale\x18\x01 \x01(\x0b\x32$.pro.omni.oms.api.v1.sales.sale.Sale\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\xed\x02\n\x0fSaleReadRequest\x12\x37\n\x08group_by\x18\x01 \x03(\x0b\x32%.pro.omni.oms.api.common.base.GroupBy\x12\x35\n\x07sort_by\x18\x02 \x01(\x0b\x32$.pro.omni.oms.api.common.base.SortBy\x12\x34\n\x06\x66ields\x18\x03 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Fields\x12\x34\n\x06\x66ilter\x18\x04 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Filter\x12:\n\tpaginated\x18\x05 \x01(\x0b\x32\'.pro.omni.oms.api.common.base.Paginated\x12\n\n\x02id\x18\x06 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x07 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xcc\x01\n\x10SaleReadResponse\x12\x32\n\x04sale\x18\x01 \x03(\x0b\x32$.pro.omni.oms.api.v1.sales.sale.Sale\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard\x12\x39\n\tmeta_data\x18\x03 \x01(\x0b\x32&.pro.omni.oms.api.common.base.MetaData"\x7f\n\x11SaleUpdateRequest\x12\x32\n\x04sale\x18\x01 \x01(\x0b\x32$.pro.omni.oms.api.v1.sales.sale.Sale\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\x93\x01\n\x12SaleUpdateResponse\x12\x32\n\x04sale\x18\x01 \x01(\x0b\x32$.pro.omni.oms.api.v1.sales.sale.Sale\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"W\n\x11SaleDeleteRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"_\n\x12SaleDeleteResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard2\xe3\x03\n\x0bSaleService\x12u\n\nSaleCreate\x12\x31.pro.omni.oms.api.v1.sales.sale.SaleCreateRequest\x1a\x32.pro.omni.oms.api.v1.sales.sale.SaleCreateResponse"\x00\x12o\n\x08SaleRead\x12/.pro.omni.oms.api.v1.sales.sale.SaleReadRequest\x1a\x30.pro.omni.oms.api.v1.sales.sale.SaleReadResponse"\x00\x12u\n\nSaleUpdate\x12\x31.pro.omni.oms.api.v1.sales.sale.SaleUpdateRequest\x1a\x32.pro.omni.oms.api.v1.sales.sale.SaleUpdateResponse"\x00\x12u\n\nSaleDelete\x12\x31.pro.omni.oms.api.v1.sales.sale.SaleDeleteRequest\x1a\x32.pro.omni.oms.api.v1.sales.sale.SaleDeleteResponse"\x00\x62\x06proto3'
 )
 
 _globals = globals()
@@ -24,24 +25,24 @@ _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, "v1.sales.sale_pb2", _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
     DESCRIPTOR._options = None
-    _globals["_SALE"]._serialized_start = 108
-    _globals["_SALE"]._serialized_end = 482
-    _globals["_SALECREATEREQUEST"]._serialized_start = 485
-    _globals["_SALECREATEREQUEST"]._serialized_end = 835
-    _globals["_SALECREATERESPONSE"]._serialized_start = 838
-    _globals["_SALECREATERESPONSE"]._serialized_end = 985
-    _globals["_SALEREADREQUEST"]._serialized_start = 988
-    _globals["_SALEREADREQUEST"]._serialized_end = 1353
-    _globals["_SALEREADRESPONSE"]._serialized_start = 1356
-    _globals["_SALEREADRESPONSE"]._serialized_end = 1560
-    _globals["_SALEUPDATEREQUEST"]._serialized_start = 1562
-    _globals["_SALEUPDATEREQUEST"]._serialized_end = 1689
-    _globals["_SALEUPDATERESPONSE"]._serialized_start = 1692
-    _globals["_SALEUPDATERESPONSE"]._serialized_end = 1839
-    _globals["_SALEDELETEREQUEST"]._serialized_start = 1841
-    _globals["_SALEDELETEREQUEST"]._serialized_end = 1928
-    _globals["_SALEDELETERESPONSE"]._serialized_start = 1930
-    _globals["_SALEDELETERESPONSE"]._serialized_end = 2025
-    _globals["_SALESERVICE"]._serialized_start = 2028
-    _globals["_SALESERVICE"]._serialized_end = 2511
+    _globals["_SALE"]._serialized_start = 140
+    _globals["_SALE"]._serialized_end = 542
+    _globals["_SALECREATEREQUEST"]._serialized_start = 545
+    _globals["_SALECREATEREQUEST"]._serialized_end = 895
+    _globals["_SALECREATERESPONSE"]._serialized_start = 898
+    _globals["_SALECREATERESPONSE"]._serialized_end = 1045
+    _globals["_SALEREADREQUEST"]._serialized_start = 1048
+    _globals["_SALEREADREQUEST"]._serialized_end = 1413
+    _globals["_SALEREADRESPONSE"]._serialized_start = 1416
+    _globals["_SALEREADRESPONSE"]._serialized_end = 1620
+    _globals["_SALEUPDATEREQUEST"]._serialized_start = 1622
+    _globals["_SALEUPDATEREQUEST"]._serialized_end = 1749
+    _globals["_SALEUPDATERESPONSE"]._serialized_start = 1752
+    _globals["_SALEUPDATERESPONSE"]._serialized_end = 1899
+    _globals["_SALEDELETEREQUEST"]._serialized_start = 1901
+    _globals["_SALEDELETEREQUEST"]._serialized_end = 1988
+    _globals["_SALEDELETERESPONSE"]._serialized_start = 1990
+    _globals["_SALEDELETERESPONSE"]._serialized_end = 2085
+    _globals["_SALESERVICE"]._serialized_start = 2088
+    _globals["_SALESERVICE"]._serialized_end = 2571
 # @@protoc_insertion_point(module_scope)
