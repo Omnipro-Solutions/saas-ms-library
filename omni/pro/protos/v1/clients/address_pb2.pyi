@@ -1,27 +1,14 @@
 from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
 from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
-from google.protobuf.internal import containers as _containers
+from google.protobuf import struct_pb2 as _struct_pb2
 from omni.pro.protos.common import base_pb2 as _base_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
-
-class TerritoryMatrix(_message.Message):
-    __slots__ = ["name", "code", "sequence"]
-    NAME_FIELD_NUMBER: _ClassVar[int]
-    CODE_FIELD_NUMBER: _ClassVar[int]
-    SEQUENCE_FIELD_NUMBER: _ClassVar[int]
-    name: str
-    code: str
-    sequence: int
-    def __init__(
-        self, name: _Optional[str] = ..., code: _Optional[str] = ..., sequence: _Optional[int] = ...
-    ) -> None: ...
 
 class Address(_message.Message):
     __slots__ = [
@@ -59,7 +46,7 @@ class Address(_message.Message):
     lat: str
     lng: str
     zip_code: str
-    territory_matrixes: _containers.RepeatedCompositeFieldContainer[TerritoryMatrix]
+    territory_matrixes: _struct_pb2.ListValue
     active: bool
     object_audit: _base_pb2.ObjectAudit
     def __init__(
@@ -73,7 +60,7 @@ class Address(_message.Message):
         lat: _Optional[str] = ...,
         lng: _Optional[str] = ...,
         zip_code: _Optional[str] = ...,
-        territory_matrixes: _Optional[_Iterable[_Union[TerritoryMatrix, _Mapping]]] = ...,
+        territory_matrixes: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
         active: bool = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
@@ -115,7 +102,7 @@ class AddressCreateRequest(_message.Message):
     lat: str
     lng: str
     zip_code: str
-    territory_matrixes: _containers.RepeatedCompositeFieldContainer[TerritoryMatrix]
+    territory_matrixes: _struct_pb2.ListValue
     context: _base_pb2.Context
     def __init__(
         self,
@@ -129,7 +116,7 @@ class AddressCreateRequest(_message.Message):
         lat: _Optional[str] = ...,
         lng: _Optional[str] = ...,
         zip_code: _Optional[str] = ...,
-        territory_matrixes: _Optional[_Iterable[_Union[TerritoryMatrix, _Mapping]]] = ...,
+        territory_matrixes: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 

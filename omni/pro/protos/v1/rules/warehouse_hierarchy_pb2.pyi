@@ -17,8 +17,8 @@ DESCRIPTOR: _descriptor.FileDescriptor
 class WarehouseHierarchy(_message.Message):
     __slots__ = [
         "id",
-        "warehouse_id",
-        "location_id",
+        "warehouse",
+        "location",
         "quantity_security",
         "sequence",
         "sequence_order",
@@ -26,16 +26,16 @@ class WarehouseHierarchy(_message.Message):
         "object_audit",
     ]
     ID_FIELD_NUMBER: _ClassVar[int]
-    WAREHOUSE_ID_FIELD_NUMBER: _ClassVar[int]
-    LOCATION_ID_FIELD_NUMBER: _ClassVar[int]
+    WAREHOUSE_FIELD_NUMBER: _ClassVar[int]
+    LOCATION_FIELD_NUMBER: _ClassVar[int]
     QUANTITY_SECURITY_FIELD_NUMBER: _ClassVar[int]
     SEQUENCE_FIELD_NUMBER: _ClassVar[int]
     SEQUENCE_ORDER_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
-    warehouse_id: _warehouse_pb2.Warehouse
-    location_id: _location_pb2.Location
+    warehouse: _warehouse_pb2.Warehouse
+    location: _location_pb2.Location
     quantity_security: float
     sequence: int
     sequence_order: _wrappers_pb2.BoolValue
@@ -44,8 +44,8 @@ class WarehouseHierarchy(_message.Message):
     def __init__(
         self,
         id: _Optional[str] = ...,
-        warehouse_id: _Optional[_Union[_warehouse_pb2.Warehouse, _Mapping]] = ...,
-        location_id: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
+        warehouse: _Optional[_Union[_warehouse_pb2.Warehouse, _Mapping]] = ...,
+        location: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
         quantity_security: _Optional[float] = ...,
         sequence: _Optional[int] = ...,
         sequence_order: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
