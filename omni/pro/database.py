@@ -318,7 +318,7 @@ class RedisManager(object):
 
     def get_connection(self) -> RedisConnection:
         if Config.TESTING:
-            return fakeredis.FakeStrictRedis()
+            return fakeredis.FakeStrictRedis(server=FakeRedisServer.get_instance())
         return self._connection
 
     def set_connection(self, connection: RedisConnection) -> None:
@@ -618,3 +618,18 @@ class QueryBuilder:
         if sort_by.type == sort_by.DESC:
             return [getattr(model, sort_by.name_field).desc()]
         return [getattr(model, sort_by.name_field)]
+
+
+class FakeRedisServer:
+    _instance = None
+
+    @classmethod
+    def get_instance(cls) -> fakeredis.FakeServer:
+        if not cls._instance:
+            cls._instance = cls._create_instance()
+        return cls._instance
+
+    @classmethod
+    def _create_instance(cls) -> fakeredis.FakeServer:
+        server = fakeredis.FakeServer()
+        return server

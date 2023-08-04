@@ -67,7 +67,7 @@ class Warehouse(_message.Message):
     name: str
     code: str
     country: _country_pb2.Country
-    territory_matrix_value: _struct_pb2.Struct
+    territory_matrix_value: _struct_pb2.ListValue
     address: str
     complement: str
     active: _wrappers_pb2.BoolValue
@@ -91,7 +91,7 @@ class Warehouse(_message.Message):
         name: _Optional[str] = ...,
         code: _Optional[str] = ...,
         country: _Optional[_Union[_country_pb2.Country, _Mapping]] = ...,
-        territory_matrix_value: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
+        territory_matrix_value: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
         address: _Optional[str] = ...,
         complement: _Optional[str] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
@@ -157,7 +157,7 @@ class WarehouseCreateRequest(_message.Message):
     name: str
     code: str
     country_code: str
-    territory_matrix_value: _struct_pb2.Struct
+    territory_matrix_value: _struct_pb2.ListValue
     address: str
     complement: str
     delivery_steps: str
@@ -179,7 +179,7 @@ class WarehouseCreateRequest(_message.Message):
         name: _Optional[str] = ...,
         code: _Optional[str] = ...,
         country_code: _Optional[str] = ...,
-        territory_matrix_value: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
+        territory_matrix_value: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
         address: _Optional[str] = ...,
         complement: _Optional[str] = ...,
         delivery_steps: _Optional[str] = ...,
