@@ -318,7 +318,9 @@ class RedisManager(object):
 
     def get_connection(self) -> RedisConnection:
         if Config.TESTING:
-            return fakeredis.FakeStrictRedis(server=FakeRedisServer.get_instance())
+            return fakeredis.FakeStrictRedis(
+                server=FakeRedisServer.get_instance(), charset="utf-8", decode_responses=True
+            )
         return self._connection
 
     def set_connection(self, connection: RedisConnection) -> None:
