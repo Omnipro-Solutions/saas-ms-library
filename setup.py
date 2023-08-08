@@ -24,6 +24,7 @@ INSTALL_REQUIRES = [
     "hiredis==2.2.3",
     "redis==4.6.0",
     "peewee==3.16.2",
+    "fakeredis[json]==2.17.0",
 ]
 
 # This call to setup() does all the work
