@@ -13,23 +13,23 @@ class DeliveryMethodServiceStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.DeliveryServiceCreate = channel.unary_unary(
-            "/pro.omni.oms.api.v1.sales.delivery.method.DeliveryMethodService/DeliveryServiceCreate",
+        self.DeliveryMethodCreate = channel.unary_unary(
+            "/pro.omni.oms.api.v1.sales.delivery.method.DeliveryMethodService/DeliveryMethodCreate",
             request_serializer=v1_dot_sales_dot_delivery__method__pb2.DeliveryMethodCreateRequest.SerializeToString,
             response_deserializer=v1_dot_sales_dot_delivery__method__pb2.DeliveryMethodCreateResponse.FromString,
         )
-        self.DeliveryServiceRead = channel.unary_unary(
-            "/pro.omni.oms.api.v1.sales.delivery.method.DeliveryMethodService/DeliveryServiceRead",
+        self.DeliveryMethodRead = channel.unary_unary(
+            "/pro.omni.oms.api.v1.sales.delivery.method.DeliveryMethodService/DeliveryMethodRead",
             request_serializer=v1_dot_sales_dot_delivery__method__pb2.DeliveryMethodReadRequest.SerializeToString,
             response_deserializer=v1_dot_sales_dot_delivery__method__pb2.DeliveryMethodReadResponse.FromString,
         )
-        self.DeliveryServiceUpdate = channel.unary_unary(
-            "/pro.omni.oms.api.v1.sales.delivery.method.DeliveryMethodService/DeliveryServiceUpdate",
+        self.DeliveryMethodUpdate = channel.unary_unary(
+            "/pro.omni.oms.api.v1.sales.delivery.method.DeliveryMethodService/DeliveryMethodUpdate",
             request_serializer=v1_dot_sales_dot_delivery__method__pb2.DeliveryMethodUpdateRequest.SerializeToString,
             response_deserializer=v1_dot_sales_dot_delivery__method__pb2.DeliveryMethodUpdateResponse.FromString,
         )
-        self.DeliveryServiceDelete = channel.unary_unary(
-            "/pro.omni.oms.api.v1.sales.delivery.method.DeliveryMethodService/DeliveryServiceDelete",
+        self.DeliveryMethodDelete = channel.unary_unary(
+            "/pro.omni.oms.api.v1.sales.delivery.method.DeliveryMethodService/DeliveryMethodDelete",
             request_serializer=v1_dot_sales_dot_delivery__method__pb2.DeliveryMethodDeleteRequest.SerializeToString,
             response_deserializer=v1_dot_sales_dot_delivery__method__pb2.DeliveryMethodDeleteResponse.FromString,
         )
@@ -38,25 +38,25 @@ class DeliveryMethodServiceStub(object):
 class DeliveryMethodServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
-    def DeliveryServiceCreate(self, request, context):
+    def DeliveryMethodCreate(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
-    def DeliveryServiceRead(self, request, context):
+    def DeliveryMethodRead(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
-    def DeliveryServiceUpdate(self, request, context):
+    def DeliveryMethodUpdate(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
-    def DeliveryServiceDelete(self, request, context):
+    def DeliveryMethodDelete(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -65,23 +65,23 @@ class DeliveryMethodServiceServicer(object):
 
 def add_DeliveryMethodServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-        "DeliveryServiceCreate": grpc.unary_unary_rpc_method_handler(
-            servicer.DeliveryServiceCreate,
+        "DeliveryMethodCreate": grpc.unary_unary_rpc_method_handler(
+            servicer.DeliveryMethodCreate,
             request_deserializer=v1_dot_sales_dot_delivery__method__pb2.DeliveryMethodCreateRequest.FromString,
             response_serializer=v1_dot_sales_dot_delivery__method__pb2.DeliveryMethodCreateResponse.SerializeToString,
         ),
-        "DeliveryServiceRead": grpc.unary_unary_rpc_method_handler(
-            servicer.DeliveryServiceRead,
+        "DeliveryMethodRead": grpc.unary_unary_rpc_method_handler(
+            servicer.DeliveryMethodRead,
             request_deserializer=v1_dot_sales_dot_delivery__method__pb2.DeliveryMethodReadRequest.FromString,
             response_serializer=v1_dot_sales_dot_delivery__method__pb2.DeliveryMethodReadResponse.SerializeToString,
         ),
-        "DeliveryServiceUpdate": grpc.unary_unary_rpc_method_handler(
-            servicer.DeliveryServiceUpdate,
+        "DeliveryMethodUpdate": grpc.unary_unary_rpc_method_handler(
+            servicer.DeliveryMethodUpdate,
             request_deserializer=v1_dot_sales_dot_delivery__method__pb2.DeliveryMethodUpdateRequest.FromString,
             response_serializer=v1_dot_sales_dot_delivery__method__pb2.DeliveryMethodUpdateResponse.SerializeToString,
         ),
-        "DeliveryServiceDelete": grpc.unary_unary_rpc_method_handler(
-            servicer.DeliveryServiceDelete,
+        "DeliveryMethodDelete": grpc.unary_unary_rpc_method_handler(
+            servicer.DeliveryMethodDelete,
             request_deserializer=v1_dot_sales_dot_delivery__method__pb2.DeliveryMethodDeleteRequest.FromString,
             response_serializer=v1_dot_sales_dot_delivery__method__pb2.DeliveryMethodDeleteResponse.SerializeToString,
         ),
@@ -97,7 +97,7 @@ class DeliveryMethodService(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def DeliveryServiceCreate(
+    def DeliveryMethodCreate(
         request,
         target,
         options=(),
@@ -112,7 +112,7 @@ class DeliveryMethodService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            "/pro.omni.oms.api.v1.sales.delivery.method.DeliveryMethodService/DeliveryServiceCreate",
+            "/pro.omni.oms.api.v1.sales.delivery.method.DeliveryMethodService/DeliveryMethodCreate",
             v1_dot_sales_dot_delivery__method__pb2.DeliveryMethodCreateRequest.SerializeToString,
             v1_dot_sales_dot_delivery__method__pb2.DeliveryMethodCreateResponse.FromString,
             options,
@@ -126,7 +126,7 @@ class DeliveryMethodService(object):
         )
 
     @staticmethod
-    def DeliveryServiceRead(
+    def DeliveryMethodRead(
         request,
         target,
         options=(),
@@ -141,7 +141,7 @@ class DeliveryMethodService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            "/pro.omni.oms.api.v1.sales.delivery.method.DeliveryMethodService/DeliveryServiceRead",
+            "/pro.omni.oms.api.v1.sales.delivery.method.DeliveryMethodService/DeliveryMethodRead",
             v1_dot_sales_dot_delivery__method__pb2.DeliveryMethodReadRequest.SerializeToString,
             v1_dot_sales_dot_delivery__method__pb2.DeliveryMethodReadResponse.FromString,
             options,
@@ -155,7 +155,7 @@ class DeliveryMethodService(object):
         )
 
     @staticmethod
-    def DeliveryServiceUpdate(
+    def DeliveryMethodUpdate(
         request,
         target,
         options=(),
@@ -170,7 +170,7 @@ class DeliveryMethodService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            "/pro.omni.oms.api.v1.sales.delivery.method.DeliveryMethodService/DeliveryServiceUpdate",
+            "/pro.omni.oms.api.v1.sales.delivery.method.DeliveryMethodService/DeliveryMethodUpdate",
             v1_dot_sales_dot_delivery__method__pb2.DeliveryMethodUpdateRequest.SerializeToString,
             v1_dot_sales_dot_delivery__method__pb2.DeliveryMethodUpdateResponse.FromString,
             options,
@@ -184,7 +184,7 @@ class DeliveryMethodService(object):
         )
 
     @staticmethod
-    def DeliveryServiceDelete(
+    def DeliveryMethodDelete(
         request,
         target,
         options=(),
@@ -199,7 +199,7 @@ class DeliveryMethodService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            "/pro.omni.oms.api.v1.sales.delivery.method.DeliveryMethodService/DeliveryServiceDelete",
+            "/pro.omni.oms.api.v1.sales.delivery.method.DeliveryMethodService/DeliveryMethodDelete",
             v1_dot_sales_dot_delivery__method__pb2.DeliveryMethodDeleteRequest.SerializeToString,
             v1_dot_sales_dot_delivery__method__pb2.DeliveryMethodDeleteResponse.FromString,
             options,

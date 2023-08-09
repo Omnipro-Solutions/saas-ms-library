@@ -154,16 +154,16 @@ class OrderReadRequest(_message.Message):
     ) -> None: ...
 
 class OrderReadResponse(_message.Message):
-    __slots__ = ["order", "response_standard", "meta_data"]
-    ORDER_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["orders", "response_standard", "meta_data"]
+    ORDERS_FIELD_NUMBER: _ClassVar[int]
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
     META_DATA_FIELD_NUMBER: _ClassVar[int]
-    order: _containers.RepeatedCompositeFieldContainer[Order]
+    orders: _containers.RepeatedCompositeFieldContainer[Order]
     response_standard: _base_pb2.ResponseStandard
     meta_data: _base_pb2.MetaData
     def __init__(
         self,
-        order: _Optional[_Iterable[_Union[Order, _Mapping]]] = ...,
+        orders: _Optional[_Iterable[_Union[Order, _Mapping]]] = ...,
         response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
         meta_data: _Optional[_Union[_base_pb2.MetaData, _Mapping]] = ...,
     ) -> None: ...
