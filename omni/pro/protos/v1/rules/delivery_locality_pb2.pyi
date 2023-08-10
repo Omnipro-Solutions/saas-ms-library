@@ -6,6 +6,7 @@ from typing import Union as _Union
 
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
+from google.protobuf import struct_pb2 as _struct_pb2
 from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
@@ -13,19 +14,17 @@ from omni.pro.protos.common import base_pb2 as _base_pb2
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class DeliveryLocality(_message.Message):
-    __slots__ = ["id", "name", "country_id", "territory_matrix_id", "territory_matrix_values", "active", "object_audit"]
+    __slots__ = ["id", "name", "country_id", "territory_matrix_values", "active", "object_audit"]
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     COUNTRY_ID_FIELD_NUMBER: _ClassVar[int]
-    TERRITORY_MATRIX_ID_FIELD_NUMBER: _ClassVar[int]
     TERRITORY_MATRIX_VALUES_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
     country_id: str
-    territory_matrix_id: str
-    territory_matrix_values: _containers.RepeatedScalarFieldContainer[str]
+    territory_matrix_values: _struct_pb2.ListValue
     active: _wrappers_pb2.BoolValue
     object_audit: _base_pb2.ObjectAudit
     def __init__(
@@ -33,30 +32,26 @@ class DeliveryLocality(_message.Message):
         id: _Optional[str] = ...,
         name: _Optional[str] = ...,
         country_id: _Optional[str] = ...,
-        territory_matrix_id: _Optional[str] = ...,
-        territory_matrix_values: _Optional[_Iterable[str]] = ...,
+        territory_matrix_values: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
 class DeliveryLocalityCreateRequest(_message.Message):
-    __slots__ = ["name", "country_id", "territory_matrix_id", "territory_matrix_values_ids", "context"]
+    __slots__ = ["name", "country_id", "territory_matrix_values", "context"]
     NAME_FIELD_NUMBER: _ClassVar[int]
     COUNTRY_ID_FIELD_NUMBER: _ClassVar[int]
-    TERRITORY_MATRIX_ID_FIELD_NUMBER: _ClassVar[int]
-    TERRITORY_MATRIX_VALUES_IDS_FIELD_NUMBER: _ClassVar[int]
+    TERRITORY_MATRIX_VALUES_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     country_id: str
-    territory_matrix_id: str
-    territory_matrix_values_ids: _containers.RepeatedScalarFieldContainer[str]
+    territory_matrix_values: _struct_pb2.ListValue
     context: _base_pb2.Context
     def __init__(
         self,
         name: _Optional[str] = ...,
         country_id: _Optional[str] = ...,
-        territory_matrix_id: _Optional[str] = ...,
-        territory_matrix_values_ids: _Optional[_Iterable[str]] = ...,
+        territory_matrix_values: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
