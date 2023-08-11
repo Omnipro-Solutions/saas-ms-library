@@ -23,7 +23,7 @@ class Location(_message.Message):
     id: str
     name: str
     code: str
-    location_sql_id: str
+    location_sql_id: int
     active: _wrappers_pb2.BoolValue
     object_audit: _base_pb2.ObjectAudit
     def __init__(
@@ -31,7 +31,7 @@ class Location(_message.Message):
         id: _Optional[str] = ...,
         name: _Optional[str] = ...,
         code: _Optional[str] = ...,
-        location_sql_id: _Optional[str] = ...,
+        location_sql_id: _Optional[int] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
