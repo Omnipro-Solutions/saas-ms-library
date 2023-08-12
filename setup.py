@@ -12,9 +12,21 @@ PACKAGE_NAME = "omni-pro"
 AUTHOR = "OMNI.PRO"
 AUTHOR_EMAIL = "development@omni.pro"
 URL = "https://github.com/Omnipro-Solutions/saas-ms-library"
-INSTALL_REQUIRES: list = []
-with open(HERE / "requirements.txt") as f:
-    INSTALL_REQUIRES = f.read().splitlines()
+INSTALL_REQUIRES = [
+    "protobuf==4.23.4",
+    "grpcio==1.56.0",
+    "grpcio-tools==1.56.0",
+    "boto3==1.28.4",
+    "mongoengine==0.27.0",
+    "marshmallow==3.19.0",
+    "hiredis==2.2.3",
+    "redis==4.6.0",
+    "peewee==3.16.2",
+    "fakeredis[json]==2.17.0",
+    "SQLAlchemy==2.0.19",
+]
+# with open(HERE / "requirements.txt") as f:
+#     INSTALL_REQUIRES = f.read().splitlines()
 
 # This call to setup() does all the work
 setup(
