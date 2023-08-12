@@ -1,15 +1,21 @@
 from datetime import datetime
 
 from google.protobuf.timestamp_pb2 import Timestamp
-from mongoengine import BooleanField, DateTimeField, Document, EmbeddedDocument, EmbeddedDocumentField, StringField
-from omni.pro.protos.common.base_pb2 import Context as ContextProto
-from omni.pro.protos.common.base_pb2 import Object as ObjectProto
-from omni.pro.protos.common.base_pb2 import ObjectAudit as AuditProto
-from peewee import BooleanField as BooleanFieldPeewee
-from peewee import CharField as CharFieldPeewee
-from peewee import DateTimeField as DateTimeFieldPeewee
-from peewee import IntegerField as IntegerFieldPeewee
-from peewee import Model
+from mongoengine import (
+    BooleanField,
+    DateTimeField,
+    Document,
+    EmbeddedDocument,
+    EmbeddedDocumentField,
+    StringField,
+)
+from sqlalchemy import Boolean, DateTime, String, ForeignKey
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, declared_attr
+from omni.pro.protos.common.base_pb2 import (
+    Context as ContextProto,
+    Object as ObjectProto,
+    ObjectAudit as AuditProto,
+)
 
 
 class BaseEmbeddedDocument(EmbeddedDocument):
@@ -44,7 +50,7 @@ class Audit(BaseEmbeddedDocument):
     deleted_at = DateTimeField()
     deleted_by = StringField()
 
-    def to_proto(self):
+    def to_proto(self) -> AuditProto:
         create_at_ts = Timestamp()
         create_at_ts.FromDatetime(self.created_at)
         update_at_ts = Timestamp()
@@ -61,7 +67,7 @@ class Context(BaseEmbeddedDocument):
     tenant = StringField()
     user = StringField()
 
-    def to_proto(self):
+    def to_proto(self) -> ContextProto:
         return ContextProto(
             tenant=self.tenant,
             user=self.user,
@@ -123,28 +129,53 @@ class BaseAuditEmbeddedDocument(BaseEmbeddedDocument):
 BaseAuditContextEmbeddedDocument = BaseAuditEmbeddedDocument
 
 
-class AuditPeewee(Model):
-    created_by = IntegerFieldPeewee(null=True, default=None)
-    updated_by = IntegerFieldPeewee(null=True, default=None)
-    deleted_by = IntegerFieldPeewee(null=True, default=None)
-    created_at = DateTimeFieldPeewee(null=True, default=None)
-    updated_at = DateTimeFieldPeewee(null=True, default=None)
-    deleted_at = DateTimeFieldPeewee(null=True, default=None)
+class Base(DeclarativeBase):
+    @declared_attr
+    def __tablename__(cls):
+        return cls.__name__.lower()
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+
+
+class User(Base):
+    name: Mapped[str] = mapped_column(String(30))
+    user_doc_id: Mapped[str] = mapped_column(String(30), unique=True)
+
+
+class BaseModelAuditMixin(Base):
+    __abstract__ = True
+    created_by: Mapped[int] = mapped_column(ForeignKey("user.id"), nullable=False)
+    updated_by: Mapped[int] = mapped_column(ForeignKey("user.id"))
+    deleted_by: Mapped[int] = mapped_column(ForeignKey("user.id"))
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(), default=datetime.utcnow, nullable=False
+    )
+    updated_at: Mapped[datetime] = mapped_column(DateTime())
+    deleted_at: Mapped[datetime] = mapped_column(DateTime())
 
     def to_proto(self) -> AuditProto:
-        return AuditProto(
+        create_at_ts = Timestamp()
+        create_at_ts.FromDatetime(self.created_at)
+        update_at_ts = Timestamp()
+        update_at_ts.FromDatetime(self.updated_at)
+        audit_proto = AuditProto(
             created_by=self.created_by,
             updated_by=self.updated_by,
-            deleted_by=self.deleted_by,
-            created_at=self.created_at,
-            updated_at=self.updated_at,
-            deleted_at=self.deleted_at,
+            created_at=create_at_ts,
+            updated_at=update_at_ts,
         )
+        if self.deleted_at:
+            deleted_at_ts = Timestamp()
+            deleted_at_ts.FromDatetime(self.deleted_at)
+            audit_proto.deleted_at = deleted_at_ts
+
+        return audit_proto
 
 
-class ContextPeewee(Model):
-    tenant = CharFieldPeewee()
-    user = CharFieldPeewee()
+class BaseModelContextMixin(Base):
+    __abstract__ = True
+    tenant: Mapped[str] = mapped_column(String(30), nullable=False)
+    user: Mapped[str] = mapped_column(String(30), nullable=False)
 
     def to_proto(self) -> ContextProto:
         return ContextProto(
@@ -153,52 +184,9 @@ class ContextPeewee(Model):
         )
 
 
-class BaseModel(Model):
-    created_by = CharFieldPeewee(null=True, default=None)
-    updated_by = CharFieldPeewee(null=True, default=None)
-    deleted_by = CharFieldPeewee(null=True, default=None)
-    created_at = DateTimeFieldPeewee(default=datetime.now())
-    updated_at = DateTimeFieldPeewee(null=True, default=None)
-    deleted_at = DateTimeFieldPeewee(null=True, default=None)
-    active = BooleanFieldPeewee(null=False, default=True)
-
-    class Meta:
-        abstract = True
-        database = None
-
-    def get_audit_proto(self) -> AuditProto:
-        created_at_ts = Timestamp()
-        created_at_ts.FromDatetime(self.created_at)
-        updated_at_ts = Timestamp()
-        updated_at_ts.FromDatetime(self.updated_at)
-        audit_proto = AuditProto(
-            created_by=self.created_by,
-            updated_by=self.updated_by,
-            deleted_by=self.deleted_by,
-            created_at=created_at_ts,
-            updated_at=updated_at_ts,
-        )
-        if self.deleted_at:
-            deleted_at_ts = Timestamp()
-            deleted_at_ts.FromDatetime(self.deleted_at)
-            audit_proto.deleted_at = deleted_at_ts
-        return audit_proto
-
-    def get_context_proto(self) -> ContextProto:
-        return ContextProto(
-            tenant=self.context["tenant"],
-            user=self.context["user"],
-        )
-
-    # TODO add a method to update the audit fields in update and delete
-    def save(self, *args, **kwargs):
-        if self.created_by is None:
-            self.created_by = self.context["user"]
-        if self.created_at is None:
-            self.created_at = datetime.now()
-        self.updated_by = self.context["user"]
-        self.updated_at = datetime.now()
-        return super().save(*args, **kwargs)
+class BaseModel(BaseModelAuditMixin, BaseModelContextMixin):
+    __abstract__ = True
+    active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
 
     def to_proto(self, *args, **kwargs):
         raise NotImplementedError
