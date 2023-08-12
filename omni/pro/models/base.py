@@ -10,7 +10,7 @@ from mongoengine import (
     StringField,
 )
 from sqlalchemy import Boolean, DateTime, String, ForeignKey
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, declared_attr
 from omni.pro.protos.common.base_pb2 import (
     Context as ContextProto,
     Object as ObjectProto,
@@ -130,14 +130,16 @@ BaseAuditContextEmbeddedDocument = BaseAuditEmbeddedDocument
 
 
 class Base(DeclarativeBase):
-    pass
+    @declared_attr
+    def __tablename__(cls):
+        return cls.__name__.lower()
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
 
 
 class User(Base):
-    __tablename__ = "user"
-    id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(30))
-    user_doc_id: Mapped[str] = mapped_column(String(30))
+    user_doc_id: Mapped[str] = mapped_column(String(30), unique=True)
 
 
 class BaseModelAuditMixin(Base):
