@@ -10,7 +10,8 @@ from mongoengine import (
     StringField,
 )
 from sqlalchemy import Boolean, DateTime, String, ForeignKey
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, declared_attr
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, declared_attr, declarative_mixin, relationship
+from sqlalchemy.ext.declarative import declarative_base
 from omni.pro.protos.common.base_pb2 import (
     Context as ContextProto,
     Object as ObjectProto,
@@ -129,27 +130,18 @@ class BaseAuditEmbeddedDocument(BaseEmbeddedDocument):
 BaseAuditContextEmbeddedDocument = BaseAuditEmbeddedDocument
 
 
-class Base(DeclarativeBase):
+class Base:
     @declared_attr
     def __tablename__(cls):
         return cls.__name__.lower()
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-
-
-class User(Base):
-    name: Mapped[str] = mapped_column(String(30))
-    user_doc_id: Mapped[str] = mapped_column(String(30), unique=True)
-
-
-class BaseModelAuditMixin(Base):
-    __abstract__ = True
-    created_by: Mapped[int] = mapped_column(ForeignKey("user.id"), nullable=False)
-    updated_by: Mapped[int] = mapped_column(ForeignKey("user.id"))
-    deleted_by: Mapped[int] = mapped_column(ForeignKey("user.id"))
-    created_at: Mapped[datetime] = mapped_column(
-        DateTime(), default=datetime.utcnow, nullable=False
-    )
+    active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
+    tenant: Mapped[str] = mapped_column(String(30), nullable=False)
+    created_by: Mapped[str] = mapped_column(String(50), nullable=False)
+    updated_by: Mapped[str] = mapped_column(String(50), nullable=False)
+    deleted_by: Mapped[str] = mapped_column(String(50))
+    created_at: Mapped[datetime] = mapped_column(DateTime(), default=datetime.utcnow, nullable=False)
     updated_at: Mapped[datetime] = mapped_column(DateTime())
     deleted_at: Mapped[datetime] = mapped_column(DateTime())
 
@@ -171,28 +163,34 @@ class BaseModelAuditMixin(Base):
 
         return audit_proto
 
-
-class BaseModelContextMixin(Base):
-    __abstract__ = True
-    tenant: Mapped[str] = mapped_column(String(30), nullable=False)
-    user: Mapped[str] = mapped_column(String(30), nullable=False)
-
-    def to_proto(self) -> ContextProto:
-        return ContextProto(
-            tenant=self.tenant,
-            user=self.user,
-        )
-
-
-class BaseModel(BaseModelAuditMixin, BaseModelContextMixin):
-    __abstract__ = True
-    active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
-
-    def to_proto(self, *args, **kwargs):
-        raise NotImplementedError
-
     def sync_data(self, *args, **kwargs):
         raise NotImplementedError
 
     def get_document_info(self, *args, **kwargs):
         raise NotImplementedError
+
+    def flush(self, *args, **kwargs):
+        if self.created_by is None:
+            self.created_by = self.context["user"]
+        if self.created_at is None:
+            self.created_at = datetime.now()
+        self.updated_by = self.context["user"]
+        self.updated_at = datetime.now()
+        return super().flush(*args, **kwargs)
+
+
+BaseModel = declarative_base(cls=Base)
+
+
+# class User(BaseModel):
+#     # @declared_attr
+#     # def user(cls):
+#     #     return relationship("User", back_populates="related_items")
+
+#     # __table_args__ = {"mysql_engine": "InnoDB"}
+#     # __mapper_args__ = {"always_refresh": True}
+
+#     name: Mapped[str] = mapped_column(String(30))
+#     sub: Mapped[str] = mapped_column(String(30))
+#     user_doc_id: Mapped[str] = mapped_column(String(30), unique=True)
+#     # user = relationship("User", back_populates="related_items")

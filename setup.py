@@ -13,7 +13,7 @@ AUTHOR = "OMNI.PRO"
 AUTHOR_EMAIL = "development@omni.pro"
 URL = "https://github.com/Omnipro-Solutions/saas-ms-library"
 INSTALL_REQUIRES: list = []
-with open("requirements.txt") as f:
+with open(HERE / "requirements.txt") as f:
     INSTALL_REQUIRES = f.read().splitlines()
 
 # This call to setup() does all the work
