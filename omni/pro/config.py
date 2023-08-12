@@ -27,3 +27,4 @@ class Config(object):
     SAAS_MS_UTILITIES = os.environ.get("SAAS_MS_UTILITIES")
     SAAS_MS_STOCK = os.environ.get("SAAS_MS_STOCK")
     SAAS_MS_CLIENT = os.environ.get("SAAS_MS_CLIENT")
+    TENANT_POSTGRESQL_URL = os.environ.get("TENANT_POSTGRESQL_URL")
