@@ -1,3 +1,5 @@
+import hashlib
+import json
 import math
 import secrets
 import string
@@ -138,3 +140,11 @@ class Resource(object):
     AWS_COGNITO = "cognito"
     MONGODB = "mongodb"
     POSTGRES = "postgres"
+
+
+def generate_hash(obj):
+    # Convertir el objeto a una cadena con claves ordenadas
+    obj_str = json.dumps(obj, sort_keys=True)
+
+    # Generar un hash SHA-256
+    return hashlib.sha256(obj_str.encode()).hexdigest()
