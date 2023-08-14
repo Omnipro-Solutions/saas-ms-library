@@ -172,14 +172,5 @@ class Base:
     def get_document_info(self, *args, **kwargs):
         raise NotImplementedError
 
-    def flush(self, *args, **kwargs):
-        if self.created_by is None:
-            self.created_by = self.context["user"]
-        if self.created_at is None:
-            self.created_at = datetime.now()
-        self.updated_by = self.context["user"]
-        self.updated_at = datetime.now()
-        return super().flush(*args, **kwargs)
-
 
 BaseModel = declarative_base(cls=Base)
