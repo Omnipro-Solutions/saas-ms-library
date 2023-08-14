@@ -5,11 +5,10 @@ from omni.pro import redis, util
 from omni.pro.config import Config
 from omni.pro.database import DatabaseManager
 from omni.pro.logger import LoggerTraceback, configure_logger
-from omni.pro.models.common.ms import MicroService as MicroServiceDocument
+from omni.pro.microservice import MicroService, MicroServiceDocument
 from omni.pro.protos.grpc_connector import Event, GRPClient
 from omni.pro.protos.v1.users import user_pb2
 from omni.pro.stack import ExitStackDocument
-from omni.pro.user.access import MicroService
 from omni.pro.validators import MicroServiceValidator
 
 logger = configure_logger(name=__name__)
