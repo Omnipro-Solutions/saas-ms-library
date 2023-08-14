@@ -3,15 +3,17 @@ import json
 import operator
 import time
 
+import fakeredis
 import mongoengine as mongo
 import redis
-import fakeredis
 from bson import ObjectId
 from omni.pro.config import Config
 from omni.pro.logger import configure_logger
 from omni.pro.protos.common import base_pb2
 from omni.pro.util import nested
 from peewee import Expression, Model, ModelSelect, PostgresqlDatabase
+from sqlalchemy import asc, create_engine, desc
+from sqlalchemy.orm import scoped_session, sessionmaker
 
 logger = configure_logger(name=__name__)
 
@@ -210,59 +212,55 @@ class MongoConnection(object):
         self.close()
 
 
-class PostgresDatabaseManager:
+class SessionManager:
+    def __init__(self, base_url):
+        self.base_url = base_url
+        self.engine = create_engine(self.base_url)
+        self.session_factory = sessionmaker(bind=self.engine)
+        self.Session = scoped_session(self.session_factory)
+
+    def __enter__(self):
+        # Esto dará una sesión específica para el hilo/contexto actual
+        return self.Session()
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        # Cuando el contexto se cierra, la sesión se cierra y elimina.
+        if exc_tb is None:
+            self.Session.commit()
+        else:
+            self.Session.rollback()
+        self.Session.remove()
+
+
+class PostgresDatabaseManager(SessionManager):
     def __init__(self, name: str, host: str, port: str, user: str, password: str):
         self.name = name
         self.host = host
         self.port = port
         self.user = user
         self.password = password
-        self.connection = PostgresqlDatabase(
-            database=self.name,
-            user=self.user,
-            password=self.password,
-            host=self.host,
-            port=self.port,
-        )
+        self.base_url = f"postgresql://{user}:{password}@{host}:{port}/{name}"
+        super().__init__(self.base_url)
 
     def get_db_connection(self):
-        return self.connection
+        return self.engine.connect()
 
-    def create_table_if_not_exists(self, model: Model):
-        model._meta.database = self.connection
-        with self.connection.atomic():
-            if model.table_exists():
-                return
-            self.connection.create_tables([model])
+    def create_new_record(self, model: Model, session, **kwargs):
+        record = model(**kwargs)
+        session.add(record)
+        session.flush()  # to get the ID or other default fields
+        return record
 
-    def create_new_record(self, model: Model, **kwargs):
-        model._meta.database = self.connection
-        with self.connection.atomic():
-            self.create_table_if_not_exists(model)
-            new_record = model(**kwargs)
-            new_record.bind(self.connection)
-            new_record.save()
-        return new_record
+    def retrieve_record(self, model: Model, session, filters: dict):
+        return session.query(model).filter_by(**filters).first()
 
-    def retrieve_record(self, model: Model, filters: dict):
-        model._meta.database = self.connection
-        with self.connection.atomic():
-            model.bind(self.connection)
-            self.create_table_if_not_exists(model)
-            query = model.get_or_none(**filters)
-        return query
-
-    def retrieve_record_by_id(self, model: Model, id: int):
-        model._meta.database = self.connection
-        with self.connection.atomic():
-            model.bind(self.connection)
-            self.create_table_if_not_exists(model)
-            query = model.get_by_id(id)
-        return query
+    def retrieve_record_by_id(self, model: Model, session, id: int):
+        return session.query(model).get(id)
 
     def list_records(
         self,
         model: Model,
+        session,
         id: int,
         fields: base_pb2.Fields,
         filter: base_pb2.Filter,
@@ -270,29 +268,27 @@ class PostgresDatabaseManager:
         sort_by: base_pb2.SortBy,
         paginated: base_pb2.Paginated,
     ):
-        with self.connection.atomic():
-            model.bind(self.connection)
-            self.create_table_if_not_exists(model)
-            model_select = QueryBuilder().build_filter(model, id, fields, filter, group_by, sort_by, paginated)
-        return model_select
+        filters = QueryBuilder.build_filter(model, session, id, fields, filter, group_by, sort_by, paginated)
 
-    def update_record(self, model, model_id, update_dict):
-        model._meta.database = self.connection
-        with self.connection.atomic():
-            model.bind(self.connection)
-            self.create_table_if_not_exists(model)
-            record = model.get_by_id(model_id)
-            record.update(**update_dict).where(model.id == model_id).execute()
-        return model.get_by_id(model_id)
+        query = session.query(model)
+        query = query.filter_by(**filters)
+        return query.all()
 
-    def delete_record_by_id(self, model, model_id):
-        model._meta.database = self.connection
-        with self.connection.atomic():
-            model.bind(self.connection)
-            self.create_table_if_not_exists(model)
-            record = model.get_by_id(model_id)
-            query = record.delete_instance()
-        return query
+    def update_record(self, model, session, model_id, update_dict):
+        record = session.query(model).get(model_id)
+        if not record:
+            return None
+        for key, value in update_dict.items():
+            setattr(record, key, value)
+        session.flush()
+        return record
+
+    def delete_record_by_id(self, model, session, model_id):
+        record = session.query(model).get(model_id)
+        if record:
+            session.delete(record)
+            return True
+        return False
 
 
 class RedisConnection:
@@ -332,9 +328,9 @@ class RedisManager(object):
                 json_obj = json.loads(json_obj)
             return rc.json().set(key, "$", json_obj)
 
-    def get_json(self, key):
+    def get_json(self, key, *args, no_escape=False):
         with self.get_connection() as rc:
-            return rc.json().get(key)
+            return rc.json().get(key, *args, no_escape=no_escape)
 
     def get_resource_config(self, service_id: str, tenant_code: str) -> dict:
         config = self.get_json(tenant_code)
@@ -506,26 +502,10 @@ class QueryBuilder:
     DEFAULT_PAGE_SIZE = 10
 
     @classmethod
-    def pre_to_in(cls, filters: base_pb2.Filter) -> list:
-        str_filter = filters.filter.replace("true", "True").replace("false", "False")
-        expression = ast.literal_eval(str_filter)
-        stack = []
-        result = []
-        for item in expression:
-            if isinstance(item, tuple):
-                if stack:
-                    result.append(item)
-                    result.append(stack.pop())
-                else:
-                    result.append(item)
-            else:
-                stack.append(item)
-        return result
-
-    @classmethod
     def build_filter(
         cls,
         model: Model,
+        session,
         id: int,
         fields: base_pb2.Fields,
         filter: base_pb2.Filter,
@@ -533,48 +513,37 @@ class QueryBuilder:
         sort_by: base_pb2.SortBy,
         paginated: base_pb2.Paginated,
     ):
-        query_fields = list()
-        query: Expression | None = None
-        group_by_fields = list()
-        order_by_fields = list()
-        model_select: ModelSelect
-        total: int = 0
+        query = session.query(model)
 
         if id:
-            model_select = model.select().where(model.id == id)
-            return list(model_select), model_select.count()
+            query = query.filter(model.id == id)
 
         if fields.ListFields():
-            query_fields = cls.build_fields(model, fields)
+            query = query.with_entities(*[getattr(model, f) for f in fields.name_field])
 
         if filter.ListFields():
             filter_custom = cls.pre_to_in(filter)
-            query = cls.build_query(model, filter_custom)
-
-        total = model.select(*query_fields).where(query).count()
-
-        if paginated.ListFields():
-            model_select = (
-                model.select(*query_fields)
-                .where(query)
-                .paginate(paginated.offset, paginated.limit or cls.DEFAULT_PAGE_SIZE)
-            )
-        else:
-            model_select = model.select(*query_fields).where(query).paginate(1, cls.DEFAULT_PAGE_SIZE)
+            query_filter = cls.build_query(model, filter_custom)
+            query = query.filter(query_filter)
 
         if group_by:
             group_by_fields = cls.build_group_by(model, group_by)
-            model_select = model_select.group_by(*group_by_fields)
+            query = query.group_by(*group_by_fields)
 
         if sort_by.ListFields():
             order_by_fields = cls.build_sort_by(model, sort_by)
-            model_select = model_select.order_by(*order_by_fields)
+            query = query.order_by(*order_by_fields)
 
-        return list(model_select), total
+        if paginated.ListFields():
+            query = query.offset(paginated.offset).limit(paginated.limit or cls.DEFAULT_PAGE_SIZE)
+
+        total = query.count()
+        return query.all(), total
 
     @classmethod
-    def build_query(cls, model: Model, filters: list) -> Expression | None:
-        query: Expression | None = None
+    def build_query(cls, model: Model, filters: list):
+        query = None
+
         filter_operator = None
         for item in filters:
             if isinstance(item, str):
@@ -583,10 +552,9 @@ class QueryBuilder:
                     raise ValueError(f"Invalid filter operator: {filter_operator}")
             elif isinstance(item, tuple) and len(item) == 3:
                 field, op, value = item
-                # TODO: add support for related fields
                 if "." in field:
                     related, field = field.split(".")
-                    related_model = getattr(model, related).rel_model
+                    related_model = getattr(model, related).property.argument
                     related_field = getattr(related_model, field)
                     related_query = cls.filter_ops[op](related_field, value)
                     query = cls.filter_ops[op](query, related_query) if query else related_query
@@ -600,26 +568,11 @@ class QueryBuilder:
         return query
 
     @classmethod
-    def build_fields(cls, model: Model, fields: base_pb2.Fields) -> list:
-        return [getattr(model, x) for x in fields.name_field]
-
-    @classmethod
-    def build_group_by(cls, model: Model, group_by: base_pb2.GroupBy) -> list:
-        group_by_fields = list()
-        for item in group_by:
-            if item.name_field:
-                group_by_fields.append(getattr(model, item.name_field))
-        return group_by_fields
-
-    @classmethod
-    def build_group_by(cls, model: Model, group_by: base_pb2.GroupBy) -> list:
-        return [getattr(model, x.name_field) for x in group_by]
-
-    @classmethod
-    def build_sort_by(cls, model: Model, sort_by: base_pb2.SortBy) -> list:
+    def build_sort_by(cls, model: Model, sort_by: base_pb2.SortBy):
+        field = getattr(model, sort_by.name_field)
         if sort_by.type == sort_by.DESC:
-            return [getattr(model, sort_by.name_field).desc()]
-        return [getattr(model, sort_by.name_field)]
+            return [desc(field)]
+        return [asc(field)]
 
 
 class FakeRedisServer:
