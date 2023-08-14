@@ -166,6 +166,9 @@ class Base:
     def sync_data(self, *args, **kwargs):
         raise NotImplementedError
 
+    def get_or_sync(self, *args, **kwargs):
+        raise NotImplementedError
+
     def get_document_info(self, *args, **kwargs):
         raise NotImplementedError
 
@@ -180,17 +183,3 @@ class Base:
 
 
 BaseModel = declarative_base(cls=Base)
-
-
-# class User(BaseModel):
-#     # @declared_attr
-#     # def user(cls):
-#     #     return relationship("User", back_populates="related_items")
-
-#     # __table_args__ = {"mysql_engine": "InnoDB"}
-#     # __mapper_args__ = {"always_refresh": True}
-
-#     name: Mapped[str] = mapped_column(String(30))
-#     sub: Mapped[str] = mapped_column(String(30))
-#     user_doc_id: Mapped[str] = mapped_column(String(30), unique=True)
-#     # user = relationship("User", back_populates="related_items")
