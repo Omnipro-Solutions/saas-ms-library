@@ -11,7 +11,6 @@ from omni.pro.config import Config
 from omni.pro.logger import configure_logger
 from omni.pro.protos.common import base_pb2
 from omni.pro.util import nested
-from peewee import Expression, Model, ModelSelect, PostgresqlDatabase
 from sqlalchemy import asc, create_engine, desc
 from sqlalchemy.orm import scoped_session, sessionmaker
 
@@ -245,21 +244,21 @@ class PostgresDatabaseManager(SessionManager):
     def get_db_connection(self):
         return self.engine.connect()
 
-    def create_new_record(self, model: Model, session, **kwargs):
+    def create_new_record(self, model, session, **kwargs):
         record = model(**kwargs)
         session.add(record)
         session.flush()  # to get the ID or other default fields
         return record
 
-    def retrieve_record(self, model: Model, session, filters: dict):
+    def retrieve_record(self, model, session, filters: dict):
         return session.query(model).filter_by(**filters).first()
 
-    def retrieve_record_by_id(self, model: Model, session, id: int):
+    def retrieve_record_by_id(self, model, session, id: int):
         return session.query(model).get(id)
 
     def list_records(
         self,
-        model: Model,
+        model,
         session,
         id: int,
         fields: base_pb2.Fields,
@@ -504,7 +503,7 @@ class QueryBuilder:
     @classmethod
     def build_filter(
         cls,
-        model: Model,
+        model,
         session,
         id: int,
         fields: base_pb2.Fields,
@@ -541,7 +540,7 @@ class QueryBuilder:
         return query.all(), total
 
     @classmethod
-    def build_query(cls, model: Model, filters: list):
+    def build_query(cls, model, filters: list):
         query = None
 
         filter_operator = None
@@ -568,7 +567,7 @@ class QueryBuilder:
         return query
 
     @classmethod
-    def build_sort_by(cls, model: Model, sort_by: base_pb2.SortBy):
+    def build_sort_by(cls, model, sort_by: base_pb2.SortBy):
         field = getattr(model, sort_by.name_field)
         if sort_by.type == sort_by.DESC:
             return [desc(field)]
