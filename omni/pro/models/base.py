@@ -1,22 +1,13 @@
 from datetime import datetime
 
 from google.protobuf.timestamp_pb2 import Timestamp
-from mongoengine import (
-    BooleanField,
-    DateTimeField,
-    Document,
-    EmbeddedDocument,
-    EmbeddedDocumentField,
-    StringField,
-)
-from sqlalchemy import Boolean, DateTime, String, ForeignKey
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, declared_attr, declarative_mixin, relationship
+from mongoengine import BooleanField, DateTimeField, Document, EmbeddedDocument, EmbeddedDocumentField, StringField
+from omni.pro.protos.common.base_pb2 import Context as ContextProto
+from omni.pro.protos.common.base_pb2 import Object as ObjectProto
+from omni.pro.protos.common.base_pb2 import ObjectAudit as AuditProto
+from sqlalchemy import Boolean, DateTime, ForeignKey, String
 from sqlalchemy.ext.declarative import declarative_base
-from omni.pro.protos.common.base_pb2 import (
-    Context as ContextProto,
-    Object as ObjectProto,
-    ObjectAudit as AuditProto,
-)
+from sqlalchemy.orm import DeclarativeBase, Mapped, declarative_mixin, declared_attr, mapped_column, relationship
 
 
 class BaseEmbeddedDocument(EmbeddedDocument):
@@ -130,6 +121,13 @@ class BaseAuditEmbeddedDocument(BaseEmbeddedDocument):
 BaseAuditContextEmbeddedDocument = BaseAuditEmbeddedDocument
 
 
+def set_created_by(context):
+    params = context.get_current_parameters()
+    if params.get("created_by") is None:
+        return params.get("updated_by")
+    return params.get("created_by")
+
+
 class Base:
     @declared_attr
     def __tablename__(cls):
@@ -138,12 +136,14 @@ class Base:
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
     tenant: Mapped[str] = mapped_column(String(30), nullable=False)
-    created_by: Mapped[str] = mapped_column(String(50), nullable=False)
+    created_by: Mapped[str] = mapped_column(String(50), default=set_created_by, nullable=False)
     updated_by: Mapped[str] = mapped_column(String(50), nullable=False)
-    deleted_by: Mapped[str] = mapped_column(String(50))
-    created_at: Mapped[datetime] = mapped_column(DateTime(), default=datetime.utcnow, nullable=False)
-    updated_at: Mapped[datetime] = mapped_column(DateTime())
-    deleted_at: Mapped[datetime] = mapped_column(DateTime())
+    deleted_by: Mapped[str] = mapped_column(String(50), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(), default=datetime.now, nullable=False)
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(), default=datetime.now, onupdate=datetime.now, nullable=False
+    )
+    deleted_at: Mapped[datetime] = mapped_column(DateTime(), nullable=True)
 
     def to_proto(self) -> AuditProto:
         create_at_ts = Timestamp()
@@ -166,6 +166,9 @@ class Base:
     def sync_data(self, *args, **kwargs):
         raise NotImplementedError
 
+    def get_or_sync(self, *args, **kwargs):
+        raise NotImplementedError
+
     def get_document_info(self, *args, **kwargs):
         raise NotImplementedError
 
@@ -180,17 +183,3 @@ class Base:
 
 
 BaseModel = declarative_base(cls=Base)
-
-
-# class User(BaseModel):
-#     # @declared_attr
-#     # def user(cls):
-#     #     return relationship("User", back_populates="related_items")
-
-#     # __table_args__ = {"mysql_engine": "InnoDB"}
-#     # __mapper_args__ = {"always_refresh": True}
-
-#     name: Mapped[str] = mapped_column(String(30))
-#     sub: Mapped[str] = mapped_column(String(30))
-#     user_doc_id: Mapped[str] = mapped_column(String(30), unique=True)
-#     # user = relationship("User", back_populates="related_items")

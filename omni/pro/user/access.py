@@ -2,6 +2,7 @@
 from enum import Enum, unique
 
 from omni.pro.logger import LoggerTraceback, configure_logger
+from omni.pro.microservice import MicroService
 from omni.pro.protos.grpc_connector import Event, GRPClient
 from omni.pro.protos.response import MessageResponse
 from omni.pro.protos.v1.users import user_pb2
@@ -48,15 +49,6 @@ class Permission(Enum):
     CAN_UPDATE_CLIENT = "CAN_UPDATE_CLIENT"
     CAN_READ_CLIENT = "CAN_READ_CLIENT"
     CAN_DELETE_CLIENT = "CAN_DELETE_CLIENT"
-
-
-@unique
-class MicroService(Enum):
-    SAAS_MS_USER = "saas-ms-user"
-    SAAS_MS_CATALOG = "saas-ms-catalog"
-    SAAS_MS_UTILITIES = "saas-ms-utilities"
-    SAAS_MS_STOCK = "saas-ms-stock"
-    SAAS_MS_CLIENT = "saas-ms-client"
 
 
 def permission_required(permission_name: Permission, cls) -> callable:

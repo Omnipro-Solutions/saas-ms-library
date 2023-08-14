@@ -21,6 +21,15 @@ class BaseSchema(Context, Schema):
     active = fields.Boolean()
 
 
+class PostgresBaseSchema(BaseSchema):
+    def load(self, data, *args, **kwargs):
+        data = super().load(data, *args, **kwargs)
+        context = data.pop("context", {})
+        data["tenant"] = context.get("tenant")
+        data["updated_by"] = context.get("user")
+        return data
+
+
 class BaseObjectSchema(Schema):
     code = fields.String(required=True)
     code_name = fields.String(required=True)
