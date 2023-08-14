@@ -61,16 +61,16 @@ class WarehouseHierarchyCreateRequest(_message.Message):
     SEQUENCE_FIELD_NUMBER: _ClassVar[int]
     SEQUENCE_ORDER_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    warehouse_id: str
-    location_id: str
+    warehouse_id: int
+    location_id: int
     quantity_security: float
     sequence: int
     sequence_order: _wrappers_pb2.BoolValue
     context: _base_pb2.Context
     def __init__(
         self,
-        warehouse_id: _Optional[str] = ...,
-        location_id: _Optional[str] = ...,
+        warehouse_id: _Optional[int] = ...,
+        location_id: _Optional[int] = ...,
         quantity_security: _Optional[float] = ...,
         sequence: _Optional[int] = ...,
         sequence_order: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
