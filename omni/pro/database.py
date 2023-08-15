@@ -91,15 +91,15 @@ class DatabaseManager(object):
         return document
 
     def list_documents(
-        self,
-        db_name: str,
-        tenant: str,
-        document_class,
-        fields: list = None,
-        filter: dict = None,
-        group_by: str = None,
-        paginated: dict = None,
-        sort_by: list = None,
+            self,
+            db_name: str,
+            tenant: str,
+            document_class,
+            fields: list = None,
+            filter: dict = None,
+            group_by: str = None,
+            paginated: dict = None,
+            sort_by: list = None,
     ) -> tuple[list, int]:
         """
         Parameters:
@@ -148,7 +148,7 @@ class DatabaseManager(object):
         return document
 
     def update_embeded_document(
-        self, db_name: str, document_class, filters: dict, update: dict, many: bool = False
+            self, db_name: str, document_class, filters: dict, update: dict, many: bool = False
     ) -> object:
         # with self.get_connection() as cnn:
         if many:
@@ -172,7 +172,7 @@ class MongoConnection(object):
     """
 
     def __init__(self, host, port, db, username, password, complement):
-        self.host = f"mongodb://{host}:{port}/?{'&'.join([f'{k}={v}' for (k,v) in complement.items()])}"
+        self.host = f"mongodb://{host}:{port}/?{'&'.join([f'{k}={v}' for (k, v) in complement.items()])}"
         self.port = port
         self.username = username
         self.password = password
@@ -257,21 +257,19 @@ class PostgresDatabaseManager(SessionManager):
         return session.query(model).get(id)
 
     def list_records(
-        self,
-        model,
-        session,
-        id: int,
-        fields: base_pb2.Fields,
-        filter: base_pb2.Filter,
-        group_by: base_pb2.GroupBy,
-        sort_by: base_pb2.SortBy,
-        paginated: base_pb2.Paginated,
+            self,
+            model,
+            session,
+            id: int,
+            fields: base_pb2.Fields,
+            filter: base_pb2.Filter,
+            group_by: base_pb2.GroupBy,
+            sort_by: base_pb2.SortBy,
+            paginated: base_pb2.Paginated,
     ):
-        filters = QueryBuilder.build_filter(model, session, id, fields, filter, group_by, sort_by, paginated)
+        records = QueryBuilder.build_filter(model, session, id, fields, filter, group_by, sort_by, paginated)
 
-        query = session.query(model)
-        query = query.filter_by(**filters)
-        return query.all()
+        return records
 
     def update_record(self, model, session, model_id, update_dict):
         record = session.query(model).get(model_id)
@@ -444,13 +442,13 @@ class PolishNotationToMongoDB:
 class DBUtil(object):
     @classmethod
     def db_prepared_statement(
-        cls,
-        id: str,
-        fields: base_pb2.Fields,
-        filter: base_pb2.Filter,
-        paginated: base_pb2.Paginated,
-        group_by: base_pb2.GroupBy,
-        sort_by: base_pb2.SortBy,
+            cls,
+            id: str,
+            fields: base_pb2.Fields,
+            filter: base_pb2.Filter,
+            paginated: base_pb2.Paginated,
+            group_by: base_pb2.GroupBy,
+            sort_by: base_pb2.SortBy,
     ) -> dict:
         prepared_statement = {}
         prepared_statement["paginated"] = {"page": paginated.offset, "per_page": paginated.limit or 10}
@@ -502,15 +500,15 @@ class QueryBuilder:
 
     @classmethod
     def build_filter(
-        cls,
-        model,
-        session,
-        id: int,
-        fields: base_pb2.Fields,
-        filter: base_pb2.Filter,
-        group_by: base_pb2.GroupBy,
-        sort_by: base_pb2.SortBy,
-        paginated: base_pb2.Paginated,
+            cls,
+            model,
+            session,
+            id: int,
+            fields: base_pb2.Fields,
+            filter: base_pb2.Filter,
+            group_by: base_pb2.GroupBy,
+            sort_by: base_pb2.SortBy,
+            paginated: base_pb2.Paginated,
     ):
         query = session.query(model)
 

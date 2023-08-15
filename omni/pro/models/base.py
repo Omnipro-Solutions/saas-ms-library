@@ -1,3 +1,5 @@
+import re
+
 from datetime import datetime
 
 from google.protobuf.timestamp_pb2 import Timestamp
@@ -129,9 +131,35 @@ def set_created_by(context):
 
 
 class Base:
+    """
+    Base class provides foundational attributes and methods for database models.
+    It includes common attributes such as 'id', 'active', and timestamp fields.
+    It also provides methods for converting the model to its proto representation.
+    """
+
+    @staticmethod
+    def _camel_to_snake(name):
+        """
+        Convert a CamelCase string to snake_case.
+
+        Args:
+            name (str): The CamelCase string.
+
+        Returns:
+            str: The converted snake_case string.
+        """
+        s1 = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', name)
+        return re.sub('([a-z0-9])([A-Z])', r'\1_\2', s1).lower()
+
     @declared_attr
     def __tablename__(cls):
-        return cls.__name__.lower()
+        """
+        Generate a table name based on the class name.
+
+        Returns:
+            str: The table name in snake_case format.
+        """
+        return cls._camel_to_snake(cls.__name__)
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
@@ -146,6 +174,12 @@ class Base:
     deleted_at: Mapped[datetime] = mapped_column(DateTime(), nullable=True)
 
     def to_proto(self) -> AuditProto:
+        """
+        Convert the model instance to its proto representation.
+
+        Returns:
+            AuditProto: The proto representation of the model.
+        """
         create_at_ts = Timestamp()
         create_at_ts.FromDatetime(self.created_at)
         update_at_ts = Timestamp()
@@ -164,12 +198,36 @@ class Base:
         return audit_proto
 
     def sync_data(self, *args, **kwargs):
+        """
+       Synchronize the data for the model instance.
+
+       This method should be overridden in subclasses.
+
+       Raises:
+           NotImplementedError: If the method is not overridden in a subclass.
+       """
         raise NotImplementedError
 
     def get_or_sync(self, *args, **kwargs):
+        """
+        Retrieve or synchronize the data for the model instance.
+
+        This method should be overridden in subclasses.
+
+        Raises:
+            NotImplementedError: If the method is not overridden in a subclass.
+        """
         raise NotImplementedError
 
     def get_document_info(self, *args, **kwargs):
+        """
+        Retrieve document-related information for the model instance.
+
+        This method should be overridden in subclasses.
+
+        Raises:
+            NotImplementedError: If the method is not overridden in a subclass.
+        """
         raise NotImplementedError
 
 
