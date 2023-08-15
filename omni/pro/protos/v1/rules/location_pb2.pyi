@@ -44,13 +44,13 @@ class LocationCreateRequest(_message.Message):
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     code: str
-    location_sql_id: str
+    location_sql_id: int
     context: _base_pb2.Context
     def __init__(
         self,
         name: _Optional[str] = ...,
         code: _Optional[str] = ...,
-        location_sql_id: _Optional[str] = ...,
+        location_sql_id: _Optional[int] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
