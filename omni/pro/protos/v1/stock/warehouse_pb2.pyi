@@ -22,6 +22,7 @@ class Warehouse(_message.Message):
         "name",
         "code",
         "country",
+        "country_code",
         "territory_matrix_value",
         "address",
         "complement",
@@ -46,6 +47,7 @@ class Warehouse(_message.Message):
     NAME_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
     COUNTRY_FIELD_NUMBER: _ClassVar[int]
+    COUNTRY_CODE_FIELD_NUMBER: _ClassVar[int]
     TERRITORY_MATRIX_VALUE_FIELD_NUMBER: _ClassVar[int]
     ADDRESS_FIELD_NUMBER: _ClassVar[int]
     COMPLEMENT_FIELD_NUMBER: _ClassVar[int]
@@ -69,13 +71,14 @@ class Warehouse(_message.Message):
     name: str
     code: str
     country: _country_pb2.Country
+    country_code: str
     territory_matrix_value: _struct_pb2.ListValue
     address: str
     complement: str
     active: _wrappers_pb2.BoolValue
     delivery_steps: str
     reception_steps: str
-    locality_available: str
+    locality_available: _wrappers_pb2.StringValue
     view_location_id: _location_pb2.Location
     loc_stock_id: _location_pb2.Location
     wh_input_stock_loc_id: _location_pb2.Location
@@ -94,13 +97,14 @@ class Warehouse(_message.Message):
         name: _Optional[str] = ...,
         code: _Optional[str] = ...,
         country: _Optional[_Union[_country_pb2.Country, _Mapping]] = ...,
+        country_code: _Optional[str] = ...,
         territory_matrix_value: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
         address: _Optional[str] = ...,
         complement: _Optional[str] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         delivery_steps: _Optional[str] = ...,
         reception_steps: _Optional[str] = ...,
-        locality_available: _Optional[str] = ...,
+        locality_available: _Optional[_Union[_wrappers_pb2.StringValue, _Mapping]] = ...,
         view_location_id: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
         loc_stock_id: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
         wh_input_stock_loc_id: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
