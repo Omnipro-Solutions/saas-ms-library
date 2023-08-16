@@ -29,6 +29,7 @@ def resources_decorator(resource_list: list) -> callable:
                     # logger.info(f"Tenant: {request.context.tenant}, Service ID: {Config.SERVICE_ID}")
                     db_params = redis_manager.get_postgres_config(Config.SERVICE_ID, request.context.tenant)
                     context.db_name = db_params.get("name")
+                    context.pg_db_params = db_params
                     # logger.info(f"Postgres params: {db_params}")
                     context.pg_manager = PostgresDatabaseManager(**db_params)
             except Exception as e:
