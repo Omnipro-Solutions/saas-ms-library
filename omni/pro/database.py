@@ -7,12 +7,13 @@ import fakeredis
 import mongoengine as mongo
 import redis
 from bson import ObjectId
+from sqlalchemy import asc, create_engine, desc
+from sqlalchemy.orm import scoped_session, sessionmaker
+
 from omni.pro.config import Config
 from omni.pro.logger import configure_logger
 from omni.pro.protos.common import base_pb2
 from omni.pro.util import nested
-from sqlalchemy import asc, create_engine, desc
-from sqlalchemy.orm import scoped_session, sessionmaker
 
 logger = configure_logger(name=__name__)
 
@@ -455,7 +456,7 @@ class DBUtil(object):
         if (ft := filter.ListFields()) or id:
             expression = [("_id", "=", cls.generate_object_id(id))]
             if ft:
-                str_filter = filter.filter.replace("true", "True").replace("false", "False")
+                str_filter = filter.filter.replace("true", "True").replace("false", "False").replace("__", ".")
                 expression = ast.literal_eval(str_filter)
                 # reemplace filter id by _id and convert to ObjectId
                 for idx, exp in enumerate(expression):
