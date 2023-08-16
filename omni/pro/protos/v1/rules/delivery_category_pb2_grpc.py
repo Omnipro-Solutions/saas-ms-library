@@ -33,6 +33,16 @@ class DeliveryCategoryServiceStub(object):
             request_serializer=v1_dot_rules_dot_delivery__category__pb2.DeliveryCategoryDeleteRequest.SerializeToString,
             response_deserializer=v1_dot_rules_dot_delivery__category__pb2.DeliveryCategoryDeleteResponse.FromString,
         )
+        self.AddCategory = channel.unary_unary(
+            "/pro.omni.oms.api.v1.rules.delivery_category.DeliveryCategoryService/AddCategory",
+            request_serializer=v1_dot_rules_dot_delivery__category__pb2.AddCategoryRequest.SerializeToString,
+            response_deserializer=v1_dot_rules_dot_delivery__category__pb2.AddCategoryResponse.FromString,
+        )
+        self.RemoveCategory = channel.unary_unary(
+            "/pro.omni.oms.api.v1.rules.delivery_category.DeliveryCategoryService/RemoveCategory",
+            request_serializer=v1_dot_rules_dot_delivery__category__pb2.RemoveCategoryRequest.SerializeToString,
+            response_deserializer=v1_dot_rules_dot_delivery__category__pb2.RemoveCategoryResponse.FromString,
+        )
 
 
 class DeliveryCategoryServiceServicer(object):
@@ -62,6 +72,18 @@ class DeliveryCategoryServiceServicer(object):
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
+    def AddCategory(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def RemoveCategory(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
 
 def add_DeliveryCategoryServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -84,6 +106,16 @@ def add_DeliveryCategoryServiceServicer_to_server(servicer, server):
             servicer.DeliveryCategoryDelete,
             request_deserializer=v1_dot_rules_dot_delivery__category__pb2.DeliveryCategoryDeleteRequest.FromString,
             response_serializer=v1_dot_rules_dot_delivery__category__pb2.DeliveryCategoryDeleteResponse.SerializeToString,
+        ),
+        "AddCategory": grpc.unary_unary_rpc_method_handler(
+            servicer.AddCategory,
+            request_deserializer=v1_dot_rules_dot_delivery__category__pb2.AddCategoryRequest.FromString,
+            response_serializer=v1_dot_rules_dot_delivery__category__pb2.AddCategoryResponse.SerializeToString,
+        ),
+        "RemoveCategory": grpc.unary_unary_rpc_method_handler(
+            servicer.RemoveCategory,
+            request_deserializer=v1_dot_rules_dot_delivery__category__pb2.RemoveCategoryRequest.FromString,
+            response_serializer=v1_dot_rules_dot_delivery__category__pb2.RemoveCategoryResponse.SerializeToString,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -202,6 +234,64 @@ class DeliveryCategoryService(object):
             "/pro.omni.oms.api.v1.rules.delivery_category.DeliveryCategoryService/DeliveryCategoryDelete",
             v1_dot_rules_dot_delivery__category__pb2.DeliveryCategoryDeleteRequest.SerializeToString,
             v1_dot_rules_dot_delivery__category__pb2.DeliveryCategoryDeleteResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
+
+    @staticmethod
+    def AddCategory(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            "/pro.omni.oms.api.v1.rules.delivery_category.DeliveryCategoryService/AddCategory",
+            v1_dot_rules_dot_delivery__category__pb2.AddCategoryRequest.SerializeToString,
+            v1_dot_rules_dot_delivery__category__pb2.AddCategoryResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
+
+    @staticmethod
+    def RemoveCategory(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            "/pro.omni.oms.api.v1.rules.delivery_category.DeliveryCategoryService/RemoveCategory",
+            v1_dot_rules_dot_delivery__category__pb2.RemoveCategoryRequest.SerializeToString,
+            v1_dot_rules_dot_delivery__category__pb2.RemoveCategoryResponse.FromString,
             options,
             channel_credentials,
             insecure,
