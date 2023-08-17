@@ -8,19 +8,10 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
-from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
 from omni.pro.protos.common import base_pb2 as _base_pb2
 from omni.pro.protos.v1.rules import warehouse_hierarchy_pb2 as _warehouse_hierarchy_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
-
-class SortBy(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
-    __slots__ = []
-    ASC: _ClassVar[SortBy]
-    DESC: _ClassVar[SortBy]
-
-ASC: SortBy
-DESC: SortBy
 
 class DeliveryWarehouse(_message.Message):
     __slots__ = ["id", "name", "hierarchi_warehouse_sort_by", "transfer_warehouses", "active", "object_audit"]
@@ -32,7 +23,7 @@ class DeliveryWarehouse(_message.Message):
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
-    hierarchi_warehouse_sort_by: SortBy
+    hierarchi_warehouse_sort_by: str
     transfer_warehouses: _containers.RepeatedCompositeFieldContainer[_warehouse_hierarchy_pb2.WarehouseHierarchy]
     active: _wrappers_pb2.BoolValue
     object_audit: _base_pb2.ObjectAudit
@@ -40,7 +31,7 @@ class DeliveryWarehouse(_message.Message):
         self,
         id: _Optional[str] = ...,
         name: _Optional[str] = ...,
-        hierarchi_warehouse_sort_by: _Optional[_Union[SortBy, str]] = ...,
+        hierarchi_warehouse_sort_by: _Optional[str] = ...,
         transfer_warehouses: _Optional[_Iterable[_Union[_warehouse_hierarchy_pb2.WarehouseHierarchy, _Mapping]]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
@@ -52,12 +43,12 @@ class DeliveryWarehouseCreateRequest(_message.Message):
     HIERARCHI_WAREHOUSE_SORT_BY_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
-    hierarchi_warehouse_sort_by: SortBy
+    hierarchi_warehouse_sort_by: str
     context: _base_pb2.Context
     def __init__(
         self,
         name: _Optional[str] = ...,
-        hierarchi_warehouse_sort_by: _Optional[_Union[SortBy, str]] = ...,
+        hierarchi_warehouse_sort_by: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
