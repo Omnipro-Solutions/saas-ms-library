@@ -33,6 +33,16 @@ class DeliveryWarehouseServiceStub(object):
             request_serializer=v1_dot_rules_dot_delivery__warehouse__pb2.DeliveryWarehouseDeleteRequest.SerializeToString,
             response_deserializer=v1_dot_rules_dot_delivery__warehouse__pb2.DeliveryWarehouseDeleteResponse.FromString,
         )
+        self.AddTransferWarehouse = channel.unary_unary(
+            "/pro.omni.oms.api.v1.rules.delivery_warehouse.DeliveryWarehouseService/AddTransferWarehouse",
+            request_serializer=v1_dot_rules_dot_delivery__warehouse__pb2.AddTransferWarehouseRequest.SerializeToString,
+            response_deserializer=v1_dot_rules_dot_delivery__warehouse__pb2.AddTransferWarehouseResponse.FromString,
+        )
+        self.RemoveTransferWarehouse = channel.unary_unary(
+            "/pro.omni.oms.api.v1.rules.delivery_warehouse.DeliveryWarehouseService/RemoveTransferWarehouse",
+            request_serializer=v1_dot_rules_dot_delivery__warehouse__pb2.RemoveTransferWarehouseRequest.SerializeToString,
+            response_deserializer=v1_dot_rules_dot_delivery__warehouse__pb2.RemoveTransferWarehouseResponse.FromString,
+        )
 
 
 class DeliveryWarehouseServiceServicer(object):
@@ -62,6 +72,18 @@ class DeliveryWarehouseServiceServicer(object):
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
+    def AddTransferWarehouse(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def RemoveTransferWarehouse(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
 
 def add_DeliveryWarehouseServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -84,6 +106,16 @@ def add_DeliveryWarehouseServiceServicer_to_server(servicer, server):
             servicer.DeliveryWarehouseDelete,
             request_deserializer=v1_dot_rules_dot_delivery__warehouse__pb2.DeliveryWarehouseDeleteRequest.FromString,
             response_serializer=v1_dot_rules_dot_delivery__warehouse__pb2.DeliveryWarehouseDeleteResponse.SerializeToString,
+        ),
+        "AddTransferWarehouse": grpc.unary_unary_rpc_method_handler(
+            servicer.AddTransferWarehouse,
+            request_deserializer=v1_dot_rules_dot_delivery__warehouse__pb2.AddTransferWarehouseRequest.FromString,
+            response_serializer=v1_dot_rules_dot_delivery__warehouse__pb2.AddTransferWarehouseResponse.SerializeToString,
+        ),
+        "RemoveTransferWarehouse": grpc.unary_unary_rpc_method_handler(
+            servicer.RemoveTransferWarehouse,
+            request_deserializer=v1_dot_rules_dot_delivery__warehouse__pb2.RemoveTransferWarehouseRequest.FromString,
+            response_serializer=v1_dot_rules_dot_delivery__warehouse__pb2.RemoveTransferWarehouseResponse.SerializeToString,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -202,6 +234,64 @@ class DeliveryWarehouseService(object):
             "/pro.omni.oms.api.v1.rules.delivery_warehouse.DeliveryWarehouseService/DeliveryWarehouseDelete",
             v1_dot_rules_dot_delivery__warehouse__pb2.DeliveryWarehouseDeleteRequest.SerializeToString,
             v1_dot_rules_dot_delivery__warehouse__pb2.DeliveryWarehouseDeleteResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
+
+    @staticmethod
+    def AddTransferWarehouse(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            "/pro.omni.oms.api.v1.rules.delivery_warehouse.DeliveryWarehouseService/AddTransferWarehouse",
+            v1_dot_rules_dot_delivery__warehouse__pb2.AddTransferWarehouseRequest.SerializeToString,
+            v1_dot_rules_dot_delivery__warehouse__pb2.AddTransferWarehouseResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
+
+    @staticmethod
+    def RemoveTransferWarehouse(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            "/pro.omni.oms.api.v1.rules.delivery_warehouse.DeliveryWarehouseService/RemoveTransferWarehouse",
+            v1_dot_rules_dot_delivery__warehouse__pb2.RemoveTransferWarehouseRequest.SerializeToString,
+            v1_dot_rules_dot_delivery__warehouse__pb2.RemoveTransferWarehouseResponse.FromString,
             options,
             channel_credentials,
             insecure,
