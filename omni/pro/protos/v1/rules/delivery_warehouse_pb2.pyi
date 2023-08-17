@@ -47,19 +47,16 @@ class DeliveryWarehouse(_message.Message):
     ) -> None: ...
 
 class DeliveryWarehouseCreateRequest(_message.Message):
-    __slots__ = ["name", "transfer_warehouse_ids", "hierarchi_warehouse_sort_by", "context"]
+    __slots__ = ["name", "hierarchi_warehouse_sort_by", "context"]
     NAME_FIELD_NUMBER: _ClassVar[int]
-    TRANSFER_WAREHOUSE_IDS_FIELD_NUMBER: _ClassVar[int]
     HIERARCHI_WAREHOUSE_SORT_BY_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
-    transfer_warehouse_ids: _containers.RepeatedScalarFieldContainer[str]
     hierarchi_warehouse_sort_by: SortBy
     context: _base_pb2.Context
     def __init__(
         self,
         name: _Optional[str] = ...,
-        transfer_warehouse_ids: _Optional[_Iterable[str]] = ...,
         hierarchi_warehouse_sort_by: _Optional[_Union[SortBy, str]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
@@ -157,3 +154,57 @@ class DeliveryWarehouseDeleteResponse(_message.Message):
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
     response_standard: _base_pb2.ResponseStandard
     def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
+
+class AddTransferWarehouseRequest(_message.Message):
+    __slots__ = ["delivery_warehouse_id", "warehouse_herarchy_ids", "context"]
+    DELIVERY_WAREHOUSE_ID_FIELD_NUMBER: _ClassVar[int]
+    WAREHOUSE_HERARCHY_IDS_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    delivery_warehouse_id: str
+    warehouse_herarchy_ids: _containers.RepeatedScalarFieldContainer[str]
+    context: _base_pb2.Context
+    def __init__(
+        self,
+        delivery_warehouse_id: _Optional[str] = ...,
+        warehouse_herarchy_ids: _Optional[_Iterable[str]] = ...,
+        context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
+    ) -> None: ...
+
+class AddTransferWarehouseResponse(_message.Message):
+    __slots__ = ["delivery_warehouse", "response_standard"]
+    DELIVERY_WAREHOUSE_FIELD_NUMBER: _ClassVar[int]
+    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
+    delivery_warehouse: DeliveryWarehouse
+    response_standard: _base_pb2.ResponseStandard
+    def __init__(
+        self,
+        delivery_warehouse: _Optional[_Union[DeliveryWarehouse, _Mapping]] = ...,
+        response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
+    ) -> None: ...
+
+class RemoveTransferWarehouseRequest(_message.Message):
+    __slots__ = ["delivery_warehouse_id", "warehouse_herarchy_ids", "context"]
+    DELIVERY_WAREHOUSE_ID_FIELD_NUMBER: _ClassVar[int]
+    WAREHOUSE_HERARCHY_IDS_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    delivery_warehouse_id: str
+    warehouse_herarchy_ids: _containers.RepeatedScalarFieldContainer[str]
+    context: _base_pb2.Context
+    def __init__(
+        self,
+        delivery_warehouse_id: _Optional[str] = ...,
+        warehouse_herarchy_ids: _Optional[_Iterable[str]] = ...,
+        context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
+    ) -> None: ...
+
+class RemoveTransferWarehouseResponse(_message.Message):
+    __slots__ = ["delivery_warehouse", "response_standard"]
+    DELIVERY_WAREHOUSE_FIELD_NUMBER: _ClassVar[int]
+    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
+    delivery_warehouse: DeliveryWarehouse
+    response_standard: _base_pb2.ResponseStandard
+    def __init__(
+        self,
+        delivery_warehouse: _Optional[_Union[DeliveryWarehouse, _Mapping]] = ...,
+        response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
+    ) -> None: ...
