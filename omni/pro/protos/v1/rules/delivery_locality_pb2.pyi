@@ -10,20 +10,21 @@ from google.protobuf import struct_pb2 as _struct_pb2
 from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
+from omni.pro.protos.v1.rules import country_pb2 as _country_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class DeliveryLocality(_message.Message):
-    __slots__ = ["id", "name", "country_id", "territory_matrix_values", "active", "object_audit"]
+    __slots__ = ["id", "name", "country", "territory_matrix_values", "active", "object_audit"]
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
-    COUNTRY_ID_FIELD_NUMBER: _ClassVar[int]
+    COUNTRY_FIELD_NUMBER: _ClassVar[int]
     TERRITORY_MATRIX_VALUES_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
-    country_id: str
+    country: _country_pb2.Country
     territory_matrix_values: _struct_pb2.ListValue
     active: _wrappers_pb2.BoolValue
     object_audit: _base_pb2.ObjectAudit
@@ -31,7 +32,7 @@ class DeliveryLocality(_message.Message):
         self,
         id: _Optional[str] = ...,
         name: _Optional[str] = ...,
-        country_id: _Optional[str] = ...,
+        country: _Optional[_Union[_country_pb2.Country, _Mapping]] = ...,
         territory_matrix_values: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
