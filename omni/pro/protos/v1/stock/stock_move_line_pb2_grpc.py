@@ -33,6 +33,11 @@ class StockMoveLineServiceStub(object):
             request_serializer=v1_dot_stock_dot_stock__move__line__pb2.StockMoveLineDeleteRequest.SerializeToString,
             response_deserializer=v1_dot_stock_dot_stock__move__line__pb2.StockMoveLineDeleteResponse.FromString,
         )
+        self.MoveLineAddQty = channel.unary_unary(
+            "/pro.omni.oms.api.v1.stock.stock_move_line.StockMoveLineService/MoveLineAddQty",
+            request_serializer=v1_dot_stock_dot_stock__move__line__pb2.MoveLineAddQtyRequest.SerializeToString,
+            response_deserializer=v1_dot_stock_dot_stock__move__line__pb2.MoveLineAddQtyResponse.FromString,
+        )
 
 
 class StockMoveLineServiceServicer(object):
@@ -62,6 +67,12 @@ class StockMoveLineServiceServicer(object):
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
+    def MoveLineAddQty(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
 
 def add_StockMoveLineServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -84,6 +95,11 @@ def add_StockMoveLineServiceServicer_to_server(servicer, server):
             servicer.StockMoveLineDelete,
             request_deserializer=v1_dot_stock_dot_stock__move__line__pb2.StockMoveLineDeleteRequest.FromString,
             response_serializer=v1_dot_stock_dot_stock__move__line__pb2.StockMoveLineDeleteResponse.SerializeToString,
+        ),
+        "MoveLineAddQty": grpc.unary_unary_rpc_method_handler(
+            servicer.MoveLineAddQty,
+            request_deserializer=v1_dot_stock_dot_stock__move__line__pb2.MoveLineAddQtyRequest.FromString,
+            response_serializer=v1_dot_stock_dot_stock__move__line__pb2.MoveLineAddQtyResponse.SerializeToString,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -202,6 +218,35 @@ class StockMoveLineService(object):
             "/pro.omni.oms.api.v1.stock.stock_move_line.StockMoveLineService/StockMoveLineDelete",
             v1_dot_stock_dot_stock__move__line__pb2.StockMoveLineDeleteRequest.SerializeToString,
             v1_dot_stock_dot_stock__move__line__pb2.StockMoveLineDeleteResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
+
+    @staticmethod
+    def MoveLineAddQty(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            "/pro.omni.oms.api.v1.stock.stock_move_line.StockMoveLineService/MoveLineAddQty",
+            v1_dot_stock_dot_stock__move__line__pb2.MoveLineAddQtyRequest.SerializeToString,
+            v1_dot_stock_dot_stock__move__line__pb2.MoveLineAddQtyResponse.FromString,
             options,
             channel_credentials,
             insecure,
