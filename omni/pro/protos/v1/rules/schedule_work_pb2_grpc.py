@@ -33,6 +33,16 @@ class ScheduleWorkServiceStub(object):
             request_serializer=v1_dot_rules_dot_schedule__work__pb2.ScheduleWorkDeleteRequest.SerializeToString,
             response_deserializer=v1_dot_rules_dot_schedule__work__pb2.ScheduleWorkDeleteResponse.FromString,
         )
+        self.AddScheduleWorkLine = channel.unary_unary(
+            "/pro.omni.oms.api.v1.rules.schedule_work.ScheduleWorkService/AddScheduleWorkLine",
+            request_serializer=v1_dot_rules_dot_schedule__work__pb2.AddScheduleWorkLineRequest.SerializeToString,
+            response_deserializer=v1_dot_rules_dot_schedule__work__pb2.AddScheduleWorkLineResponse.FromString,
+        )
+        self.RemoveScheduleWorkLine = channel.unary_unary(
+            "/pro.omni.oms.api.v1.rules.schedule_work.ScheduleWorkService/RemoveScheduleWorkLine",
+            request_serializer=v1_dot_rules_dot_schedule__work__pb2.RemoveScheduleWorkLineRequest.SerializeToString,
+            response_deserializer=v1_dot_rules_dot_schedule__work__pb2.RemoveScheduleWorkLineResponse.FromString,
+        )
 
 
 class ScheduleWorkServiceServicer(object):
@@ -62,6 +72,18 @@ class ScheduleWorkServiceServicer(object):
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
+    def AddScheduleWorkLine(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def RemoveScheduleWorkLine(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
 
 def add_ScheduleWorkServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -84,6 +106,16 @@ def add_ScheduleWorkServiceServicer_to_server(servicer, server):
             servicer.ScheduleWorkDelete,
             request_deserializer=v1_dot_rules_dot_schedule__work__pb2.ScheduleWorkDeleteRequest.FromString,
             response_serializer=v1_dot_rules_dot_schedule__work__pb2.ScheduleWorkDeleteResponse.SerializeToString,
+        ),
+        "AddScheduleWorkLine": grpc.unary_unary_rpc_method_handler(
+            servicer.AddScheduleWorkLine,
+            request_deserializer=v1_dot_rules_dot_schedule__work__pb2.AddScheduleWorkLineRequest.FromString,
+            response_serializer=v1_dot_rules_dot_schedule__work__pb2.AddScheduleWorkLineResponse.SerializeToString,
+        ),
+        "RemoveScheduleWorkLine": grpc.unary_unary_rpc_method_handler(
+            servicer.RemoveScheduleWorkLine,
+            request_deserializer=v1_dot_rules_dot_schedule__work__pb2.RemoveScheduleWorkLineRequest.FromString,
+            response_serializer=v1_dot_rules_dot_schedule__work__pb2.RemoveScheduleWorkLineResponse.SerializeToString,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -202,6 +234,64 @@ class ScheduleWorkService(object):
             "/pro.omni.oms.api.v1.rules.schedule_work.ScheduleWorkService/ScheduleWorkDelete",
             v1_dot_rules_dot_schedule__work__pb2.ScheduleWorkDeleteRequest.SerializeToString,
             v1_dot_rules_dot_schedule__work__pb2.ScheduleWorkDeleteResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
+
+    @staticmethod
+    def AddScheduleWorkLine(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            "/pro.omni.oms.api.v1.rules.schedule_work.ScheduleWorkService/AddScheduleWorkLine",
+            v1_dot_rules_dot_schedule__work__pb2.AddScheduleWorkLineRequest.SerializeToString,
+            v1_dot_rules_dot_schedule__work__pb2.AddScheduleWorkLineResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
+
+    @staticmethod
+    def RemoveScheduleWorkLine(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            "/pro.omni.oms.api.v1.rules.schedule_work.ScheduleWorkService/RemoveScheduleWorkLine",
+            v1_dot_rules_dot_schedule__work__pb2.RemoveScheduleWorkLineRequest.SerializeToString,
+            v1_dot_rules_dot_schedule__work__pb2.RemoveScheduleWorkLineResponse.FromString,
             options,
             channel_credentials,
             insecure,
