@@ -173,6 +173,56 @@ class Base:
     )
     deleted_at: Mapped[datetime] = mapped_column(DateTime(), nullable=True)
 
+    def create(self, session):
+        """
+        Add the current instance to the provided database session and flushes the session.
+
+        Parameters:
+        - session (Session): An instance of a database session, likely from SQLAlchemy.
+
+        Returns:
+        - self: Returns the instance after adding it to the session.
+
+        Usage:
+        instance = Base()
+        instance.create(session)
+        """
+        session.add(self)
+        session.flush()
+        return self
+
+    def update(self, session):
+        """
+        Flush the changes made to the current instance to the database through the provided session.
+
+        This function assumes that the instance has been already added to the session or
+        is being tracked by the session. The function will flush changes without committing them,
+        allowing for further operations before a final commit.
+
+        Parameters:
+        - session (Session): An instance of a database session, likely from SQLAlchemy.
+
+        Usage:
+        instance.attribute = new_value
+        instance.update(session)
+        """
+        session.flush()
+
+    def delete(self, session):
+        """
+        Deletes the current instance from the database using the provided session.
+
+        This function marks the instance for deletion in the session. Committing the session
+        afterward will result in the instance being removed from the database.
+
+        Parameters:
+        - session (Session): An instance of a database session, likely from SQLAlchemy.
+
+        Usage:
+        instance.delete(session)
+        """
+        session.delete(self)
+
     def to_proto(self) -> AuditProto:
         """
         Convert the model instance to its proto representation.
