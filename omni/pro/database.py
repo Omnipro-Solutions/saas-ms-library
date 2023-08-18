@@ -91,15 +91,15 @@ class DatabaseManager(object):
         return document
 
     def list_documents(
-        self,
-        db_name: str,
-        tenant: str,
-        document_class,
-        fields: list = None,
-        filter: dict = None,
-        group_by: str = None,
-        paginated: dict = None,
-        sort_by: list = None,
+            self,
+            db_name: str,
+            tenant: str,
+            document_class,
+            fields: list = None,
+            filter: dict = None,
+            group_by: str = None,
+            paginated: dict = None,
+            sort_by: list = None,
     ) -> tuple[list, int]:
         """
         Parameters:
@@ -148,7 +148,7 @@ class DatabaseManager(object):
         return document
 
     def update_embeded_document(
-        self, db_name: str, document_class, filters: dict, update: dict, many: bool = False
+            self, db_name: str, document_class, filters: dict, update: dict, many: bool = False
     ) -> object:
         # with self.get_connection() as cnn:
         if many:
@@ -245,9 +245,26 @@ class PostgresDatabaseManager(SessionManager):
         return self.engine.connect()
 
     def create_new_record(self, model, session, **kwargs):
+        """
+        Creates a new record in the database using the provided model and session.
+
+        This method initializes a new instance of the model with the provided attributes,
+        adds it to the database session, and then returns it.
+
+        Parameters:
+        - model (Base): The SQLAlchemy model where the record will be created.
+        - session (Session): An instance of the database session, likely from SQLAlchemy.
+        - **kwargs: Attributes and values that will be used to initialize the new record of the model.
+
+        Returns:
+        - record: The new model record after being added to the session.
+
+        Example:
+        user = create_new_record(User, session, name="John", age=25)
+        """
+
         record = model(**kwargs)
-        session.add(record)
-        session.flush()  # to get the ID or other default fields
+        record.create(session)
         return record
 
     def retrieve_record(self, model, session, filters: dict):
@@ -257,33 +274,58 @@ class PostgresDatabaseManager(SessionManager):
         return session.query(model).get(id)
 
     def list_records(
-        self,
-        model,
-        session,
-        id: int,
-        fields: base_pb2.Fields,
-        filter: base_pb2.Filter,
-        group_by: base_pb2.GroupBy,
-        sort_by: base_pb2.SortBy,
-        paginated: base_pb2.Paginated,
+            self,
+            model,
+            session,
+            id: int,
+            fields: base_pb2.Fields,
+            filter: base_pb2.Filter,
+            group_by: base_pb2.GroupBy,
+            sort_by: base_pb2.SortBy,
+            paginated: base_pb2.Paginated,
     ):
         records = QueryBuilder.build_filter(model, session, id, fields, filter, group_by, sort_by, paginated)
 
         return records
 
     def update_record(self, model, session, model_id, update_dict):
+        """
+        Update a database record of the given model with the specified changes.
+
+        Parameters:
+        - model (Base): The SQLAlchemy model to update.
+        - session (Session): An instance of the database session.
+        - model_id: The ID of the record to update.
+        - update_dict (dict): A dictionary of attributes and their new values.
+
+        Returns:
+        - record: The updated record, or None if not found.
+        """
         record = session.query(model).get(model_id)
         if not record:
             return None
+
         for key, value in update_dict.items():
             setattr(record, key, value)
-        session.flush()
+
+        record.update(session)
         return record
 
     def delete_record_by_id(self, model, session, model_id):
-        record = session.query(model).get(model_id)
+        """
+        Delete a database record of the given model by its ID.
+
+        Parameters:
+        - model (Base): The SQLAlchemy model to delete from.
+        - session (Session): An instance of the database session.
+        - model_id: The ID of the record to delete.
+
+        Returns:
+        - bool: True if the record was deleted, False otherwise.
+        """
+        record = session.query(model).filter_by(id=model_id).first()
         if record:
-            session.delete(record)
+            record.delete()
             return True
         return False
 
@@ -442,13 +484,13 @@ class PolishNotationToMongoDB:
 class DBUtil(object):
     @classmethod
     def db_prepared_statement(
-        cls,
-        id: str,
-        fields: base_pb2.Fields,
-        filter: base_pb2.Filter,
-        paginated: base_pb2.Paginated,
-        group_by: base_pb2.GroupBy,
-        sort_by: base_pb2.SortBy,
+            cls,
+            id: str,
+            fields: base_pb2.Fields,
+            filter: base_pb2.Filter,
+            paginated: base_pb2.Paginated,
+            group_by: base_pb2.GroupBy,
+            sort_by: base_pb2.SortBy,
     ) -> dict:
         prepared_statement = {}
         prepared_statement["paginated"] = {"page": paginated.offset, "per_page": paginated.limit or 10}
@@ -500,15 +542,15 @@ class QueryBuilder:
 
     @classmethod
     def build_filter(
-        cls,
-        model,
-        session,
-        id: int,
-        fields: base_pb2.Fields,
-        filter: base_pb2.Filter,
-        group_by: base_pb2.GroupBy,
-        sort_by: base_pb2.SortBy,
-        paginated: base_pb2.Paginated,
+            cls,
+            model,
+            session,
+            id: int,
+            fields: base_pb2.Fields,
+            filter: base_pb2.Filter,
+            group_by: base_pb2.GroupBy,
+            sort_by: base_pb2.SortBy,
+            paginated: base_pb2.Paginated,
     ):
         query = session.query(model)
 
