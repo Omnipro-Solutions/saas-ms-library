@@ -39,20 +39,17 @@ class ScheduleWork(_message.Message):
     ) -> None: ...
 
 class ScheduleWorkCreateRequest(_message.Message):
-    __slots__ = ["name", "calendar_id", "schedule_work_line_ids", "context"]
+    __slots__ = ["name", "calendar_id", "context"]
     NAME_FIELD_NUMBER: _ClassVar[int]
     CALENDAR_ID_FIELD_NUMBER: _ClassVar[int]
-    SCHEDULE_WORK_LINE_IDS_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     calendar_id: str
-    schedule_work_line_ids: _containers.RepeatedScalarFieldContainer[str]
     context: _base_pb2.Context
     def __init__(
         self,
         name: _Optional[str] = ...,
         calendar_id: _Optional[str] = ...,
-        schedule_work_line_ids: _Optional[_Iterable[str]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
@@ -149,3 +146,57 @@ class ScheduleWorkDeleteResponse(_message.Message):
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
     response_standard: _base_pb2.ResponseStandard
     def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
+
+class AddScheduleWorkLineRequest(_message.Message):
+    __slots__ = ["schedule_work_id", "schedule_work_line_ids", "context"]
+    SCHEDULE_WORK_ID_FIELD_NUMBER: _ClassVar[int]
+    SCHEDULE_WORK_LINE_IDS_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    schedule_work_id: str
+    schedule_work_line_ids: _containers.RepeatedScalarFieldContainer[str]
+    context: _base_pb2.Context
+    def __init__(
+        self,
+        schedule_work_id: _Optional[str] = ...,
+        schedule_work_line_ids: _Optional[_Iterable[str]] = ...,
+        context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
+    ) -> None: ...
+
+class AddScheduleWorkLineResponse(_message.Message):
+    __slots__ = ["schedule_work", "response_standard"]
+    SCHEDULE_WORK_FIELD_NUMBER: _ClassVar[int]
+    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
+    schedule_work: ScheduleWork
+    response_standard: _base_pb2.ResponseStandard
+    def __init__(
+        self,
+        schedule_work: _Optional[_Union[ScheduleWork, _Mapping]] = ...,
+        response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
+    ) -> None: ...
+
+class RemoveScheduleWorkLineRequest(_message.Message):
+    __slots__ = ["schedule_work_id", "schedule_work_line_ids", "context"]
+    SCHEDULE_WORK_ID_FIELD_NUMBER: _ClassVar[int]
+    SCHEDULE_WORK_LINE_IDS_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    schedule_work_id: str
+    schedule_work_line_ids: _containers.RepeatedScalarFieldContainer[str]
+    context: _base_pb2.Context
+    def __init__(
+        self,
+        schedule_work_id: _Optional[str] = ...,
+        schedule_work_line_ids: _Optional[_Iterable[str]] = ...,
+        context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
+    ) -> None: ...
+
+class RemoveScheduleWorkLineResponse(_message.Message):
+    __slots__ = ["schedule_work", "response_standard"]
+    SCHEDULE_WORK_FIELD_NUMBER: _ClassVar[int]
+    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
+    schedule_work: ScheduleWork
+    response_standard: _base_pb2.ResponseStandard
+    def __init__(
+        self,
+        schedule_work: _Optional[_Union[ScheduleWork, _Mapping]] = ...,
+        response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
+    ) -> None: ...
