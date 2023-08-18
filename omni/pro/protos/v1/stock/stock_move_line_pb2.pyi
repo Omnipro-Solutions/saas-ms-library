@@ -6,6 +6,7 @@ from typing import Union as _Union
 
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
+from google.protobuf import struct_pb2 as _struct_pb2
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
@@ -224,3 +225,33 @@ class StockMoveLineDeleteResponse(_message.Message):
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
     response_standard: _base_pb2.ResponseStandard
     def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
+
+class MoveLineAddQtyRequest(_message.Message):
+    __slots__ = ["id", "quantity", "payload", "context"]
+    ID_FIELD_NUMBER: _ClassVar[int]
+    QUANTITY_FIELD_NUMBER: _ClassVar[int]
+    PAYLOAD_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    id: int
+    quantity: int
+    payload: _struct_pb2.Struct
+    context: _base_pb2.Context
+    def __init__(
+        self,
+        id: _Optional[int] = ...,
+        quantity: _Optional[int] = ...,
+        payload: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
+        context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
+    ) -> None: ...
+
+class MoveLineAddQtyResponse(_message.Message):
+    __slots__ = ["response_standard", "data"]
+    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
+    DATA_FIELD_NUMBER: _ClassVar[int]
+    response_standard: _base_pb2.ResponseStandard
+    data: _struct_pb2.Struct
+    def __init__(
+        self,
+        response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
+        data: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
+    ) -> None: ...
