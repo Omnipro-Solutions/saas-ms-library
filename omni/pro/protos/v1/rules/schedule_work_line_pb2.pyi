@@ -9,28 +9,9 @@ from google.protobuf import message as _message
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
-from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
 from omni.pro.protos.common import base_pb2 as _base_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
-
-class Day(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
-    __slots__ = []
-    MONDAY: _ClassVar[Day]
-    TUESDAY: _ClassVar[Day]
-    WEDNESDAY: _ClassVar[Day]
-    THURSDAY: _ClassVar[Day]
-    FRIDAY: _ClassVar[Day]
-    SATURDAY: _ClassVar[Day]
-    SUNDAY: _ClassVar[Day]
-
-MONDAY: Day
-TUESDAY: Day
-WEDNESDAY: Day
-THURSDAY: Day
-FRIDAY: Day
-SATURDAY: Day
-SUNDAY: Day
 
 class ScheduleWorkLine(_message.Message):
     __slots__ = ["id", "day", "opening_time", "closing_time", "active", "object_audit"]
@@ -41,7 +22,7 @@ class ScheduleWorkLine(_message.Message):
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
-    day: Day
+    day: str
     opening_time: _timestamp_pb2.Timestamp
     closing_time: _timestamp_pb2.Timestamp
     active: _wrappers_pb2.BoolValue
@@ -49,7 +30,7 @@ class ScheduleWorkLine(_message.Message):
     def __init__(
         self,
         id: _Optional[str] = ...,
-        day: _Optional[_Union[Day, str]] = ...,
+        day: _Optional[str] = ...,
         opening_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
         closing_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
@@ -62,13 +43,13 @@ class ScheduleWorkLineCreateRequest(_message.Message):
     OPENING_TIME_FIELD_NUMBER: _ClassVar[int]
     CLOSING_TIME_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    day: Day
+    day: str
     opening_time: _timestamp_pb2.Timestamp
     closing_time: _timestamp_pb2.Timestamp
     context: _base_pb2.Context
     def __init__(
         self,
-        day: _Optional[_Union[Day, str]] = ...,
+        day: _Optional[str] = ...,
         opening_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
         closing_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
