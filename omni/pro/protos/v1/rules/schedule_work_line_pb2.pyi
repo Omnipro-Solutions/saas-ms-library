@@ -23,16 +23,16 @@ class ScheduleWorkLine(_message.Message):
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
     day: str
-    opening_time: _timestamp_pb2.Timestamp
-    closing_time: _timestamp_pb2.Timestamp
+    opening_time: str
+    closing_time: str
     active: _wrappers_pb2.BoolValue
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
         id: _Optional[str] = ...,
         day: _Optional[str] = ...,
-        opening_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
-        closing_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
+        opening_time: _Optional[str] = ...,
+        closing_time: _Optional[str] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
@@ -44,14 +44,14 @@ class ScheduleWorkLineCreateRequest(_message.Message):
     CLOSING_TIME_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     day: str
-    opening_time: _timestamp_pb2.Timestamp
-    closing_time: _timestamp_pb2.Timestamp
+    opening_time: str
+    closing_time: str
     context: _base_pb2.Context
     def __init__(
         self,
         day: _Optional[str] = ...,
-        opening_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
-        closing_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
+        opening_time: _Optional[str] = ...,
+        closing_time: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
