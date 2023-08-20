@@ -15,22 +15,22 @@ from omni.pro.protos.v1.rules import warehouse_hierarchy_pb2 as _warehouse_hiera
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class DeliverySchedule(_message.Message):
-    __slots__ = ["id", "name", "schedule_work_id", "active", "object_audit"]
+    __slots__ = ["id", "name", "schedule_work", "active", "object_audit"]
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
-    SCHEDULE_WORK_ID_FIELD_NUMBER: _ClassVar[int]
+    SCHEDULE_WORK_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
-    schedule_work_id: _schedule_work_pb2.ScheduleWork
+    schedule_work: _schedule_work_pb2.ScheduleWork
     active: _wrappers_pb2.BoolValue
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
         id: _Optional[str] = ...,
         name: _Optional[str] = ...,
-        schedule_work_id: _Optional[_Union[_schedule_work_pb2.ScheduleWork, _Mapping]] = ...,
+        schedule_work: _Optional[_Union[_schedule_work_pb2.ScheduleWork, _Mapping]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
