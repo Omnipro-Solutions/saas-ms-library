@@ -33,15 +33,15 @@ class DeliveryMethodServiceStub(object):
             request_serializer=v1_dot_rules_dot_delivery__method__pb2.DeliveryMethodDeleteRequest.SerializeToString,
             response_deserializer=v1_dot_rules_dot_delivery__method__pb2.DeliveryMethodDeleteResponse.FromString,
         )
-        self.AddWarehouse = channel.unary_unary(
-            "/pro.omni.oms.api.v1.rules.delivery_method.DeliveryMethodService/AddWarehouse",
-            request_serializer=v1_dot_rules_dot_delivery__method__pb2.AddWarehouseRequest.SerializeToString,
-            response_deserializer=v1_dot_rules_dot_delivery__method__pb2.AddWarehouseResponse.FromString,
+        self.AddDeliveryWarehouse = channel.unary_unary(
+            "/pro.omni.oms.api.v1.rules.delivery_method.DeliveryMethodService/AddDeliveryWarehouse",
+            request_serializer=v1_dot_rules_dot_delivery__method__pb2.AddDeliveryWarehouseRequest.SerializeToString,
+            response_deserializer=v1_dot_rules_dot_delivery__method__pb2.AddDeliveryWarehouseResponse.FromString,
         )
-        self.RemoveWarehouse = channel.unary_unary(
-            "/pro.omni.oms.api.v1.rules.delivery_method.DeliveryMethodService/RemoveWarehouse",
-            request_serializer=v1_dot_rules_dot_delivery__method__pb2.RemoveWarehouseRequest.SerializeToString,
-            response_deserializer=v1_dot_rules_dot_delivery__method__pb2.RemoveWarehouseResponse.FromString,
+        self.RemoveDeliveryWarehouse = channel.unary_unary(
+            "/pro.omni.oms.api.v1.rules.delivery_method.DeliveryMethodService/RemoveDeliveryWarehouse",
+            request_serializer=v1_dot_rules_dot_delivery__method__pb2.RemoveDeliveryWarehouseRequest.SerializeToString,
+            response_deserializer=v1_dot_rules_dot_delivery__method__pb2.RemoveDeliveryWarehouseResponse.FromString,
         )
 
 
@@ -72,13 +72,13 @@ class DeliveryMethodServiceServicer(object):
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
-    def AddWarehouse(self, request, context):
+    def AddDeliveryWarehouse(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
-    def RemoveWarehouse(self, request, context):
+    def RemoveDeliveryWarehouse(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -107,15 +107,15 @@ def add_DeliveryMethodServiceServicer_to_server(servicer, server):
             request_deserializer=v1_dot_rules_dot_delivery__method__pb2.DeliveryMethodDeleteRequest.FromString,
             response_serializer=v1_dot_rules_dot_delivery__method__pb2.DeliveryMethodDeleteResponse.SerializeToString,
         ),
-        "AddWarehouse": grpc.unary_unary_rpc_method_handler(
-            servicer.AddWarehouse,
-            request_deserializer=v1_dot_rules_dot_delivery__method__pb2.AddWarehouseRequest.FromString,
-            response_serializer=v1_dot_rules_dot_delivery__method__pb2.AddWarehouseResponse.SerializeToString,
+        "AddDeliveryWarehouse": grpc.unary_unary_rpc_method_handler(
+            servicer.AddDeliveryWarehouse,
+            request_deserializer=v1_dot_rules_dot_delivery__method__pb2.AddDeliveryWarehouseRequest.FromString,
+            response_serializer=v1_dot_rules_dot_delivery__method__pb2.AddDeliveryWarehouseResponse.SerializeToString,
         ),
-        "RemoveWarehouse": grpc.unary_unary_rpc_method_handler(
-            servicer.RemoveWarehouse,
-            request_deserializer=v1_dot_rules_dot_delivery__method__pb2.RemoveWarehouseRequest.FromString,
-            response_serializer=v1_dot_rules_dot_delivery__method__pb2.RemoveWarehouseResponse.SerializeToString,
+        "RemoveDeliveryWarehouse": grpc.unary_unary_rpc_method_handler(
+            servicer.RemoveDeliveryWarehouse,
+            request_deserializer=v1_dot_rules_dot_delivery__method__pb2.RemoveDeliveryWarehouseRequest.FromString,
+            response_serializer=v1_dot_rules_dot_delivery__method__pb2.RemoveDeliveryWarehouseResponse.SerializeToString,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -245,7 +245,7 @@ class DeliveryMethodService(object):
         )
 
     @staticmethod
-    def AddWarehouse(
+    def AddDeliveryWarehouse(
         request,
         target,
         options=(),
@@ -260,9 +260,9 @@ class DeliveryMethodService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            "/pro.omni.oms.api.v1.rules.delivery_method.DeliveryMethodService/AddWarehouse",
-            v1_dot_rules_dot_delivery__method__pb2.AddWarehouseRequest.SerializeToString,
-            v1_dot_rules_dot_delivery__method__pb2.AddWarehouseResponse.FromString,
+            "/pro.omni.oms.api.v1.rules.delivery_method.DeliveryMethodService/AddDeliveryWarehouse",
+            v1_dot_rules_dot_delivery__method__pb2.AddDeliveryWarehouseRequest.SerializeToString,
+            v1_dot_rules_dot_delivery__method__pb2.AddDeliveryWarehouseResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -274,7 +274,7 @@ class DeliveryMethodService(object):
         )
 
     @staticmethod
-    def RemoveWarehouse(
+    def RemoveDeliveryWarehouse(
         request,
         target,
         options=(),
@@ -289,9 +289,9 @@ class DeliveryMethodService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            "/pro.omni.oms.api.v1.rules.delivery_method.DeliveryMethodService/RemoveWarehouse",
-            v1_dot_rules_dot_delivery__method__pb2.RemoveWarehouseRequest.SerializeToString,
-            v1_dot_rules_dot_delivery__method__pb2.RemoveWarehouseResponse.FromString,
+            "/pro.omni.oms.api.v1.rules.delivery_method.DeliveryMethodService/RemoveDeliveryWarehouse",
+            v1_dot_rules_dot_delivery__method__pb2.RemoveDeliveryWarehouseRequest.SerializeToString,
+            v1_dot_rules_dot_delivery__method__pb2.RemoveDeliveryWarehouseResponse.FromString,
             options,
             channel_credentials,
             insecure,
