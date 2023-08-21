@@ -118,7 +118,7 @@ class DeliveryMethodCreateRequest(_message.Message):
     quantity_security: float
     code: str
     type_delivery: str
-    delivery_location_id: str
+    delivery_location_id: int
     transfer_template_id: str
     category_template_id: str
     locality_available_id: str
@@ -132,7 +132,7 @@ class DeliveryMethodCreateRequest(_message.Message):
         quantity_security: _Optional[float] = ...,
         code: _Optional[str] = ...,
         type_delivery: _Optional[str] = ...,
-        delivery_location_id: _Optional[str] = ...,
+        delivery_location_id: _Optional[int] = ...,
         transfer_template_id: _Optional[str] = ...,
         category_template_id: _Optional[str] = ...,
         locality_available_id: _Optional[str] = ...,
@@ -234,22 +234,22 @@ class DeliveryMethodDeleteResponse(_message.Message):
     response_standard: _base_pb2.ResponseStandard
     def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
 
-class AddWarehouseRequest(_message.Message):
+class AddDeliveryWarehouseRequest(_message.Message):
     __slots__ = ["delivery_method_id", "delivery_warehouse_ids", "context"]
     DELIVERY_METHOD_ID_FIELD_NUMBER: _ClassVar[int]
     DELIVERY_WAREHOUSE_IDS_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     delivery_method_id: str
-    delivery_warehouse_ids: _containers.RepeatedScalarFieldContainer[str]
+    delivery_warehouse_ids: _containers.RepeatedScalarFieldContainer[int]
     context: _base_pb2.Context
     def __init__(
         self,
         delivery_method_id: _Optional[str] = ...,
-        delivery_warehouse_ids: _Optional[_Iterable[str]] = ...,
+        delivery_warehouse_ids: _Optional[_Iterable[int]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
-class AddWarehouseResponse(_message.Message):
+class AddDeliveryWarehouseResponse(_message.Message):
     __slots__ = ["delivery_method", "response_standard"]
     DELIVERY_METHOD_FIELD_NUMBER: _ClassVar[int]
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
@@ -261,22 +261,22 @@ class AddWarehouseResponse(_message.Message):
         response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
     ) -> None: ...
 
-class RemoveWarehouseRequest(_message.Message):
+class RemoveDeliveryWarehouseRequest(_message.Message):
     __slots__ = ["delivery_method_id", "delivery_warehouse_ids", "context"]
     DELIVERY_METHOD_ID_FIELD_NUMBER: _ClassVar[int]
     DELIVERY_WAREHOUSE_IDS_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     delivery_method_id: str
-    delivery_warehouse_ids: _containers.RepeatedScalarFieldContainer[str]
+    delivery_warehouse_ids: _containers.RepeatedScalarFieldContainer[int]
     context: _base_pb2.Context
     def __init__(
         self,
         delivery_method_id: _Optional[str] = ...,
-        delivery_warehouse_ids: _Optional[_Iterable[str]] = ...,
+        delivery_warehouse_ids: _Optional[_Iterable[int]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
-class RemoveWarehouseResponse(_message.Message):
+class RemoveDeliveryWarehouseResponse(_message.Message):
     __slots__ = ["delivery_method", "response_standard"]
     DELIVERY_METHOD_FIELD_NUMBER: _ClassVar[int]
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
