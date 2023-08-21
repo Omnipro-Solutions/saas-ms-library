@@ -15,16 +15,16 @@ from omni.pro.protos.v1.rules import schedule_work_line_pb2 as _schedule_work_li
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class ScheduleWork(_message.Message):
-    __slots__ = ["id", "name", "calendar_id", "schedule_work_lines", "active", "object_audit"]
+    __slots__ = ["id", "name", "calendar", "schedule_work_lines", "active", "object_audit"]
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
-    CALENDAR_ID_FIELD_NUMBER: _ClassVar[int]
+    CALENDAR_FIELD_NUMBER: _ClassVar[int]
     SCHEDULE_WORK_LINES_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
-    calendar_id: _calendar_pb2.Calendar
+    calendar: _calendar_pb2.Calendar
     schedule_work_lines: _containers.RepeatedCompositeFieldContainer[_schedule_work_line_pb2.ScheduleWorkLine]
     active: _wrappers_pb2.BoolValue
     object_audit: _base_pb2.ObjectAudit
@@ -32,7 +32,7 @@ class ScheduleWork(_message.Message):
         self,
         id: _Optional[str] = ...,
         name: _Optional[str] = ...,
-        calendar_id: _Optional[_Union[_calendar_pb2.Calendar, _Mapping]] = ...,
+        calendar: _Optional[_Union[_calendar_pb2.Calendar, _Mapping]] = ...,
         schedule_work_lines: _Optional[_Iterable[_Union[_schedule_work_line_pb2.ScheduleWorkLine, _Mapping]]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
