@@ -91,15 +91,15 @@ class DatabaseManager(object):
         return document
 
     def list_documents(
-        self,
-        db_name: str,
-        tenant: str,
-        document_class,
-        fields: list = None,
-        filter: dict = None,
-        group_by: str = None,
-        paginated: dict = None,
-        sort_by: list = None,
+            self,
+            db_name: str,
+            tenant: str,
+            document_class,
+            fields: list = None,
+            filter: dict = None,
+            group_by: str = None,
+            paginated: dict = None,
+            sort_by: list = None,
     ) -> tuple[list, int]:
         """
         Parameters:
@@ -148,7 +148,7 @@ class DatabaseManager(object):
         return document
 
     def update_embeded_document(
-        self, db_name: str, document_class, filters: dict, update: dict, many: bool = False
+            self, db_name: str, document_class, filters: dict, update: dict, many: bool = False
     ) -> object:
         # with self.get_connection() as cnn:
         if many:
@@ -232,7 +232,40 @@ class SessionManager:
 
 
 class PostgresDatabaseManager(SessionManager):
+    """
+    Handles database operations specific to Postgres using SQLAlchemy.
+    Maneja operaciones de base de datos específicas para Postgres usando SQLAlchemy.
+
+    Args:
+    name (str): Name of the database.
+                Nombre de la base de datos.
+    host (str): Host of the database.
+                Host de la base de datos.
+    port (str): Port of the database.
+                Puerto de la base de datos.
+    user (str): User to connect to the database.
+                Usuario para conectarse a la base de datos.
+    password (str): Password to connect to the database.
+                    Contraseña para conectarse a la base de datos.
+    """
+
     def __init__(self, name: str, host: str, port: str, user: str, password: str):
+        """
+        Initializes the PostgresDatabaseManager with the given database details.
+        Inicializa el PostgresDatabaseManager con los detalles de base de datos proporcionados.
+
+        Args:
+        name (str): Name of the database.
+                    Nombre de la base de datos.
+        host (str): Host of the database.
+                    Host de la base de datos.
+        port (str): Port of the database.
+                    Puerto de la base de datos.
+        user (str): User to connect to the database.
+                    Usuario para conectarse a la base de datos.
+        password (str): Password to connect to the database.
+                        Contraseña para conectarse a la base de datos.
+        """
         self.name = name
         self.host = host
         self.port = port
@@ -242,48 +275,112 @@ class PostgresDatabaseManager(SessionManager):
         super().__init__(self.base_url)
 
     def get_db_connection(self):
+        """
+        Retrieves a connection to the Postgres database.
+        Recupera una conexión a la base de datos Postgres.
+
+        Returns:
+        (obj): Database connection object.
+               Objeto de conexión a la base de datos.
+        """
         return self.engine.connect()
 
     def create_new_record(self, model, session, **kwargs):
         """
         Creates a new record in the database using the provided model and session.
+        Crea un nuevo registro en la base de datos usando el modelo y la sesión proporcionados.
 
-        This method initializes a new instance of the model with the provided attributes,
-        adds it to the database session, and then returns it.
-
-        Parameters:
-        - model (Base): The SQLAlchemy model where the record will be created.
-        - session (Session): An instance of the database session, likely from SQLAlchemy.
-        - **kwargs: Attributes and values that will be used to initialize the new record of the model.
+        Args:
+        model (Base): The SQLAlchemy model where the record will be created.
+                      El modelo SQLAlchemy donde se creará el registro.
+        session (Session): An instance of the database session, likely from SQLAlchemy.
+                           Una instancia de la sesión de base de datos, probablemente de SQLAlchemy.
+        **kwargs: Attributes and values that will be used to initialize the new record of the model.
+                  Atributos y valores que se utilizarán para inicializar el nuevo registro del modelo.
 
         Returns:
-        - record: The new model record after being added to the session.
-
-        Example:
-        user = create_new_record(User, session, name="John", age=25)
+        (obj): The new model record after being added to the session.
+               El nuevo registro del modelo después de ser añadido a la sesión.
         """
-
         record = model(**kwargs)
         record.create(session)
         return record
 
     def retrieve_record(self, model, session, filters: dict):
+        """
+        Retrieves a single database record based on provided filters.
+        Recupera un único registro de la base de datos basado en los filtros proporcionados.
+
+        Args:
+        model (Base): The SQLAlchemy model to query.
+                      El modelo SQLAlchemy a consultar.
+        session (Session): An instance of the database session.
+                           Una instancia de la sesión de base de datos.
+        filters (dict): A dictionary of attributes to filter the records by.
+                        Un diccionario de atributos para filtrar los registros.
+
+        Returns:
+        (obj): The first record that matches the filters, or None if not found.
+               El primer registro que coincida con los filtros, o None si no se encuentra.
+        """
         return session.query(model).filter_by(**filters).first()
 
     def retrieve_record_by_id(self, model, session, id: int):
+        """
+        Retrieves a single database record by its ID.
+        Recupera un único registro de la base de datos por su ID.
+
+        Args:
+        model (Base): The SQLAlchemy model to query.
+                      El modelo SQLAlchemy a consultar.
+        session (Session): An instance of the database session.
+                           Una instancia de la sesión de base de datos.
+        id (int): The ID of the record to retrieve.
+                  El ID del registro a recuperar.
+
+        Returns:
+        (obj): The record with the given ID, or None if not found.
+               El registro con el ID dado, o None si no se encuentra.
+        """
         return session.query(model).get(id)
 
     def list_records(
-        self,
-        model,
-        session,
-        id: int,
-        fields: base_pb2.Fields,
-        filter: base_pb2.Filter,
-        group_by: base_pb2.GroupBy,
-        sort_by: base_pb2.SortBy,
-        paginated: base_pb2.Paginated,
+            self,
+            model,
+            session,
+            id: int,
+            fields: base_pb2.Fields,
+            filter: base_pb2.Filter,
+            group_by: base_pb2.GroupBy,
+            sort_by: base_pb2.SortBy,
+            paginated: base_pb2.Paginated,
     ):
+        """
+        Lists database records based on provided parameters.
+        Lista registros de la base de datos basados en los parámetros proporcionados.
+
+        Args:
+        model (Base): The SQLAlchemy model to query.
+                      El modelo SQLAlchemy a consultar.
+        session (Session): An instance of the database session.
+                           Una instancia de la sesión de base de datos.
+        id (int): The ID of a specific record to retrieve.
+                  El ID de un registro específico para recuperar.
+        fields (base_pb2.Fields): Fields to be returned in the response.
+                                  Campos a ser devueltos en la respuesta.
+        filter (base_pb2.Filter): Conditions to filter the list of records.
+                                  Condiciones para filtrar la lista de registros.
+        group_by (base_pb2.GroupBy): Conditions to group the list of records.
+                                     Condiciones para agrupar la lista de registros.
+        sort_by (base_pb2.SortBy): Conditions to sort the list of records.
+                                   Condiciones para ordenar la lista de registros.
+        paginated (base_pb2.Paginated): Conditions for pagination of the records.
+                                        Condiciones para la paginación de los registros.
+
+        Returns:
+        (list): A list of records based on the provided parameters.
+                Una lista de registros basados en los parámetros proporcionados.
+        """
         records = QueryBuilder.build_filter(model, session, id, fields, filter, group_by, sort_by, paginated)
 
         return records
@@ -291,15 +388,21 @@ class PostgresDatabaseManager(SessionManager):
     def update_record(self, model, session, model_id, update_dict):
         """
         Update a database record of the given model with the specified changes.
+        Actualiza un registro de base de datos del modelo dado con los cambios especificados.
 
-        Parameters:
-        - model (Base): The SQLAlchemy model to update.
-        - session (Session): An instance of the database session.
-        - model_id: The ID of the record to update.
-        - update_dict (dict): A dictionary of attributes and their new values.
+        Args:
+        model (Base): The SQLAlchemy model to update.
+                      El modelo SQLAlchemy a actualizar.
+        session (Session): An instance of the database session.
+                           Una instancia de la sesión de base de datos.
+        model_id: The ID of the record to update.
+                  El ID del registro a actualizar.
+        update_dict (dict): A dictionary of attributes and their new values.
+                            Un diccionario de atributos y sus nuevos valores.
 
         Returns:
-        - record: The updated record, or None if not found.
+        (obj): The updated record, or None if not found.
+               El registro actualizado, o None si no se encuentra.
         """
         record = session.query(model).get(model_id)
         if not record:
@@ -314,18 +417,23 @@ class PostgresDatabaseManager(SessionManager):
     def delete_record_by_id(self, model, session, model_id):
         """
         Delete a database record of the given model by its ID.
+        Elimina un registro de base de datos del modelo dado por su ID.
 
-        Parameters:
-        - model (Base): The SQLAlchemy model to delete from.
-        - session (Session): An instance of the database session.
-        - model_id: The ID of the record to delete.
+        Args:
+        model (Base): The SQLAlchemy model to delete from.
+                      El modelo SQLAlchemy del que eliminar.
+        session (Session): An instance of the database session.
+                           Una instancia de la sesión de base de datos.
+        model_id: The ID of the record to delete.
+                  El ID del registro a eliminar.
 
         Returns:
-        - bool: True if the record was deleted, False otherwise.
+        (bool): True if the record was deleted, False otherwise.
+                Verdadero si el registro fue eliminado, Falso en caso contrario.
         """
         record = session.query(model).filter_by(id=model_id).first()
         if record:
-            record.delete()
+            record.delete(session)
             return True
         return False
 
@@ -484,13 +592,13 @@ class PolishNotationToMongoDB:
 class DBUtil(object):
     @classmethod
     def db_prepared_statement(
-        cls,
-        id: str,
-        fields: base_pb2.Fields,
-        filter: base_pb2.Filter,
-        paginated: base_pb2.Paginated,
-        group_by: base_pb2.GroupBy,
-        sort_by: base_pb2.SortBy,
+            cls,
+            id: str,
+            fields: base_pb2.Fields,
+            filter: base_pb2.Filter,
+            paginated: base_pb2.Paginated,
+            group_by: base_pb2.GroupBy,
+            sort_by: base_pb2.SortBy,
     ) -> dict:
         prepared_statement = {}
         prepared_statement["paginated"] = {"page": paginated.offset, "per_page": paginated.limit or 10}
@@ -542,15 +650,15 @@ class QueryBuilder:
 
     @classmethod
     def build_filter(
-        cls,
-        model,
-        session,
-        id: int,
-        fields: base_pb2.Fields,
-        filter: base_pb2.Filter,
-        group_by: base_pb2.GroupBy,
-        sort_by: base_pb2.SortBy,
-        paginated: base_pb2.Paginated,
+            cls,
+            model,
+            session,
+            id: int,
+            fields: base_pb2.Fields,
+            filter: base_pb2.Filter,
+            group_by: base_pb2.GroupBy,
+            sort_by: base_pb2.SortBy,
+            paginated: base_pb2.Paginated,
     ):
         query = session.query(model)
 
