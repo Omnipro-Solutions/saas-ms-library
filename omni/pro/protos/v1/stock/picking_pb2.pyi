@@ -291,18 +291,13 @@ class PickingDeleteResponse(_message.Message):
     def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
 
 class ValidatePickingRequest(_message.Message):
-    __slots__ = ["id", "payload", "context"]
+    __slots__ = ["id", "context"]
     ID_FIELD_NUMBER: _ClassVar[int]
-    PAYLOAD_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     id: int
-    payload: _struct_pb2.Struct
     context: _base_pb2.Context
     def __init__(
-        self,
-        id: _Optional[int] = ...,
-        payload: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
-        context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
+        self, id: _Optional[int] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
     ) -> None: ...
 
 class ValidatePickingResponse(_message.Message):
