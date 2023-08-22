@@ -91,15 +91,15 @@ class DatabaseManager(object):
         return document
 
     def list_documents(
-            self,
-            db_name: str,
-            tenant: str,
-            document_class,
-            fields: list = None,
-            filter: dict = None,
-            group_by: str = None,
-            paginated: dict = None,
-            sort_by: list = None,
+        self,
+        db_name: str,
+        tenant: str,
+        document_class,
+        fields: list = None,
+        filter: dict = None,
+        group_by: str = None,
+        paginated: dict = None,
+        sort_by: list = None,
     ) -> tuple[list, int]:
         """
         Parameters:
@@ -148,7 +148,7 @@ class DatabaseManager(object):
         return document
 
     def update_embeded_document(
-            self, db_name: str, document_class, filters: dict, update: dict, many: bool = False
+        self, db_name: str, document_class, filters: dict, update: dict, many: bool = False
     ) -> object:
         # with self.get_connection() as cnn:
         if many:
@@ -274,15 +274,15 @@ class PostgresDatabaseManager(SessionManager):
         return session.query(model).get(id)
 
     def list_records(
-            self,
-            model,
-            session,
-            id: int,
-            fields: base_pb2.Fields,
-            filter: base_pb2.Filter,
-            group_by: base_pb2.GroupBy,
-            sort_by: base_pb2.SortBy,
-            paginated: base_pb2.Paginated,
+        self,
+        model,
+        session,
+        id: int,
+        fields: base_pb2.Fields,
+        filter: base_pb2.Filter,
+        group_by: base_pb2.GroupBy,
+        sort_by: base_pb2.SortBy,
+        paginated: base_pb2.Paginated,
     ):
         records = QueryBuilder.build_filter(model, session, id, fields, filter, group_by, sort_by, paginated)
 
@@ -484,13 +484,13 @@ class PolishNotationToMongoDB:
 class DBUtil(object):
     @classmethod
     def db_prepared_statement(
-            cls,
-            id: str,
-            fields: base_pb2.Fields,
-            filter: base_pb2.Filter,
-            paginated: base_pb2.Paginated,
-            group_by: base_pb2.GroupBy,
-            sort_by: base_pb2.SortBy,
+        cls,
+        id: str,
+        fields: base_pb2.Fields,
+        filter: base_pb2.Filter,
+        paginated: base_pb2.Paginated,
+        group_by: base_pb2.GroupBy,
+        sort_by: base_pb2.SortBy,
     ) -> dict:
         prepared_statement = {}
         prepared_statement["paginated"] = {"page": paginated.offset, "per_page": paginated.limit or 10}
@@ -542,15 +542,15 @@ class QueryBuilder:
 
     @classmethod
     def build_filter(
-            cls,
-            model,
-            session,
-            id: int,
-            fields: base_pb2.Fields,
-            filter: base_pb2.Filter,
-            group_by: base_pb2.GroupBy,
-            sort_by: base_pb2.SortBy,
-            paginated: base_pb2.Paginated,
+        cls,
+        model,
+        session,
+        id: int,
+        fields: base_pb2.Fields,
+        filter: base_pb2.Filter,
+        group_by: base_pb2.GroupBy,
+        sort_by: base_pb2.SortBy,
+        paginated: base_pb2.Paginated,
     ):
         query = session.query(model)
 
@@ -573,10 +573,14 @@ class QueryBuilder:
             order_by_fields = cls.build_sort_by(model, sort_by)
             query = query.order_by(*order_by_fields)
 
-        if paginated.ListFields():
-            query = query.offset(paginated.offset).limit(paginated.limit or cls.DEFAULT_PAGE_SIZE)
-
         total = query.count()
+
+        if paginated.ListFields():
+            page = paginated.offset or 1
+            limit = paginated.limit or cls.DEFAULT_PAGE_SIZE
+            offset = (page - 1) * limit
+            query = query.offset(offset).limit(limit)
+
         return query.all(), total
 
     @classmethod
