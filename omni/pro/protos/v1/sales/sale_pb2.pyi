@@ -6,6 +6,7 @@ from typing import Union as _Union
 
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
+from google.protobuf import struct_pb2 as _struct_pb2
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
@@ -74,6 +75,45 @@ class Sale(_message.Message):
         json_order: _Optional[str] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
+    ) -> None: ...
+
+class SaleIntegration(_message.Message):
+    __slots__ = [
+        "order_details",
+        "oms_rules",
+        "client_details",
+        "shipping_address",
+        "billing_address",
+        "payment",
+        "order_items",
+        "shipping",
+    ]
+    ORDER_DETAILS_FIELD_NUMBER: _ClassVar[int]
+    OMS_RULES_FIELD_NUMBER: _ClassVar[int]
+    CLIENT_DETAILS_FIELD_NUMBER: _ClassVar[int]
+    SHIPPING_ADDRESS_FIELD_NUMBER: _ClassVar[int]
+    BILLING_ADDRESS_FIELD_NUMBER: _ClassVar[int]
+    PAYMENT_FIELD_NUMBER: _ClassVar[int]
+    ORDER_ITEMS_FIELD_NUMBER: _ClassVar[int]
+    SHIPPING_FIELD_NUMBER: _ClassVar[int]
+    order_details: _containers.RepeatedCompositeFieldContainer[_struct_pb2.Struct]
+    oms_rules: _containers.RepeatedCompositeFieldContainer[_struct_pb2.Struct]
+    client_details: _containers.RepeatedCompositeFieldContainer[_struct_pb2.Struct]
+    shipping_address: _containers.RepeatedCompositeFieldContainer[_struct_pb2.Struct]
+    billing_address: _containers.RepeatedCompositeFieldContainer[_struct_pb2.Struct]
+    payment: _containers.RepeatedCompositeFieldContainer[_struct_pb2.Struct]
+    order_items: _containers.RepeatedCompositeFieldContainer[_struct_pb2.Struct]
+    shipping: _containers.RepeatedCompositeFieldContainer[_struct_pb2.Struct]
+    def __init__(
+        self,
+        order_details: _Optional[_Iterable[_Union[_struct_pb2.Struct, _Mapping]]] = ...,
+        oms_rules: _Optional[_Iterable[_Union[_struct_pb2.Struct, _Mapping]]] = ...,
+        client_details: _Optional[_Iterable[_Union[_struct_pb2.Struct, _Mapping]]] = ...,
+        shipping_address: _Optional[_Iterable[_Union[_struct_pb2.Struct, _Mapping]]] = ...,
+        billing_address: _Optional[_Iterable[_Union[_struct_pb2.Struct, _Mapping]]] = ...,
+        payment: _Optional[_Iterable[_Union[_struct_pb2.Struct, _Mapping]]] = ...,
+        order_items: _Optional[_Iterable[_Union[_struct_pb2.Struct, _Mapping]]] = ...,
+        shipping: _Optional[_Iterable[_Union[_struct_pb2.Struct, _Mapping]]] = ...,
     ) -> None: ...
 
 class SaleCreateRequest(_message.Message):
@@ -224,3 +264,27 @@ class SaleDeleteResponse(_message.Message):
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
     response_standard: _base_pb2.ResponseStandard
     def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
+
+class SaleCreateIntegrationRequest(_message.Message):
+    __slots__ = ["sale_integration", "context"]
+    SALE_INTEGRATION_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    sale_integration: SaleIntegration
+    context: _base_pb2.Context
+    def __init__(
+        self,
+        sale_integration: _Optional[_Union[SaleIntegration, _Mapping]] = ...,
+        context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
+    ) -> None: ...
+
+class SaleCreateIntegrationResponse(_message.Message):
+    __slots__ = ["sale", "response_standard"]
+    SALE_FIELD_NUMBER: _ClassVar[int]
+    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
+    sale: Sale
+    response_standard: _base_pb2.ResponseStandard
+    def __init__(
+        self,
+        sale: _Optional[_Union[Sale, _Mapping]] = ...,
+        response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
+    ) -> None: ...
