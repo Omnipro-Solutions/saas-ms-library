@@ -573,6 +573,20 @@ class QueryBuilder:
             order_by_fields = cls.build_sort_by(model, sort_by)
             query = query.order_by(*order_by_fields)
 
+        """
+            Retrieves a paginated list from a given query.
+
+            Args:
+            
+            query (obj): The query object that needs pagination.
+            paginated (obj): Contains pagination parameters such as offset and limit.
+
+            Returns:
+            
+            tuple: A tuple containing the paginated list and the total count.
+            
+        """
+
         total = query.count()
 
         if paginated.ListFields():
