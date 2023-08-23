@@ -33,6 +33,11 @@ class QuantServiceStub(object):
             request_serializer=v1_dot_stock_dot_quant__pb2.QuantDeleteRequest.SerializeToString,
             response_deserializer=v1_dot_stock_dot_quant__pb2.QuantDeleteResponse.FromString,
         )
+        self.ProductAvailable = channel.unary_unary(
+            "/pro.omni.oms.api.v1.stock.quant.QuantService/ProductAvailable",
+            request_serializer=v1_dot_stock_dot_quant__pb2.ProductAvailableRequest.SerializeToString,
+            response_deserializer=v1_dot_stock_dot_quant__pb2.ProductAvailableResponse.FromString,
+        )
 
 
 class QuantServiceServicer(object):
@@ -62,6 +67,12 @@ class QuantServiceServicer(object):
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
+    def ProductAvailable(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
 
 def add_QuantServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -84,6 +95,11 @@ def add_QuantServiceServicer_to_server(servicer, server):
             servicer.QuantDelete,
             request_deserializer=v1_dot_stock_dot_quant__pb2.QuantDeleteRequest.FromString,
             response_serializer=v1_dot_stock_dot_quant__pb2.QuantDeleteResponse.SerializeToString,
+        ),
+        "ProductAvailable": grpc.unary_unary_rpc_method_handler(
+            servicer.ProductAvailable,
+            request_deserializer=v1_dot_stock_dot_quant__pb2.ProductAvailableRequest.FromString,
+            response_serializer=v1_dot_stock_dot_quant__pb2.ProductAvailableResponse.SerializeToString,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -202,6 +218,35 @@ class QuantService(object):
             "/pro.omni.oms.api.v1.stock.quant.QuantService/QuantDelete",
             v1_dot_stock_dot_quant__pb2.QuantDeleteRequest.SerializeToString,
             v1_dot_stock_dot_quant__pb2.QuantDeleteResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
+
+    @staticmethod
+    def ProductAvailable(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            "/pro.omni.oms.api.v1.stock.quant.QuantService/ProductAvailable",
+            v1_dot_stock_dot_quant__pb2.ProductAvailableRequest.SerializeToString,
+            v1_dot_stock_dot_quant__pb2.ProductAvailableResponse.FromString,
             options,
             channel_credentials,
             insecure,

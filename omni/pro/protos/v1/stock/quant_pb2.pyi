@@ -187,3 +187,44 @@ class QuantDeleteResponse(_message.Message):
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
     response_standard: _base_pb2.ResponseStandard
     def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
+
+class ProductAvailable(_message.Message):
+    __slots__ = ["available", "available_quantity"]
+    AVAILABLE_FIELD_NUMBER: _ClassVar[int]
+    AVAILABLE_QUANTITY_FIELD_NUMBER: _ClassVar[int]
+    available: bool
+    available_quantity: float
+    def __init__(self, available: bool = ..., available_quantity: _Optional[float] = ...) -> None: ...
+
+class ProductAvailableRequest(_message.Message):
+    __slots__ = ["location_id", "product_id", "product_sku", "required_quantity", "context"]
+    LOCATION_ID_FIELD_NUMBER: _ClassVar[int]
+    PRODUCT_ID_FIELD_NUMBER: _ClassVar[int]
+    PRODUCT_SKU_FIELD_NUMBER: _ClassVar[int]
+    REQUIRED_QUANTITY_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    location_id: int
+    product_id: str
+    product_sku: str
+    required_quantity: int
+    context: _base_pb2.Context
+    def __init__(
+        self,
+        location_id: _Optional[int] = ...,
+        product_id: _Optional[str] = ...,
+        product_sku: _Optional[str] = ...,
+        required_quantity: _Optional[int] = ...,
+        context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
+    ) -> None: ...
+
+class ProductAvailableResponse(_message.Message):
+    __slots__ = ["response_standard", "product_available"]
+    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
+    PRODUCT_AVAILABLE_FIELD_NUMBER: _ClassVar[int]
+    response_standard: _base_pb2.ResponseStandard
+    product_available: ProductAvailable
+    def __init__(
+        self,
+        response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
+        product_available: _Optional[_Union[ProductAvailable, _Mapping]] = ...,
+    ) -> None: ...
