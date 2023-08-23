@@ -78,42 +78,27 @@ class Sale(_message.Message):
     ) -> None: ...
 
 class SaleIntegration(_message.Message):
-    __slots__ = [
-        "order_details",
-        "oms_rules",
-        "client_details",
-        "shipping_address",
-        "billing_address",
-        "payment",
-        "order_items",
-        "shipping",
-    ]
+    __slots__ = ["order_details", "oms_rules", "client_details", "payment", "order_items", "shipping"]
     ORDER_DETAILS_FIELD_NUMBER: _ClassVar[int]
     OMS_RULES_FIELD_NUMBER: _ClassVar[int]
     CLIENT_DETAILS_FIELD_NUMBER: _ClassVar[int]
-    SHIPPING_ADDRESS_FIELD_NUMBER: _ClassVar[int]
-    BILLING_ADDRESS_FIELD_NUMBER: _ClassVar[int]
     PAYMENT_FIELD_NUMBER: _ClassVar[int]
     ORDER_ITEMS_FIELD_NUMBER: _ClassVar[int]
     SHIPPING_FIELD_NUMBER: _ClassVar[int]
-    order_details: _containers.RepeatedCompositeFieldContainer[_struct_pb2.Struct]
-    oms_rules: _containers.RepeatedCompositeFieldContainer[_struct_pb2.Struct]
-    client_details: _containers.RepeatedCompositeFieldContainer[_struct_pb2.Struct]
-    shipping_address: _containers.RepeatedCompositeFieldContainer[_struct_pb2.Struct]
-    billing_address: _containers.RepeatedCompositeFieldContainer[_struct_pb2.Struct]
-    payment: _containers.RepeatedCompositeFieldContainer[_struct_pb2.Struct]
+    order_details: _struct_pb2.Struct
+    oms_rules: _struct_pb2.Struct
+    client_details: _struct_pb2.Struct
+    payment: _struct_pb2.Struct
     order_items: _containers.RepeatedCompositeFieldContainer[_struct_pb2.Struct]
-    shipping: _containers.RepeatedCompositeFieldContainer[_struct_pb2.Struct]
+    shipping: _struct_pb2.Struct
     def __init__(
         self,
-        order_details: _Optional[_Iterable[_Union[_struct_pb2.Struct, _Mapping]]] = ...,
-        oms_rules: _Optional[_Iterable[_Union[_struct_pb2.Struct, _Mapping]]] = ...,
-        client_details: _Optional[_Iterable[_Union[_struct_pb2.Struct, _Mapping]]] = ...,
-        shipping_address: _Optional[_Iterable[_Union[_struct_pb2.Struct, _Mapping]]] = ...,
-        billing_address: _Optional[_Iterable[_Union[_struct_pb2.Struct, _Mapping]]] = ...,
-        payment: _Optional[_Iterable[_Union[_struct_pb2.Struct, _Mapping]]] = ...,
+        order_details: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
+        oms_rules: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
+        client_details: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
+        payment: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         order_items: _Optional[_Iterable[_Union[_struct_pb2.Struct, _Mapping]]] = ...,
-        shipping: _Optional[_Iterable[_Union[_struct_pb2.Struct, _Mapping]]] = ...,
+        shipping: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
     ) -> None: ...
 
 class SaleCreateRequest(_message.Message):
