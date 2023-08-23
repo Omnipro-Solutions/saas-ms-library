@@ -149,3 +149,57 @@ class DeliveryLocalityDeleteResponse(_message.Message):
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
     response_standard: _base_pb2.ResponseStandard
     def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
+
+class AddTerritoryMatrixValueRequest(_message.Message):
+    __slots__ = ["delivery_locality_id", "territory_matrix_values", "context"]
+    DELIVERY_LOCALITY_ID_FIELD_NUMBER: _ClassVar[int]
+    TERRITORY_MATRIX_VALUES_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    delivery_locality_id: str
+    territory_matrix_values: _struct_pb2.ListValue
+    context: _base_pb2.Context
+    def __init__(
+        self,
+        delivery_locality_id: _Optional[str] = ...,
+        territory_matrix_values: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
+        context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
+    ) -> None: ...
+
+class AddTerritoryMatrixValueResponse(_message.Message):
+    __slots__ = ["delivery_locality", "response_standard"]
+    DELIVERY_LOCALITY_FIELD_NUMBER: _ClassVar[int]
+    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
+    delivery_locality: DeliveryLocality
+    response_standard: _base_pb2.ResponseStandard
+    def __init__(
+        self,
+        delivery_locality: _Optional[_Union[DeliveryLocality, _Mapping]] = ...,
+        response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
+    ) -> None: ...
+
+class RemoveTerritoryMatrixValueRequest(_message.Message):
+    __slots__ = ["delivery_locality_id", "territory_matrix_values", "context"]
+    DELIVERY_LOCALITY_ID_FIELD_NUMBER: _ClassVar[int]
+    TERRITORY_MATRIX_VALUES_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    delivery_locality_id: str
+    territory_matrix_values: _struct_pb2.ListValue
+    context: _base_pb2.Context
+    def __init__(
+        self,
+        delivery_locality_id: _Optional[str] = ...,
+        territory_matrix_values: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
+        context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
+    ) -> None: ...
+
+class RemoveTerritoryMatrixValueResponse(_message.Message):
+    __slots__ = ["delivery_locality", "response_standard"]
+    DELIVERY_LOCALITY_FIELD_NUMBER: _ClassVar[int]
+    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
+    delivery_locality: DeliveryLocality
+    response_standard: _base_pb2.ResponseStandard
+    def __init__(
+        self,
+        delivery_locality: _Optional[_Union[DeliveryLocality, _Mapping]] = ...,
+        response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
+    ) -> None: ...
