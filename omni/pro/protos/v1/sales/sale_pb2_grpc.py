@@ -33,6 +33,11 @@ class SaleServiceStub(object):
             request_serializer=v1_dot_sales_dot_sale__pb2.SaleDeleteRequest.SerializeToString,
             response_deserializer=v1_dot_sales_dot_sale__pb2.SaleDeleteResponse.FromString,
         )
+        self.SaleCreateIntegration = channel.unary_unary(
+            "/pro.omni.oms.api.v1.sales.sale.SaleService/SaleCreateIntegration",
+            request_serializer=v1_dot_sales_dot_sale__pb2.SaleCreateIntegrationRequest.SerializeToString,
+            response_deserializer=v1_dot_sales_dot_sale__pb2.SaleCreateIntegrationResponse.FromString,
+        )
 
 
 class SaleServiceServicer(object):
@@ -62,6 +67,12 @@ class SaleServiceServicer(object):
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
+    def SaleCreateIntegration(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
 
 def add_SaleServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -84,6 +95,11 @@ def add_SaleServiceServicer_to_server(servicer, server):
             servicer.SaleDelete,
             request_deserializer=v1_dot_sales_dot_sale__pb2.SaleDeleteRequest.FromString,
             response_serializer=v1_dot_sales_dot_sale__pb2.SaleDeleteResponse.SerializeToString,
+        ),
+        "SaleCreateIntegration": grpc.unary_unary_rpc_method_handler(
+            servicer.SaleCreateIntegration,
+            request_deserializer=v1_dot_sales_dot_sale__pb2.SaleCreateIntegrationRequest.FromString,
+            response_serializer=v1_dot_sales_dot_sale__pb2.SaleCreateIntegrationResponse.SerializeToString,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -202,6 +218,35 @@ class SaleService(object):
             "/pro.omni.oms.api.v1.sales.sale.SaleService/SaleDelete",
             v1_dot_sales_dot_sale__pb2.SaleDeleteRequest.SerializeToString,
             v1_dot_sales_dot_sale__pb2.SaleDeleteResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
+
+    @staticmethod
+    def SaleCreateIntegration(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            "/pro.omni.oms.api.v1.sales.sale.SaleService/SaleCreateIntegration",
+            v1_dot_sales_dot_sale__pb2.SaleCreateIntegrationRequest.SerializeToString,
+            v1_dot_sales_dot_sale__pb2.SaleCreateIntegrationResponse.FromString,
             options,
             channel_credentials,
             insecure,
