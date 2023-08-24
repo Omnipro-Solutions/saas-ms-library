@@ -17,7 +17,7 @@ from google.protobuf import wrappers_pb2 as google_dot_protobuf_dot_wrappers__pb
 from omni.pro.protos.common import base_pb2 as common_dot_base__pb2
 
 DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
-    b'\n(v1/rules/calculate_delivery_method.proto\x12+pro.omni.oms.api.v1.rules.delivery_coverage\x1a\x11\x63ommon/base.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x1cgoogle/protobuf/struct.proto"\xaa\x01\n\x1e\x43\x61lculateDeliveryMethodRequest\x12-\n\x0c\x63\x61rt_details\x18\x01 \x01(\x0b\x32\x17.google.protobuf.Struct\x12&\n\x05items\x18\x02 \x03(\x0b\x32\x17.google.protobuf.Struct\x12\x31\n\x10shipping_details\x18\x03 \x01(\x0b\x32\x17.google.protobuf.Struct"\x9c\x01\n\x1f\x43\x61lculateDeliveryMethodResponse\x12.\n\ndeliveries\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.ListValue\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard2\xd9\x01\n\x1e\x43\x61lculateDeliveryMethodService\x12\xb6\x01\n\x17\x43\x61lculateDeliveryMethod\x12K.pro.omni.oms.api.v1.rules.delivery_coverage.CalculateDeliveryMethodRequest\x1aL.pro.omni.oms.api.v1.rules.delivery_coverage.CalculateDeliveryMethodResponse"\x00\x62\x06proto3'
+    b'\n(v1/rules/calculate_delivery_method.proto\x12+pro.omni.oms.api.v1.rules.delivery_coverage\x1a\x11\x63ommon/base.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x1cgoogle/protobuf/struct.proto"\xe2\x01\n\x1e\x43\x61lculateDeliveryMethodRequest\x12-\n\x0c\x63\x61rt_details\x18\x01 \x01(\x0b\x32\x17.google.protobuf.Struct\x12&\n\x05items\x18\x02 \x03(\x0b\x32\x17.google.protobuf.Struct\x12\x31\n\x10shipping_details\x18\x03 \x01(\x0b\x32\x17.google.protobuf.Struct\x12\x36\n\x07\x63ontext\x18\x04 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\x9c\x01\n\x1f\x43\x61lculateDeliveryMethodResponse\x12.\n\ndeliveries\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.ListValue\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard2\xd9\x01\n\x1e\x43\x61lculateDeliveryMethodService\x12\xb6\x01\n\x17\x43\x61lculateDeliveryMethod\x12K.pro.omni.oms.api.v1.rules.delivery_coverage.CalculateDeliveryMethodRequest\x1aL.pro.omni.oms.api.v1.rules.delivery_coverage.CalculateDeliveryMethodResponse"\x00\x62\x06proto3'
 )
 
 _globals = globals()
@@ -26,9 +26,9 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, "v1.rules.calculate_delivery
 if _descriptor._USE_C_DESCRIPTORS == False:
     DESCRIPTOR._options = None
     _globals["_CALCULATEDELIVERYMETHODREQUEST"]._serialized_start = 171
-    _globals["_CALCULATEDELIVERYMETHODREQUEST"]._serialized_end = 341
-    _globals["_CALCULATEDELIVERYMETHODRESPONSE"]._serialized_start = 344
-    _globals["_CALCULATEDELIVERYMETHODRESPONSE"]._serialized_end = 500
-    _globals["_CALCULATEDELIVERYMETHODSERVICE"]._serialized_start = 503
-    _globals["_CALCULATEDELIVERYMETHODSERVICE"]._serialized_end = 720
+    _globals["_CALCULATEDELIVERYMETHODREQUEST"]._serialized_end = 397
+    _globals["_CALCULATEDELIVERYMETHODRESPONSE"]._serialized_start = 400
+    _globals["_CALCULATEDELIVERYMETHODRESPONSE"]._serialized_end = 556
+    _globals["_CALCULATEDELIVERYMETHODSERVICE"]._serialized_start = 559
+    _globals["_CALCULATEDELIVERYMETHODSERVICE"]._serialized_end = 776
 # @@protoc_insertion_point(module_scope)
