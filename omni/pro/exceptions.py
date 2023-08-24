@@ -57,16 +57,22 @@ def handle_error(logger, error, message_response):
             "Model not found error",
             lambda error: str(error),
         ),
+        ValueError: (
+            "Value error",
+            lambda error: str(error),
+        )
     }
 
     error_message, error_response = error_handlers.get(type(error), ("Unknown error", None))
 
     LoggerTraceback.error(error_message, error, logger)
 
-    if isinstance(error, OperationalError):
-        return message_response.internal_response(message=error_response)
+    message = f"{error_message}:\n\nTraceback:\n\n{tb}\n\nError Response:\n\n{error_response}"
 
-    return message_response.bad_response(message=error_response)
+    if isinstance(error, OperationalError):
+        return message_response.internal_response(message=message)
+
+    return message_response.bad_response(message=message)
 
 
 class NotFoundError(Exception):
