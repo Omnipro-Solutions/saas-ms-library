@@ -18,7 +18,6 @@ class StockMove(_message.Message):
         "picking_id",
         "state",
         "product_id",
-        "product_uom_qty",
         "quantity_done",
         "product_uom_id",
         "description_picking",
@@ -29,7 +28,6 @@ class StockMove(_message.Message):
     PICKING_ID_FIELD_NUMBER: _ClassVar[int]
     STATE_FIELD_NUMBER: _ClassVar[int]
     PRODUCT_ID_FIELD_NUMBER: _ClassVar[int]
-    PRODUCT_UOM_QTY_FIELD_NUMBER: _ClassVar[int]
     QUANTITY_DONE_FIELD_NUMBER: _ClassVar[int]
     PRODUCT_UOM_ID_FIELD_NUMBER: _ClassVar[int]
     DESCRIPTION_PICKING_FIELD_NUMBER: _ClassVar[int]
@@ -39,7 +37,6 @@ class StockMove(_message.Message):
     picking_id: int
     state: str
     product_id: int
-    product_uom_qty: float
     quantity_done: float
     product_uom_id: int
     description_picking: str
@@ -51,7 +48,6 @@ class StockMove(_message.Message):
         picking_id: _Optional[int] = ...,
         state: _Optional[str] = ...,
         product_id: _Optional[int] = ...,
-        product_uom_qty: _Optional[float] = ...,
         quantity_done: _Optional[float] = ...,
         product_uom_id: _Optional[int] = ...,
         description_picking: _Optional[str] = ...,
@@ -64,7 +60,6 @@ class StockMoveCreateRequest(_message.Message):
         "picking_id",
         "state",
         "product_id",
-        "product_uom_qty",
         "quantity_done",
         "product_uom_id",
         "description_picking",
@@ -73,7 +68,6 @@ class StockMoveCreateRequest(_message.Message):
     PICKING_ID_FIELD_NUMBER: _ClassVar[int]
     STATE_FIELD_NUMBER: _ClassVar[int]
     PRODUCT_ID_FIELD_NUMBER: _ClassVar[int]
-    PRODUCT_UOM_QTY_FIELD_NUMBER: _ClassVar[int]
     QUANTITY_DONE_FIELD_NUMBER: _ClassVar[int]
     PRODUCT_UOM_ID_FIELD_NUMBER: _ClassVar[int]
     DESCRIPTION_PICKING_FIELD_NUMBER: _ClassVar[int]
@@ -81,7 +75,6 @@ class StockMoveCreateRequest(_message.Message):
     picking_id: int
     state: str
     product_id: int
-    product_uom_qty: float
     quantity_done: float
     product_uom_id: int
     description_picking: str
@@ -91,7 +84,6 @@ class StockMoveCreateRequest(_message.Message):
         picking_id: _Optional[int] = ...,
         state: _Optional[str] = ...,
         product_id: _Optional[int] = ...,
-        product_uom_qty: _Optional[float] = ...,
         quantity_done: _Optional[float] = ...,
         product_uom_id: _Optional[int] = ...,
         description_picking: _Optional[str] = ...,
