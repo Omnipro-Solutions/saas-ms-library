@@ -9,6 +9,7 @@ from omni.pro.protos.common.base_pb2 import Object as ObjectProto
 from omni.pro.protos.common.base_pb2 import ObjectAudit as AuditProto
 from sqlalchemy import Boolean, DateTime, ForeignKey, String
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import DeclarativeBase, Mapped, declarative_mixin, declared_attr, mapped_column, relationship
 
 
@@ -210,18 +211,26 @@ class Base:
 
     def delete(self, session):
         """
-        Deletes the current instance from the database using the provided session.
-
-        This function marks the instance for deletion in the session. Committing the session
-        afterward will result in the instance being removed from the database.
+        Attempts to delete the current instance from the database using the provided session.
+        Intenta eliminar la instancia actual de la base de datos usando la sesión proporcionada.
 
         Parameters:
         - session (Session): An instance of a database session, likely from SQLAlchemy.
+        - sesión (Session): Una instancia de una sesión de base de datos, probablemente de SQLAlchemy.
 
-        Usage:
-        instance.delete(session)
+        Returns:
+        - bool: True if the instance is marked for deletion without errors, False otherwise.
+        - bool: True si la instancia se marca para eliminación sin errores, False en caso contrario.
+
+        Usage/Uso:
+        success = instance.delete(session)
+        éxito = instancia.delete(sesión)
         """
-        session.delete(self)
+        try:
+            session.delete(self)
+            return True
+        except SQLAlchemyError as e:
+            return False
 
     def to_proto(self) -> AuditProto:
         """
