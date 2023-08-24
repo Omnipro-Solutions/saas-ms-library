@@ -27,6 +27,7 @@ class StockMoveLine(_message.Message):
         "location_id",
         "location_dest_id",
         "qty_done",
+        "product_uom_qty",
         "product_uom_id",
         "active",
         "object_audit",
@@ -42,6 +43,7 @@ class StockMoveLine(_message.Message):
     LOCATION_ID_FIELD_NUMBER: _ClassVar[int]
     LOCATION_DEST_ID_FIELD_NUMBER: _ClassVar[int]
     QTY_DONE_FIELD_NUMBER: _ClassVar[int]
+    PRODUCT_UOM_QTY_FIELD_NUMBER: _ClassVar[int]
     PRODUCT_UOM_ID_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
@@ -55,7 +57,8 @@ class StockMoveLine(_message.Message):
     product_id: int
     location_id: int
     location_dest_id: int
-    qty_done: int
+    qty_done: float
+    product_uom_qty: float
     product_uom_id: int
     active: _wrappers_pb2.BoolValue
     object_audit: _base_pb2.ObjectAudit
@@ -71,7 +74,8 @@ class StockMoveLine(_message.Message):
         product_id: _Optional[int] = ...,
         location_id: _Optional[int] = ...,
         location_dest_id: _Optional[int] = ...,
-        qty_done: _Optional[int] = ...,
+        qty_done: _Optional[float] = ...,
+        product_uom_qty: _Optional[float] = ...,
         product_uom_id: _Optional[int] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
@@ -113,7 +117,7 @@ class StockMoveLineCreateRequest(_message.Message):
     product_id: int
     location_id: int
     location_dest_id: int
-    qty_done: int
+    qty_done: float
     product_uom_id: int
     context: _base_pb2.Context
     def __init__(
@@ -127,7 +131,7 @@ class StockMoveLineCreateRequest(_message.Message):
         product_id: _Optional[int] = ...,
         location_id: _Optional[int] = ...,
         location_dest_id: _Optional[int] = ...,
-        qty_done: _Optional[int] = ...,
+        qty_done: _Optional[float] = ...,
         product_uom_id: _Optional[int] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
