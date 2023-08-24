@@ -433,8 +433,9 @@ class PostgresDatabaseManager(SessionManager):
         """
         record = session.query(model).filter_by(id=model_id).first()
         if record:
-            record.delete(session)
-            return True
+            success = record.delete(session)
+            if success:
+                return True
         return False
 
 
