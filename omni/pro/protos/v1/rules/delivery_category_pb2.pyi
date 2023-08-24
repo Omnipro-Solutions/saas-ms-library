@@ -35,18 +35,13 @@ class DeliveryCategory(_message.Message):
     ) -> None: ...
 
 class DeliveryCategoryCreateRequest(_message.Message):
-    __slots__ = ["name", "category_ids", "context"]
+    __slots__ = ["name", "context"]
     NAME_FIELD_NUMBER: _ClassVar[int]
-    CATEGORY_IDS_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
-    category_ids: _containers.RepeatedScalarFieldContainer[str]
     context: _base_pb2.Context
     def __init__(
-        self,
-        name: _Optional[str] = ...,
-        category_ids: _Optional[_Iterable[str]] = ...,
-        context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
+        self, name: _Optional[str] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
     ) -> None: ...
 
 class DeliveryCategoryCreateResponse(_message.Message):
@@ -142,3 +137,57 @@ class DeliveryCategoryDeleteResponse(_message.Message):
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
     response_standard: _base_pb2.ResponseStandard
     def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
+
+class AddCategoryRequest(_message.Message):
+    __slots__ = ["delivery_category_id", "category_codes", "context"]
+    DELIVERY_CATEGORY_ID_FIELD_NUMBER: _ClassVar[int]
+    CATEGORY_CODES_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    delivery_category_id: str
+    category_codes: _containers.RepeatedScalarFieldContainer[str]
+    context: _base_pb2.Context
+    def __init__(
+        self,
+        delivery_category_id: _Optional[str] = ...,
+        category_codes: _Optional[_Iterable[str]] = ...,
+        context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
+    ) -> None: ...
+
+class AddCategoryResponse(_message.Message):
+    __slots__ = ["delivery_category", "response_standard"]
+    DELIVERY_CATEGORY_FIELD_NUMBER: _ClassVar[int]
+    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
+    delivery_category: DeliveryCategory
+    response_standard: _base_pb2.ResponseStandard
+    def __init__(
+        self,
+        delivery_category: _Optional[_Union[DeliveryCategory, _Mapping]] = ...,
+        response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
+    ) -> None: ...
+
+class RemoveCategoryRequest(_message.Message):
+    __slots__ = ["delivery_category_id", "category_codes", "context"]
+    DELIVERY_CATEGORY_ID_FIELD_NUMBER: _ClassVar[int]
+    CATEGORY_CODES_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    delivery_category_id: str
+    category_codes: _containers.RepeatedScalarFieldContainer[str]
+    context: _base_pb2.Context
+    def __init__(
+        self,
+        delivery_category_id: _Optional[str] = ...,
+        category_codes: _Optional[_Iterable[str]] = ...,
+        context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
+    ) -> None: ...
+
+class RemoveCategoryResponse(_message.Message):
+    __slots__ = ["delivery_category", "response_standard"]
+    DELIVERY_CATEGORY_FIELD_NUMBER: _ClassVar[int]
+    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
+    delivery_category: DeliveryCategory
+    response_standard: _base_pb2.ResponseStandard
+    def __init__(
+        self,
+        delivery_category: _Optional[_Union[DeliveryCategory, _Mapping]] = ...,
+        response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
+    ) -> None: ...
