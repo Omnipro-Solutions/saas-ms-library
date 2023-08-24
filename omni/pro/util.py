@@ -148,3 +148,19 @@ def generate_hash(obj):
 
     # Generar un hash SHA-256
     return hashlib.sha256(obj_str.encode()).hexdigest()
+
+
+def merge_and_remove_key(data_dict, key_to_remove):
+    """
+    Merge and remove key from a dictionary.
+    Fusiona y elimina una clave de un diccionario.
+
+    Args:
+    data_dict (dict): The original dictionary. El diccionario original.
+    key_to_remove (str): The key to be removed and merged. La clave a eliminar y fusionar.
+
+    Returns:
+    dict: A dictionary with the key removed and its values merged. Un diccionario con la clave eliminada y sus valores fusionados.
+    """
+    extracted_data = data_dict.pop(key_to_remove, {})
+    return {**extracted_data, **data_dict}
