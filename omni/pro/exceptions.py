@@ -5,7 +5,7 @@ from sqlalchemy.exc import IntegrityError, OperationalError, ProgrammingError
 from omni.pro.logger import LoggerTraceback
 
 
-def handle_error(self, logger, error, message_response):
+def handle_error(logger, error, message_response):
     """
     Handle and log errors, returning appropriate response messages.
     Maneja y registra errores, devolviendo mensajes de respuesta apropiados.
