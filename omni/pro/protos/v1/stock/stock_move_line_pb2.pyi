@@ -19,7 +19,7 @@ class StockMoveLine(_message.Message):
         "id",
         "stock_move_id",
         "picking_id",
-        "status",
+        "state",
         "reference",
         "date",
         "origin",
@@ -35,7 +35,7 @@ class StockMoveLine(_message.Message):
     ID_FIELD_NUMBER: _ClassVar[int]
     STOCK_MOVE_ID_FIELD_NUMBER: _ClassVar[int]
     PICKING_ID_FIELD_NUMBER: _ClassVar[int]
-    STATUS_FIELD_NUMBER: _ClassVar[int]
+    STATE_FIELD_NUMBER: _ClassVar[int]
     REFERENCE_FIELD_NUMBER: _ClassVar[int]
     DATE_FIELD_NUMBER: _ClassVar[int]
     ORIGIN_FIELD_NUMBER: _ClassVar[int]
@@ -50,7 +50,7 @@ class StockMoveLine(_message.Message):
     id: int
     stock_move_id: int
     picking_id: int
-    status: str
+    state: str
     reference: str
     date: _timestamp_pb2.Timestamp
     origin: str
@@ -67,7 +67,7 @@ class StockMoveLine(_message.Message):
         id: _Optional[int] = ...,
         stock_move_id: _Optional[int] = ...,
         picking_id: _Optional[int] = ...,
-        status: _Optional[str] = ...,
+        state: _Optional[str] = ...,
         reference: _Optional[str] = ...,
         date: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
         origin: _Optional[str] = ...,
@@ -85,7 +85,7 @@ class StockMoveLineCreateRequest(_message.Message):
     __slots__ = [
         "stock_move_id",
         "picking_id",
-        "status",
+        "state",
         "reference",
         "date",
         "origin",
@@ -93,12 +93,13 @@ class StockMoveLineCreateRequest(_message.Message):
         "location_id",
         "location_dest_id",
         "qty_done",
+        "product_uom_qty",
         "product_uom_id",
         "context",
     ]
     STOCK_MOVE_ID_FIELD_NUMBER: _ClassVar[int]
     PICKING_ID_FIELD_NUMBER: _ClassVar[int]
-    STATUS_FIELD_NUMBER: _ClassVar[int]
+    STATE_FIELD_NUMBER: _ClassVar[int]
     REFERENCE_FIELD_NUMBER: _ClassVar[int]
     DATE_FIELD_NUMBER: _ClassVar[int]
     ORIGIN_FIELD_NUMBER: _ClassVar[int]
@@ -106,11 +107,12 @@ class StockMoveLineCreateRequest(_message.Message):
     LOCATION_ID_FIELD_NUMBER: _ClassVar[int]
     LOCATION_DEST_ID_FIELD_NUMBER: _ClassVar[int]
     QTY_DONE_FIELD_NUMBER: _ClassVar[int]
+    PRODUCT_UOM_QTY_FIELD_NUMBER: _ClassVar[int]
     PRODUCT_UOM_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     stock_move_id: int
     picking_id: int
-    status: str
+    state: str
     reference: str
     date: _timestamp_pb2.Timestamp
     origin: str
@@ -118,13 +120,14 @@ class StockMoveLineCreateRequest(_message.Message):
     location_id: int
     location_dest_id: int
     qty_done: float
+    product_uom_qty: float
     product_uom_id: int
     context: _base_pb2.Context
     def __init__(
         self,
         stock_move_id: _Optional[int] = ...,
         picking_id: _Optional[int] = ...,
-        status: _Optional[str] = ...,
+        state: _Optional[str] = ...,
         reference: _Optional[str] = ...,
         date: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
         origin: _Optional[str] = ...,
@@ -132,6 +135,7 @@ class StockMoveLineCreateRequest(_message.Message):
         location_id: _Optional[int] = ...,
         location_dest_id: _Optional[int] = ...,
         qty_done: _Optional[float] = ...,
+        product_uom_qty: _Optional[float] = ...,
         product_uom_id: _Optional[int] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
