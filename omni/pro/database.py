@@ -7,12 +7,13 @@ import fakeredis
 import mongoengine as mongo
 import redis
 from bson import ObjectId
+from sqlalchemy import asc, create_engine, desc
+from sqlalchemy.orm import scoped_session, sessionmaker
+
 from omni.pro.config import Config
 from omni.pro.logger import configure_logger
 from omni.pro.protos.common import base_pb2
 from omni.pro.util import nested
-from sqlalchemy import asc, create_engine, desc
-from sqlalchemy.orm import scoped_session, sessionmaker
 
 logger = configure_logger(name=__name__)
 
@@ -324,6 +325,20 @@ class PostgresDatabaseManager(SessionManager):
                El primer registro que coincida con los filtros, o None si no se encuentra.
         """
         return session.query(model).filter_by(**filters).first()
+
+    def retrieve_records(self, model, session, filters: dict):
+        """
+        Retrieves database records based on provided filters.
+
+        Args:
+        model (Base): The SQLAlchemy model to query.
+        session (Session): An instance of the database session.
+        filters (dict): A dictionary of attributes to filter the records by.
+
+        Returns:
+        (objs): List of records that match with filters, or empty list if not found.
+        """
+        return session.query(model).filter_by(**filters).all()
 
     def retrieve_record_by_id(self, model, session, id: int):
         """
