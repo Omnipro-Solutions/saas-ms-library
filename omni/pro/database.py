@@ -7,12 +7,13 @@ import fakeredis
 import mongoengine as mongo
 import redis
 from bson import ObjectId
+from sqlalchemy import asc, create_engine, desc
+from sqlalchemy.orm import scoped_session, sessionmaker
+
 from omni.pro.config import Config
 from omni.pro.logger import configure_logger
 from omni.pro.protos.common import base_pb2
 from omni.pro.util import nested
-from sqlalchemy import asc, create_engine, desc
-from sqlalchemy.orm import scoped_session, sessionmaker
 
 logger = configure_logger(name=__name__)
 
@@ -91,15 +92,15 @@ class DatabaseManager(object):
         return document
 
     def list_documents(
-            self,
-            db_name: str,
-            tenant: str,
-            document_class,
-            fields: list = None,
-            filter: dict = None,
-            group_by: str = None,
-            paginated: dict = None,
-            sort_by: list = None,
+        self,
+        db_name: str,
+        tenant: str,
+        document_class,
+        fields: list = None,
+        filter: dict = None,
+        group_by: str = None,
+        paginated: dict = None,
+        sort_by: list = None,
     ) -> tuple[list, int]:
         """
         Parameters:
@@ -148,7 +149,7 @@ class DatabaseManager(object):
         return document
 
     def update_embeded_document(
-            self, db_name: str, document_class, filters: dict, update: dict, many: bool = False
+        self, db_name: str, document_class, filters: dict, update: dict, many: bool = False
     ) -> object:
         # with self.get_connection() as cnn:
         if many:
@@ -325,6 +326,20 @@ class PostgresDatabaseManager(SessionManager):
         """
         return session.query(model).filter_by(**filters).first()
 
+    def retrieve_records(self, model, session, filters: dict):
+        """
+        Retrieves database records based on provided filters.
+
+        Args:
+        model (Base): The SQLAlchemy model to query.
+        session (Session): An instance of the database session.
+        filters (dict): A dictionary of attributes to filter the records by.
+
+        Returns:
+        (objs): List of records that match with filters, or empty list if not found.
+        """
+        return session.query(model).filter_by(**filters).all()
+
     def retrieve_record_by_id(self, model, session, id: int):
         """
         Retrieves a single database record by its ID.
@@ -345,15 +360,15 @@ class PostgresDatabaseManager(SessionManager):
         return session.query(model).get(id)
 
     def list_records(
-            self,
-            model,
-            session,
-            id: int,
-            fields: base_pb2.Fields,
-            filter: base_pb2.Filter,
-            group_by: base_pb2.GroupBy,
-            sort_by: base_pb2.SortBy,
-            paginated: base_pb2.Paginated,
+        self,
+        model,
+        session,
+        id: int,
+        fields: base_pb2.Fields,
+        filter: base_pb2.Filter,
+        group_by: base_pb2.GroupBy,
+        sort_by: base_pb2.SortBy,
+        paginated: base_pb2.Paginated,
     ):
         """
         Lists database records based on provided parameters.
@@ -523,6 +538,10 @@ class RedisManager(object):
         with self.get_connection() as rc:
             return rc.keys(pattern=pattern)
 
+    def get_user_admin(self, tenant):
+        tenant_obj = self.get_json(tenant)
+        return tenant_obj.get("user_admin") or {}
+
 
 class PolishNotationToMongoDB:
     def __init__(self, expression):
@@ -593,13 +612,13 @@ class PolishNotationToMongoDB:
 class DBUtil(object):
     @classmethod
     def db_prepared_statement(
-            cls,
-            id: str,
-            fields: base_pb2.Fields,
-            filter: base_pb2.Filter,
-            paginated: base_pb2.Paginated,
-            group_by: base_pb2.GroupBy,
-            sort_by: base_pb2.SortBy,
+        cls,
+        id: str,
+        fields: base_pb2.Fields,
+        filter: base_pb2.Filter,
+        paginated: base_pb2.Paginated,
+        group_by: base_pb2.GroupBy,
+        sort_by: base_pb2.SortBy,
     ) -> dict:
         prepared_statement = {}
         prepared_statement["paginated"] = {"page": paginated.offset, "per_page": paginated.limit or 10}
@@ -651,15 +670,15 @@ class QueryBuilder:
 
     @classmethod
     def build_filter(
-            cls,
-            model,
-            session,
-            id: int,
-            fields: base_pb2.Fields,
-            filter: base_pb2.Filter,
-            group_by: base_pb2.GroupBy,
-            sort_by: base_pb2.SortBy,
-            paginated: base_pb2.Paginated,
+        cls,
+        model,
+        session,
+        id: int,
+        fields: base_pb2.Fields,
+        filter: base_pb2.Filter,
+        group_by: base_pb2.GroupBy,
+        sort_by: base_pb2.SortBy,
+        paginated: base_pb2.Paginated,
     ):
         query = session.query(model)
 
