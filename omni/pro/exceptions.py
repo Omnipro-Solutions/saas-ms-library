@@ -1,64 +1,76 @@
+import logging
 import traceback
 from marshmallow import ValidationError
 from sqlalchemy.exc import IntegrityError, OperationalError, ProgrammingError
-
+from logging import Logger
 from omni.pro.logger import LoggerTraceback
+from omni.pro.protos.response import MessageResponse
 
 
-def handle_error(logger, error, message_response):
+def handle_error(service_model: str, service_method: str, logger: Logger, error: Exception,
+                 message_response: MessageResponse):
     """
-    Handle and log errors, returning appropriate response messages.
-    Maneja y registra errores, devolviendo mensajes de respuesta apropiados.
+    Handles and logs different types of errors, returning appropriate response messages based on the error type.
+    Maneja y registra diferentes tipos de errores, devolviendo mensajes de respuesta apropiados según el tipo de error.
 
     Args:
-    logger (Logger object): Logger instance to record the errors.
-    Instancia de Logger para registrar los errores.
+    - service_model (str): The name of the service model where the error occurred.
+    - service_model (str): El nombre del modelo de servicio donde ocurrió el error.
 
-    error (Exception): The error or exception instance to be handled.
-    La instancia de error o excepción a manejar.
+    - service_method (str): The method of the service model where the error occurred.
+    - service_method (str): El método del modelo de servicio donde ocurrió el error.
 
-    message_response (Response object): Object for creating responses.
-    Objeto para crear respuestas.
+    - logger (Logger): Logger instance to record the errors.
+    - logger (Logger): Instancia de Logger para registrar los errores.
+
+    - error (Exception): The error or exception instance to be handled.
+    - error (Exception): La instancia de error o excepción a manejar.
+
+    - message_response (MessageResponse): Object for creating and returning response messages.
+    - message_response (MessageResponse): Objeto para crear y devolver mensajes de respuesta.
 
     Returns:
-    Response object: An appropriate error message response.
-    Un objeto de respuesta con un mensaje de error apropiado.
-    """
+    - MessageResponse: An appropriate error message response based on the error type.
+    - MessageResponse: Una respuesta de mensaje de error apropiada según el tipo de error.
 
+    Usage/Uso:
+    response = handle_error(service_model, service_method, logger, error, message_response)
+    respuesta = handle_error(service_model, service_method, logger, error, message_response)
+    """
     tb = traceback.format_exc()
     logger.error(f"Error: {str(error)}\n\nTraceback:\n\n {tb}")
 
     error_handlers = {
         IntegrityError: (
-            "Location create integrity error",
+            f"{service_model} {service_method} integrity error",
             lambda error: f"pgerror: {error.orig.pgerror}",
         ),
         ValidationError: (
-            "Location create validation error",
+            f"{service_model} {service_method} validation error",
             lambda error: str(error.messages),
         ),
         OperationalError: (
-            "Location create operational error",
+            f"{service_model} {service_method} operational error",
             lambda _: "Error with connection",
         ),
         Exception: (
-            "Location create exception",
-            lambda _: "Location create Exception",
+            f"{service_model} {service_method} exception",
+            lambda _: "{service_model} {service_method} Exception",
         ),
         AttributeError: (
-            "Location attribute error",
+            f"{service_model} attribute error",
             lambda error: str(error),
         ),
         ProgrammingError: (
-            "Location programming error",
+            f"{service_model} programming error",
             lambda error: str(error),
         ),
         NotFoundError: (
-            "Model not found error",
+            f"{service_model} not found error",
             lambda error: str(error),
         ),
         ValueError: (
-            "Value error",
+            f"{service_model} Value error",
             lambda error: str(error),
         )
     }
