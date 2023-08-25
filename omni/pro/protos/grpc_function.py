@@ -1,4 +1,4 @@
-from omni.pro.config import Config
+from omni.pro.microservice import MicroService
 from omni.pro.protos.grpc_connector import Event, GRPClient
 
 
@@ -12,20 +12,47 @@ class ModelRPCFucntion(object):
         ```
         """
         self.context = context
-        self.service_id = Config.SAAS_MS_UTILITIES
+        self.service_id = MicroService.SAAS_MS_UTILITIES.value
         self.module_grpc = "v1.utilities.model_pb2_grpc"
         self.stub_classname = "ModelsServiceStub"
         self.module_pb2 = "v1.utilities.model_pb2"
 
-        self.client: GRPClient = GRPClient(self.service_id)
-
-    def register_model(self, **params):
-        event = Event(
+        self.event: Event = Event(
             module_grpc=self.module_grpc,
             stub_classname=self.stub_classname,
-            rpc_method="ModelCreate",
             module_pb2=self.module_pb2,
-            request_class="ModelCreateRequest",
-            params={"context": self.context} | params,
+            rpc_method=None,
+            request_class=None,
         )
-        return self.client.call_rpc_fuction(event)
+
+        self.client: GRPClient = GRPClient(self.service_id)
+
+    def register_model(self, params: dict):
+        self.event.update(
+            dict(
+                rpc_method="ModelCreate",
+                request_class="ModelCreateRequest",
+                params={"context": self.context} | params,
+            )
+        )
+        return self.client.call_rpc_fuction(self.event) + (self.event,)
+
+    def updated_model(self, params: dict):
+        self.event.update(
+            dict(
+                rpc_method="ModelUpdate",
+                request_class="ModelUpdateRequest",
+                params={"context": self.context} | params,
+            )
+        )
+        return self.client.call_rpc_fuction(self.event) + (self.event,)
+
+    def read_model(self, params: dict):
+        self.event.update(
+            dict(
+                rpc_method="ModelRead",
+                request_class="ModelReadRequest",
+                params={"context": self.context} | params,
+            )
+        )
+        return self.client.call_rpc_fuction(self.event) + (self.event,)
