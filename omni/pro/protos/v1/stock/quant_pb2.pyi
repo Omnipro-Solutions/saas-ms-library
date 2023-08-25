@@ -19,6 +19,7 @@ class Quant(_message.Message):
         "location_id",
         "lote",
         "available_quantity",
+        "reserved_quantity",
         "quantity",
         "uom_id",
         "active",
@@ -29,6 +30,7 @@ class Quant(_message.Message):
     LOCATION_ID_FIELD_NUMBER: _ClassVar[int]
     LOTE_FIELD_NUMBER: _ClassVar[int]
     AVAILABLE_QUANTITY_FIELD_NUMBER: _ClassVar[int]
+    RESERVED_QUANTITY_FIELD_NUMBER: _ClassVar[int]
     QUANTITY_FIELD_NUMBER: _ClassVar[int]
     UOM_ID_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
@@ -38,6 +40,7 @@ class Quant(_message.Message):
     location_id: int
     lote: str
     available_quantity: float
+    reserved_quantity: float
     quantity: float
     uom_id: int
     active: _wrappers_pb2.BoolValue
@@ -49,6 +52,7 @@ class Quant(_message.Message):
         location_id: _Optional[int] = ...,
         lote: _Optional[str] = ...,
         available_quantity: _Optional[float] = ...,
+        reserved_quantity: _Optional[float] = ...,
         quantity: _Optional[float] = ...,
         uom_id: _Optional[int] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
@@ -61,26 +65,26 @@ class QuantCreateRequest(_message.Message):
         "location_id",
         "lote",
         "available_quantity",
+        "reserved_quantity",
         "quantity",
         "uom_id",
-        "reserved_quantity",
         "context",
     ]
     PRODUCT_ID_FIELD_NUMBER: _ClassVar[int]
     LOCATION_ID_FIELD_NUMBER: _ClassVar[int]
     LOTE_FIELD_NUMBER: _ClassVar[int]
     AVAILABLE_QUANTITY_FIELD_NUMBER: _ClassVar[int]
+    RESERVED_QUANTITY_FIELD_NUMBER: _ClassVar[int]
     QUANTITY_FIELD_NUMBER: _ClassVar[int]
     UOM_ID_FIELD_NUMBER: _ClassVar[int]
-    RESERVED_QUANTITY_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     product_id: int
     location_id: int
     lote: str
     available_quantity: float
+    reserved_quantity: float
     quantity: float
     uom_id: int
-    reserved_quantity: float
     context: _base_pb2.Context
     def __init__(
         self,
@@ -88,9 +92,9 @@ class QuantCreateRequest(_message.Message):
         location_id: _Optional[int] = ...,
         lote: _Optional[str] = ...,
         available_quantity: _Optional[float] = ...,
+        reserved_quantity: _Optional[float] = ...,
         quantity: _Optional[float] = ...,
         uom_id: _Optional[int] = ...,
-        reserved_quantity: _Optional[float] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
