@@ -14,8 +14,21 @@ from omni.pro.protos.common import base_pb2 as _base_pb2
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Model(_message.Message):
-    __slots__ = ["id", "name", "code", "class_name", "hash_code", "fields", "active", "object_audit"]
+    __slots__ = [
+        "id",
+        "microservice",
+        "persistence_type",
+        "name",
+        "code",
+        "class_name",
+        "hash_code",
+        "fields",
+        "active",
+        "object_audit",
+    ]
     ID_FIELD_NUMBER: _ClassVar[int]
+    MICROSERVICE_FIELD_NUMBER: _ClassVar[int]
+    PERSISTENCE_TYPE_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
     CLASS_NAME_FIELD_NUMBER: _ClassVar[int]
@@ -24,6 +37,8 @@ class Model(_message.Message):
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
+    microservice: str
+    persistence_type: str
     name: str
     code: str
     class_name: str
@@ -34,6 +49,8 @@ class Model(_message.Message):
     def __init__(
         self,
         id: _Optional[str] = ...,
+        microservice: _Optional[str] = ...,
+        persistence_type: _Optional[str] = ...,
         name: _Optional[str] = ...,
         code: _Optional[str] = ...,
         class_name: _Optional[str] = ...,
@@ -44,7 +61,7 @@ class Model(_message.Message):
     ) -> None: ...
 
 class Field(_message.Message):
-    __slots__ = ["name", "type", "description", "code", "size", "required", "relation"]
+    __slots__ = ["name", "type", "description", "code", "size", "required", "relation", "widget", "view", "options"]
     NAME_FIELD_NUMBER: _ClassVar[int]
     TYPE_FIELD_NUMBER: _ClassVar[int]
     DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
@@ -52,13 +69,19 @@ class Field(_message.Message):
     SIZE_FIELD_NUMBER: _ClassVar[int]
     REQUIRED_FIELD_NUMBER: _ClassVar[int]
     RELATION_FIELD_NUMBER: _ClassVar[int]
+    WIDGET_FIELD_NUMBER: _ClassVar[int]
+    VIEW_FIELD_NUMBER: _ClassVar[int]
+    OPTIONS_FIELD_NUMBER: _ClassVar[int]
     name: str
     type: str
     description: str
     code: str
     size: int
-    required: bool
+    required: _wrappers_pb2.BoolValue
     relation: _struct_pb2.Struct
+    widget: str
+    view: str
+    options: _struct_pb2.ListValue
     def __init__(
         self,
         name: _Optional[str] = ...,
@@ -66,18 +89,25 @@ class Field(_message.Message):
         description: _Optional[str] = ...,
         code: _Optional[str] = ...,
         size: _Optional[int] = ...,
-        required: bool = ...,
+        required: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         relation: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
+        widget: _Optional[str] = ...,
+        view: _Optional[str] = ...,
+        options: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
     ) -> None: ...
 
 class ModelCreateRequest(_message.Message):
-    __slots__ = ["name", "code", "class_name", "hash_code", "fields", "context"]
+    __slots__ = ["microservice", "persistence_type", "name", "code", "class_name", "hash_code", "fields", "context"]
+    MICROSERVICE_FIELD_NUMBER: _ClassVar[int]
+    PERSISTENCE_TYPE_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
     CLASS_NAME_FIELD_NUMBER: _ClassVar[int]
     HASH_CODE_FIELD_NUMBER: _ClassVar[int]
     FIELDS_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    microservice: str
+    persistence_type: str
     name: str
     code: str
     class_name: str
@@ -86,6 +116,8 @@ class ModelCreateRequest(_message.Message):
     context: _base_pb2.Context
     def __init__(
         self,
+        microservice: _Optional[str] = ...,
+        persistence_type: _Optional[str] = ...,
         name: _Optional[str] = ...,
         code: _Optional[str] = ...,
         class_name: _Optional[str] = ...,
@@ -95,10 +127,16 @@ class ModelCreateRequest(_message.Message):
     ) -> None: ...
 
 class ModelCreateResponse(_message.Message):
-    __slots__ = ["response_standard"]
+    __slots__ = ["response_standard", "model"]
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
+    MODEL_FIELD_NUMBER: _ClassVar[int]
     response_standard: _base_pb2.ResponseStandard
-    def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
+    model: Model
+    def __init__(
+        self,
+        response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
+        model: _Optional[_Union[Model, _Mapping]] = ...,
+    ) -> None: ...
 
 class ModelReadRequest(_message.Message):
     __slots__ = ["group_by", "sort_by", "fields", "filter", "paginated", "id", "context"]

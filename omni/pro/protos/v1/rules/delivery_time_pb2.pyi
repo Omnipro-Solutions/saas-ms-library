@@ -123,7 +123,7 @@ class DeliveryTimeReadRequest(_message.Message):
     fields: _base_pb2.Fields
     filter: _base_pb2.Filter
     paginated: _base_pb2.Paginated
-    id: int
+    id: str
     context: _base_pb2.Context
     def __init__(
         self,
@@ -132,7 +132,7 @@ class DeliveryTimeReadRequest(_message.Message):
         fields: _Optional[_Union[_base_pb2.Fields, _Mapping]] = ...,
         filter: _Optional[_Union[_base_pb2.Filter, _Mapping]] = ...,
         paginated: _Optional[_Union[_base_pb2.Paginated, _Mapping]] = ...,
-        id: _Optional[int] = ...,
+        id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
@@ -179,10 +179,10 @@ class DeliveryTimeDeleteRequest(_message.Message):
     __slots__ = ["id", "context"]
     ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    id: int
+    id: str
     context: _base_pb2.Context
     def __init__(
-        self, id: _Optional[int] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
+        self, id: _Optional[str] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
     ) -> None: ...
 
 class DeliveryTimeDeleteResponse(_message.Message):
