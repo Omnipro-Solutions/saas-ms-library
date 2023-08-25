@@ -33,6 +33,36 @@ class DeliveryTimeServiceStub(object):
             request_serializer=v1_dot_rules_dot_delivery__time__pb2.DeliveryTimeDeleteRequest.SerializeToString,
             response_deserializer=v1_dot_rules_dot_delivery__time__pb2.DeliveryTimeDeleteResponse.FromString,
         )
+        self.AddWarehousesTo = channel.unary_unary(
+            "/pro.omni.oms.api.v1.rules.delivery_time.DeliveryTimeService/AddWarehousesTo",
+            request_serializer=v1_dot_rules_dot_delivery__time__pb2.AddWarehousesToRequest.SerializeToString,
+            response_deserializer=v1_dot_rules_dot_delivery__time__pb2.AddWarehousesToResponse.FromString,
+        )
+        self.RemoveWarehousesto = channel.unary_unary(
+            "/pro.omni.oms.api.v1.rules.delivery_time.DeliveryTimeService/RemoveWarehousesto",
+            request_serializer=v1_dot_rules_dot_delivery__time__pb2.RemoveWarehousesToRequest.SerializeToString,
+            response_deserializer=v1_dot_rules_dot_delivery__time__pb2.RemoveWarehousesToResponse.FromString,
+        )
+        self.AddWarehousesFrom = channel.unary_unary(
+            "/pro.omni.oms.api.v1.rules.delivery_time.DeliveryTimeService/AddWarehousesFrom",
+            request_serializer=v1_dot_rules_dot_delivery__time__pb2.AddWarehousesFromRequest.SerializeToString,
+            response_deserializer=v1_dot_rules_dot_delivery__time__pb2.AddWarehousesFromResponse.FromString,
+        )
+        self.RemoveWarehousesFrom = channel.unary_unary(
+            "/pro.omni.oms.api.v1.rules.delivery_time.DeliveryTimeService/RemoveWarehousesFrom",
+            request_serializer=v1_dot_rules_dot_delivery__time__pb2.RemoveWarehousesFromRequest.SerializeToString,
+            response_deserializer=v1_dot_rules_dot_delivery__time__pb2.RemoveWarehousesFromResponse.FromString,
+        )
+        self.AddDeliveryMethod = channel.unary_unary(
+            "/pro.omni.oms.api.v1.rules.delivery_time.DeliveryTimeService/AddDeliveryMethod",
+            request_serializer=v1_dot_rules_dot_delivery__time__pb2.AddDeliveryMethodRequest.SerializeToString,
+            response_deserializer=v1_dot_rules_dot_delivery__time__pb2.AddDeliveryMethodResponse.FromString,
+        )
+        self.RemoveDeliveryMethod = channel.unary_unary(
+            "/pro.omni.oms.api.v1.rules.delivery_time.DeliveryTimeService/RemoveDeliveryMethod",
+            request_serializer=v1_dot_rules_dot_delivery__time__pb2.RemoveDeliveryMethodRequest.SerializeToString,
+            response_deserializer=v1_dot_rules_dot_delivery__time__pb2.RemoveDeliveryMethodResponse.FromString,
+        )
 
 
 class DeliveryTimeServiceServicer(object):
@@ -62,6 +92,42 @@ class DeliveryTimeServiceServicer(object):
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
+    def AddWarehousesTo(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def RemoveWarehousesto(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def AddWarehousesFrom(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def RemoveWarehousesFrom(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def AddDeliveryMethod(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def RemoveDeliveryMethod(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
 
 def add_DeliveryTimeServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -84,6 +150,36 @@ def add_DeliveryTimeServiceServicer_to_server(servicer, server):
             servicer.DeliveryTimeDelete,
             request_deserializer=v1_dot_rules_dot_delivery__time__pb2.DeliveryTimeDeleteRequest.FromString,
             response_serializer=v1_dot_rules_dot_delivery__time__pb2.DeliveryTimeDeleteResponse.SerializeToString,
+        ),
+        "AddWarehousesTo": grpc.unary_unary_rpc_method_handler(
+            servicer.AddWarehousesTo,
+            request_deserializer=v1_dot_rules_dot_delivery__time__pb2.AddWarehousesToRequest.FromString,
+            response_serializer=v1_dot_rules_dot_delivery__time__pb2.AddWarehousesToResponse.SerializeToString,
+        ),
+        "RemoveWarehousesto": grpc.unary_unary_rpc_method_handler(
+            servicer.RemoveWarehousesto,
+            request_deserializer=v1_dot_rules_dot_delivery__time__pb2.RemoveWarehousesToRequest.FromString,
+            response_serializer=v1_dot_rules_dot_delivery__time__pb2.RemoveWarehousesToResponse.SerializeToString,
+        ),
+        "AddWarehousesFrom": grpc.unary_unary_rpc_method_handler(
+            servicer.AddWarehousesFrom,
+            request_deserializer=v1_dot_rules_dot_delivery__time__pb2.AddWarehousesFromRequest.FromString,
+            response_serializer=v1_dot_rules_dot_delivery__time__pb2.AddWarehousesFromResponse.SerializeToString,
+        ),
+        "RemoveWarehousesFrom": grpc.unary_unary_rpc_method_handler(
+            servicer.RemoveWarehousesFrom,
+            request_deserializer=v1_dot_rules_dot_delivery__time__pb2.RemoveWarehousesFromRequest.FromString,
+            response_serializer=v1_dot_rules_dot_delivery__time__pb2.RemoveWarehousesFromResponse.SerializeToString,
+        ),
+        "AddDeliveryMethod": grpc.unary_unary_rpc_method_handler(
+            servicer.AddDeliveryMethod,
+            request_deserializer=v1_dot_rules_dot_delivery__time__pb2.AddDeliveryMethodRequest.FromString,
+            response_serializer=v1_dot_rules_dot_delivery__time__pb2.AddDeliveryMethodResponse.SerializeToString,
+        ),
+        "RemoveDeliveryMethod": grpc.unary_unary_rpc_method_handler(
+            servicer.RemoveDeliveryMethod,
+            request_deserializer=v1_dot_rules_dot_delivery__time__pb2.RemoveDeliveryMethodRequest.FromString,
+            response_serializer=v1_dot_rules_dot_delivery__time__pb2.RemoveDeliveryMethodResponse.SerializeToString,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -202,6 +298,180 @@ class DeliveryTimeService(object):
             "/pro.omni.oms.api.v1.rules.delivery_time.DeliveryTimeService/DeliveryTimeDelete",
             v1_dot_rules_dot_delivery__time__pb2.DeliveryTimeDeleteRequest.SerializeToString,
             v1_dot_rules_dot_delivery__time__pb2.DeliveryTimeDeleteResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
+
+    @staticmethod
+    def AddWarehousesTo(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            "/pro.omni.oms.api.v1.rules.delivery_time.DeliveryTimeService/AddWarehousesTo",
+            v1_dot_rules_dot_delivery__time__pb2.AddWarehousesToRequest.SerializeToString,
+            v1_dot_rules_dot_delivery__time__pb2.AddWarehousesToResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
+
+    @staticmethod
+    def RemoveWarehousesto(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            "/pro.omni.oms.api.v1.rules.delivery_time.DeliveryTimeService/RemoveWarehousesto",
+            v1_dot_rules_dot_delivery__time__pb2.RemoveWarehousesToRequest.SerializeToString,
+            v1_dot_rules_dot_delivery__time__pb2.RemoveWarehousesToResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
+
+    @staticmethod
+    def AddWarehousesFrom(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            "/pro.omni.oms.api.v1.rules.delivery_time.DeliveryTimeService/AddWarehousesFrom",
+            v1_dot_rules_dot_delivery__time__pb2.AddWarehousesFromRequest.SerializeToString,
+            v1_dot_rules_dot_delivery__time__pb2.AddWarehousesFromResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
+
+    @staticmethod
+    def RemoveWarehousesFrom(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            "/pro.omni.oms.api.v1.rules.delivery_time.DeliveryTimeService/RemoveWarehousesFrom",
+            v1_dot_rules_dot_delivery__time__pb2.RemoveWarehousesFromRequest.SerializeToString,
+            v1_dot_rules_dot_delivery__time__pb2.RemoveWarehousesFromResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
+
+    @staticmethod
+    def AddDeliveryMethod(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            "/pro.omni.oms.api.v1.rules.delivery_time.DeliveryTimeService/AddDeliveryMethod",
+            v1_dot_rules_dot_delivery__time__pb2.AddDeliveryMethodRequest.SerializeToString,
+            v1_dot_rules_dot_delivery__time__pb2.AddDeliveryMethodResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
+
+    @staticmethod
+    def RemoveDeliveryMethod(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            "/pro.omni.oms.api.v1.rules.delivery_time.DeliveryTimeService/RemoveDeliveryMethod",
+            v1_dot_rules_dot_delivery__time__pb2.RemoveDeliveryMethodRequest.SerializeToString,
+            v1_dot_rules_dot_delivery__time__pb2.RemoveDeliveryMethodResponse.FromString,
             options,
             channel_credentials,
             insecure,

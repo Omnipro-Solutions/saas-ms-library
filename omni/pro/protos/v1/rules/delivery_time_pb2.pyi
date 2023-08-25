@@ -6,33 +6,23 @@ from typing import Union as _Union
 
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
+from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
-from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
 from omni.pro.protos.common import base_pb2 as _base_pb2
+from omni.pro.protos.v1.rules import delivery_locality_pb2 as _delivery_locality_pb2
 from omni.pro.protos.v1.rules import delivery_method_pb2 as _delivery_method_pb2
 from omni.pro.protos.v1.rules import warehouse_pb2 as _warehouse_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
-class TimeType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
-    __slots__ = []
-    UNKNOWN: _ClassVar[TimeType]
-    MINUTES: _ClassVar[TimeType]
-    HOURS: _ClassVar[TimeType]
-    DAYS: _ClassVar[TimeType]
-
-UNKNOWN: TimeType
-MINUTES: TimeType
-HOURS: TimeType
-DAYS: TimeType
-
 class DeliveryTime(_message.Message):
     __slots__ = [
         "id",
         "name",
-        "delivery_method_ids",
-        "warehouse_ids",
-        "locality_available_id",
+        "delivery_methods",
+        "warehouses_to",
+        "warehouses_from",
+        "locality_available",
         "time_type",
         "value_min",
         "value_max",
@@ -42,9 +32,10 @@ class DeliveryTime(_message.Message):
     ]
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
-    DELIVERY_METHOD_IDS_FIELD_NUMBER: _ClassVar[int]
-    WAREHOUSE_IDS_FIELD_NUMBER: _ClassVar[int]
-    LOCALITY_AVAILABLE_ID_FIELD_NUMBER: _ClassVar[int]
+    DELIVERY_METHODS_FIELD_NUMBER: _ClassVar[int]
+    WAREHOUSES_TO_FIELD_NUMBER: _ClassVar[int]
+    WAREHOUSES_FROM_FIELD_NUMBER: _ClassVar[int]
+    LOCALITY_AVAILABLE_FIELD_NUMBER: _ClassVar[int]
     TIME_TYPE_FIELD_NUMBER: _ClassVar[int]
     VALUE_MIN_FIELD_NUMBER: _ClassVar[int]
     VALUE_MAX_FIELD_NUMBER: _ClassVar[int]
@@ -53,27 +44,29 @@ class DeliveryTime(_message.Message):
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
-    delivery_method_ids: _containers.RepeatedCompositeFieldContainer[_delivery_method_pb2.DeliveryMethod]
-    warehouse_ids: _containers.RepeatedCompositeFieldContainer[_warehouse_pb2.Warehouse]
-    locality_available_id: str
-    time_type: TimeType
-    value_min: str
-    value_max: str
-    inversely: bool
-    active: bool
+    delivery_methods: _containers.RepeatedCompositeFieldContainer[_delivery_method_pb2.DeliveryMethod]
+    warehouses_to: _containers.RepeatedCompositeFieldContainer[_warehouse_pb2.Warehouse]
+    warehouses_from: _containers.RepeatedCompositeFieldContainer[_warehouse_pb2.Warehouse]
+    locality_available: _delivery_locality_pb2.DeliveryLocality
+    time_type: str
+    value_min: int
+    value_max: int
+    inversely: _wrappers_pb2.BoolValue
+    active: _wrappers_pb2.BoolValue
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
         id: _Optional[str] = ...,
         name: _Optional[str] = ...,
-        delivery_method_ids: _Optional[_Iterable[_Union[_delivery_method_pb2.DeliveryMethod, _Mapping]]] = ...,
-        warehouse_ids: _Optional[_Iterable[_Union[_warehouse_pb2.Warehouse, _Mapping]]] = ...,
-        locality_available_id: _Optional[str] = ...,
-        time_type: _Optional[_Union[TimeType, str]] = ...,
-        value_min: _Optional[str] = ...,
-        value_max: _Optional[str] = ...,
-        inversely: bool = ...,
-        active: bool = ...,
+        delivery_methods: _Optional[_Iterable[_Union[_delivery_method_pb2.DeliveryMethod, _Mapping]]] = ...,
+        warehouses_to: _Optional[_Iterable[_Union[_warehouse_pb2.Warehouse, _Mapping]]] = ...,
+        warehouses_from: _Optional[_Iterable[_Union[_warehouse_pb2.Warehouse, _Mapping]]] = ...,
+        locality_available: _Optional[_Union[_delivery_locality_pb2.DeliveryLocality, _Mapping]] = ...,
+        time_type: _Optional[str] = ...,
+        value_min: _Optional[int] = ...,
+        value_max: _Optional[int] = ...,
+        inversely: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
@@ -88,19 +81,19 @@ class DeliveryTimeCreateRequest(_message.Message):
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     locality_available_id: str
-    time_type: TimeType
-    value_min: str
-    value_max: str
-    inversely: bool
+    time_type: str
+    value_min: int
+    value_max: int
+    inversely: _wrappers_pb2.BoolValue
     context: _base_pb2.Context
     def __init__(
         self,
         name: _Optional[str] = ...,
         locality_available_id: _Optional[str] = ...,
-        time_type: _Optional[_Union[TimeType, str]] = ...,
-        value_min: _Optional[str] = ...,
-        value_max: _Optional[str] = ...,
-        inversely: bool = ...,
+        time_type: _Optional[str] = ...,
+        value_min: _Optional[int] = ...,
+        value_max: _Optional[int] = ...,
+        inversely: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
@@ -197,3 +190,165 @@ class DeliveryTimeDeleteResponse(_message.Message):
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
     response_standard: _base_pb2.ResponseStandard
     def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
+
+class AddWarehousesToRequest(_message.Message):
+    __slots__ = ["delivery_time_id", "warehouse_to_ids", "context"]
+    DELIVERY_TIME_ID_FIELD_NUMBER: _ClassVar[int]
+    WAREHOUSE_TO_IDS_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    delivery_time_id: str
+    warehouse_to_ids: _containers.RepeatedScalarFieldContainer[int]
+    context: _base_pb2.Context
+    def __init__(
+        self,
+        delivery_time_id: _Optional[str] = ...,
+        warehouse_to_ids: _Optional[_Iterable[int]] = ...,
+        context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
+    ) -> None: ...
+
+class AddWarehousesToResponse(_message.Message):
+    __slots__ = ["delivery_time", "response_standard"]
+    DELIVERY_TIME_FIELD_NUMBER: _ClassVar[int]
+    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
+    delivery_time: DeliveryTime
+    response_standard: _base_pb2.ResponseStandard
+    def __init__(
+        self,
+        delivery_time: _Optional[_Union[DeliveryTime, _Mapping]] = ...,
+        response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
+    ) -> None: ...
+
+class RemoveWarehousesToRequest(_message.Message):
+    __slots__ = ["delivery_time_id", "warehouse_to_ids", "context"]
+    DELIVERY_TIME_ID_FIELD_NUMBER: _ClassVar[int]
+    WAREHOUSE_TO_IDS_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    delivery_time_id: str
+    warehouse_to_ids: _containers.RepeatedScalarFieldContainer[int]
+    context: _base_pb2.Context
+    def __init__(
+        self,
+        delivery_time_id: _Optional[str] = ...,
+        warehouse_to_ids: _Optional[_Iterable[int]] = ...,
+        context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
+    ) -> None: ...
+
+class RemoveWarehousesToResponse(_message.Message):
+    __slots__ = ["delivery_time", "response_standard"]
+    DELIVERY_TIME_FIELD_NUMBER: _ClassVar[int]
+    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
+    delivery_time: DeliveryTime
+    response_standard: _base_pb2.ResponseStandard
+    def __init__(
+        self,
+        delivery_time: _Optional[_Union[DeliveryTime, _Mapping]] = ...,
+        response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
+    ) -> None: ...
+
+class AddWarehousesFromRequest(_message.Message):
+    __slots__ = ["delivery_time_id", "warehouse_from_ids", "context"]
+    DELIVERY_TIME_ID_FIELD_NUMBER: _ClassVar[int]
+    WAREHOUSE_FROM_IDS_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    delivery_time_id: str
+    warehouse_from_ids: _containers.RepeatedScalarFieldContainer[int]
+    context: _base_pb2.Context
+    def __init__(
+        self,
+        delivery_time_id: _Optional[str] = ...,
+        warehouse_from_ids: _Optional[_Iterable[int]] = ...,
+        context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
+    ) -> None: ...
+
+class AddWarehousesFromResponse(_message.Message):
+    __slots__ = ["delivery_time", "response_standard"]
+    DELIVERY_TIME_FIELD_NUMBER: _ClassVar[int]
+    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
+    delivery_time: DeliveryTime
+    response_standard: _base_pb2.ResponseStandard
+    def __init__(
+        self,
+        delivery_time: _Optional[_Union[DeliveryTime, _Mapping]] = ...,
+        response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
+    ) -> None: ...
+
+class RemoveWarehousesFromRequest(_message.Message):
+    __slots__ = ["delivery_time_id", "warehouse_from_ids", "context"]
+    DELIVERY_TIME_ID_FIELD_NUMBER: _ClassVar[int]
+    WAREHOUSE_FROM_IDS_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    delivery_time_id: str
+    warehouse_from_ids: _containers.RepeatedScalarFieldContainer[int]
+    context: _base_pb2.Context
+    def __init__(
+        self,
+        delivery_time_id: _Optional[str] = ...,
+        warehouse_from_ids: _Optional[_Iterable[int]] = ...,
+        context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
+    ) -> None: ...
+
+class RemoveWarehousesFromResponse(_message.Message):
+    __slots__ = ["delivery_time", "response_standard"]
+    DELIVERY_TIME_FIELD_NUMBER: _ClassVar[int]
+    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
+    delivery_time: DeliveryTime
+    response_standard: _base_pb2.ResponseStandard
+    def __init__(
+        self,
+        delivery_time: _Optional[_Union[DeliveryTime, _Mapping]] = ...,
+        response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
+    ) -> None: ...
+
+class AddDeliveryMethodRequest(_message.Message):
+    __slots__ = ["delivery_time_id", "delivery_method_ids", "context"]
+    DELIVERY_TIME_ID_FIELD_NUMBER: _ClassVar[int]
+    DELIVERY_METHOD_IDS_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    delivery_time_id: str
+    delivery_method_ids: _containers.RepeatedScalarFieldContainer[str]
+    context: _base_pb2.Context
+    def __init__(
+        self,
+        delivery_time_id: _Optional[str] = ...,
+        delivery_method_ids: _Optional[_Iterable[str]] = ...,
+        context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
+    ) -> None: ...
+
+class AddDeliveryMethodResponse(_message.Message):
+    __slots__ = ["delivery_time", "response_standard"]
+    DELIVERY_TIME_FIELD_NUMBER: _ClassVar[int]
+    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
+    delivery_time: DeliveryTime
+    response_standard: _base_pb2.ResponseStandard
+    def __init__(
+        self,
+        delivery_time: _Optional[_Union[DeliveryTime, _Mapping]] = ...,
+        response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
+    ) -> None: ...
+
+class RemoveDeliveryMethodRequest(_message.Message):
+    __slots__ = ["delivery_time_id", "delivery_method_ids", "context"]
+    DELIVERY_TIME_ID_FIELD_NUMBER: _ClassVar[int]
+    DELIVERY_METHOD_IDS_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    delivery_time_id: str
+    delivery_method_ids: _containers.RepeatedScalarFieldContainer[str]
+    context: _base_pb2.Context
+    def __init__(
+        self,
+        delivery_time_id: _Optional[str] = ...,
+        delivery_method_ids: _Optional[_Iterable[str]] = ...,
+        context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
+    ) -> None: ...
+
+class RemoveDeliveryMethodResponse(_message.Message):
+    __slots__ = ["delivery_time", "response_standard"]
+    DELIVERY_TIME_FIELD_NUMBER: _ClassVar[int]
+    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
+    delivery_time: DeliveryTime
+    response_standard: _base_pb2.ResponseStandard
+    def __init__(
+        self,
+        delivery_time: _Optional[_Union[DeliveryTime, _Mapping]] = ...,
+        response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
+    ) -> None: ...
