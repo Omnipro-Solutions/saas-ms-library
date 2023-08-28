@@ -76,6 +76,14 @@ def handle_error(
             f"{service_model} Value error",
             lambda error: str(error),
         ),
+        MoveLineBusinessLogicError: (
+            f"{service_model} move line business logic error",
+            lambda error: str(error),
+        ),
+        PickingBusinessLogicError: (
+            f"{service_model} picking business logic error",
+            lambda error: str(error),
+        ),
     }
 
     error_message, error_response = error_handlers.get(type(error), ("Unknown error", None))
