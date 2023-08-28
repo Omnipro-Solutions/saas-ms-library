@@ -4,7 +4,11 @@ import math
 import secrets
 import string
 import unicodedata
-from functools import reduce
+import time
+import logging
+from functools import reduce, wraps
+
+logger = logging.getLogger(__name__)
 
 DEFAULT_RECORD_LIMIT = 10000
 
@@ -164,3 +168,42 @@ def merge_and_remove_key(data_dict, key_to_remove):
     """
     extracted_data = data_dict.pop(key_to_remove, {})
     return {**extracted_data, **data_dict}
+
+
+def measure_time(function):
+    """
+    Decorator to measure the execution time of a function.
+    Decorador para medir el tiempo de ejecución de una función.
+
+    Args:
+    function (callable): The function to be measured.
+    función (callable): La función a medir.
+
+    Returns:
+    callable: The wrapped function that measures its execution time.
+    callable: La función envuelta que mide su tiempo de ejecución.
+    """
+    @wraps(function)
+    def measured_function(*args, **kwargs):
+        """
+        The wrapped function that calculates the time taken to execute the original function.
+        La función envuelta que calcula el tiempo que tarda en ejecutarse la función original.
+
+        Args:
+        *args: Variable length argument list for the original function.
+        *args: Lista de argumentos de longitud variable para la función original.
+
+        **kwargs: Arbitrary keyword arguments for the original function.
+        **kwargs: Argumentos de palabras clave arbitrarias para la función original.
+
+        Returns:
+        The result of the original function.
+        El resultado de la función original.
+        """
+        start = time.time()
+        result = function(*args, **kwargs)
+        elapsed_time = time.time() - start
+        logger.info(f"Func: {function.__qualname__} - Time: {elapsed_time:.2f} seconds")
+        return result
+
+    return measured_function

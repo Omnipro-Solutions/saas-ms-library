@@ -1,14 +1,17 @@
 import logging
 import traceback
+from logging import Logger
+
 from marshmallow import ValidationError
 from sqlalchemy.exc import IntegrityError, OperationalError, ProgrammingError
-from logging import Logger
+
 from omni.pro.logger import LoggerTraceback
 from omni.pro.protos.response import MessageResponse
 
 
-def handle_error(service_model: str, service_method: str, logger: Logger, error: Exception,
-                 message_response: MessageResponse):
+def handle_error(
+    service_model: str, service_method: str, logger: Logger, error: Exception, message_response: MessageResponse
+):
     """
     Handles and logs different types of errors, returning appropriate response messages based on the error type.
     Maneja y registra diferentes tipos de errores, devolviendo mensajes de respuesta apropiados según el tipo de error.
@@ -72,7 +75,7 @@ def handle_error(service_model: str, service_method: str, logger: Logger, error:
         ValueError: (
             f"{service_model} Value error",
             lambda error: str(error),
-        )
+        ),
     }
 
     error_message, error_response = error_handlers.get(type(error), ("Unknown error", None))
@@ -89,10 +92,22 @@ def handle_error(service_model: str, service_method: str, logger: Logger, error:
 
 class NotFoundError(Exception):
     def __init__(
-            self,
-            message: str | list | dict,
-            **kwargs,
+        self,
+        message: str | list | dict,
+        **kwargs,
     ):
         self.messages = [message] if isinstance(message, (str, bytes)) else message
         self.kwargs = kwargs
         super().__init__(message)
+
+
+class MoveLineBusinessLogicError(Exception):
+    def __init__(self, message):
+        self.message = message
+        super().__init__(self.message)
+
+
+class PickingBusinessLogicError(Exception):
+    def __init__(self, message):
+        self.message = message
+        super().__init__(self.message)
