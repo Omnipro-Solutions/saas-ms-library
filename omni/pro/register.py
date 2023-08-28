@@ -15,12 +15,37 @@ class RegisterModel(object):
         self.microservice = microservice
 
     def register_mongo_model(self):
+        """
+        Register MongoDB models.
+
+        Registrar modelos MongoDB.
+        """
         self._register("describe_mongo_model", "NO_SQL")
 
     def register_sqlalchemy_model(self):
+        """
+        Register SQLAlchemy models.
+
+        Registrar modelos SQLAlchemy.
+        """
         self._register("describe_sqlalchemy_model", "SQL")
 
     def _register(self, method: str, persistence_type: str):
+        """
+        Generic method to register models based on persistence type and descriptor method.
+
+        Método genérico para registrar modelos basados en el tipo de persistencia y el método de descriptor.
+
+        Parameters:
+        ----------
+        method : str
+            Method name from Descriptor class to describe the model.
+            Nombre del método de la clase Descriptor para describir el modelo.
+
+        persistence_type : str
+            Type of the persistence either "NO_SQL" or "SQL".
+            Tipo de persistencia ya sea "NO_SQL" o "SQL".
+        """
         redis_manager = redis.get_redis_manager()
         tenans = redis_manager.get_tenant_codes()
         models_libs = Topology(self.models_path).get_models_from_libs()
@@ -32,9 +57,8 @@ class RegisterModel(object):
             }
             rpc_func = ModelRPCFucntion(context)
             for model in models_libs:
-                desc = {"persistence_type": persistence_type, "microservice": self.microservice} | getattr(
-                    Descriptor, method
-                )(model)
+                desc = getattr(Descriptor, method)(model)
+                desc = {"persistence_type": persistence_type, "microservice": self.microservice} | desc
                 hash_code = generate_hash(desc)
                 params = {
                     "filter": {
@@ -67,6 +91,23 @@ class RegisterModel(object):
                 )
 
     def transform_model_desc(self, model):
+        """
+        Transform model description from proto message to dictionary.
+
+        Transformar la descripción del modelo de mensaje proto a diccionario.
+
+        Parameters:
+        ----------
+        model : object
+            Proto message model description.
+            Descripción del modelo de mensaje proto.
+
+        Returns:
+        -------
+        dict
+            Dictionary representation of the model description.
+            Representación en diccionario de la descripción del modelo.
+        """
         model_dict = json_format.MessageToDict(model, preserving_proto_field_name=True)
         return {
             "id": model_dict["id"],
@@ -79,6 +120,23 @@ class RegisterModel(object):
         }
 
     def transform_field_desc(self, field):
+        """
+        Transform field description from dictionary to specific format.
+
+        Transformar la descripción del campo de diccionario a un formato específico.
+
+        Parameters:
+        ----------
+        field : dict
+            Dictionary representation of the field.
+            Representación en diccionario del campo.
+
+        Returns:
+        -------
+        dict
+            Dictionary in the desired format for the field description.
+            Diccionario en el formato deseado para la descripción del campo.
+        """
         field_dict = {
             "name": field["name"],
             "code": field["code"],
