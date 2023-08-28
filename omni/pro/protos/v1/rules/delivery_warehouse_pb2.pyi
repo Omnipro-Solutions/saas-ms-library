@@ -38,17 +38,20 @@ class DeliveryWarehouse(_message.Message):
     ) -> None: ...
 
 class DeliveryWarehouseCreateRequest(_message.Message):
-    __slots__ = ["name", "hierarchy_warehouse_sort_by", "context"]
+    __slots__ = ["name", "hierarchy_warehouse_sort_by", "transfer_warehouse_ids", "context"]
     NAME_FIELD_NUMBER: _ClassVar[int]
     HIERARCHY_WAREHOUSE_SORT_BY_FIELD_NUMBER: _ClassVar[int]
+    TRANSFER_WAREHOUSE_IDS_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     hierarchy_warehouse_sort_by: str
+    transfer_warehouse_ids: _containers.RepeatedScalarFieldContainer[str]
     context: _base_pb2.Context
     def __init__(
         self,
         name: _Optional[str] = ...,
         hierarchy_warehouse_sort_by: _Optional[str] = ...,
+        transfer_warehouse_ids: _Optional[_Iterable[str]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
