@@ -98,6 +98,7 @@ class DeliveryMethodCreateRequest(_message.Message):
         "category_template_id",
         "locality_available_id",
         "schedule_template_id",
+        "delivery_warehouse_ids",
         "context",
     ]
     NAME_FIELD_NUMBER: _ClassVar[int]
@@ -111,6 +112,7 @@ class DeliveryMethodCreateRequest(_message.Message):
     CATEGORY_TEMPLATE_ID_FIELD_NUMBER: _ClassVar[int]
     LOCALITY_AVAILABLE_ID_FIELD_NUMBER: _ClassVar[int]
     SCHEDULE_TEMPLATE_ID_FIELD_NUMBER: _ClassVar[int]
+    DELIVERY_WAREHOUSE_IDS_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     type_picking_transfer: str
@@ -123,6 +125,7 @@ class DeliveryMethodCreateRequest(_message.Message):
     category_template_id: str
     locality_available_id: str
     schedule_template_id: str
+    delivery_warehouse_ids: _containers.RepeatedScalarFieldContainer[int]
     context: _base_pb2.Context
     def __init__(
         self,
@@ -137,6 +140,7 @@ class DeliveryMethodCreateRequest(_message.Message):
         category_template_id: _Optional[str] = ...,
         locality_available_id: _Optional[str] = ...,
         schedule_template_id: _Optional[str] = ...,
+        delivery_warehouse_ids: _Optional[_Iterable[int]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 

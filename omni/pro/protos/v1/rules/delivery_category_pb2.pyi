@@ -35,13 +35,18 @@ class DeliveryCategory(_message.Message):
     ) -> None: ...
 
 class DeliveryCategoryCreateRequest(_message.Message):
-    __slots__ = ["name", "context"]
+    __slots__ = ["name", "category_codes", "context"]
     NAME_FIELD_NUMBER: _ClassVar[int]
+    CATEGORY_CODES_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
+    category_codes: _containers.RepeatedScalarFieldContainer[str]
     context: _base_pb2.Context
     def __init__(
-        self, name: _Optional[str] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
+        self,
+        name: _Optional[str] = ...,
+        category_codes: _Optional[_Iterable[str]] = ...,
+        context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
 class DeliveryCategoryCreateResponse(_message.Message):
