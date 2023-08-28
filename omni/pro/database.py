@@ -538,6 +538,10 @@ class RedisManager(object):
         with self.get_connection() as rc:
             return rc.keys(pattern=pattern)
 
+    def get_user_admin(self, tenant):
+        tenant_obj = self.get_json(tenant)
+        return tenant_obj.get("user_admin") or {}
+
 
 class PolishNotationToMongoDB:
     def __init__(self, expression):

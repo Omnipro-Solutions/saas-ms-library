@@ -38,8 +38,8 @@ class DeliveryTimeServiceStub(object):
             request_serializer=v1_dot_rules_dot_delivery__time__pb2.AddWarehousesToRequest.SerializeToString,
             response_deserializer=v1_dot_rules_dot_delivery__time__pb2.AddWarehousesToResponse.FromString,
         )
-        self.RemoveWarehousesto = channel.unary_unary(
-            "/pro.omni.oms.api.v1.rules.delivery_time.DeliveryTimeService/RemoveWarehousesto",
+        self.RemoveWarehousesTo = channel.unary_unary(
+            "/pro.omni.oms.api.v1.rules.delivery_time.DeliveryTimeService/RemoveWarehousesTo",
             request_serializer=v1_dot_rules_dot_delivery__time__pb2.RemoveWarehousesToRequest.SerializeToString,
             response_deserializer=v1_dot_rules_dot_delivery__time__pb2.RemoveWarehousesToResponse.FromString,
         )
@@ -98,7 +98,7 @@ class DeliveryTimeServiceServicer(object):
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
-    def RemoveWarehousesto(self, request, context):
+    def RemoveWarehousesTo(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -156,8 +156,8 @@ def add_DeliveryTimeServiceServicer_to_server(servicer, server):
             request_deserializer=v1_dot_rules_dot_delivery__time__pb2.AddWarehousesToRequest.FromString,
             response_serializer=v1_dot_rules_dot_delivery__time__pb2.AddWarehousesToResponse.SerializeToString,
         ),
-        "RemoveWarehousesto": grpc.unary_unary_rpc_method_handler(
-            servicer.RemoveWarehousesto,
+        "RemoveWarehousesTo": grpc.unary_unary_rpc_method_handler(
+            servicer.RemoveWarehousesTo,
             request_deserializer=v1_dot_rules_dot_delivery__time__pb2.RemoveWarehousesToRequest.FromString,
             response_serializer=v1_dot_rules_dot_delivery__time__pb2.RemoveWarehousesToResponse.SerializeToString,
         ),
@@ -338,7 +338,7 @@ class DeliveryTimeService(object):
         )
 
     @staticmethod
-    def RemoveWarehousesto(
+    def RemoveWarehousesTo(
         request,
         target,
         options=(),
@@ -353,7 +353,7 @@ class DeliveryTimeService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            "/pro.omni.oms.api.v1.rules.delivery_time.DeliveryTimeService/RemoveWarehousesto",
+            "/pro.omni.oms.api.v1.rules.delivery_time.DeliveryTimeService/RemoveWarehousesTo",
             v1_dot_rules_dot_delivery__time__pb2.RemoveWarehousesToRequest.SerializeToString,
             v1_dot_rules_dot_delivery__time__pb2.RemoveWarehousesToResponse.FromString,
             options,
