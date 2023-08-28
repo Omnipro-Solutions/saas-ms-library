@@ -7,6 +7,44 @@ from sqlalchemy.orm.relationships import RelationshipProperty
 class Descriptor(object):
     @staticmethod
     def describe_mongo_model(model, prefix_name="", prefix_code=""):
+        """
+        Describe the structure of a MongoDB model using its fields.
+
+        Describir la estructura de un modelo de MongoDB usando sus campos.
+
+        Parameters:
+        ----------
+        model : object
+            MongoDB model to be described.
+            Modelo de MongoDB a describir.
+
+        prefix_name : str, optional
+            Prefix for the field's display name.
+            Prefijo para el nombre de visualización del campo. (default is "")
+
+        prefix_code : str, optional
+            Prefix for the field's code reference.
+            Prefijo para la referencia de código del campo. (default is "")
+
+        Returns:
+        -------
+        dict or list
+            If it's a top-level call, returns a dictionary describing the main model.
+            If it's a recursive call, returns a list describing the fields of an embedded or referenced model.
+
+            Si es una llamada de nivel superior, devuelve un diccionario que describe el modelo principal.
+            Si es una llamada recursiva, devuelve una lista que describe los campos de un modelo incrustado o referenciado.
+
+        Usage:
+        -----
+        descriptor = Descriptor()
+        description = descriptor.describe_mongo_model(SomeMongoModel)
+
+        Uso:
+        -----
+        descriptor = Descriptor()
+        descripcion = descriptor.describe_mongo_model(AlgúnModeloMongo)
+        """
         fields = []
 
         for field_name, field in model._fields.items():
@@ -48,6 +86,34 @@ class Descriptor(object):
 
     @staticmethod
     def describe_sqlalchemy_model(model):
+        """
+        Describe the structure of an SQLAlchemy model using its columns and relationships.
+
+        Describir la estructura de un modelo SQLAlchemy usando sus columnas y relaciones.
+
+        Parameters:
+        ----------
+        model : object
+            SQLAlchemy model to be described.
+            Modelo SQLAlchemy a describir.
+
+        Returns:
+        -------
+        dict
+            Dictionary describing the given SQLAlchemy model including its fields and relationships.
+
+            Diccionario que describe el modelo SQLAlchemy dado incluyendo sus campos y relaciones.
+
+        Usage:
+        -----
+        descriptor = Descriptor()
+        description = descriptor.describe_sqlalchemy_model(SomeSQLAlchemyModel)
+
+        Uso:
+        -----
+        descriptor = Descriptor()
+        descripcion = descriptor.describe_sqlalchemy_model(AlgúnModeloSQLAlchemy)
+        """
         mapper = inspect(model)
 
         description = {
@@ -96,6 +162,36 @@ class Descriptor(object):
 
     @staticmethod
     def describe_mongo_model_tree(model):
+        """
+        Describe the hierarchical structure of a MongoDB model, including embedded or referenced models.
+
+        Describir la estructura jerárquica de un modelo MongoDB, incluyendo modelos incrustados o referenciados.
+
+        Parameters:
+        ----------
+        model : object
+            MongoDB model to be described hierarchically.
+            Modelo de MongoDB a describir jerárquicamente.
+
+        Returns:
+        -------
+        dict
+            Dictionary describing the given MongoDB model in a hierarchical manner including its fields,
+            relations, and embedded/referenced models.
+
+            Diccionario que describe el modelo MongoDB dado de manera jerárquica, incluyendo sus campos,
+            relaciones y modelos incrustados/referenciados.
+
+        Usage:
+        -----
+        descriptor = Descriptor()
+        description = descriptor.describe_mongo_model_tree(SomeMongoModel)
+
+        Uso:
+        -----
+        descriptor = Descriptor()
+        descripcion = descriptor.describe_mongo_model_tree(AlgúnModeloMongo)
+        """
         description = {
             "name": model.__name__,
             "class_name": f"{model.__module__}.{model.__name__}",
