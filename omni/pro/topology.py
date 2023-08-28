@@ -6,7 +6,7 @@ import networkx as nx
 import peewee
 from mongoengine.document import Document
 from omni.pro.logger import configure_logger
-from omni.pro.models.base import BaseDocument
+from omni.pro.models.base import BaseDocument, BaseModel
 from peewee import ForeignKeyField
 
 logger = configure_logger(__name__)
@@ -59,7 +59,7 @@ class Topology(object):
             # Encuentra todas las clases de modelos en el módulo
             for name, obj in inspect.getmembers(module):
                 if inspect.isclass(obj) and (
-                    (issubclass(obj, peewee.Model) and obj != peewee.Model)
+                    (issubclass(obj, BaseModel) and obj != BaseModel)
                     or (issubclass(obj, Document) and obj != BaseDocument)
                 ):
                     model_classes.append(obj)

@@ -84,9 +84,11 @@ class MessageResponse(object):
             **kwargs,
         )
 
-    def fetched_response(self, message: str, paginated: base_pb2.Paginated, total: int, count=0, **kwargs):
+    def fetched_response(
+        self, message: str, paginated: base_pb2.Paginated, total: int, count=0, message_not_found="", **kwargs
+    ):
         if kwargs.pop("id", False) and total == 0:
-            return self.not_found_response(message, **kwargs)
+            return self.not_found_response(message_not_found, **kwargs)
 
         return self.response(
             success=total > 0,
