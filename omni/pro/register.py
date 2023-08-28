@@ -32,9 +32,8 @@ class RegisterModel(object):
             }
             rpc_func = ModelRPCFucntion(context)
             for model in models_libs:
-                desc = {"persistence_type": persistence_type, "microservice": self.microservice} | getattr(
-                    Descriptor, method
-                )(model)
+                desc = getattr(Descriptor, method)(model)
+                desc = {"persistence_type": persistence_type, "microservice": self.microservice} | desc
                 hash_code = generate_hash(desc)
                 params = {
                     "filter": {
