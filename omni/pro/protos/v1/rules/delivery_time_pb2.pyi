@@ -71,12 +71,26 @@ class DeliveryTime(_message.Message):
     ) -> None: ...
 
 class DeliveryTimeCreateRequest(_message.Message):
-    __slots__ = ["name", "locality_available_id", "time_type", "value_min", "value_max", "inversely", "context"]
+    __slots__ = [
+        "name",
+        "locality_available_id",
+        "time_type",
+        "value_min",
+        "value_max",
+        "warehouse_to_ids",
+        "warehouse_from_ids",
+        "delivery_method_ids",
+        "inversely",
+        "context",
+    ]
     NAME_FIELD_NUMBER: _ClassVar[int]
     LOCALITY_AVAILABLE_ID_FIELD_NUMBER: _ClassVar[int]
     TIME_TYPE_FIELD_NUMBER: _ClassVar[int]
     VALUE_MIN_FIELD_NUMBER: _ClassVar[int]
     VALUE_MAX_FIELD_NUMBER: _ClassVar[int]
+    WAREHOUSE_TO_IDS_FIELD_NUMBER: _ClassVar[int]
+    WAREHOUSE_FROM_IDS_FIELD_NUMBER: _ClassVar[int]
+    DELIVERY_METHOD_IDS_FIELD_NUMBER: _ClassVar[int]
     INVERSELY_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
@@ -84,6 +98,9 @@ class DeliveryTimeCreateRequest(_message.Message):
     time_type: str
     value_min: int
     value_max: int
+    warehouse_to_ids: _containers.RepeatedScalarFieldContainer[int]
+    warehouse_from_ids: _containers.RepeatedScalarFieldContainer[int]
+    delivery_method_ids: _containers.RepeatedScalarFieldContainer[str]
     inversely: _wrappers_pb2.BoolValue
     context: _base_pb2.Context
     def __init__(
@@ -93,6 +110,9 @@ class DeliveryTimeCreateRequest(_message.Message):
         time_type: _Optional[str] = ...,
         value_min: _Optional[int] = ...,
         value_max: _Optional[int] = ...,
+        warehouse_to_ids: _Optional[_Iterable[int]] = ...,
+        warehouse_from_ids: _Optional[_Iterable[int]] = ...,
+        delivery_method_ids: _Optional[_Iterable[str]] = ...,
         inversely: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...

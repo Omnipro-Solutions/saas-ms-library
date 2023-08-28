@@ -39,17 +39,20 @@ class ScheduleWork(_message.Message):
     ) -> None: ...
 
 class ScheduleWorkCreateRequest(_message.Message):
-    __slots__ = ["name", "calendar_id", "context"]
+    __slots__ = ["name", "calendar_id", "schedule_work_line_ids", "context"]
     NAME_FIELD_NUMBER: _ClassVar[int]
     CALENDAR_ID_FIELD_NUMBER: _ClassVar[int]
+    SCHEDULE_WORK_LINE_IDS_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     calendar_id: str
+    schedule_work_line_ids: _containers.RepeatedScalarFieldContainer[str]
     context: _base_pb2.Context
     def __init__(
         self,
         name: _Optional[str] = ...,
         calendar_id: _Optional[str] = ...,
+        schedule_work_line_ids: _Optional[_Iterable[str]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
