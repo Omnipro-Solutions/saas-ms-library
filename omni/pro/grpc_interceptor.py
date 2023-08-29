@@ -41,9 +41,9 @@ class LoggingInterceptor(grpc.ServerInterceptor):
             # Optional: Log the source of the call. Remove if not needed.
             # client_ip = handler_call_details.invocation_metadata["client_ip"]
             # self.logger.info("Received call from %s to %s", client_ip, handler_call_details.method)
-
-            self.logger.info("Received call to %s", handler_call_details.method)
-            return continuation(handler_call_details)
+            if handler_call_details.method != "/AWS.ALB/healthcheck":
+                self.logger.info("Received call to %s", handler_call_details.method)
+                return continuation(handler_call_details)
         except Exception as e:
             self.logger.error("Error while invoking method %s: %s", handler_call_details.method, str(e))
             raise

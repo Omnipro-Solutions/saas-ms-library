@@ -37,6 +37,7 @@ class Picking(_message.Message):
         "weight",
         "shipping_weight",
         "state",
+        "dependency_id",
         "active",
         "object_audit",
     ]
@@ -61,6 +62,7 @@ class Picking(_message.Message):
     WEIGHT_FIELD_NUMBER: _ClassVar[int]
     SHIPPING_WEIGHT_FIELD_NUMBER: _ClassVar[int]
     STATE_FIELD_NUMBER: _ClassVar[int]
+    DEPENDENCY_ID_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: int
@@ -84,6 +86,7 @@ class Picking(_message.Message):
     weight: float
     shipping_weight: float
     state: str
+    dependency_id: int
     active: _wrappers_pb2.BoolValue
     object_audit: _base_pb2.ObjectAudit
     def __init__(
@@ -109,6 +112,7 @@ class Picking(_message.Message):
         weight: _Optional[float] = ...,
         shipping_weight: _Optional[float] = ...,
         state: _Optional[str] = ...,
+        dependency_id: _Optional[int] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
@@ -135,6 +139,7 @@ class PickingCreateRequest(_message.Message):
         "weight",
         "shipping_weight",
         "state",
+        "dependency_id",
         "context",
     ]
     NAME_FIELD_NUMBER: _ClassVar[int]
@@ -157,6 +162,7 @@ class PickingCreateRequest(_message.Message):
     WEIGHT_FIELD_NUMBER: _ClassVar[int]
     SHIPPING_WEIGHT_FIELD_NUMBER: _ClassVar[int]
     STATE_FIELD_NUMBER: _ClassVar[int]
+    DEPENDENCY_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     picking_type_id: int
@@ -178,6 +184,7 @@ class PickingCreateRequest(_message.Message):
     weight: float
     shipping_weight: float
     state: str
+    dependency_id: int
     context: _base_pb2.Context
     def __init__(
         self,
@@ -201,6 +208,7 @@ class PickingCreateRequest(_message.Message):
         weight: _Optional[float] = ...,
         shipping_weight: _Optional[float] = ...,
         state: _Optional[str] = ...,
+        dependency_id: _Optional[int] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
