@@ -215,6 +215,24 @@ def measure_time(function):
 def add_or_remove_document_relations(
     context, document, tenant, exsitent_relations_list, new_relations_list, element_name, element_relation_name
 ):
+    """
+    The add_or_remove_document_relations function process and get registers to remove and add, to apply changes and return a list of result.
+    La función add_or_remove_document_relations procesa y obtiene registros para eliminar y agregar, para aplicar cambios y devolver una lista de resultados.
+
+    Args:
+    context: Context of the request. Contexto de la petición.
+    document: Class document to validate. Clase documento a validar.
+    tenant: Tenant of request. Tenant de la petición.
+    exsitent_relations_list: List of realtion to validate. Lista de relaciones a validar.
+    new_relations_list: List to add or remove. Lista a agregar o eliminar.
+    element_name: Model name. Nombre del modelo.
+    element_relation_name: Relation name. Nombre de la relación.
+
+    Returns:
+    The list of relations process.
+    La lista de relaciones procesadas.
+    """
+
     relations_list = set([x.id for x in exsitent_relations_list])
     new_relations_list = set(new_relations_list)
 
@@ -235,6 +253,23 @@ def add_or_remove_document_relations(
 def remove_document_relations(
     context, document, tenant, list_elements, list_registers, element_name, element_relation_name
 ):
+    """
+    The remove_document_relations function remove resgisters of list_registers the elements defined on list_elements.
+    La función remove_document_relations elimina registros de list_registers los elementos definidos en list_elements.
+
+    Args:
+    context: Context of the request. Contexto de la petición.
+    document: Class document to validate. Clase documento a validar.
+    tenant: Tenant of request. Tenant de la petición.
+    list_elements: List of realtion to remove. Lista de relaciones a eliminar.
+    new_relations_list: List to add or remove. Lista a agregar o eliminar.
+    element_name: Model name. Nombre del modelo.
+    element_relation_name: Relation name. Nombre de la relación.
+
+    Returns:
+    The list of relations process.
+    La lista de relaciones procesadas.
+    """
     with ExitStackDocument(document_classes=document.reference_list(), db_alias=context.db_name):
         for element in list_elements:
             register = context.db_manager.get_document(context.db_name, tenant, document, id=element)
@@ -248,6 +283,23 @@ def remove_document_relations(
 def add_document_relations(
     context, document, tenant, list_elements, list_registers, element_name, element_relation_name
 ):
+    """
+    The add_document_relations function add resgisters to list_registers from elements defined on list_elements.
+    La función add_document_relations agrega registros a list_registers de elementos definidos en list_elements.
+
+    Args:
+    context: Context of the request. Contexto de la petición.
+    document: Class document to validate. Clase documento a validar.
+    tenant: Tenant of request. Tenant de la petición.
+    list_elements: List of realtion to add. Lista de relaciones a agregar.
+    new_relations_list: List to add or remove. Lista a agregar o eliminar.
+    element_name: Model name. Nombre del modelo.
+    element_relation_name: Relation name. Nombre de la relación.
+
+    Returns:
+    The list of relations process.
+    La lista de relaciones procesadas.
+    """
     with ExitStackDocument(document_classes=document.reference_list(), db_alias=context.db_name):
         for element in list_elements:
             register = context.db_manager.get_document(context.db_name, tenant, document, id=element)
