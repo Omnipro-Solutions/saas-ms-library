@@ -7,6 +7,8 @@ import unicodedata
 import time
 import logging
 from functools import reduce, wraps
+from omni.pro.stack import ExitStackDocument
+from omni.pro.exceptions import AlreadyExistError, NotFoundError
 
 logger = logging.getLogger(__name__)
 
@@ -183,6 +185,7 @@ def measure_time(function):
     callable: The wrapped function that measures its execution time.
     callable: La función envuelta que mide su tiempo de ejecución.
     """
+
     @wraps(function)
     def measured_function(*args, **kwargs):
         """
@@ -207,3 +210,51 @@ def measure_time(function):
         return result
 
     return measured_function
+
+
+def add_or_remove_document_relations(
+    context, document, tenant, exsitent_relations_list, new_relations_list, element_name, element_relation_name
+):
+    relations_list = set([x.id for x in exsitent_relations_list])
+    new_relations_list = set(new_relations_list)
+
+    remove_relations_list = list(relations_list - new_relations_list)
+    add_relations_list = list(new_relations_list - relations_list)
+
+    result_list = []
+
+    result_list = remove_document_relations(
+        context, document, tenant, remove_relations_list, exsitent_relations_list, element_name, element_relation_name
+    )
+    result_list = add_document_relations(
+        context, document, tenant, add_relations_list, result_list, element_name, element_relation_name
+    )
+    return result_list
+
+
+def remove_document_relations(
+    context, document, tenant, list_elements, list_registers, element_name, element_relation_name
+):
+    with ExitStackDocument(document_classes=document.reference_list(), db_alias=context.db_name):
+        for element in list_elements:
+            register = context.db_manager.get_document(context.db_name, tenant, document, id=element)
+            if register not in list_registers:
+                raise NotFoundError(message=f"{element_name} {element} not defined in {element_relation_name}")
+            list_registers.remove(register)
+
+        return list_registers
+
+
+def add_document_relations(
+    context, document, tenant, list_elements, list_registers, element_name, element_relation_name
+):
+    with ExitStackDocument(document_classes=document.reference_list(), db_alias=context.db_name):
+        for element in list_elements:
+            register = context.db_manager.get_document(context.db_name, tenant, document, id=element)
+            if not register:
+                raise NotFoundError(message=f"{element_name} {element} not found")
+            if register in list_registers:
+                return AlreadyExistError(message=f"{element_name} {element} already added in {element_relation_name}")
+            list_registers.append(register)
+
+        return list_registers
