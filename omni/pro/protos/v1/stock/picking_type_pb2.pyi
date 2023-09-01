@@ -19,14 +19,14 @@ class PickingType(_message.Message):
         "id",
         "name",
         "sequence_code",
-        "warehouse_id",
+        "warehouse",
         "code",
-        "return_picking_type_id",
+        "return_picking_type",
         "show_operations",
         "show_reserved",
-        "default_location_src_id",
-        "default_location_dest_id",
-        "sequence_id",
+        "default_location_src",
+        "default_location_dest",
+        "sequence",
         "barcode",
         "reservation_method",
         "type_code",
@@ -36,14 +36,14 @@ class PickingType(_message.Message):
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     SEQUENCE_CODE_FIELD_NUMBER: _ClassVar[int]
-    WAREHOUSE_ID_FIELD_NUMBER: _ClassVar[int]
+    WAREHOUSE_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
-    RETURN_PICKING_TYPE_ID_FIELD_NUMBER: _ClassVar[int]
+    RETURN_PICKING_TYPE_FIELD_NUMBER: _ClassVar[int]
     SHOW_OPERATIONS_FIELD_NUMBER: _ClassVar[int]
     SHOW_RESERVED_FIELD_NUMBER: _ClassVar[int]
-    DEFAULT_LOCATION_SRC_ID_FIELD_NUMBER: _ClassVar[int]
-    DEFAULT_LOCATION_DEST_ID_FIELD_NUMBER: _ClassVar[int]
-    SEQUENCE_ID_FIELD_NUMBER: _ClassVar[int]
+    DEFAULT_LOCATION_SRC_FIELD_NUMBER: _ClassVar[int]
+    DEFAULT_LOCATION_DEST_FIELD_NUMBER: _ClassVar[int]
+    SEQUENCE_FIELD_NUMBER: _ClassVar[int]
     BARCODE_FIELD_NUMBER: _ClassVar[int]
     RESERVATION_METHOD_FIELD_NUMBER: _ClassVar[int]
     TYPE_CODE_FIELD_NUMBER: _ClassVar[int]
@@ -52,14 +52,14 @@ class PickingType(_message.Message):
     id: int
     name: str
     sequence_code: str
-    warehouse_id: int
+    warehouse: _base_pb2.ObjectResponse
     code: str
-    return_picking_type_id: int
+    return_picking_type: _base_pb2.ObjectResponse
     show_operations: _wrappers_pb2.BoolValue
     show_reserved: _wrappers_pb2.BoolValue
-    default_location_src_id: _location_pb2.Location
-    default_location_dest_id: _location_pb2.Location
-    sequence_id: _sequence_pb2.Sequence
+    default_location_src: _location_pb2.Location
+    default_location_dest: _location_pb2.Location
+    sequence: _sequence_pb2.Sequence
     barcode: str
     reservation_method: str
     type_code: str
@@ -70,14 +70,14 @@ class PickingType(_message.Message):
         id: _Optional[int] = ...,
         name: _Optional[str] = ...,
         sequence_code: _Optional[str] = ...,
-        warehouse_id: _Optional[int] = ...,
+        warehouse: _Optional[_Union[_base_pb2.ObjectResponse, _Mapping]] = ...,
         code: _Optional[str] = ...,
-        return_picking_type_id: _Optional[int] = ...,
+        return_picking_type: _Optional[_Union[_base_pb2.ObjectResponse, _Mapping]] = ...,
         show_operations: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         show_reserved: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
-        default_location_src_id: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
-        default_location_dest_id: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
-        sequence_id: _Optional[_Union[_sequence_pb2.Sequence, _Mapping]] = ...,
+        default_location_src: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
+        default_location_dest: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
+        sequence: _Optional[_Union[_sequence_pb2.Sequence, _Mapping]] = ...,
         barcode: _Optional[str] = ...,
         reservation_method: _Optional[str] = ...,
         type_code: _Optional[str] = ...,
@@ -128,7 +128,7 @@ class PickingTypeCreateRequest(_message.Message):
     barcode: str
     reservation_method: str
     type_code: str
-    sequence_id: int
+    sequence_id: str
     context: _base_pb2.Context
     def __init__(
         self,
@@ -144,7 +144,7 @@ class PickingTypeCreateRequest(_message.Message):
         barcode: _Optional[str] = ...,
         reservation_method: _Optional[str] = ...,
         type_code: _Optional[str] = ...,
-        sequence_id: _Optional[int] = ...,
+        sequence_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 

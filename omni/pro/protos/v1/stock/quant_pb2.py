@@ -14,9 +14,12 @@ _sym_db = _symbol_database.Default()
 
 from google.protobuf import wrappers_pb2 as google_dot_protobuf_dot_wrappers__pb2
 from omni.pro.protos.common import base_pb2 as common_dot_base__pb2
+from omni.pro.protos.v1.stock import location_pb2 as v1_dot_stock_dot_location__pb2
+from omni.pro.protos.v1.stock import product_pb2 as v1_dot_stock_dot_product__pb2
+from omni.pro.protos.v1.stock import uom_pb2 as v1_dot_stock_dot_uom__pb2
 
 DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
-    b'\n\x14v1/stock/quant.proto\x12\x1fpro.omni.oms.api.v1.stock.quant\x1a\x11\x63ommon/base.proto\x1a\x1egoogle/protobuf/wrappers.proto"\x90\x02\n\x05Quant\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x12\n\nproduct_id\x18\x02 \x01(\x05\x12\x13\n\x0blocation_id\x18\x03 \x01(\x05\x12\x0c\n\x04lote\x18\x04 \x01(\t\x12\x1a\n\x12\x61vailable_quantity\x18\x05 \x01(\x02\x12\x19\n\x11reserved_quantity\x18\x06 \x01(\x02\x12\x10\n\x08quantity\x18\x07 \x01(\x02\x12\x0e\n\x06uom_id\x18\x08 \x01(\x05\x12*\n\x06\x61\x63tive\x18\t \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12?\n\x0cobject_audit\x18\n \x01(\x0b\x32).pro.omni.oms.api.common.base.ObjectAudit"\xdc\x01\n\x12QuantCreateRequest\x12\x12\n\nproduct_id\x18\x01 \x01(\x05\x12\x13\n\x0blocation_id\x18\x02 \x01(\x05\x12\x0c\n\x04lote\x18\x03 \x01(\t\x12\x1a\n\x12\x61vailable_quantity\x18\x04 \x01(\x02\x12\x19\n\x11reserved_quantity\x18\x05 \x01(\x02\x12\x10\n\x08quantity\x18\x06 \x01(\x02\x12\x0e\n\x06uom_id\x18\x07 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x08 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\x97\x01\n\x13QuantCreateResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard\x12\x35\n\x05quant\x18\x02 \x01(\x0b\x32&.pro.omni.oms.api.v1.stock.quant.Quant"\xee\x02\n\x10QuantReadRequest\x12\x37\n\x08group_by\x18\x01 \x03(\x0b\x32%.pro.omni.oms.api.common.base.GroupBy\x12\x35\n\x07sort_by\x18\x02 \x01(\x0b\x32$.pro.omni.oms.api.common.base.SortBy\x12\x34\n\x06\x66ields\x18\x03 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Fields\x12\x34\n\x06\x66ilter\x18\x04 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Filter\x12:\n\tpaginated\x18\x05 \x01(\x0b\x32\'.pro.omni.oms.api.common.base.Paginated\x12\n\n\x02id\x18\x06 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x07 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xd1\x01\n\x11QuantReadResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard\x12\x39\n\tmeta_data\x18\x02 \x01(\x0b\x32&.pro.omni.oms.api.common.base.MetaData\x12\x36\n\x06quants\x18\x03 \x03(\x0b\x32&.pro.omni.oms.api.v1.stock.quant.Quant"\x83\x01\n\x12QuantUpdateRequest\x12\x35\n\x05quant\x18\x01 \x01(\x0b\x32&.pro.omni.oms.api.v1.stock.quant.Quant\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\x97\x01\n\x13QuantUpdateResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard\x12\x35\n\x05quant\x18\x02 \x01(\x0b\x32&.pro.omni.oms.api.v1.stock.quant.Quant"X\n\x12QuantDeleteRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"`\n\x13QuantDeleteResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"A\n\x10ProductAvailable\x12\x11\n\tavailable\x18\x01 \x01(\x08\x12\x1a\n\x12\x61vailable_quantity\x18\x02 \x01(\x02"\xaa\x01\n\x17ProductAvailableRequest\x12\x13\n\x0blocation_id\x18\x01 \x01(\x05\x12\x12\n\nproduct_id\x18\x02 \x01(\t\x12\x13\n\x0bproduct_sku\x18\x03 \x01(\t\x12\x19\n\x11required_quantity\x18\x04 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x05 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xb3\x01\n\x18ProductAvailableResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard\x12L\n\x11product_available\x18\x02 \x01(\x0b\x32\x31.pro.omni.oms.api.v1.stock.quant.ProductAvailable2\x84\x05\n\x0cQuantService\x12z\n\x0bQuantCreate\x12\x33.pro.omni.oms.api.v1.stock.quant.QuantCreateRequest\x1a\x34.pro.omni.oms.api.v1.stock.quant.QuantCreateResponse"\x00\x12t\n\tQuantRead\x12\x31.pro.omni.oms.api.v1.stock.quant.QuantReadRequest\x1a\x32.pro.omni.oms.api.v1.stock.quant.QuantReadResponse"\x00\x12z\n\x0bQuantUpdate\x12\x33.pro.omni.oms.api.v1.stock.quant.QuantUpdateRequest\x1a\x34.pro.omni.oms.api.v1.stock.quant.QuantUpdateResponse"\x00\x12z\n\x0bQuantDelete\x12\x33.pro.omni.oms.api.v1.stock.quant.QuantDeleteRequest\x1a\x34.pro.omni.oms.api.v1.stock.quant.QuantDeleteResponse"\x00\x12\x89\x01\n\x10ProductAvailable\x12\x38.pro.omni.oms.api.v1.stock.quant.ProductAvailableRequest\x1a\x39.pro.omni.oms.api.v1.stock.quant.ProductAvailableResponse"\x00\x62\x06proto3'
+    b'\n\x14v1/stock/quant.proto\x12\x1fpro.omni.oms.api.v1.stock.quant\x1a\x11\x63ommon/base.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x17v1/stock/location.proto\x1a\x16v1/stock/product.proto\x1a\x12v1/stock/uom.proto"\x85\x03\n\x05Quant\x12\n\n\x02id\x18\x01 \x01(\x05\x12;\n\x07product\x18\x02 \x01(\x0b\x32*.pro.omni.oms.api.v1.stock.product.Product\x12>\n\x08location\x18\x03 \x01(\x0b\x32,.pro.omni.oms.api.v1.stock.location.Location\x12\x0c\n\x04lote\x18\x04 \x01(\t\x12\x1a\n\x12\x61vailable_quantity\x18\x05 \x01(\x02\x12\x19\n\x11reserved_quantity\x18\x06 \x01(\x02\x12\x10\n\x08quantity\x18\x07 \x01(\x02\x12/\n\x03uom\x18\x08 \x01(\x0b\x32".pro.omni.oms.api.v1.stock.uom.Uom\x12*\n\x06\x61\x63tive\x18\t \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12?\n\x0cobject_audit\x18\n \x01(\x0b\x32).pro.omni.oms.api.common.base.ObjectAudit"\xdc\x01\n\x12QuantCreateRequest\x12\x12\n\nproduct_id\x18\x01 \x01(\x05\x12\x13\n\x0blocation_id\x18\x02 \x01(\x05\x12\x0c\n\x04lote\x18\x03 \x01(\t\x12\x1a\n\x12\x61vailable_quantity\x18\x04 \x01(\x02\x12\x19\n\x11reserved_quantity\x18\x05 \x01(\x02\x12\x10\n\x08quantity\x18\x06 \x01(\x02\x12\x0e\n\x06uom_id\x18\x07 \x01(\t\x12\x36\n\x07\x63ontext\x18\x08 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\x97\x01\n\x13QuantCreateResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard\x12\x35\n\x05quant\x18\x02 \x01(\x0b\x32&.pro.omni.oms.api.v1.stock.quant.Quant"\xee\x02\n\x10QuantReadRequest\x12\x37\n\x08group_by\x18\x01 \x03(\x0b\x32%.pro.omni.oms.api.common.base.GroupBy\x12\x35\n\x07sort_by\x18\x02 \x01(\x0b\x32$.pro.omni.oms.api.common.base.SortBy\x12\x34\n\x06\x66ields\x18\x03 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Fields\x12\x34\n\x06\x66ilter\x18\x04 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Filter\x12:\n\tpaginated\x18\x05 \x01(\x0b\x32\'.pro.omni.oms.api.common.base.Paginated\x12\n\n\x02id\x18\x06 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x07 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xd1\x01\n\x11QuantReadResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard\x12\x39\n\tmeta_data\x18\x02 \x01(\x0b\x32&.pro.omni.oms.api.common.base.MetaData\x12\x36\n\x06quants\x18\x03 \x03(\x0b\x32&.pro.omni.oms.api.v1.stock.quant.Quant"\x83\x01\n\x12QuantUpdateRequest\x12\x35\n\x05quant\x18\x01 \x01(\x0b\x32&.pro.omni.oms.api.v1.stock.quant.Quant\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\x97\x01\n\x13QuantUpdateResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard\x12\x35\n\x05quant\x18\x02 \x01(\x0b\x32&.pro.omni.oms.api.v1.stock.quant.Quant"X\n\x12QuantDeleteRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"`\n\x13QuantDeleteResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"A\n\x10ProductAvailable\x12\x11\n\tavailable\x18\x01 \x01(\x08\x12\x1a\n\x12\x61vailable_quantity\x18\x02 \x01(\x02"\xaa\x01\n\x17ProductAvailableRequest\x12\x13\n\x0blocation_id\x18\x01 \x01(\x05\x12\x12\n\nproduct_id\x18\x02 \x01(\t\x12\x13\n\x0bproduct_sku\x18\x03 \x01(\t\x12\x19\n\x11required_quantity\x18\x04 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x05 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xb3\x01\n\x18ProductAvailableResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard\x12L\n\x11product_available\x18\x02 \x01(\x0b\x32\x31.pro.omni.oms.api.v1.stock.quant.ProductAvailable2\x84\x05\n\x0cQuantService\x12z\n\x0bQuantCreate\x12\x33.pro.omni.oms.api.v1.stock.quant.QuantCreateRequest\x1a\x34.pro.omni.oms.api.v1.stock.quant.QuantCreateResponse"\x00\x12t\n\tQuantRead\x12\x31.pro.omni.oms.api.v1.stock.quant.QuantReadRequest\x1a\x32.pro.omni.oms.api.v1.stock.quant.QuantReadResponse"\x00\x12z\n\x0bQuantUpdate\x12\x33.pro.omni.oms.api.v1.stock.quant.QuantUpdateRequest\x1a\x34.pro.omni.oms.api.v1.stock.quant.QuantUpdateResponse"\x00\x12z\n\x0bQuantDelete\x12\x33.pro.omni.oms.api.v1.stock.quant.QuantDeleteRequest\x1a\x34.pro.omni.oms.api.v1.stock.quant.QuantDeleteResponse"\x00\x12\x89\x01\n\x10ProductAvailable\x12\x38.pro.omni.oms.api.v1.stock.quant.ProductAvailableRequest\x1a\x39.pro.omni.oms.api.v1.stock.quant.ProductAvailableResponse"\x00\x62\x06proto3'
 )
 
 _globals = globals()
@@ -24,30 +27,30 @@ _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, "v1.stock.quant_pb2", _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
     DESCRIPTOR._options = None
-    _globals["_QUANT"]._serialized_start = 109
-    _globals["_QUANT"]._serialized_end = 381
-    _globals["_QUANTCREATEREQUEST"]._serialized_start = 384
-    _globals["_QUANTCREATEREQUEST"]._serialized_end = 604
-    _globals["_QUANTCREATERESPONSE"]._serialized_start = 607
-    _globals["_QUANTCREATERESPONSE"]._serialized_end = 758
-    _globals["_QUANTREADREQUEST"]._serialized_start = 761
-    _globals["_QUANTREADREQUEST"]._serialized_end = 1127
-    _globals["_QUANTREADRESPONSE"]._serialized_start = 1130
-    _globals["_QUANTREADRESPONSE"]._serialized_end = 1339
-    _globals["_QUANTUPDATEREQUEST"]._serialized_start = 1342
-    _globals["_QUANTUPDATEREQUEST"]._serialized_end = 1473
-    _globals["_QUANTUPDATERESPONSE"]._serialized_start = 1476
-    _globals["_QUANTUPDATERESPONSE"]._serialized_end = 1627
-    _globals["_QUANTDELETEREQUEST"]._serialized_start = 1629
-    _globals["_QUANTDELETEREQUEST"]._serialized_end = 1717
-    _globals["_QUANTDELETERESPONSE"]._serialized_start = 1719
-    _globals["_QUANTDELETERESPONSE"]._serialized_end = 1815
-    _globals["_PRODUCTAVAILABLE"]._serialized_start = 1817
-    _globals["_PRODUCTAVAILABLE"]._serialized_end = 1882
-    _globals["_PRODUCTAVAILABLEREQUEST"]._serialized_start = 1885
-    _globals["_PRODUCTAVAILABLEREQUEST"]._serialized_end = 2055
-    _globals["_PRODUCTAVAILABLERESPONSE"]._serialized_start = 2058
-    _globals["_PRODUCTAVAILABLERESPONSE"]._serialized_end = 2237
-    _globals["_QUANTSERVICE"]._serialized_start = 2240
-    _globals["_QUANTSERVICE"]._serialized_end = 2884
+    _globals["_QUANT"]._serialized_start = 178
+    _globals["_QUANT"]._serialized_end = 567
+    _globals["_QUANTCREATEREQUEST"]._serialized_start = 570
+    _globals["_QUANTCREATEREQUEST"]._serialized_end = 790
+    _globals["_QUANTCREATERESPONSE"]._serialized_start = 793
+    _globals["_QUANTCREATERESPONSE"]._serialized_end = 944
+    _globals["_QUANTREADREQUEST"]._serialized_start = 947
+    _globals["_QUANTREADREQUEST"]._serialized_end = 1313
+    _globals["_QUANTREADRESPONSE"]._serialized_start = 1316
+    _globals["_QUANTREADRESPONSE"]._serialized_end = 1525
+    _globals["_QUANTUPDATEREQUEST"]._serialized_start = 1528
+    _globals["_QUANTUPDATEREQUEST"]._serialized_end = 1659
+    _globals["_QUANTUPDATERESPONSE"]._serialized_start = 1662
+    _globals["_QUANTUPDATERESPONSE"]._serialized_end = 1813
+    _globals["_QUANTDELETEREQUEST"]._serialized_start = 1815
+    _globals["_QUANTDELETEREQUEST"]._serialized_end = 1903
+    _globals["_QUANTDELETERESPONSE"]._serialized_start = 1905
+    _globals["_QUANTDELETERESPONSE"]._serialized_end = 2001
+    _globals["_PRODUCTAVAILABLE"]._serialized_start = 2003
+    _globals["_PRODUCTAVAILABLE"]._serialized_end = 2068
+    _globals["_PRODUCTAVAILABLEREQUEST"]._serialized_start = 2071
+    _globals["_PRODUCTAVAILABLEREQUEST"]._serialized_end = 2241
+    _globals["_PRODUCTAVAILABLERESPONSE"]._serialized_start = 2244
+    _globals["_PRODUCTAVAILABLERESPONSE"]._serialized_end = 2423
+    _globals["_QUANTSERVICE"]._serialized_start = 2426
+    _globals["_QUANTSERVICE"]._serialized_end = 3070
 # @@protoc_insertion_point(module_scope)

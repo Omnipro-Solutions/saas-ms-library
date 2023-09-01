@@ -30,17 +30,17 @@ class Warehouse(_message.Message):
         "delivery_steps",
         "reception_steps",
         "locality_available",
-        "view_location_id",
-        "loc_stock_id",
-        "wh_input_stock_loc_id",
-        "wh_qc_stock_loc_id",
-        "wh_pack_stock_loc_id",
-        "wh_output_stock_loc_id",
-        "in_type_id",
-        "int_type_id",
-        "pick_type_id",
-        "pack_type_id",
-        "out_type_id",
+        "view_location",
+        "loc_stock",
+        "wh_input_stock_loc",
+        "wh_qc_stock_loc",
+        "wh_pack_stock_loc",
+        "wh_output_stock_loc",
+        "in_type",
+        "int_type",
+        "pick_type",
+        "pack_type",
+        "out_type",
         "object_audit",
     ]
     ID_FIELD_NUMBER: _ClassVar[int]
@@ -55,17 +55,17 @@ class Warehouse(_message.Message):
     DELIVERY_STEPS_FIELD_NUMBER: _ClassVar[int]
     RECEPTION_STEPS_FIELD_NUMBER: _ClassVar[int]
     LOCALITY_AVAILABLE_FIELD_NUMBER: _ClassVar[int]
-    VIEW_LOCATION_ID_FIELD_NUMBER: _ClassVar[int]
-    LOC_STOCK_ID_FIELD_NUMBER: _ClassVar[int]
-    WH_INPUT_STOCK_LOC_ID_FIELD_NUMBER: _ClassVar[int]
-    WH_QC_STOCK_LOC_ID_FIELD_NUMBER: _ClassVar[int]
-    WH_PACK_STOCK_LOC_ID_FIELD_NUMBER: _ClassVar[int]
-    WH_OUTPUT_STOCK_LOC_ID_FIELD_NUMBER: _ClassVar[int]
-    IN_TYPE_ID_FIELD_NUMBER: _ClassVar[int]
-    INT_TYPE_ID_FIELD_NUMBER: _ClassVar[int]
-    PICK_TYPE_ID_FIELD_NUMBER: _ClassVar[int]
-    PACK_TYPE_ID_FIELD_NUMBER: _ClassVar[int]
-    OUT_TYPE_ID_FIELD_NUMBER: _ClassVar[int]
+    VIEW_LOCATION_FIELD_NUMBER: _ClassVar[int]
+    LOC_STOCK_FIELD_NUMBER: _ClassVar[int]
+    WH_INPUT_STOCK_LOC_FIELD_NUMBER: _ClassVar[int]
+    WH_QC_STOCK_LOC_FIELD_NUMBER: _ClassVar[int]
+    WH_PACK_STOCK_LOC_FIELD_NUMBER: _ClassVar[int]
+    WH_OUTPUT_STOCK_LOC_FIELD_NUMBER: _ClassVar[int]
+    IN_TYPE_FIELD_NUMBER: _ClassVar[int]
+    INT_TYPE_FIELD_NUMBER: _ClassVar[int]
+    PICK_TYPE_FIELD_NUMBER: _ClassVar[int]
+    PACK_TYPE_FIELD_NUMBER: _ClassVar[int]
+    OUT_TYPE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: int
     name: str
@@ -79,17 +79,17 @@ class Warehouse(_message.Message):
     delivery_steps: str
     reception_steps: str
     locality_available: _wrappers_pb2.StringValue
-    view_location_id: _location_pb2.Location
-    loc_stock_id: _location_pb2.Location
-    wh_input_stock_loc_id: _location_pb2.Location
-    wh_qc_stock_loc_id: _location_pb2.Location
-    wh_pack_stock_loc_id: _location_pb2.Location
-    wh_output_stock_loc_id: _location_pb2.Location
-    in_type_id: _picking_type_pb2.PickingType
-    int_type_id: _picking_type_pb2.PickingType
-    pick_type_id: _picking_type_pb2.PickingType
-    pack_type_id: _picking_type_pb2.PickingType
-    out_type_id: _picking_type_pb2.PickingType
+    view_location: _location_pb2.Location
+    loc_stock: _location_pb2.Location
+    wh_input_stock_loc: _location_pb2.Location
+    wh_qc_stock_loc: _location_pb2.Location
+    wh_pack_stock_loc: _location_pb2.Location
+    wh_output_stock_loc: _location_pb2.Location
+    in_type: _picking_type_pb2.PickingType
+    int_type: _picking_type_pb2.PickingType
+    pick_type: _picking_type_pb2.PickingType
+    pack_type: _picking_type_pb2.PickingType
+    out_type: _picking_type_pb2.PickingType
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
@@ -105,17 +105,17 @@ class Warehouse(_message.Message):
         delivery_steps: _Optional[str] = ...,
         reception_steps: _Optional[str] = ...,
         locality_available: _Optional[_Union[_wrappers_pb2.StringValue, _Mapping]] = ...,
-        view_location_id: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
-        loc_stock_id: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
-        wh_input_stock_loc_id: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
-        wh_qc_stock_loc_id: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
-        wh_pack_stock_loc_id: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
-        wh_output_stock_loc_id: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
-        in_type_id: _Optional[_Union[_picking_type_pb2.PickingType, _Mapping]] = ...,
-        int_type_id: _Optional[_Union[_picking_type_pb2.PickingType, _Mapping]] = ...,
-        pick_type_id: _Optional[_Union[_picking_type_pb2.PickingType, _Mapping]] = ...,
-        pack_type_id: _Optional[_Union[_picking_type_pb2.PickingType, _Mapping]] = ...,
-        out_type_id: _Optional[_Union[_picking_type_pb2.PickingType, _Mapping]] = ...,
+        view_location: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
+        loc_stock: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
+        wh_input_stock_loc: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
+        wh_qc_stock_loc: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
+        wh_pack_stock_loc: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
+        wh_output_stock_loc: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
+        in_type: _Optional[_Union[_picking_type_pb2.PickingType, _Mapping]] = ...,
+        int_type: _Optional[_Union[_picking_type_pb2.PickingType, _Mapping]] = ...,
+        pick_type: _Optional[_Union[_picking_type_pb2.PickingType, _Mapping]] = ...,
+        pack_type: _Optional[_Union[_picking_type_pb2.PickingType, _Mapping]] = ...,
+        out_type: _Optional[_Union[_picking_type_pb2.PickingType, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
