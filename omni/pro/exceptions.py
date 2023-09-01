@@ -1,17 +1,11 @@
-import logging
 import traceback
-from logging import Logger
 
 from marshmallow import ValidationError
+from omni.pro.logger import LoggerTraceback
 from sqlalchemy.exc import IntegrityError, OperationalError, ProgrammingError
 
-from omni.pro.logger import LoggerTraceback
-from omni.pro.protos.response import MessageResponse
 
-
-def handle_error(
-    service_model: str, service_method: str, logger: Logger, error: Exception, message_response: MessageResponse
-):
+def handle_error(service_model: str, service_method: str, logger, error: Exception, message_response):
     """
     Handles and logs different types of errors, returning appropriate response messages based on the error type.
     Maneja y registra diferentes tipos de errores, devolviendo mensajes de respuesta apropiados según el tipo de error.
