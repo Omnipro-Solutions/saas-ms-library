@@ -6,10 +6,13 @@ from typing import Union as _Union
 
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
-from google.protobuf import struct_pb2 as _struct_pb2
 from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
+from omni.pro.protos.v1.stock import location_pb2 as _location_pb2
+from omni.pro.protos.v1.stock import picking_type_pb2 as _picking_type_pb2
+from omni.pro.protos.v1.stock import route_pb2 as _route_pb2
+from omni.pro.protos.v1.stock import warehouse_pb2 as _warehouse_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
@@ -18,12 +21,12 @@ class Rule(_message.Message):
         "id",
         "name",
         "action",
-        "picking_type_id",
-        "location_src_id",
-        "location_id",
+        "picking_type",
+        "location_src",
+        "location",
         "procure_method",
-        "route_id",
-        "warehouse_id",
+        "route",
+        "warehouse",
         "sequence",
         "active",
         "object_audit",
@@ -31,24 +34,24 @@ class Rule(_message.Message):
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     ACTION_FIELD_NUMBER: _ClassVar[int]
-    PICKING_TYPE_ID_FIELD_NUMBER: _ClassVar[int]
-    LOCATION_SRC_ID_FIELD_NUMBER: _ClassVar[int]
-    LOCATION_ID_FIELD_NUMBER: _ClassVar[int]
+    PICKING_TYPE_FIELD_NUMBER: _ClassVar[int]
+    LOCATION_SRC_FIELD_NUMBER: _ClassVar[int]
+    LOCATION_FIELD_NUMBER: _ClassVar[int]
     PROCURE_METHOD_FIELD_NUMBER: _ClassVar[int]
-    ROUTE_ID_FIELD_NUMBER: _ClassVar[int]
-    WAREHOUSE_ID_FIELD_NUMBER: _ClassVar[int]
+    ROUTE_FIELD_NUMBER: _ClassVar[int]
+    WAREHOUSE_FIELD_NUMBER: _ClassVar[int]
     SEQUENCE_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: int
     name: str
     action: str
-    picking_type_id: int
-    location_src_id: int
-    location_id: int
+    picking_type: _picking_type_pb2.PickingType
+    location_src: _location_pb2.Location
+    location: _location_pb2.Location
     procure_method: str
-    route_id: int
-    warehouse_id: int
+    route: _route_pb2.Route
+    warehouse: _warehouse_pb2.Warehouse
     sequence: int
     active: _wrappers_pb2.BoolValue
     object_audit: _base_pb2.ObjectAudit
@@ -57,12 +60,12 @@ class Rule(_message.Message):
         id: _Optional[int] = ...,
         name: _Optional[str] = ...,
         action: _Optional[str] = ...,
-        picking_type_id: _Optional[int] = ...,
-        location_src_id: _Optional[int] = ...,
-        location_id: _Optional[int] = ...,
+        picking_type: _Optional[_Union[_picking_type_pb2.PickingType, _Mapping]] = ...,
+        location_src: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
+        location: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
         procure_method: _Optional[str] = ...,
-        route_id: _Optional[int] = ...,
-        warehouse_id: _Optional[int] = ...,
+        route: _Optional[_Union[_route_pb2.Route, _Mapping]] = ...,
+        warehouse: _Optional[_Union[_warehouse_pb2.Warehouse, _Mapping]] = ...,
         sequence: _Optional[int] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,

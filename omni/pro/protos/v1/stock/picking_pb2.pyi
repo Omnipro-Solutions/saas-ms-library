@@ -11,6 +11,11 @@ from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
+from omni.pro.protos.v1.stock import attachment_pb2 as _attachment_pb2
+from omni.pro.protos.v1.stock import carrier_pb2 as _carrier_pb2
+from omni.pro.protos.v1.stock import location_pb2 as _location_pb2
+from omni.pro.protos.v1.stock import picking_type_pb2 as _picking_type_pb2
+from omni.pro.protos.v1.stock import procurement_group_pb2 as _procurement_group_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
@@ -18,101 +23,97 @@ class Picking(_message.Message):
     __slots__ = [
         "id",
         "name",
-        "picking_type_id",
-        "location_id",
-        "location_dest_id",
-        "user_id",
-        "attachment_guide_id",
-        "attachment_invoice_id",
+        "picking_type",
+        "location",
+        "location_dest",
+        "attachment_guide",
+        "attachment_invoice",
         "origin",
         "date_start_preparation",
         "date_done",
         "scheduled_date",
         "time_total_preparation",
         "time_assigned",
-        "carrier_id",
+        "carrier",
         "date_delivery",
         "carrier_tracking_ref",
-        "group_id",
+        "group",
         "weight",
         "shipping_weight",
         "state",
-        "dependency_id",
+        "dependency",
         "active",
         "object_audit",
     ]
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
-    PICKING_TYPE_ID_FIELD_NUMBER: _ClassVar[int]
-    LOCATION_ID_FIELD_NUMBER: _ClassVar[int]
-    LOCATION_DEST_ID_FIELD_NUMBER: _ClassVar[int]
-    USER_ID_FIELD_NUMBER: _ClassVar[int]
-    ATTACHMENT_GUIDE_ID_FIELD_NUMBER: _ClassVar[int]
-    ATTACHMENT_INVOICE_ID_FIELD_NUMBER: _ClassVar[int]
+    PICKING_TYPE_FIELD_NUMBER: _ClassVar[int]
+    LOCATION_FIELD_NUMBER: _ClassVar[int]
+    LOCATION_DEST_FIELD_NUMBER: _ClassVar[int]
+    ATTACHMENT_GUIDE_FIELD_NUMBER: _ClassVar[int]
+    ATTACHMENT_INVOICE_FIELD_NUMBER: _ClassVar[int]
     ORIGIN_FIELD_NUMBER: _ClassVar[int]
     DATE_START_PREPARATION_FIELD_NUMBER: _ClassVar[int]
     DATE_DONE_FIELD_NUMBER: _ClassVar[int]
     SCHEDULED_DATE_FIELD_NUMBER: _ClassVar[int]
     TIME_TOTAL_PREPARATION_FIELD_NUMBER: _ClassVar[int]
     TIME_ASSIGNED_FIELD_NUMBER: _ClassVar[int]
-    CARRIER_ID_FIELD_NUMBER: _ClassVar[int]
+    CARRIER_FIELD_NUMBER: _ClassVar[int]
     DATE_DELIVERY_FIELD_NUMBER: _ClassVar[int]
     CARRIER_TRACKING_REF_FIELD_NUMBER: _ClassVar[int]
-    GROUP_ID_FIELD_NUMBER: _ClassVar[int]
+    GROUP_FIELD_NUMBER: _ClassVar[int]
     WEIGHT_FIELD_NUMBER: _ClassVar[int]
     SHIPPING_WEIGHT_FIELD_NUMBER: _ClassVar[int]
     STATE_FIELD_NUMBER: _ClassVar[int]
-    DEPENDENCY_ID_FIELD_NUMBER: _ClassVar[int]
+    DEPENDENCY_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: int
     name: str
-    picking_type_id: int
-    location_id: int
-    location_dest_id: int
-    user_id: int
-    attachment_guide_id: int
-    attachment_invoice_id: int
+    picking_type: _picking_type_pb2.PickingType
+    location: _location_pb2.Location
+    location_dest: _location_pb2.Location
+    attachment_guide: _attachment_pb2.Attachment
+    attachment_invoice: _attachment_pb2.Attachment
     origin: str
     date_start_preparation: _timestamp_pb2.Timestamp
     date_done: _timestamp_pb2.Timestamp
     scheduled_date: _timestamp_pb2.Timestamp
     time_total_preparation: float
     time_assigned: float
-    carrier_id: int
+    carrier: _carrier_pb2.Carrier
     date_delivery: _timestamp_pb2.Timestamp
     carrier_tracking_ref: str
-    group_id: int
+    group: _procurement_group_pb2.ProcurementGroup
     weight: float
     shipping_weight: float
     state: str
-    dependency_id: int
+    dependency: _base_pb2.ObjectResponse
     active: _wrappers_pb2.BoolValue
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
         id: _Optional[int] = ...,
         name: _Optional[str] = ...,
-        picking_type_id: _Optional[int] = ...,
-        location_id: _Optional[int] = ...,
-        location_dest_id: _Optional[int] = ...,
-        user_id: _Optional[int] = ...,
-        attachment_guide_id: _Optional[int] = ...,
-        attachment_invoice_id: _Optional[int] = ...,
+        picking_type: _Optional[_Union[_picking_type_pb2.PickingType, _Mapping]] = ...,
+        location: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
+        location_dest: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
+        attachment_guide: _Optional[_Union[_attachment_pb2.Attachment, _Mapping]] = ...,
+        attachment_invoice: _Optional[_Union[_attachment_pb2.Attachment, _Mapping]] = ...,
         origin: _Optional[str] = ...,
         date_start_preparation: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
         date_done: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
         scheduled_date: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
         time_total_preparation: _Optional[float] = ...,
         time_assigned: _Optional[float] = ...,
-        carrier_id: _Optional[int] = ...,
+        carrier: _Optional[_Union[_carrier_pb2.Carrier, _Mapping]] = ...,
         date_delivery: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
         carrier_tracking_ref: _Optional[str] = ...,
-        group_id: _Optional[int] = ...,
+        group: _Optional[_Union[_procurement_group_pb2.ProcurementGroup, _Mapping]] = ...,
         weight: _Optional[float] = ...,
         shipping_weight: _Optional[float] = ...,
         state: _Optional[str] = ...,
-        dependency_id: _Optional[int] = ...,
+        dependency: _Optional[_Union[_base_pb2.ObjectResponse, _Mapping]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
@@ -123,7 +124,6 @@ class PickingCreateRequest(_message.Message):
         "picking_type_id",
         "location_id",
         "location_dest_id",
-        "user_id",
         "attachment_guide_id",
         "attachment_invoice_id",
         "origin",
@@ -146,7 +146,6 @@ class PickingCreateRequest(_message.Message):
     PICKING_TYPE_ID_FIELD_NUMBER: _ClassVar[int]
     LOCATION_ID_FIELD_NUMBER: _ClassVar[int]
     LOCATION_DEST_ID_FIELD_NUMBER: _ClassVar[int]
-    USER_ID_FIELD_NUMBER: _ClassVar[int]
     ATTACHMENT_GUIDE_ID_FIELD_NUMBER: _ClassVar[int]
     ATTACHMENT_INVOICE_ID_FIELD_NUMBER: _ClassVar[int]
     ORIGIN_FIELD_NUMBER: _ClassVar[int]
@@ -168,7 +167,6 @@ class PickingCreateRequest(_message.Message):
     picking_type_id: int
     location_id: int
     location_dest_id: int
-    user_id: int
     attachment_guide_id: int
     attachment_invoice_id: int
     origin: str
@@ -192,7 +190,6 @@ class PickingCreateRequest(_message.Message):
         picking_type_id: _Optional[int] = ...,
         location_id: _Optional[int] = ...,
         location_dest_id: _Optional[int] = ...,
-        user_id: _Optional[int] = ...,
         attachment_guide_id: _Optional[int] = ...,
         attachment_invoice_id: _Optional[int] = ...,
         origin: _Optional[str] = ...,
