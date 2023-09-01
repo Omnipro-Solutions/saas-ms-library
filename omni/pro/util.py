@@ -4,6 +4,7 @@ import math
 import secrets
 import string
 import time
+import unicodedata
 from functools import reduce, wraps
 
 from omni.pro.exceptions import AlreadyExistError, NotFoundError, logging
