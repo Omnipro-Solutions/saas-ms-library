@@ -9,52 +9,55 @@ from google.protobuf import message as _message
 from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
+from omni.pro.protos.v1.stock import location_pb2 as _location_pb2
+from omni.pro.protos.v1.stock import product_pb2 as _product_pb2
+from omni.pro.protos.v1.stock import uom_pb2 as _uom_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Quant(_message.Message):
     __slots__ = [
         "id",
-        "product_id",
-        "location_id",
+        "product",
+        "location",
         "lote",
         "available_quantity",
         "reserved_quantity",
         "quantity",
-        "uom_id",
+        "uom",
         "active",
         "object_audit",
     ]
     ID_FIELD_NUMBER: _ClassVar[int]
-    PRODUCT_ID_FIELD_NUMBER: _ClassVar[int]
-    LOCATION_ID_FIELD_NUMBER: _ClassVar[int]
+    PRODUCT_FIELD_NUMBER: _ClassVar[int]
+    LOCATION_FIELD_NUMBER: _ClassVar[int]
     LOTE_FIELD_NUMBER: _ClassVar[int]
     AVAILABLE_QUANTITY_FIELD_NUMBER: _ClassVar[int]
     RESERVED_QUANTITY_FIELD_NUMBER: _ClassVar[int]
     QUANTITY_FIELD_NUMBER: _ClassVar[int]
-    UOM_ID_FIELD_NUMBER: _ClassVar[int]
+    UOM_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: int
-    product_id: int
-    location_id: int
+    product: _product_pb2.Product
+    location: _location_pb2.Location
     lote: str
     available_quantity: float
     reserved_quantity: float
     quantity: float
-    uom_id: int
+    uom: _uom_pb2.Uom
     active: _wrappers_pb2.BoolValue
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
         id: _Optional[int] = ...,
-        product_id: _Optional[int] = ...,
-        location_id: _Optional[int] = ...,
+        product: _Optional[_Union[_product_pb2.Product, _Mapping]] = ...,
+        location: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
         lote: _Optional[str] = ...,
         available_quantity: _Optional[float] = ...,
         reserved_quantity: _Optional[float] = ...,
         quantity: _Optional[float] = ...,
-        uom_id: _Optional[int] = ...,
+        uom: _Optional[_Union[_uom_pb2.Uom, _Mapping]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
@@ -84,7 +87,7 @@ class QuantCreateRequest(_message.Message):
     available_quantity: float
     reserved_quantity: float
     quantity: float
-    uom_id: int
+    uom_id: str
     context: _base_pb2.Context
     def __init__(
         self,
@@ -94,7 +97,7 @@ class QuantCreateRequest(_message.Message):
         available_quantity: _Optional[float] = ...,
         reserved_quantity: _Optional[float] = ...,
         quantity: _Optional[float] = ...,
-        uom_id: _Optional[int] = ...,
+        uom_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 

@@ -6,101 +6,150 @@ from typing import Union as _Union
 
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
+from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
 from omni.pro.protos.common import base_pb2 as _base_pb2
+from omni.pro.protos.v1.rules import delivery_locality_pb2 as _delivery_locality_pb2
 from omni.pro.protos.v1.rules import delivery_method_pb2 as _delivery_method_pb2
-from omni.pro.protos.v1.rules import warehouse_pb2 as _warehouse_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
-class TimeType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+class OperatorPrice(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = []
-    UNKNOWN: _ClassVar[TimeType]
-    MINUTES: _ClassVar[TimeType]
-    HOURS: _ClassVar[TimeType]
-    DAYS: _ClassVar[TimeType]
+    UNKNOWN: _ClassVar[OperatorPrice]
+    MINUTES: _ClassVar[OperatorPrice]
+    HOURS: _ClassVar[OperatorPrice]
+    DAYS: _ClassVar[OperatorPrice]
 
-UNKNOWN: TimeType
-MINUTES: TimeType
-HOURS: TimeType
-DAYS: TimeType
+UNKNOWN: OperatorPrice
+MINUTES: OperatorPrice
+HOURS: OperatorPrice
+DAYS: OperatorPrice
 
 class DeliveryPrice(_message.Message):
     __slots__ = [
         "id",
         "name",
-        "delivery_method_ids",
-        "warehouse_ids",
-        "locality_available_id",
-        "time_type",
-        "value_min",
-        "value_max",
-        "inversely",
+        "code",
+        "delivery_method",
+        "purchase_rank",
+        "currency",
+        "fixed_price",
+        "operator_price",
+        "purchase_price",
+        "variable_factor",
+        "usage",
+        "price_by_variable_factor",
+        "locality_available",
         "active",
         "object_audit",
     ]
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
-    DELIVERY_METHOD_IDS_FIELD_NUMBER: _ClassVar[int]
-    WAREHOUSE_IDS_FIELD_NUMBER: _ClassVar[int]
-    LOCALITY_AVAILABLE_ID_FIELD_NUMBER: _ClassVar[int]
-    TIME_TYPE_FIELD_NUMBER: _ClassVar[int]
-    VALUE_MIN_FIELD_NUMBER: _ClassVar[int]
-    VALUE_MAX_FIELD_NUMBER: _ClassVar[int]
-    INVERSELY_FIELD_NUMBER: _ClassVar[int]
+    CODE_FIELD_NUMBER: _ClassVar[int]
+    DELIVERY_METHOD_FIELD_NUMBER: _ClassVar[int]
+    PURCHASE_RANK_FIELD_NUMBER: _ClassVar[int]
+    CURRENCY_FIELD_NUMBER: _ClassVar[int]
+    FIXED_PRICE_FIELD_NUMBER: _ClassVar[int]
+    OPERATOR_PRICE_FIELD_NUMBER: _ClassVar[int]
+    PURCHASE_PRICE_FIELD_NUMBER: _ClassVar[int]
+    VARIABLE_FACTOR_FIELD_NUMBER: _ClassVar[int]
+    USAGE_FIELD_NUMBER: _ClassVar[int]
+    PRICE_BY_VARIABLE_FACTOR_FIELD_NUMBER: _ClassVar[int]
+    LOCALITY_AVAILABLE_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
-    delivery_method_ids: _containers.RepeatedCompositeFieldContainer[_delivery_method_pb2.DeliveryMethod]
-    warehouse_ids: _containers.RepeatedCompositeFieldContainer[_warehouse_pb2.Warehouse]
-    locality_available_id: str
-    time_type: TimeType
-    value_min: str
-    value_max: str
-    inversely: bool
-    active: bool
+    code: str
+    delivery_method: _delivery_method_pb2.DeliveryMethod
+    purchase_rank: _wrappers_pb2.BoolValue
+    currency: str
+    fixed_price: float
+    operator_price: str
+    purchase_price: float
+    variable_factor: str
+    usage: str
+    price_by_variable_factor: float
+    locality_available: _delivery_locality_pb2.DeliveryLocality
+    active: _wrappers_pb2.BoolValue
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
         id: _Optional[str] = ...,
         name: _Optional[str] = ...,
-        delivery_method_ids: _Optional[_Iterable[_Union[_delivery_method_pb2.DeliveryMethod, _Mapping]]] = ...,
-        warehouse_ids: _Optional[_Iterable[_Union[_warehouse_pb2.Warehouse, _Mapping]]] = ...,
-        locality_available_id: _Optional[str] = ...,
-        time_type: _Optional[_Union[TimeType, str]] = ...,
-        value_min: _Optional[str] = ...,
-        value_max: _Optional[str] = ...,
-        inversely: bool = ...,
-        active: bool = ...,
+        code: _Optional[str] = ...,
+        delivery_method: _Optional[_Union[_delivery_method_pb2.DeliveryMethod, _Mapping]] = ...,
+        purchase_rank: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        currency: _Optional[str] = ...,
+        fixed_price: _Optional[float] = ...,
+        operator_price: _Optional[str] = ...,
+        purchase_price: _Optional[float] = ...,
+        variable_factor: _Optional[str] = ...,
+        usage: _Optional[str] = ...,
+        price_by_variable_factor: _Optional[float] = ...,
+        locality_available: _Optional[_Union[_delivery_locality_pb2.DeliveryLocality, _Mapping]] = ...,
+        active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
 class DeliveryPriceCreateRequest(_message.Message):
-    __slots__ = ["name", "locality_available_id", "time_type", "value_min", "value_max", "inversely", "context"]
+    __slots__ = [
+        "name",
+        "code",
+        "delivery_method_id",
+        "purchase_rank",
+        "currency_id",
+        "fixed_price",
+        "operator_price",
+        "purchase_price",
+        "variable_factor",
+        "usage",
+        "price_by_variable_factor",
+        "locality_available_id",
+        "context",
+    ]
     NAME_FIELD_NUMBER: _ClassVar[int]
+    CODE_FIELD_NUMBER: _ClassVar[int]
+    DELIVERY_METHOD_ID_FIELD_NUMBER: _ClassVar[int]
+    PURCHASE_RANK_FIELD_NUMBER: _ClassVar[int]
+    CURRENCY_ID_FIELD_NUMBER: _ClassVar[int]
+    FIXED_PRICE_FIELD_NUMBER: _ClassVar[int]
+    OPERATOR_PRICE_FIELD_NUMBER: _ClassVar[int]
+    PURCHASE_PRICE_FIELD_NUMBER: _ClassVar[int]
+    VARIABLE_FACTOR_FIELD_NUMBER: _ClassVar[int]
+    USAGE_FIELD_NUMBER: _ClassVar[int]
+    PRICE_BY_VARIABLE_FACTOR_FIELD_NUMBER: _ClassVar[int]
     LOCALITY_AVAILABLE_ID_FIELD_NUMBER: _ClassVar[int]
-    TIME_TYPE_FIELD_NUMBER: _ClassVar[int]
-    VALUE_MIN_FIELD_NUMBER: _ClassVar[int]
-    VALUE_MAX_FIELD_NUMBER: _ClassVar[int]
-    INVERSELY_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
+    code: str
+    delivery_method_id: str
+    purchase_rank: _wrappers_pb2.BoolValue
+    currency_id: str
+    fixed_price: float
+    operator_price: str
+    purchase_price: float
+    variable_factor: str
+    usage: str
+    price_by_variable_factor: float
     locality_available_id: str
-    time_type: TimeType
-    value_min: str
-    value_max: str
-    inversely: bool
     context: _base_pb2.Context
     def __init__(
         self,
         name: _Optional[str] = ...,
+        code: _Optional[str] = ...,
+        delivery_method_id: _Optional[str] = ...,
+        purchase_rank: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        currency_id: _Optional[str] = ...,
+        fixed_price: _Optional[float] = ...,
+        operator_price: _Optional[str] = ...,
+        purchase_price: _Optional[float] = ...,
+        variable_factor: _Optional[str] = ...,
+        usage: _Optional[str] = ...,
+        price_by_variable_factor: _Optional[float] = ...,
         locality_available_id: _Optional[str] = ...,
-        time_type: _Optional[_Union[TimeType, str]] = ...,
-        value_min: _Optional[str] = ...,
-        value_max: _Optional[str] = ...,
-        inversely: bool = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
@@ -186,10 +235,10 @@ class DeliveryPriceDeleteRequest(_message.Message):
     __slots__ = ["id", "context"]
     ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    id: int
+    id: str
     context: _base_pb2.Context
     def __init__(
-        self, id: _Optional[int] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
+        self, id: _Optional[str] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
     ) -> None: ...
 
 class DeliveryPriceDeleteResponse(_message.Message):
