@@ -1,14 +1,15 @@
 import hashlib
 import json
+import logging
 import math
 import secrets
 import string
-import unicodedata
 import time
-import logging
+import unicodedata
 from functools import reduce, wraps
-from omni.pro.stack import ExitStackDocument
+
 from omni.pro.exceptions import AlreadyExistError, NotFoundError
+from omni.pro.stack import ExitStackDocument
 
 logger = logging.getLogger(__name__)
 
@@ -310,3 +311,33 @@ def add_document_relations(
             list_registers.append(register)
 
         return list_registers
+
+
+def objects_to_integer(data, fields):
+    """
+    Transform dictionary keys and values according to specified fields.
+
+    Args:
+    data (dict): The input dictionary to transform. El diccionario de entrada para transformar.
+    fields (set): A set of field names to consider for transformation. Una conjunto de nombres de campo a considerar para la transformación.
+
+    Returns:
+    dict: A transformed dictionary with modified keys and values. Un diccionario transformado con claves y valores modificados.
+    """
+    transformed_data = {}
+    for key, value in data.items():
+        new_key = key
+        if key in fields:
+            new_key = key + "_id" if not key.endswith("_id") else key
+            if isinstance(value, dict):
+                # If any key in the inner dictionary ends with "_doc_id", use its value
+                doc_id_key = next((k for k in value.keys() if k.endswith("_doc_id")), None)
+                if doc_id_key:
+                    transformed_data[new_key] = value[doc_id_key]
+                elif "id" in value:
+                    transformed_data[new_key] = value["id"]
+            else:
+                transformed_data[new_key] = value
+        else:
+            transformed_data[new_key] = value
+    return transformed_data
