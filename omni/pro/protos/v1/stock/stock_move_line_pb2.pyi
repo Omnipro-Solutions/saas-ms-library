@@ -11,72 +11,77 @@ from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
+from omni.pro.protos.v1.stock import location_pb2 as _location_pb2
+from omni.pro.protos.v1.stock import picking_pb2 as _picking_pb2
+from omni.pro.protos.v1.stock import product_pb2 as _product_pb2
+from omni.pro.protos.v1.stock import stock_move_pb2 as _stock_move_pb2
+from omni.pro.protos.v1.stock import uom_pb2 as _uom_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class StockMoveLine(_message.Message):
     __slots__ = [
         "id",
-        "stock_move_id",
-        "picking_id",
+        "stock_move",
+        "picking",
         "state",
         "reference",
         "date",
         "origin",
-        "product_id",
-        "location_id",
-        "location_dest_id",
+        "product",
+        "location",
+        "location_dest",
         "qty_done",
         "product_uom_qty",
-        "product_uom_id",
+        "product_uom",
         "active",
         "object_audit",
     ]
     ID_FIELD_NUMBER: _ClassVar[int]
-    STOCK_MOVE_ID_FIELD_NUMBER: _ClassVar[int]
-    PICKING_ID_FIELD_NUMBER: _ClassVar[int]
+    STOCK_MOVE_FIELD_NUMBER: _ClassVar[int]
+    PICKING_FIELD_NUMBER: _ClassVar[int]
     STATE_FIELD_NUMBER: _ClassVar[int]
     REFERENCE_FIELD_NUMBER: _ClassVar[int]
     DATE_FIELD_NUMBER: _ClassVar[int]
     ORIGIN_FIELD_NUMBER: _ClassVar[int]
-    PRODUCT_ID_FIELD_NUMBER: _ClassVar[int]
-    LOCATION_ID_FIELD_NUMBER: _ClassVar[int]
-    LOCATION_DEST_ID_FIELD_NUMBER: _ClassVar[int]
+    PRODUCT_FIELD_NUMBER: _ClassVar[int]
+    LOCATION_FIELD_NUMBER: _ClassVar[int]
+    LOCATION_DEST_FIELD_NUMBER: _ClassVar[int]
     QTY_DONE_FIELD_NUMBER: _ClassVar[int]
     PRODUCT_UOM_QTY_FIELD_NUMBER: _ClassVar[int]
-    PRODUCT_UOM_ID_FIELD_NUMBER: _ClassVar[int]
+    PRODUCT_UOM_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: int
-    stock_move_id: int
-    picking_id: int
+    stock_move: _stock_move_pb2.StockMove
+    picking: _picking_pb2.Picking
     state: str
     reference: str
     date: _timestamp_pb2.Timestamp
     origin: str
-    product_id: int
-    location_id: int
-    location_dest_id: int
+    product: _product_pb2.Product
+    location: _location_pb2.Location
+    location_dest: _location_pb2.Location
     qty_done: float
     product_uom_qty: float
-    product_uom_id: int
+    product_uom: _uom_pb2.Uom
     active: _wrappers_pb2.BoolValue
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
         id: _Optional[int] = ...,
-        stock_move_id: _Optional[int] = ...,
-        picking_id: _Optional[int] = ...,
+        stock_move: _Optional[_Union[_stock_move_pb2.StockMove, _Mapping]] = ...,
+        picking: _Optional[_Union[_picking_pb2.Picking, _Mapping]] = ...,
         state: _Optional[str] = ...,
         reference: _Optional[str] = ...,
         date: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
         origin: _Optional[str] = ...,
-        product_id: _Optional[int] = ...,
-        location_id: _Optional[int] = ...,
-        location_dest_id: _Optional[int] = ...,
+        product: _Optional[_Union[_product_pb2.Product, _Mapping]] = ...,
+        location: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
+        location_dest: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
         qty_done: _Optional[float] = ...,
         product_uom_qty: _Optional[float] = ...,
-        product_uom_id: _Optional[int] = ...,
+        product_uom: _Optional[_Union[_uom_pb2.Uom, _Mapping]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...

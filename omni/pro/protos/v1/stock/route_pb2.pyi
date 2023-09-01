@@ -6,10 +6,10 @@ from typing import Union as _Union
 
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
-from google.protobuf import struct_pb2 as _struct_pb2
 from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
+from omni.pro.protos.v1.stock import warehouse_pb2 as _warehouse_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
@@ -22,7 +22,7 @@ class Route(_message.Message):
         "product_selectable",
         "packing_selectable",
         "warehouse_selectable",
-        "warehouse_id",
+        "warehouse",
         "active",
         "object_audit",
     ]
@@ -33,7 +33,7 @@ class Route(_message.Message):
     PRODUCT_SELECTABLE_FIELD_NUMBER: _ClassVar[int]
     PACKING_SELECTABLE_FIELD_NUMBER: _ClassVar[int]
     WAREHOUSE_SELECTABLE_FIELD_NUMBER: _ClassVar[int]
-    WAREHOUSE_ID_FIELD_NUMBER: _ClassVar[int]
+    WAREHOUSE_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: int
@@ -43,7 +43,7 @@ class Route(_message.Message):
     product_selectable: _wrappers_pb2.BoolValue
     packing_selectable: _wrappers_pb2.BoolValue
     warehouse_selectable: _wrappers_pb2.BoolValue
-    warehouse_id: int
+    warehouse: _warehouse_pb2.Warehouse
     active: _wrappers_pb2.BoolValue
     object_audit: _base_pb2.ObjectAudit
     def __init__(
@@ -55,7 +55,7 @@ class Route(_message.Message):
         product_selectable: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         packing_selectable: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         warehouse_selectable: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
-        warehouse_id: _Optional[int] = ...,
+        warehouse: _Optional[_Union[_warehouse_pb2.Warehouse, _Mapping]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...

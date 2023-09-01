@@ -9,47 +9,50 @@ from google.protobuf import message as _message
 from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
+from omni.pro.protos.v1.stock import picking_pb2 as _picking_pb2
+from omni.pro.protos.v1.stock import product_pb2 as _product_pb2
+from omni.pro.protos.v1.stock import uom_pb2 as _uom_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class StockMove(_message.Message):
     __slots__ = [
         "id",
-        "picking_id",
+        "picking",
         "state",
-        "product_id",
+        "product",
         "quantity_done",
-        "product_uom_id",
+        "product_uom",
         "description_picking",
         "active",
         "object_audit",
     ]
     ID_FIELD_NUMBER: _ClassVar[int]
-    PICKING_ID_FIELD_NUMBER: _ClassVar[int]
+    PICKING_FIELD_NUMBER: _ClassVar[int]
     STATE_FIELD_NUMBER: _ClassVar[int]
-    PRODUCT_ID_FIELD_NUMBER: _ClassVar[int]
+    PRODUCT_FIELD_NUMBER: _ClassVar[int]
     QUANTITY_DONE_FIELD_NUMBER: _ClassVar[int]
-    PRODUCT_UOM_ID_FIELD_NUMBER: _ClassVar[int]
+    PRODUCT_UOM_FIELD_NUMBER: _ClassVar[int]
     DESCRIPTION_PICKING_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: int
-    picking_id: int
+    picking: _picking_pb2.Picking
     state: str
-    product_id: int
+    product: _product_pb2.Product
     quantity_done: float
-    product_uom_id: int
+    product_uom: _uom_pb2.Uom
     description_picking: str
     active: _wrappers_pb2.BoolValue
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
         id: _Optional[int] = ...,
-        picking_id: _Optional[int] = ...,
+        picking: _Optional[_Union[_picking_pb2.Picking, _Mapping]] = ...,
         state: _Optional[str] = ...,
-        product_id: _Optional[int] = ...,
+        product: _Optional[_Union[_product_pb2.Product, _Mapping]] = ...,
         quantity_done: _Optional[float] = ...,
-        product_uom_id: _Optional[int] = ...,
+        product_uom: _Optional[_Union[_uom_pb2.Uom, _Mapping]] = ...,
         description_picking: _Optional[str] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
