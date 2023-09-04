@@ -6,101 +6,124 @@ from typing import Union as _Union
 
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
+from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
-from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
 from omni.pro.protos.common import base_pb2 as _base_pb2
+from omni.pro.protos.v1.rules import carrier_pb2 as _carrier_pb2
+from omni.pro.protos.v1.rules import delivery_locality_pb2 as _delivery_locality_pb2
 from omni.pro.protos.v1.rules import delivery_method_pb2 as _delivery_method_pb2
+from omni.pro.protos.v1.rules import schedule_work_pb2 as _schedule_work_pb2
 from omni.pro.protos.v1.rules import warehouse_pb2 as _warehouse_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
-
-class TimeType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
-    __slots__ = []
-    UNKNOWN: _ClassVar[TimeType]
-    MINUTES: _ClassVar[TimeType]
-    HOURS: _ClassVar[TimeType]
-    DAYS: _ClassVar[TimeType]
-
-UNKNOWN: TimeType
-MINUTES: TimeType
-HOURS: TimeType
-DAYS: TimeType
 
 class DeliveryShipper(_message.Message):
     __slots__ = [
         "id",
         "name",
-        "delivery_method_ids",
-        "warehouse_ids",
-        "locality_available_id",
-        "time_type",
-        "value_min",
-        "value_max",
-        "inversely",
+        "code",
+        "delivery_carrier",
+        "delivery_methods",
+        "maximum_weight",
+        "maximum_volume",
+        "schedule_pickup",
+        "locality_available",
+        "internal_transfer",
+        "warehouses",
         "active",
         "object_audit",
     ]
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
-    DELIVERY_METHOD_IDS_FIELD_NUMBER: _ClassVar[int]
-    WAREHOUSE_IDS_FIELD_NUMBER: _ClassVar[int]
-    LOCALITY_AVAILABLE_ID_FIELD_NUMBER: _ClassVar[int]
-    TIME_TYPE_FIELD_NUMBER: _ClassVar[int]
-    VALUE_MIN_FIELD_NUMBER: _ClassVar[int]
-    VALUE_MAX_FIELD_NUMBER: _ClassVar[int]
-    INVERSELY_FIELD_NUMBER: _ClassVar[int]
+    CODE_FIELD_NUMBER: _ClassVar[int]
+    DELIVERY_CARRIER_FIELD_NUMBER: _ClassVar[int]
+    DELIVERY_METHODS_FIELD_NUMBER: _ClassVar[int]
+    MAXIMUM_WEIGHT_FIELD_NUMBER: _ClassVar[int]
+    MAXIMUM_VOLUME_FIELD_NUMBER: _ClassVar[int]
+    SCHEDULE_PICKUP_FIELD_NUMBER: _ClassVar[int]
+    LOCALITY_AVAILABLE_FIELD_NUMBER: _ClassVar[int]
+    INTERNAL_TRANSFER_FIELD_NUMBER: _ClassVar[int]
+    WAREHOUSES_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
-    delivery_method_ids: _containers.RepeatedCompositeFieldContainer[_delivery_method_pb2.DeliveryMethod]
-    warehouse_ids: _containers.RepeatedCompositeFieldContainer[_warehouse_pb2.Warehouse]
-    locality_available_id: str
-    time_type: TimeType
-    value_min: str
-    value_max: str
-    inversely: bool
-    active: bool
+    code: str
+    delivery_carrier: _carrier_pb2.Carrier
+    delivery_methods: _containers.RepeatedCompositeFieldContainer[_delivery_method_pb2.DeliveryMethod]
+    maximum_weight: float
+    maximum_volume: float
+    schedule_pickup: _schedule_work_pb2.ScheduleWork
+    locality_available: _delivery_locality_pb2.DeliveryLocality
+    internal_transfer: _wrappers_pb2.BoolValue
+    warehouses: _containers.RepeatedCompositeFieldContainer[_warehouse_pb2.Warehouse]
+    active: _wrappers_pb2.BoolValue
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
         id: _Optional[str] = ...,
         name: _Optional[str] = ...,
-        delivery_method_ids: _Optional[_Iterable[_Union[_delivery_method_pb2.DeliveryMethod, _Mapping]]] = ...,
-        warehouse_ids: _Optional[_Iterable[_Union[_warehouse_pb2.Warehouse, _Mapping]]] = ...,
-        locality_available_id: _Optional[str] = ...,
-        time_type: _Optional[_Union[TimeType, str]] = ...,
-        value_min: _Optional[str] = ...,
-        value_max: _Optional[str] = ...,
-        inversely: bool = ...,
-        active: bool = ...,
+        code: _Optional[str] = ...,
+        delivery_carrier: _Optional[_Union[_carrier_pb2.Carrier, _Mapping]] = ...,
+        delivery_methods: _Optional[_Iterable[_Union[_delivery_method_pb2.DeliveryMethod, _Mapping]]] = ...,
+        maximum_weight: _Optional[float] = ...,
+        maximum_volume: _Optional[float] = ...,
+        schedule_pickup: _Optional[_Union[_schedule_work_pb2.ScheduleWork, _Mapping]] = ...,
+        locality_available: _Optional[_Union[_delivery_locality_pb2.DeliveryLocality, _Mapping]] = ...,
+        internal_transfer: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        warehouses: _Optional[_Iterable[_Union[_warehouse_pb2.Warehouse, _Mapping]]] = ...,
+        active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
 class DeliveryShipperCreateRequest(_message.Message):
-    __slots__ = ["name", "locality_available_id", "time_type", "value_min", "value_max", "inversely", "context"]
+    __slots__ = [
+        "name",
+        "code",
+        "delivery_carrier_id",
+        "delivery_method_ids",
+        "maximum_weight",
+        "maximum_volume",
+        "schedule_pickup_id",
+        "locality_available_id",
+        "internal_transfer",
+        "warehouse_ids",
+        "context",
+    ]
     NAME_FIELD_NUMBER: _ClassVar[int]
+    CODE_FIELD_NUMBER: _ClassVar[int]
+    DELIVERY_CARRIER_ID_FIELD_NUMBER: _ClassVar[int]
+    DELIVERY_METHOD_IDS_FIELD_NUMBER: _ClassVar[int]
+    MAXIMUM_WEIGHT_FIELD_NUMBER: _ClassVar[int]
+    MAXIMUM_VOLUME_FIELD_NUMBER: _ClassVar[int]
+    SCHEDULE_PICKUP_ID_FIELD_NUMBER: _ClassVar[int]
     LOCALITY_AVAILABLE_ID_FIELD_NUMBER: _ClassVar[int]
-    TIME_TYPE_FIELD_NUMBER: _ClassVar[int]
-    VALUE_MIN_FIELD_NUMBER: _ClassVar[int]
-    VALUE_MAX_FIELD_NUMBER: _ClassVar[int]
-    INVERSELY_FIELD_NUMBER: _ClassVar[int]
+    INTERNAL_TRANSFER_FIELD_NUMBER: _ClassVar[int]
+    WAREHOUSE_IDS_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
+    code: str
+    delivery_carrier_id: str
+    delivery_method_ids: str
+    maximum_weight: float
+    maximum_volume: float
+    schedule_pickup_id: str
     locality_available_id: str
-    time_type: TimeType
-    value_min: str
-    value_max: str
-    inversely: bool
+    internal_transfer: _wrappers_pb2.BoolValue
+    warehouse_ids: str
     context: _base_pb2.Context
     def __init__(
         self,
         name: _Optional[str] = ...,
+        code: _Optional[str] = ...,
+        delivery_carrier_id: _Optional[str] = ...,
+        delivery_method_ids: _Optional[str] = ...,
+        maximum_weight: _Optional[float] = ...,
+        maximum_volume: _Optional[float] = ...,
+        schedule_pickup_id: _Optional[str] = ...,
         locality_available_id: _Optional[str] = ...,
-        time_type: _Optional[_Union[TimeType, str]] = ...,
-        value_min: _Optional[str] = ...,
-        value_max: _Optional[str] = ...,
-        inversely: bool = ...,
+        internal_transfer: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        warehouse_ids: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
@@ -130,7 +153,7 @@ class DeliveryShipperReadRequest(_message.Message):
     fields: _base_pb2.Fields
     filter: _base_pb2.Filter
     paginated: _base_pb2.Paginated
-    id: int
+    id: str
     context: _base_pb2.Context
     def __init__(
         self,
@@ -139,7 +162,7 @@ class DeliveryShipperReadRequest(_message.Message):
         fields: _Optional[_Union[_base_pb2.Fields, _Mapping]] = ...,
         filter: _Optional[_Union[_base_pb2.Filter, _Mapping]] = ...,
         paginated: _Optional[_Union[_base_pb2.Paginated, _Mapping]] = ...,
-        id: _Optional[int] = ...,
+        id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
@@ -186,10 +209,10 @@ class DeliveryShipperDeleteRequest(_message.Message):
     __slots__ = ["id", "context"]
     ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    id: int
+    id: str
     context: _base_pb2.Context
     def __init__(
-        self, id: _Optional[int] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
+        self, id: _Optional[str] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
     ) -> None: ...
 
 class DeliveryShipperDeleteResponse(_message.Message):
