@@ -130,17 +130,6 @@ class WarehouseCreateRequest(_message.Message):
         "delivery_steps",
         "reception_steps",
         "locality_available",
-        "view_location_id",
-        "loc_stock_id",
-        "wh_input_stock_loc_id",
-        "wh_qc_stock_loc_id",
-        "wh_pack_stock_loc_id",
-        "wh_output_stock_loc_id",
-        "in_type_id",
-        "int_type_id",
-        "pick_type_id",
-        "pack_type_id",
-        "out_type_id",
         "context",
     ]
     NAME_FIELD_NUMBER: _ClassVar[int]
@@ -152,17 +141,6 @@ class WarehouseCreateRequest(_message.Message):
     DELIVERY_STEPS_FIELD_NUMBER: _ClassVar[int]
     RECEPTION_STEPS_FIELD_NUMBER: _ClassVar[int]
     LOCALITY_AVAILABLE_FIELD_NUMBER: _ClassVar[int]
-    VIEW_LOCATION_ID_FIELD_NUMBER: _ClassVar[int]
-    LOC_STOCK_ID_FIELD_NUMBER: _ClassVar[int]
-    WH_INPUT_STOCK_LOC_ID_FIELD_NUMBER: _ClassVar[int]
-    WH_QC_STOCK_LOC_ID_FIELD_NUMBER: _ClassVar[int]
-    WH_PACK_STOCK_LOC_ID_FIELD_NUMBER: _ClassVar[int]
-    WH_OUTPUT_STOCK_LOC_ID_FIELD_NUMBER: _ClassVar[int]
-    IN_TYPE_ID_FIELD_NUMBER: _ClassVar[int]
-    INT_TYPE_ID_FIELD_NUMBER: _ClassVar[int]
-    PICK_TYPE_ID_FIELD_NUMBER: _ClassVar[int]
-    PACK_TYPE_ID_FIELD_NUMBER: _ClassVar[int]
-    OUT_TYPE_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     code: str
@@ -173,17 +151,6 @@ class WarehouseCreateRequest(_message.Message):
     delivery_steps: str
     reception_steps: str
     locality_available: str
-    view_location_id: int
-    loc_stock_id: int
-    wh_input_stock_loc_id: int
-    wh_qc_stock_loc_id: int
-    wh_pack_stock_loc_id: int
-    wh_output_stock_loc_id: int
-    in_type_id: int
-    int_type_id: int
-    pick_type_id: int
-    pack_type_id: int
-    out_type_id: int
     context: _base_pb2.Context
     def __init__(
         self,
@@ -196,17 +163,6 @@ class WarehouseCreateRequest(_message.Message):
         delivery_steps: _Optional[str] = ...,
         reception_steps: _Optional[str] = ...,
         locality_available: _Optional[str] = ...,
-        view_location_id: _Optional[int] = ...,
-        loc_stock_id: _Optional[int] = ...,
-        wh_input_stock_loc_id: _Optional[int] = ...,
-        wh_qc_stock_loc_id: _Optional[int] = ...,
-        wh_pack_stock_loc_id: _Optional[int] = ...,
-        wh_output_stock_loc_id: _Optional[int] = ...,
-        in_type_id: _Optional[int] = ...,
-        int_type_id: _Optional[int] = ...,
-        pick_type_id: _Optional[int] = ...,
-        pack_type_id: _Optional[int] = ...,
-        out_type_id: _Optional[int] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
