@@ -103,7 +103,7 @@ class DeliveryShipperCreateRequest(_message.Message):
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     code: str
-    delivery_carrier_id: str
+    delivery_carrier_id: int
     delivery_method_ids: str
     maximum_weight: float
     maximum_volume: float
@@ -116,7 +116,7 @@ class DeliveryShipperCreateRequest(_message.Message):
         self,
         name: _Optional[str] = ...,
         code: _Optional[str] = ...,
-        delivery_carrier_id: _Optional[str] = ...,
+        delivery_carrier_id: _Optional[int] = ...,
         delivery_method_ids: _Optional[str] = ...,
         maximum_weight: _Optional[float] = ...,
         maximum_volume: _Optional[float] = ...,
