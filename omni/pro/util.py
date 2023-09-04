@@ -266,8 +266,8 @@ def add_or_remove_document_relations(
         tenant,
         add_relations_list,
         result_list,
-        element_name,
         attribute_search,
+        element_name,
         element_relation_name,
     )
     return result_list
