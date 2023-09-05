@@ -243,7 +243,7 @@ def add_or_remove_document_relations(
     La lista de relaciones procesadas.
     """
 
-    relations_list = set([x.id for x in exsitent_relations_list])
+    relations_list = set(exsitent_relations_list)
     new_relations_list = set(new_relations_list)
 
     remove_relations_list = list(relations_list - new_relations_list)
@@ -346,7 +346,7 @@ def add_document_relations(
             if not register:
                 raise NotFoundError(message=f"{element_name} {element} not found")
             if register in list_registers:
-                return AlreadyExistError(message=f"{element_name} {element} already added in {element_relation_name}")
+                raise AlreadyExistError(message=f"{element_name} {element} already added in {element_relation_name}")
             list_registers.append(register)
 
         return list_registers
