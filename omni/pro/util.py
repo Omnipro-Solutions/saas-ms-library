@@ -346,7 +346,7 @@ def add_document_relations(
             if not register:
                 raise NotFoundError(message=f"{element_name} {element} not found")
             if register in list_registers:
-                return AlreadyExistError(message=f"{element_name} {element} already added in {element_relation_name}")
+                raise AlreadyExistError(message=f"{element_name} {element} already added in {element_relation_name}")
             list_registers.append(register)
 
         return list_registers
