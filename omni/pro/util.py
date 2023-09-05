@@ -216,10 +216,10 @@ def measure_time(function):
 def add_or_remove_document_relations(
     context,
     document,
-    tenant,
     exsitent_relations_list,
     new_relations_list,
     attribute_search,
+    request_context,
     element_name,
     element_relation_name,
 ):
@@ -234,6 +234,7 @@ def add_or_remove_document_relations(
     exsitent_relations_list: List of realtion to validate. Lista de relaciones a validar.
     new_relations_list: List to add or remove. Lista a agregar o eliminar.
     attribute_search: Attribute to search. Atributo a buscar.
+    request_context: Context of the request. Contexto de la petición.
     element_name: Model name. Nombre del modelo.
     element_relation_name: Relation name. Nombre de la relación.
 
@@ -253,20 +254,20 @@ def add_or_remove_document_relations(
     result_list = remove_document_relations(
         context,
         document,
-        tenant,
         remove_relations_list,
         exsitent_relations_list,
         attribute_search,
+        request_context,
         element_name,
         element_relation_name,
     )
     result_list = add_document_relations(
         context,
         document,
-        tenant,
         add_relations_list,
         result_list,
         attribute_search,
+        request_context,
         element_name,
         element_relation_name,
     )
@@ -274,7 +275,14 @@ def add_or_remove_document_relations(
 
 
 def remove_document_relations(
-    context, document, tenant, list_elements, list_registers, attribute_search, element_name, element_relation_name
+    context,
+    document,
+    list_elements,
+    list_registers,
+    attribute_search,
+    request_context,
+    element_name,
+    element_relation_name,
 ):
     """
     The remove_document_relations function remove resgisters of list_registers the elements defined on list_elements.
@@ -283,10 +291,10 @@ def remove_document_relations(
     Args:
     context: Context of the request. Contexto de la petición.
     document: Class document to validate. Clase documento a validar.
-    tenant: Tenant of request. Tenant de la petición.
     list_elements: List of realtion to remove. Lista de relaciones a eliminar.
     list_registers: List to add or remove. Lista a agregar o eliminar.
     attribute_search: Attribute to search. Atributo a buscar.
+    request_context: Context of the request. Contexto de la petición.
     element_name: Model name. Nombre del modelo.
     element_relation_name: Relation name. Nombre de la relación.
 
@@ -296,7 +304,7 @@ def remove_document_relations(
     """
     with ExitStackDocument(document_classes=document.reference_list(), db_alias=context.db_name):
         for element in list_elements:
-            register = context.db_manager.get_document(context.db_name, tenant, document, **{attribute_search: element})
+            register = get_register(attribute_search, context, document, element, request_context)
             if register not in list_registers:
                 raise NotFoundError(message=f"{element_name} {element} not defined in {element_relation_name}")
             list_registers.remove(register)
@@ -305,7 +313,14 @@ def remove_document_relations(
 
 
 def add_document_relations(
-    context, document, tenant, list_elements, list_registers, attribute_search, element_name, element_relation_name
+    context,
+    document,
+    list_elements,
+    list_registers,
+    attribute_search,
+    request_context,
+    element_name,
+    element_relation_name,
 ):
     """
     The add_document_relations function add resgisters to list_registers from elements defined on list_elements.
@@ -314,10 +329,10 @@ def add_document_relations(
     Args:
     context: Context of the request. Contexto de la petición.
     document: Class document to validate. Clase documento a validar.
-    tenant: Tenant of request. Tenant de la petición.
     list_elements: List of realtion to add. Lista de relaciones a agregar.
     list_registers: List to add or remove. Lista a agregar o eliminar.
     attribute_search: Attribute to search. Atributo a buscar.
+    request_context: Context of the request. Contexto de la petición.
     element_name: Model name. Nombre del modelo.
     element_relation_name: Relation name. Nombre de la relación.
 
@@ -327,7 +342,7 @@ def add_document_relations(
     """
     with ExitStackDocument(document_classes=document.reference_list(), db_alias=context.db_name):
         for element in list_elements:
-            register = context.db_manager.get_document(context.db_name, tenant, document, **{attribute_search: element})
+            register = get_register(attribute_search, context, document, element, request_context)
             if not register:
                 raise NotFoundError(message=f"{element_name} {element} not found")
             if register in list_registers:
@@ -335,6 +350,30 @@ def add_document_relations(
             list_registers.append(register)
 
         return list_registers
+
+
+def get_register(attribute_search, context, document, element, request_context):
+    """
+    The get_register function get resgister from diferent type search by id or get_or_sync.
+    La función get_register obtiene el registro de la búsqueda de diferentes tipos por id o get_or_sync.
+
+    Args:
+    attribute_search: Attribute to search. Atributo a buscar.
+    context: Context of the request. Contexto de la petición.
+    document: Class document to validate. Clase documento a validar.
+    element: Element to search. Elemento a buscar.
+    request_context: Context of the request. Contexto de la petición.
+
+    Returns:
+    Object of the register.
+    Objeto del registro.
+    """
+    if attribute_search == "id":
+        return context.db_manager.get_document(
+            context.db_name, request_context.get("tenant"), document, **{attribute_search: element}
+        )
+
+    return document.get_or_sync(request_context, **{attribute_search: element})
 
 
 def objects_to_integer(data, fields):
