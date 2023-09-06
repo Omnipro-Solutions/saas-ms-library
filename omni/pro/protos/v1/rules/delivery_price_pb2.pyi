@@ -8,24 +8,12 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
-from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
 from omni.pro.protos.common import base_pb2 as _base_pb2
+from omni.pro.protos.v1.rules import currency_pb2 as _currency_pb2
 from omni.pro.protos.v1.rules import delivery_locality_pb2 as _delivery_locality_pb2
 from omni.pro.protos.v1.rules import delivery_method_pb2 as _delivery_method_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
-
-class OperatorPrice(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
-    __slots__ = []
-    UNKNOWN: _ClassVar[OperatorPrice]
-    MINUTES: _ClassVar[OperatorPrice]
-    HOURS: _ClassVar[OperatorPrice]
-    DAYS: _ClassVar[OperatorPrice]
-
-UNKNOWN: OperatorPrice
-MINUTES: OperatorPrice
-HOURS: OperatorPrice
-DAYS: OperatorPrice
 
 class DeliveryPrice(_message.Message):
     __slots__ = [
@@ -65,7 +53,7 @@ class DeliveryPrice(_message.Message):
     code: str
     delivery_method: _delivery_method_pb2.DeliveryMethod
     purchase_rank: _wrappers_pb2.BoolValue
-    currency: str
+    currency: _currency_pb2.Currency
     fixed_price: float
     operator_price: str
     purchase_price: float
@@ -82,7 +70,7 @@ class DeliveryPrice(_message.Message):
         code: _Optional[str] = ...,
         delivery_method: _Optional[_Union[_delivery_method_pb2.DeliveryMethod, _Mapping]] = ...,
         purchase_rank: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
-        currency: _Optional[str] = ...,
+        currency: _Optional[_Union[_currency_pb2.Currency, _Mapping]] = ...,
         fixed_price: _Optional[float] = ...,
         operator_price: _Optional[str] = ...,
         purchase_price: _Optional[float] = ...,
