@@ -104,26 +104,26 @@ class DeliveryShipperCreateRequest(_message.Message):
     name: str
     code: str
     delivery_carrier_id: int
-    delivery_method_ids: str
+    delivery_method_ids: _containers.RepeatedScalarFieldContainer[str]
     maximum_weight: float
     maximum_volume: float
     schedule_pickup_id: str
     locality_available_id: str
     internal_transfer: _wrappers_pb2.BoolValue
-    warehouse_ids: str
+    warehouse_ids: _containers.RepeatedScalarFieldContainer[int]
     context: _base_pb2.Context
     def __init__(
         self,
         name: _Optional[str] = ...,
         code: _Optional[str] = ...,
         delivery_carrier_id: _Optional[int] = ...,
-        delivery_method_ids: _Optional[str] = ...,
+        delivery_method_ids: _Optional[_Iterable[str]] = ...,
         maximum_weight: _Optional[float] = ...,
         maximum_volume: _Optional[float] = ...,
         schedule_pickup_id: _Optional[str] = ...,
         locality_available_id: _Optional[str] = ...,
         internal_transfer: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
-        warehouse_ids: _Optional[str] = ...,
+        warehouse_ids: _Optional[_Iterable[int]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
