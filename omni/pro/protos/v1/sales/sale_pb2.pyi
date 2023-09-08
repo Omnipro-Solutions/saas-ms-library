@@ -11,6 +11,12 @@ from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
+from omni.pro.protos.v1.sales import address_pb2 as _address_pb2
+from omni.pro.protos.v1.sales import client_pb2 as _client_pb2
+from omni.pro.protos.v1.sales import country_pb2 as _country_pb2
+from omni.pro.protos.v1.sales import currency_pb2 as _currency_pb2
+from omni.pro.protos.v1.sales import state_pb2 as _state_pb2
+from omni.pro.protos.v1.sales import warehouse_pb2 as _warehouse_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
@@ -20,15 +26,14 @@ class Sale(_message.Message):
         "name",
         "date_order",
         "origin",
-        "channel_id",
-        "currency_id",
+        "channel",
+        "currency",
         "confirm_date",
-        "client_id",
-        "bill_address_id",
-        "country_id",
-        "warehouse_id",
+        "client",
+        "bill_address",
+        "country",
+        "warehouse",
         "json_order",
-        "state_id",
         "state",
         "active",
         "object_audit",
@@ -37,15 +42,14 @@ class Sale(_message.Message):
     NAME_FIELD_NUMBER: _ClassVar[int]
     DATE_ORDER_FIELD_NUMBER: _ClassVar[int]
     ORIGIN_FIELD_NUMBER: _ClassVar[int]
-    CHANNEL_ID_FIELD_NUMBER: _ClassVar[int]
-    CURRENCY_ID_FIELD_NUMBER: _ClassVar[int]
+    CHANNEL_FIELD_NUMBER: _ClassVar[int]
+    CURRENCY_FIELD_NUMBER: _ClassVar[int]
     CONFIRM_DATE_FIELD_NUMBER: _ClassVar[int]
-    CLIENT_ID_FIELD_NUMBER: _ClassVar[int]
-    BILL_ADDRESS_ID_FIELD_NUMBER: _ClassVar[int]
-    COUNTRY_ID_FIELD_NUMBER: _ClassVar[int]
-    WAREHOUSE_ID_FIELD_NUMBER: _ClassVar[int]
+    CLIENT_FIELD_NUMBER: _ClassVar[int]
+    BILL_ADDRESS_FIELD_NUMBER: _ClassVar[int]
+    COUNTRY_FIELD_NUMBER: _ClassVar[int]
+    WAREHOUSE_FIELD_NUMBER: _ClassVar[int]
     JSON_ORDER_FIELD_NUMBER: _ClassVar[int]
-    STATE_ID_FIELD_NUMBER: _ClassVar[int]
     STATE_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
@@ -53,16 +57,15 @@ class Sale(_message.Message):
     name: str
     date_order: _timestamp_pb2.Timestamp
     origin: str
-    channel_id: int
-    currency_id: int
+    channel: int
+    currency: _currency_pb2.Currency
     confirm_date: _timestamp_pb2.Timestamp
-    client_id: int
-    bill_address_id: int
-    country_id: int
-    warehouse_id: int
+    client: _client_pb2.Client
+    bill_address: _address_pb2.Address
+    country: _country_pb2.Country
+    warehouse: _warehouse_pb2.Warehouse
     json_order: str
-    state_id: int
-    state: str
+    state: _state_pb2.State
     active: _wrappers_pb2.BoolValue
     object_audit: _base_pb2.ObjectAudit
     def __init__(
@@ -71,16 +74,15 @@ class Sale(_message.Message):
         name: _Optional[str] = ...,
         date_order: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
         origin: _Optional[str] = ...,
-        channel_id: _Optional[int] = ...,
-        currency_id: _Optional[int] = ...,
+        channel: _Optional[int] = ...,
+        currency: _Optional[_Union[_currency_pb2.Currency, _Mapping]] = ...,
         confirm_date: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
-        client_id: _Optional[int] = ...,
-        bill_address_id: _Optional[int] = ...,
-        country_id: _Optional[int] = ...,
-        warehouse_id: _Optional[int] = ...,
+        client: _Optional[_Union[_client_pb2.Client, _Mapping]] = ...,
+        bill_address: _Optional[_Union[_address_pb2.Address, _Mapping]] = ...,
+        country: _Optional[_Union[_country_pb2.Country, _Mapping]] = ...,
+        warehouse: _Optional[_Union[_warehouse_pb2.Warehouse, _Mapping]] = ...,
         json_order: _Optional[str] = ...,
-        state_id: _Optional[int] = ...,
-        state: _Optional[str] = ...,
+        state: _Optional[_Union[_state_pb2.State, _Mapping]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
@@ -119,7 +121,6 @@ class SaleCreateRequest(_message.Message):
         "confirm_date",
         "client_id",
         "bill_address_id",
-        "country_id",
         "warehouse_id",
         "json_order",
         "state_id",
@@ -134,7 +135,6 @@ class SaleCreateRequest(_message.Message):
     CONFIRM_DATE_FIELD_NUMBER: _ClassVar[int]
     CLIENT_ID_FIELD_NUMBER: _ClassVar[int]
     BILL_ADDRESS_ID_FIELD_NUMBER: _ClassVar[int]
-    COUNTRY_ID_FIELD_NUMBER: _ClassVar[int]
     WAREHOUSE_ID_FIELD_NUMBER: _ClassVar[int]
     JSON_ORDER_FIELD_NUMBER: _ClassVar[int]
     STATE_ID_FIELD_NUMBER: _ClassVar[int]
@@ -148,7 +148,6 @@ class SaleCreateRequest(_message.Message):
     confirm_date: _timestamp_pb2.Timestamp
     client_id: int
     bill_address_id: int
-    country_id: int
     warehouse_id: int
     json_order: str
     state_id: int
@@ -164,7 +163,6 @@ class SaleCreateRequest(_message.Message):
         confirm_date: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
         client_id: _Optional[int] = ...,
         bill_address_id: _Optional[int] = ...,
-        country_id: _Optional[int] = ...,
         warehouse_id: _Optional[int] = ...,
         json_order: _Optional[str] = ...,
         state_id: _Optional[int] = ...,

@@ -9,15 +9,17 @@ from google.protobuf import message as _message
 from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
+from omni.pro.protos.v1.sales import flow_pb2 as _flow_pb2
+from omni.pro.protos.v1.sales import state_pb2 as _state_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Transition(_message.Message):
     __slots__ = [
         "id",
-        "flow_id",
-        "source_state_id",
-        "destination_state_id",
+        "flow",
+        "source_state",
+        "destination_state",
         "trigger",
         "description",
         "logic",
@@ -25,18 +27,18 @@ class Transition(_message.Message):
         "object_audit",
     ]
     ID_FIELD_NUMBER: _ClassVar[int]
-    FLOW_ID_FIELD_NUMBER: _ClassVar[int]
-    SOURCE_STATE_ID_FIELD_NUMBER: _ClassVar[int]
-    DESTINATION_STATE_ID_FIELD_NUMBER: _ClassVar[int]
+    FLOW_FIELD_NUMBER: _ClassVar[int]
+    SOURCE_STATE_FIELD_NUMBER: _ClassVar[int]
+    DESTINATION_STATE_FIELD_NUMBER: _ClassVar[int]
     TRIGGER_FIELD_NUMBER: _ClassVar[int]
     DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
     LOGIC_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: int
-    flow_id: int
-    source_state_id: int
-    destination_state_id: int
+    flow: _flow_pb2.Flow
+    source_state: _state_pb2.State
+    destination_state: _state_pb2.State
     trigger: str
     description: str
     logic: str
@@ -45,9 +47,9 @@ class Transition(_message.Message):
     def __init__(
         self,
         id: _Optional[int] = ...,
-        flow_id: _Optional[int] = ...,
-        source_state_id: _Optional[int] = ...,
-        destination_state_id: _Optional[int] = ...,
+        flow: _Optional[_Union[_flow_pb2.Flow, _Mapping]] = ...,
+        source_state: _Optional[_Union[_state_pb2.State, _Mapping]] = ...,
+        destination_state: _Optional[_Union[_state_pb2.State, _Mapping]] = ...,
         trigger: _Optional[str] = ...,
         description: _Optional[str] = ...,
         logic: _Optional[str] = ...,
@@ -65,7 +67,7 @@ class TransitionCreateRequest(_message.Message):
     LOGIC_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     flow_id: str
-    source_state_id: str
+    source_state_id: int
     destination_state_id: int
     trigger: str
     description: str
@@ -74,7 +76,7 @@ class TransitionCreateRequest(_message.Message):
     def __init__(
         self,
         flow_id: _Optional[str] = ...,
-        source_state_id: _Optional[str] = ...,
+        source_state_id: _Optional[int] = ...,
         destination_state_id: _Optional[int] = ...,
         trigger: _Optional[str] = ...,
         description: _Optional[str] = ...,

@@ -9,41 +9,45 @@ from google.protobuf import message as _message
 from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
+from omni.pro.protos.v1.sales import order_pb2 as _order_pb2
+from omni.pro.protos.v1.sales import product_pb2 as _product_pb2
+from omni.pro.protos.v1.sales import tax_pb2 as _tax_pb2
+from omni.pro.protos.v1.sales import uom_pb2 as _uom_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class OrderLine(_message.Message):
     __slots__ = [
         "id",
-        "order_id",
-        "product_id",
+        "order",
+        "product",
         "quantity",
-        "uom_id",
+        "uom",
         "price_unit",
-        "tax_id",
+        "tax",
         "discount",
         "price_total",
         "active",
         "object_audit",
     ]
     ID_FIELD_NUMBER: _ClassVar[int]
-    ORDER_ID_FIELD_NUMBER: _ClassVar[int]
-    PRODUCT_ID_FIELD_NUMBER: _ClassVar[int]
+    ORDER_FIELD_NUMBER: _ClassVar[int]
+    PRODUCT_FIELD_NUMBER: _ClassVar[int]
     QUANTITY_FIELD_NUMBER: _ClassVar[int]
-    UOM_ID_FIELD_NUMBER: _ClassVar[int]
+    UOM_FIELD_NUMBER: _ClassVar[int]
     PRICE_UNIT_FIELD_NUMBER: _ClassVar[int]
-    TAX_ID_FIELD_NUMBER: _ClassVar[int]
+    TAX_FIELD_NUMBER: _ClassVar[int]
     DISCOUNT_FIELD_NUMBER: _ClassVar[int]
     PRICE_TOTAL_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: int
-    order_id: int
-    product_id: int
+    order: _order_pb2.Order
+    product: _product_pb2.Product
     quantity: float
-    uom_id: int
+    uom: _uom_pb2.Uom
     price_unit: float
-    tax_id: int
+    tax: _tax_pb2.Tax
     discount: float
     price_total: float
     active: _wrappers_pb2.BoolValue
@@ -51,12 +55,12 @@ class OrderLine(_message.Message):
     def __init__(
         self,
         id: _Optional[int] = ...,
-        order_id: _Optional[int] = ...,
-        product_id: _Optional[int] = ...,
+        order: _Optional[_Union[_order_pb2.Order, _Mapping]] = ...,
+        product: _Optional[_Union[_product_pb2.Product, _Mapping]] = ...,
         quantity: _Optional[float] = ...,
-        uom_id: _Optional[int] = ...,
+        uom: _Optional[_Union[_uom_pb2.Uom, _Mapping]] = ...,
         price_unit: _Optional[float] = ...,
-        tax_id: _Optional[int] = ...,
+        tax: _Optional[_Union[_tax_pb2.Tax, _Mapping]] = ...,
         discount: _Optional[float] = ...,
         price_total: _Optional[float] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
