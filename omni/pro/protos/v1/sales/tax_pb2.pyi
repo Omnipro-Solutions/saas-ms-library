@@ -13,15 +13,13 @@ from omni.pro.protos.common import base_pb2 as _base_pb2
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Tax(_message.Message):
-    __slots__ = ["id", "tax_doc_id", "code", "name", "active", "object_audit"]
+    __slots__ = ["id", "code", "name", "active", "object_audit"]
     ID_FIELD_NUMBER: _ClassVar[int]
-    TAX_DOC_ID_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: int
-    tax_doc_id: str
     code: str
     name: str
     active: _wrappers_pb2.BoolValue
@@ -29,7 +27,6 @@ class Tax(_message.Message):
     def __init__(
         self,
         id: _Optional[int] = ...,
-        tax_doc_id: _Optional[str] = ...,
         code: _Optional[str] = ...,
         name: _Optional[str] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
@@ -37,18 +34,15 @@ class Tax(_message.Message):
     ) -> None: ...
 
 class TaxCreateRequest(_message.Message):
-    __slots__ = ["tax_doc_id", "code", "name", "context"]
-    TAX_DOC_ID_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["code", "name", "context"]
     CODE_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    tax_doc_id: str
     code: str
     name: str
     context: _base_pb2.Context
     def __init__(
         self,
-        tax_doc_id: _Optional[str] = ...,
         code: _Optional[str] = ...,
         name: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
