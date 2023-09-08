@@ -19,6 +19,7 @@ class DeliveryTime(_message.Message):
     __slots__ = [
         "id",
         "name",
+        "code",
         "delivery_methods",
         "warehouses_to",
         "warehouses_from",
@@ -32,6 +33,7 @@ class DeliveryTime(_message.Message):
     ]
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
+    CODE_FIELD_NUMBER: _ClassVar[int]
     DELIVERY_METHODS_FIELD_NUMBER: _ClassVar[int]
     WAREHOUSES_TO_FIELD_NUMBER: _ClassVar[int]
     WAREHOUSES_FROM_FIELD_NUMBER: _ClassVar[int]
@@ -44,6 +46,7 @@ class DeliveryTime(_message.Message):
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
+    code: str
     delivery_methods: _containers.RepeatedCompositeFieldContainer[_delivery_method_pb2.DeliveryMethod]
     warehouses_to: _containers.RepeatedCompositeFieldContainer[_warehouse_pb2.Warehouse]
     warehouses_from: _containers.RepeatedCompositeFieldContainer[_warehouse_pb2.Warehouse]
@@ -58,6 +61,7 @@ class DeliveryTime(_message.Message):
         self,
         id: _Optional[str] = ...,
         name: _Optional[str] = ...,
+        code: _Optional[str] = ...,
         delivery_methods: _Optional[_Iterable[_Union[_delivery_method_pb2.DeliveryMethod, _Mapping]]] = ...,
         warehouses_to: _Optional[_Iterable[_Union[_warehouse_pb2.Warehouse, _Mapping]]] = ...,
         warehouses_from: _Optional[_Iterable[_Union[_warehouse_pb2.Warehouse, _Mapping]]] = ...,
@@ -73,6 +77,7 @@ class DeliveryTime(_message.Message):
 class DeliveryTimeCreateRequest(_message.Message):
     __slots__ = [
         "name",
+        "code",
         "locality_available_id",
         "time_type",
         "value_min",
@@ -84,6 +89,7 @@ class DeliveryTimeCreateRequest(_message.Message):
         "context",
     ]
     NAME_FIELD_NUMBER: _ClassVar[int]
+    CODE_FIELD_NUMBER: _ClassVar[int]
     LOCALITY_AVAILABLE_ID_FIELD_NUMBER: _ClassVar[int]
     TIME_TYPE_FIELD_NUMBER: _ClassVar[int]
     VALUE_MIN_FIELD_NUMBER: _ClassVar[int]
@@ -94,6 +100,7 @@ class DeliveryTimeCreateRequest(_message.Message):
     INVERSELY_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
+    code: str
     locality_available_id: str
     time_type: str
     value_min: int
@@ -106,6 +113,7 @@ class DeliveryTimeCreateRequest(_message.Message):
     def __init__(
         self,
         name: _Optional[str] = ...,
+        code: _Optional[str] = ...,
         locality_available_id: _Optional[str] = ...,
         time_type: _Optional[str] = ...,
         value_min: _Optional[int] = ...,
