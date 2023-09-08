@@ -9,26 +9,28 @@ from google.protobuf import message as _message
 from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
+from omni.pro.protos.v1.sales import order_pb2 as _order_pb2
+from omni.pro.protos.v1.sales import picking_pb2 as _picking_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class PickingOrder(_message.Message):
-    __slots__ = ["id", "order_id", "picking_id", "active", "object_audit"]
+    __slots__ = ["id", "order", "picking", "active", "object_audit"]
     ID_FIELD_NUMBER: _ClassVar[int]
-    ORDER_ID_FIELD_NUMBER: _ClassVar[int]
-    PICKING_ID_FIELD_NUMBER: _ClassVar[int]
+    ORDER_FIELD_NUMBER: _ClassVar[int]
+    PICKING_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: int
-    order_id: int
-    picking_id: int
+    order: _order_pb2.Order
+    picking: _picking_pb2.Picking
     active: _wrappers_pb2.BoolValue
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
         id: _Optional[int] = ...,
-        order_id: _Optional[int] = ...,
-        picking_id: _Optional[int] = ...,
+        order: _Optional[_Union[_order_pb2.Order, _Mapping]] = ...,
+        picking: _Optional[_Union[_picking_pb2.Picking, _Mapping]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
