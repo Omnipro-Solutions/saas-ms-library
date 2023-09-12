@@ -14,10 +14,11 @@ from omni.pro.protos.v1.sales import client_pb2 as _client_pb2
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Address(_message.Message):
-    __slots__ = ["id", "client", "address_doc_id", "code", "name", "active", "object_audit"]
+    __slots__ = ["id", "client", "address_doc_id", "address_code", "code", "name", "active", "object_audit"]
     ID_FIELD_NUMBER: _ClassVar[int]
     CLIENT_FIELD_NUMBER: _ClassVar[int]
     ADDRESS_DOC_ID_FIELD_NUMBER: _ClassVar[int]
+    ADDRESS_CODE_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
@@ -25,6 +26,7 @@ class Address(_message.Message):
     id: int
     client: _client_pb2.Client
     address_doc_id: str
+    address_code: str
     code: str
     name: str
     active: _wrappers_pb2.BoolValue
@@ -34,6 +36,7 @@ class Address(_message.Message):
         id: _Optional[int] = ...,
         client: _Optional[_Union[_client_pb2.Client, _Mapping]] = ...,
         address_doc_id: _Optional[str] = ...,
+        address_code: _Optional[str] = ...,
         code: _Optional[str] = ...,
         name: _Optional[str] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
@@ -41,14 +44,16 @@ class Address(_message.Message):
     ) -> None: ...
 
 class AddressCreateRequest(_message.Message):
-    __slots__ = ["client_id", "address_doc_id", "code", "name", "context"]
+    __slots__ = ["client_id", "address_doc_id", "address_code", "code", "name", "context"]
     CLIENT_ID_FIELD_NUMBER: _ClassVar[int]
     ADDRESS_DOC_ID_FIELD_NUMBER: _ClassVar[int]
+    ADDRESS_CODE_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     client_id: int
     address_doc_id: str
+    address_code: str
     code: str
     name: str
     context: _base_pb2.Context
@@ -56,6 +61,7 @@ class AddressCreateRequest(_message.Message):
         self,
         client_id: _Optional[int] = ...,
         address_doc_id: _Optional[str] = ...,
+        address_code: _Optional[str] = ...,
         code: _Optional[str] = ...,
         name: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
