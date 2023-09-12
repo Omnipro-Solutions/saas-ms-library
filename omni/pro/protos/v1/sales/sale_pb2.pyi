@@ -12,6 +12,7 @@ from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
 from omni.pro.protos.v1.sales import address_pb2 as _address_pb2
+from omni.pro.protos.v1.sales import channel_pb2 as _channel_pb2
 from omni.pro.protos.v1.sales import client_pb2 as _client_pb2
 from omni.pro.protos.v1.sales import country_pb2 as _country_pb2
 from omni.pro.protos.v1.sales import currency_pb2 as _currency_pb2
@@ -57,7 +58,7 @@ class Sale(_message.Message):
     name: str
     date_order: _timestamp_pb2.Timestamp
     origin: str
-    channel: int
+    channel: _channel_pb2.Channel
     currency: _currency_pb2.Currency
     confirm_date: _timestamp_pb2.Timestamp
     client: _client_pb2.Client
@@ -74,7 +75,7 @@ class Sale(_message.Message):
         name: _Optional[str] = ...,
         date_order: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
         origin: _Optional[str] = ...,
-        channel: _Optional[int] = ...,
+        channel: _Optional[_Union[_channel_pb2.Channel, _Mapping]] = ...,
         currency: _Optional[_Union[_currency_pb2.Currency, _Mapping]] = ...,
         confirm_date: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
         client: _Optional[_Union[_client_pb2.Client, _Mapping]] = ...,
@@ -120,6 +121,7 @@ class SaleCreateRequest(_message.Message):
         "currency_id",
         "confirm_date",
         "client_id",
+        "country_id",
         "bill_address_id",
         "warehouse_id",
         "json_order",
@@ -134,6 +136,7 @@ class SaleCreateRequest(_message.Message):
     CURRENCY_ID_FIELD_NUMBER: _ClassVar[int]
     CONFIRM_DATE_FIELD_NUMBER: _ClassVar[int]
     CLIENT_ID_FIELD_NUMBER: _ClassVar[int]
+    COUNTRY_ID_FIELD_NUMBER: _ClassVar[int]
     BILL_ADDRESS_ID_FIELD_NUMBER: _ClassVar[int]
     WAREHOUSE_ID_FIELD_NUMBER: _ClassVar[int]
     JSON_ORDER_FIELD_NUMBER: _ClassVar[int]
@@ -144,10 +147,11 @@ class SaleCreateRequest(_message.Message):
     date_order: _timestamp_pb2.Timestamp
     origin: str
     channel_id: int
-    currency_id: int
+    currency_id: str
     confirm_date: _timestamp_pb2.Timestamp
-    client_id: int
-    bill_address_id: int
+    client_id: str
+    country_id: str
+    bill_address_id: str
     warehouse_id: int
     json_order: str
     state_id: int
@@ -159,10 +163,11 @@ class SaleCreateRequest(_message.Message):
         date_order: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
         origin: _Optional[str] = ...,
         channel_id: _Optional[int] = ...,
-        currency_id: _Optional[int] = ...,
+        currency_id: _Optional[str] = ...,
         confirm_date: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
-        client_id: _Optional[int] = ...,
-        bill_address_id: _Optional[int] = ...,
+        client_id: _Optional[str] = ...,
+        country_id: _Optional[str] = ...,
+        bill_address_id: _Optional[str] = ...,
         warehouse_id: _Optional[int] = ...,
         json_order: _Optional[str] = ...,
         state_id: _Optional[int] = ...,
