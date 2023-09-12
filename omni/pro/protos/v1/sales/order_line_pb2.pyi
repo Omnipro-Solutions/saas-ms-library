@@ -89,9 +89,9 @@ class OrderLineCreateRequest(_message.Message):
     PRICE_TOTAL_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     order_id: int
-    product_id: int
+    product_id: str
     quantity: float
-    uom_id: int
+    uom_id: str
     price_unit: float
     tax_id: int
     discount: float
@@ -100,9 +100,9 @@ class OrderLineCreateRequest(_message.Message):
     def __init__(
         self,
         order_id: _Optional[int] = ...,
-        product_id: _Optional[int] = ...,
+        product_id: _Optional[str] = ...,
         quantity: _Optional[float] = ...,
-        uom_id: _Optional[int] = ...,
+        uom_id: _Optional[str] = ...,
         price_unit: _Optional[float] = ...,
         tax_id: _Optional[int] = ...,
         discount: _Optional[float] = ...,

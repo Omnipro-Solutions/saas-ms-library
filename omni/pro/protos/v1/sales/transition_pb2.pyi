@@ -66,7 +66,7 @@ class TransitionCreateRequest(_message.Message):
     DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
     LOGIC_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    flow_id: str
+    flow_id: int
     source_state_id: int
     destination_state_id: int
     trigger: str
@@ -75,7 +75,7 @@ class TransitionCreateRequest(_message.Message):
     context: _base_pb2.Context
     def __init__(
         self,
-        flow_id: _Optional[str] = ...,
+        flow_id: _Optional[int] = ...,
         source_state_id: _Optional[int] = ...,
         destination_state_id: _Optional[int] = ...,
         trigger: _Optional[str] = ...,
