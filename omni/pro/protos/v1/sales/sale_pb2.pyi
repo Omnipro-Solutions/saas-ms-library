@@ -122,11 +122,10 @@ class SaleCreateRequest(_message.Message):
         "confirm_date",
         "client_id",
         "country_id",
-        "bill_address_id",
+        "bill_address_code",
         "warehouse_id",
         "json_order",
         "state_id",
-        "state",
         "context",
     ]
     NAME_FIELD_NUMBER: _ClassVar[int]
@@ -137,11 +136,10 @@ class SaleCreateRequest(_message.Message):
     CONFIRM_DATE_FIELD_NUMBER: _ClassVar[int]
     CLIENT_ID_FIELD_NUMBER: _ClassVar[int]
     COUNTRY_ID_FIELD_NUMBER: _ClassVar[int]
-    BILL_ADDRESS_ID_FIELD_NUMBER: _ClassVar[int]
+    BILL_ADDRESS_CODE_FIELD_NUMBER: _ClassVar[int]
     WAREHOUSE_ID_FIELD_NUMBER: _ClassVar[int]
     JSON_ORDER_FIELD_NUMBER: _ClassVar[int]
     STATE_ID_FIELD_NUMBER: _ClassVar[int]
-    STATE_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     date_order: _timestamp_pb2.Timestamp
@@ -151,11 +149,10 @@ class SaleCreateRequest(_message.Message):
     confirm_date: _timestamp_pb2.Timestamp
     client_id: str
     country_id: str
-    bill_address_id: str
+    bill_address_code: str
     warehouse_id: int
     json_order: str
     state_id: int
-    state: str
     context: _base_pb2.Context
     def __init__(
         self,
@@ -167,11 +164,10 @@ class SaleCreateRequest(_message.Message):
         confirm_date: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
         client_id: _Optional[str] = ...,
         country_id: _Optional[str] = ...,
-        bill_address_id: _Optional[str] = ...,
+        bill_address_code: _Optional[str] = ...,
         warehouse_id: _Optional[int] = ...,
         json_order: _Optional[str] = ...,
         state_id: _Optional[int] = ...,
-        state: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
