@@ -76,7 +76,7 @@ class OrderCreateRequest(_message.Message):
     __slots__ = [
         "name",
         "sale_id",
-        "ship_address_id",
+        "ship_address_code",
         "delivery_method_id",
         "carrier_id",
         "payment_method_id",
@@ -87,7 +87,7 @@ class OrderCreateRequest(_message.Message):
     ]
     NAME_FIELD_NUMBER: _ClassVar[int]
     SALE_ID_FIELD_NUMBER: _ClassVar[int]
-    SHIP_ADDRESS_ID_FIELD_NUMBER: _ClassVar[int]
+    SHIP_ADDRESS_CODE_FIELD_NUMBER: _ClassVar[int]
     DELIVERY_METHOD_ID_FIELD_NUMBER: _ClassVar[int]
     CARRIER_ID_FIELD_NUMBER: _ClassVar[int]
     PAYMENT_METHOD_ID_FIELD_NUMBER: _ClassVar[int]
@@ -97,7 +97,7 @@ class OrderCreateRequest(_message.Message):
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     sale_id: int
-    ship_address_id: str
+    ship_address_code: str
     delivery_method_id: int
     carrier_id: int
     payment_method_id: int
@@ -109,7 +109,7 @@ class OrderCreateRequest(_message.Message):
         self,
         name: _Optional[str] = ...,
         sale_id: _Optional[int] = ...,
-        ship_address_id: _Optional[str] = ...,
+        ship_address_code: _Optional[str] = ...,
         delivery_method_id: _Optional[int] = ...,
         carrier_id: _Optional[int] = ...,
         payment_method_id: _Optional[int] = ...,
