@@ -14,6 +14,7 @@ from omni.pro.protos.v1.rules import delivery_locality_pb2 as _delivery_locality
 from omni.pro.protos.v1.rules import delivery_schedule_pb2 as _delivery_schedule_pb2
 from omni.pro.protos.v1.rules import delivery_warehouse_pb2 as _delivery_warehouse_pb2
 from omni.pro.protos.v1.rules import location_pb2 as _location_pb2
+from omni.pro.protos.v1.rules import stock_security_product_pb2 as _stock_security_product_pb2
 from omni.pro.protos.v1.rules import warehouse_pb2 as _warehouse_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
@@ -33,6 +34,7 @@ class DeliveryMethod(_message.Message):
         "category_template",
         "locality_available",
         "schedule_template",
+        "stock_security_product",
         "active",
         "object_audit",
     ]
@@ -49,6 +51,7 @@ class DeliveryMethod(_message.Message):
     CATEGORY_TEMPLATE_FIELD_NUMBER: _ClassVar[int]
     LOCALITY_AVAILABLE_FIELD_NUMBER: _ClassVar[int]
     SCHEDULE_TEMPLATE_FIELD_NUMBER: _ClassVar[int]
+    STOCK_SECURITY_PRODUCT_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
@@ -64,6 +67,7 @@ class DeliveryMethod(_message.Message):
     category_template: _delivery_category_pb2.DeliveryCategory
     locality_available: _delivery_locality_pb2.DeliveryLocality
     schedule_template: _delivery_schedule_pb2.DeliverySchedule
+    stock_security_product: _stock_security_product_pb2.StockSecurityProduct
     active: _wrappers_pb2.BoolValue
     object_audit: _base_pb2.ObjectAudit
     def __init__(
@@ -81,6 +85,7 @@ class DeliveryMethod(_message.Message):
         category_template: _Optional[_Union[_delivery_category_pb2.DeliveryCategory, _Mapping]] = ...,
         locality_available: _Optional[_Union[_delivery_locality_pb2.DeliveryLocality, _Mapping]] = ...,
         schedule_template: _Optional[_Union[_delivery_schedule_pb2.DeliverySchedule, _Mapping]] = ...,
+        stock_security_product: _Optional[_Union[_stock_security_product_pb2.StockSecurityProduct, _Mapping]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
@@ -98,6 +103,7 @@ class DeliveryMethodCreateRequest(_message.Message):
         "category_template_id",
         "locality_available_id",
         "schedule_template_id",
+        "stock_security_product_id",
         "delivery_warehouse_ids",
         "context",
     ]
@@ -112,6 +118,7 @@ class DeliveryMethodCreateRequest(_message.Message):
     CATEGORY_TEMPLATE_ID_FIELD_NUMBER: _ClassVar[int]
     LOCALITY_AVAILABLE_ID_FIELD_NUMBER: _ClassVar[int]
     SCHEDULE_TEMPLATE_ID_FIELD_NUMBER: _ClassVar[int]
+    STOCK_SECURITY_PRODUCT_ID_FIELD_NUMBER: _ClassVar[int]
     DELIVERY_WAREHOUSE_IDS_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
@@ -125,6 +132,7 @@ class DeliveryMethodCreateRequest(_message.Message):
     category_template_id: str
     locality_available_id: str
     schedule_template_id: str
+    stock_security_product_id: str
     delivery_warehouse_ids: _containers.RepeatedScalarFieldContainer[int]
     context: _base_pb2.Context
     def __init__(
@@ -140,6 +148,7 @@ class DeliveryMethodCreateRequest(_message.Message):
         category_template_id: _Optional[str] = ...,
         locality_available_id: _Optional[str] = ...,
         schedule_template_id: _Optional[str] = ...,
+        stock_security_product_id: _Optional[str] = ...,
         delivery_warehouse_ids: _Optional[_Iterable[int]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
