@@ -17,7 +17,7 @@ from google.protobuf import wrappers_pb2 as google_dot_protobuf_dot_wrappers__pb
 from omni.pro.protos.common import base_pb2 as common_dot_base__pb2
 
 DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
-    b'\n(v1/rules/calculate_delivery_method.proto\x12+pro.omni.oms.api.v1.rules.delivery_coverage\x1a\x11\x63ommon/base.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x1cgoogle/protobuf/struct.proto"\xea\x01\n&CalculateDeliveryMethodCoverageRequest\x12-\n\x0c\x63\x61rt_details\x18\x01 \x01(\x0b\x32\x17.google.protobuf.Struct\x12&\n\x05items\x18\x02 \x03(\x0b\x32\x17.google.protobuf.Struct\x12\x31\n\x10shipping_details\x18\x03 \x01(\x0b\x32\x17.google.protobuf.Struct\x12\x36\n\x07\x63ontext\x18\x04 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xa0\x01\n\'CalculateDeliveryMethodCoverageResponse\x12*\n\x06result\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.ListValue\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\xee\x01\n*CalculateDeliveryMethodAvailabilityRequest\x12-\n\x0c\x63\x61rt_details\x18\x01 \x01(\x0b\x32\x17.google.protobuf.Struct\x12&\n\x05items\x18\x02 \x03(\x0b\x32\x17.google.protobuf.Struct\x12\x31\n\x10shipping_details\x18\x03 \x01(\x0b\x32\x17.google.protobuf.Struct\x12\x36\n\x07\x63ontext\x18\x04 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xa1\x01\n+CalculateDeliveryMethodAvailabilityResponse\x12\'\n\x06result\x18\x01 \x01(\x0b\x32\x17.google.protobuf.Struct\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\xe6\x01\n"CalculateDeliveryMethodTimeRequest\x12-\n\x0c\x63\x61rt_details\x18\x01 \x01(\x0b\x32\x17.google.protobuf.Struct\x12&\n\x05items\x18\x02 \x03(\x0b\x32\x17.google.protobuf.Struct\x12\x31\n\x10shipping_details\x18\x03 \x01(\x0b\x32\x17.google.protobuf.Struct\x12\x36\n\x07\x63ontext\x18\x04 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\x9c\x01\n#CalculateDeliveryMethodTimeResponse\x12*\n\x06result\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.ListValue\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\xe7\x01\n#CalculateDeliveryMethodPriceRequest\x12-\n\x0c\x63\x61rt_details\x18\x01 \x01(\x0b\x32\x17.google.protobuf.Struct\x12&\n\x05items\x18\x02 \x03(\x0b\x32\x17.google.protobuf.Struct\x12\x31\n\x10shipping_details\x18\x03 \x01(\x0b\x32\x17.google.protobuf.Struct\x12\x36\n\x07\x63ontext\x18\x04 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\x9d\x01\n$CalculateDeliveryMethodPriceResponse\x12*\n\x06result\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.ListValue\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard2\xdb\x06\n\x1e\x43\x61lculateDeliveryMethodService\x12\xce\x01\n\x1f\x43\x61lculateDeliveryMethodCoverage\x12S.pro.omni.oms.api.v1.rules.delivery_coverage.CalculateDeliveryMethodCoverageRequest\x1aT.pro.omni.oms.api.v1.rules.delivery_coverage.CalculateDeliveryMethodCoverageResponse"\x00\x12\xda\x01\n#CalculateDeliveryMethodAvailability\x12W.pro.omni.oms.api.v1.rules.delivery_coverage.CalculateDeliveryMethodAvailabilityRequest\x1aX.pro.omni.oms.api.v1.rules.delivery_coverage.CalculateDeliveryMethodAvailabilityResponse"\x00\x12\xc2\x01\n\x1b\x43\x61lculateDeliveryMethodTime\x12O.pro.omni.oms.api.v1.rules.delivery_coverage.CalculateDeliveryMethodTimeRequest\x1aP.pro.omni.oms.api.v1.rules.delivery_coverage.CalculateDeliveryMethodTimeResponse"\x00\x12\xc5\x01\n\x1c\x43\x61lculateDeliveryMethodPrice\x12P.pro.omni.oms.api.v1.rules.delivery_coverage.CalculateDeliveryMethodPriceRequest\x1aQ.pro.omni.oms.api.v1.rules.delivery_coverage.CalculateDeliveryMethodPriceResponse"\x00\x62\x06proto3'
+    b'\n(v1/rules/calculate_delivery_method.proto\x12+pro.omni.oms.api.v1.rules.delivery_coverage\x1a\x11\x63ommon/base.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x1cgoogle/protobuf/struct.proto"\xe2\x01\n\x1e\x43\x61lculateDeliveryMethodRequest\x12-\n\x0c\x63\x61rt_details\x18\x01 \x01(\x0b\x32\x17.google.protobuf.Struct\x12&\n\x05items\x18\x02 \x03(\x0b\x32\x17.google.protobuf.Struct\x12\x31\n\x10shipping_details\x18\x03 \x01(\x0b\x32\x17.google.protobuf.Struct\x12\x36\n\x07\x63ontext\x18\x04 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\x98\x01\n\x1f\x43\x61lculateDeliveryMethodResponse\x12*\n\x06result\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.ListValue\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard2\xd8\x01\n\x1e\x43\x61lculateDeliveryMethodService\x12\xb5\x01\n\x17\x43\x61lculateDeliveryMethod\x12K.pro.omni.oms.api.v1.rules.delivery_coverage.CalculateDeliveryMethodRequest\x1aK.pro.omni.oms.api.v1.rules.delivery_coverage.CalculateDeliveryMethodRequest"\x00\x62\x06proto3'
 )
 
 _globals = globals()
@@ -25,22 +25,10 @@ _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, "v1.rules.calculate_delivery_method_pb2", _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
     DESCRIPTOR._options = None
-    _globals["_CALCULATEDELIVERYMETHODCOVERAGEREQUEST"]._serialized_start = 171
-    _globals["_CALCULATEDELIVERYMETHODCOVERAGEREQUEST"]._serialized_end = 405
-    _globals["_CALCULATEDELIVERYMETHODCOVERAGERESPONSE"]._serialized_start = 408
-    _globals["_CALCULATEDELIVERYMETHODCOVERAGERESPONSE"]._serialized_end = 568
-    _globals["_CALCULATEDELIVERYMETHODAVAILABILITYREQUEST"]._serialized_start = 571
-    _globals["_CALCULATEDELIVERYMETHODAVAILABILITYREQUEST"]._serialized_end = 809
-    _globals["_CALCULATEDELIVERYMETHODAVAILABILITYRESPONSE"]._serialized_start = 812
-    _globals["_CALCULATEDELIVERYMETHODAVAILABILITYRESPONSE"]._serialized_end = 973
-    _globals["_CALCULATEDELIVERYMETHODTIMEREQUEST"]._serialized_start = 976
-    _globals["_CALCULATEDELIVERYMETHODTIMEREQUEST"]._serialized_end = 1206
-    _globals["_CALCULATEDELIVERYMETHODTIMERESPONSE"]._serialized_start = 1209
-    _globals["_CALCULATEDELIVERYMETHODTIMERESPONSE"]._serialized_end = 1365
-    _globals["_CALCULATEDELIVERYMETHODPRICEREQUEST"]._serialized_start = 1368
-    _globals["_CALCULATEDELIVERYMETHODPRICEREQUEST"]._serialized_end = 1599
-    _globals["_CALCULATEDELIVERYMETHODPRICERESPONSE"]._serialized_start = 1602
-    _globals["_CALCULATEDELIVERYMETHODPRICERESPONSE"]._serialized_end = 1759
-    _globals["_CALCULATEDELIVERYMETHODSERVICE"]._serialized_start = 1762
-    _globals["_CALCULATEDELIVERYMETHODSERVICE"]._serialized_end = 2621
+    _globals["_CALCULATEDELIVERYMETHODREQUEST"]._serialized_start = 171
+    _globals["_CALCULATEDELIVERYMETHODREQUEST"]._serialized_end = 397
+    _globals["_CALCULATEDELIVERYMETHODRESPONSE"]._serialized_start = 400
+    _globals["_CALCULATEDELIVERYMETHODRESPONSE"]._serialized_end = 552
+    _globals["_CALCULATEDELIVERYMETHODSERVICE"]._serialized_start = 555
+    _globals["_CALCULATEDELIVERYMETHODSERVICE"]._serialized_end = 771
 # @@protoc_insertion_point(module_scope)

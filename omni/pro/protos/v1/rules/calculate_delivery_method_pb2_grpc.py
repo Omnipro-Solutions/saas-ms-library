@@ -13,50 +13,17 @@ class CalculateDeliveryMethodServiceStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.CalculateDeliveryMethodCoverage = channel.unary_unary(
-            "/pro.omni.oms.api.v1.rules.delivery_coverage.CalculateDeliveryMethodService/CalculateDeliveryMethodCoverage",
-            request_serializer=v1_dot_rules_dot_calculate__delivery__method__pb2.CalculateDeliveryMethodCoverageRequest.SerializeToString,
-            response_deserializer=v1_dot_rules_dot_calculate__delivery__method__pb2.CalculateDeliveryMethodCoverageResponse.FromString,
-        )
-        self.CalculateDeliveryMethodAvailability = channel.unary_unary(
-            "/pro.omni.oms.api.v1.rules.delivery_coverage.CalculateDeliveryMethodService/CalculateDeliveryMethodAvailability",
-            request_serializer=v1_dot_rules_dot_calculate__delivery__method__pb2.CalculateDeliveryMethodAvailabilityRequest.SerializeToString,
-            response_deserializer=v1_dot_rules_dot_calculate__delivery__method__pb2.CalculateDeliveryMethodAvailabilityResponse.FromString,
-        )
-        self.CalculateDeliveryMethodTime = channel.unary_unary(
-            "/pro.omni.oms.api.v1.rules.delivery_coverage.CalculateDeliveryMethodService/CalculateDeliveryMethodTime",
-            request_serializer=v1_dot_rules_dot_calculate__delivery__method__pb2.CalculateDeliveryMethodTimeRequest.SerializeToString,
-            response_deserializer=v1_dot_rules_dot_calculate__delivery__method__pb2.CalculateDeliveryMethodTimeResponse.FromString,
-        )
-        self.CalculateDeliveryMethodPrice = channel.unary_unary(
-            "/pro.omni.oms.api.v1.rules.delivery_coverage.CalculateDeliveryMethodService/CalculateDeliveryMethodPrice",
-            request_serializer=v1_dot_rules_dot_calculate__delivery__method__pb2.CalculateDeliveryMethodPriceRequest.SerializeToString,
-            response_deserializer=v1_dot_rules_dot_calculate__delivery__method__pb2.CalculateDeliveryMethodPriceResponse.FromString,
+        self.CalculateDeliveryMethod = channel.unary_unary(
+            "/pro.omni.oms.api.v1.rules.delivery_coverage.CalculateDeliveryMethodService/CalculateDeliveryMethod",
+            request_serializer=v1_dot_rules_dot_calculate__delivery__method__pb2.CalculateDeliveryMethodRequest.SerializeToString,
+            response_deserializer=v1_dot_rules_dot_calculate__delivery__method__pb2.CalculateDeliveryMethodRequest.FromString,
         )
 
 
 class CalculateDeliveryMethodServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
-    def CalculateDeliveryMethodCoverage(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details("Method not implemented!")
-        raise NotImplementedError("Method not implemented!")
-
-    def CalculateDeliveryMethodAvailability(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details("Method not implemented!")
-        raise NotImplementedError("Method not implemented!")
-
-    def CalculateDeliveryMethodTime(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details("Method not implemented!")
-        raise NotImplementedError("Method not implemented!")
-
-    def CalculateDeliveryMethodPrice(self, request, context):
+    def CalculateDeliveryMethod(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -65,25 +32,10 @@ class CalculateDeliveryMethodServiceServicer(object):
 
 def add_CalculateDeliveryMethodServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-        "CalculateDeliveryMethodCoverage": grpc.unary_unary_rpc_method_handler(
-            servicer.CalculateDeliveryMethodCoverage,
-            request_deserializer=v1_dot_rules_dot_calculate__delivery__method__pb2.CalculateDeliveryMethodCoverageRequest.FromString,
-            response_serializer=v1_dot_rules_dot_calculate__delivery__method__pb2.CalculateDeliveryMethodCoverageResponse.SerializeToString,
-        ),
-        "CalculateDeliveryMethodAvailability": grpc.unary_unary_rpc_method_handler(
-            servicer.CalculateDeliveryMethodAvailability,
-            request_deserializer=v1_dot_rules_dot_calculate__delivery__method__pb2.CalculateDeliveryMethodAvailabilityRequest.FromString,
-            response_serializer=v1_dot_rules_dot_calculate__delivery__method__pb2.CalculateDeliveryMethodAvailabilityResponse.SerializeToString,
-        ),
-        "CalculateDeliveryMethodTime": grpc.unary_unary_rpc_method_handler(
-            servicer.CalculateDeliveryMethodTime,
-            request_deserializer=v1_dot_rules_dot_calculate__delivery__method__pb2.CalculateDeliveryMethodTimeRequest.FromString,
-            response_serializer=v1_dot_rules_dot_calculate__delivery__method__pb2.CalculateDeliveryMethodTimeResponse.SerializeToString,
-        ),
-        "CalculateDeliveryMethodPrice": grpc.unary_unary_rpc_method_handler(
-            servicer.CalculateDeliveryMethodPrice,
-            request_deserializer=v1_dot_rules_dot_calculate__delivery__method__pb2.CalculateDeliveryMethodPriceRequest.FromString,
-            response_serializer=v1_dot_rules_dot_calculate__delivery__method__pb2.CalculateDeliveryMethodPriceResponse.SerializeToString,
+        "CalculateDeliveryMethod": grpc.unary_unary_rpc_method_handler(
+            servicer.CalculateDeliveryMethod,
+            request_deserializer=v1_dot_rules_dot_calculate__delivery__method__pb2.CalculateDeliveryMethodRequest.FromString,
+            response_serializer=v1_dot_rules_dot_calculate__delivery__method__pb2.CalculateDeliveryMethodRequest.SerializeToString,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -97,7 +49,7 @@ class CalculateDeliveryMethodService(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def CalculateDeliveryMethodCoverage(
+    def CalculateDeliveryMethod(
         request,
         target,
         options=(),
@@ -112,96 +64,9 @@ class CalculateDeliveryMethodService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            "/pro.omni.oms.api.v1.rules.delivery_coverage.CalculateDeliveryMethodService/CalculateDeliveryMethodCoverage",
-            v1_dot_rules_dot_calculate__delivery__method__pb2.CalculateDeliveryMethodCoverageRequest.SerializeToString,
-            v1_dot_rules_dot_calculate__delivery__method__pb2.CalculateDeliveryMethodCoverageResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-        )
-
-    @staticmethod
-    def CalculateDeliveryMethodAvailability(
-        request,
-        target,
-        options=(),
-        channel_credentials=None,
-        call_credentials=None,
-        insecure=False,
-        compression=None,
-        wait_for_ready=None,
-        timeout=None,
-        metadata=None,
-    ):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            "/pro.omni.oms.api.v1.rules.delivery_coverage.CalculateDeliveryMethodService/CalculateDeliveryMethodAvailability",
-            v1_dot_rules_dot_calculate__delivery__method__pb2.CalculateDeliveryMethodAvailabilityRequest.SerializeToString,
-            v1_dot_rules_dot_calculate__delivery__method__pb2.CalculateDeliveryMethodAvailabilityResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-        )
-
-    @staticmethod
-    def CalculateDeliveryMethodTime(
-        request,
-        target,
-        options=(),
-        channel_credentials=None,
-        call_credentials=None,
-        insecure=False,
-        compression=None,
-        wait_for_ready=None,
-        timeout=None,
-        metadata=None,
-    ):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            "/pro.omni.oms.api.v1.rules.delivery_coverage.CalculateDeliveryMethodService/CalculateDeliveryMethodTime",
-            v1_dot_rules_dot_calculate__delivery__method__pb2.CalculateDeliveryMethodTimeRequest.SerializeToString,
-            v1_dot_rules_dot_calculate__delivery__method__pb2.CalculateDeliveryMethodTimeResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-        )
-
-    @staticmethod
-    def CalculateDeliveryMethodPrice(
-        request,
-        target,
-        options=(),
-        channel_credentials=None,
-        call_credentials=None,
-        insecure=False,
-        compression=None,
-        wait_for_ready=None,
-        timeout=None,
-        metadata=None,
-    ):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            "/pro.omni.oms.api.v1.rules.delivery_coverage.CalculateDeliveryMethodService/CalculateDeliveryMethodPrice",
-            v1_dot_rules_dot_calculate__delivery__method__pb2.CalculateDeliveryMethodPriceRequest.SerializeToString,
-            v1_dot_rules_dot_calculate__delivery__method__pb2.CalculateDeliveryMethodPriceResponse.FromString,
+            "/pro.omni.oms.api.v1.rules.delivery_coverage.CalculateDeliveryMethodService/CalculateDeliveryMethod",
+            v1_dot_rules_dot_calculate__delivery__method__pb2.CalculateDeliveryMethodRequest.SerializeToString,
+            v1_dot_rules_dot_calculate__delivery__method__pb2.CalculateDeliveryMethodRequest.FromString,
             options,
             channel_credentials,
             insecure,
