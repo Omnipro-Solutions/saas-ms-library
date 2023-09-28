@@ -30,6 +30,7 @@ class DeliveryPrice(_message.Message):
         "usage",
         "price_by_variable_factor",
         "locality_available",
+        "python_code",
         "active",
         "object_audit",
     ]
@@ -46,6 +47,7 @@ class DeliveryPrice(_message.Message):
     USAGE_FIELD_NUMBER: _ClassVar[int]
     PRICE_BY_VARIABLE_FACTOR_FIELD_NUMBER: _ClassVar[int]
     LOCALITY_AVAILABLE_FIELD_NUMBER: _ClassVar[int]
+    PYTHON_CODE_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
@@ -61,6 +63,7 @@ class DeliveryPrice(_message.Message):
     usage: str
     price_by_variable_factor: float
     locality_available: _delivery_locality_pb2.DeliveryLocality
+    python_code: str
     active: _wrappers_pb2.BoolValue
     object_audit: _base_pb2.ObjectAudit
     def __init__(
@@ -78,6 +81,7 @@ class DeliveryPrice(_message.Message):
         usage: _Optional[str] = ...,
         price_by_variable_factor: _Optional[float] = ...,
         locality_available: _Optional[_Union[_delivery_locality_pb2.DeliveryLocality, _Mapping]] = ...,
+        python_code: _Optional[str] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
@@ -96,6 +100,7 @@ class DeliveryPriceCreateRequest(_message.Message):
         "usage",
         "price_by_variable_factor",
         "locality_available_id",
+        "python_code",
         "context",
     ]
     NAME_FIELD_NUMBER: _ClassVar[int]
@@ -110,6 +115,7 @@ class DeliveryPriceCreateRequest(_message.Message):
     USAGE_FIELD_NUMBER: _ClassVar[int]
     PRICE_BY_VARIABLE_FACTOR_FIELD_NUMBER: _ClassVar[int]
     LOCALITY_AVAILABLE_ID_FIELD_NUMBER: _ClassVar[int]
+    PYTHON_CODE_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     code: str
@@ -123,6 +129,7 @@ class DeliveryPriceCreateRequest(_message.Message):
     usage: str
     price_by_variable_factor: float
     locality_available_id: str
+    python_code: str
     context: _base_pb2.Context
     def __init__(
         self,
@@ -138,6 +145,7 @@ class DeliveryPriceCreateRequest(_message.Message):
         usage: _Optional[str] = ...,
         price_by_variable_factor: _Optional[float] = ...,
         locality_available_id: _Optional[str] = ...,
+        python_code: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
