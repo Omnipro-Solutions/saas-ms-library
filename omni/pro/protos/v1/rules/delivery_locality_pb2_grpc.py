@@ -33,16 +33,6 @@ class DeliveryLocalityServiceStub(object):
             request_serializer=v1_dot_rules_dot_delivery__locality__pb2.DeliveryLocalityDeleteRequest.SerializeToString,
             response_deserializer=v1_dot_rules_dot_delivery__locality__pb2.DeliveryLocalityDeleteResponse.FromString,
         )
-        self.AddTerritoryMatrixValue = channel.unary_unary(
-            "/pro.omni.oms.api.v1.rules.delivery_locality.DeliveryLocalityService/AddTerritoryMatrixValue",
-            request_serializer=v1_dot_rules_dot_delivery__locality__pb2.AddTerritoryMatrixValueRequest.SerializeToString,
-            response_deserializer=v1_dot_rules_dot_delivery__locality__pb2.AddTerritoryMatrixValueResponse.FromString,
-        )
-        self.RemoveTerritoryMatrixValue = channel.unary_unary(
-            "/pro.omni.oms.api.v1.rules.delivery_locality.DeliveryLocalityService/RemoveTerritoryMatrixValue",
-            request_serializer=v1_dot_rules_dot_delivery__locality__pb2.RemoveTerritoryMatrixValueRequest.SerializeToString,
-            response_deserializer=v1_dot_rules_dot_delivery__locality__pb2.RemoveTerritoryMatrixValueResponse.FromString,
-        )
 
 
 class DeliveryLocalityServiceServicer(object):
@@ -72,18 +62,6 @@ class DeliveryLocalityServiceServicer(object):
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
-    def AddTerritoryMatrixValue(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details("Method not implemented!")
-        raise NotImplementedError("Method not implemented!")
-
-    def RemoveTerritoryMatrixValue(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details("Method not implemented!")
-        raise NotImplementedError("Method not implemented!")
-
 
 def add_DeliveryLocalityServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -106,16 +84,6 @@ def add_DeliveryLocalityServiceServicer_to_server(servicer, server):
             servicer.DeliveryLocalityDelete,
             request_deserializer=v1_dot_rules_dot_delivery__locality__pb2.DeliveryLocalityDeleteRequest.FromString,
             response_serializer=v1_dot_rules_dot_delivery__locality__pb2.DeliveryLocalityDeleteResponse.SerializeToString,
-        ),
-        "AddTerritoryMatrixValue": grpc.unary_unary_rpc_method_handler(
-            servicer.AddTerritoryMatrixValue,
-            request_deserializer=v1_dot_rules_dot_delivery__locality__pb2.AddTerritoryMatrixValueRequest.FromString,
-            response_serializer=v1_dot_rules_dot_delivery__locality__pb2.AddTerritoryMatrixValueResponse.SerializeToString,
-        ),
-        "RemoveTerritoryMatrixValue": grpc.unary_unary_rpc_method_handler(
-            servicer.RemoveTerritoryMatrixValue,
-            request_deserializer=v1_dot_rules_dot_delivery__locality__pb2.RemoveTerritoryMatrixValueRequest.FromString,
-            response_serializer=v1_dot_rules_dot_delivery__locality__pb2.RemoveTerritoryMatrixValueResponse.SerializeToString,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -234,64 +202,6 @@ class DeliveryLocalityService(object):
             "/pro.omni.oms.api.v1.rules.delivery_locality.DeliveryLocalityService/DeliveryLocalityDelete",
             v1_dot_rules_dot_delivery__locality__pb2.DeliveryLocalityDeleteRequest.SerializeToString,
             v1_dot_rules_dot_delivery__locality__pb2.DeliveryLocalityDeleteResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-        )
-
-    @staticmethod
-    def AddTerritoryMatrixValue(
-        request,
-        target,
-        options=(),
-        channel_credentials=None,
-        call_credentials=None,
-        insecure=False,
-        compression=None,
-        wait_for_ready=None,
-        timeout=None,
-        metadata=None,
-    ):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            "/pro.omni.oms.api.v1.rules.delivery_locality.DeliveryLocalityService/AddTerritoryMatrixValue",
-            v1_dot_rules_dot_delivery__locality__pb2.AddTerritoryMatrixValueRequest.SerializeToString,
-            v1_dot_rules_dot_delivery__locality__pb2.AddTerritoryMatrixValueResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-        )
-
-    @staticmethod
-    def RemoveTerritoryMatrixValue(
-        request,
-        target,
-        options=(),
-        channel_credentials=None,
-        call_credentials=None,
-        insecure=False,
-        compression=None,
-        wait_for_ready=None,
-        timeout=None,
-        metadata=None,
-    ):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            "/pro.omni.oms.api.v1.rules.delivery_locality.DeliveryLocalityService/RemoveTerritoryMatrixValue",
-            v1_dot_rules_dot_delivery__locality__pb2.RemoveTerritoryMatrixValueRequest.SerializeToString,
-            v1_dot_rules_dot_delivery__locality__pb2.RemoveTerritoryMatrixValueResponse.FromString,
             options,
             channel_credentials,
             insecure,
