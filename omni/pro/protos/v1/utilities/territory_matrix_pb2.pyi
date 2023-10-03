@@ -180,17 +180,20 @@ class TerritoryMatrixLoadResponse(_message.Message):
     def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
 
 class TerritoryMatrixStructureRequest(_message.Message):
-    __slots__ = ["territorymatrix", "parent_code", "context"]
+    __slots__ = ["territorymatrix", "parent_code", "filter", "context"]
     TERRITORYMATRIX_FIELD_NUMBER: _ClassVar[int]
     PARENT_CODE_FIELD_NUMBER: _ClassVar[int]
+    FILTER_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     territorymatrix: TerritoryMatrix
     parent_code: str
+    filter: _struct_pb2.Struct
     context: _base_pb2.Context
     def __init__(
         self,
         territorymatrix: _Optional[_Union[TerritoryMatrix, _Mapping]] = ...,
         parent_code: _Optional[str] = ...,
+        filter: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
