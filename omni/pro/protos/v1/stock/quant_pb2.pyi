@@ -81,7 +81,7 @@ class QuantCreateRequest(_message.Message):
     QUANTITY_FIELD_NUMBER: _ClassVar[int]
     UOM_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    product_id: int
+    product_id: str
     location_id: int
     lote: str
     available_quantity: float
@@ -91,7 +91,7 @@ class QuantCreateRequest(_message.Message):
     context: _base_pb2.Context
     def __init__(
         self,
-        product_id: _Optional[int] = ...,
+        product_id: _Optional[str] = ...,
         location_id: _Optional[int] = ...,
         lote: _Optional[str] = ...,
         available_quantity: _Optional[float] = ...,
@@ -196,12 +196,19 @@ class QuantDeleteResponse(_message.Message):
     def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
 
 class ProductAvailable(_message.Message):
-    __slots__ = ["available", "available_quantity"]
+    __slots__ = ["available", "available_quantity", "quant"]
     AVAILABLE_FIELD_NUMBER: _ClassVar[int]
     AVAILABLE_QUANTITY_FIELD_NUMBER: _ClassVar[int]
+    QUANT_FIELD_NUMBER: _ClassVar[int]
     available: bool
     available_quantity: float
-    def __init__(self, available: bool = ..., available_quantity: _Optional[float] = ...) -> None: ...
+    quant: Quant
+    def __init__(
+        self,
+        available: bool = ...,
+        available_quantity: _Optional[float] = ...,
+        quant: _Optional[_Union[Quant, _Mapping]] = ...,
+    ) -> None: ...
 
 class ProductAvailableRequest(_message.Message):
     __slots__ = ["location_id", "product_id", "product_sku", "required_quantity", "context"]
