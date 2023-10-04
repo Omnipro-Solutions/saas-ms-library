@@ -121,12 +121,12 @@ class StockMoveLineCreateRequest(_message.Message):
     reference: str
     date: _timestamp_pb2.Timestamp
     origin: str
-    product_id: int
+    product_id: str
     location_id: int
     location_dest_id: int
     qty_done: float
     product_uom_qty: float
-    product_uom_id: int
+    product_uom_id: str
     context: _base_pb2.Context
     def __init__(
         self,
@@ -136,12 +136,12 @@ class StockMoveLineCreateRequest(_message.Message):
         reference: _Optional[str] = ...,
         date: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
         origin: _Optional[str] = ...,
-        product_id: _Optional[int] = ...,
+        product_id: _Optional[str] = ...,
         location_id: _Optional[int] = ...,
         location_dest_id: _Optional[int] = ...,
         qty_done: _Optional[float] = ...,
         product_uom_qty: _Optional[float] = ...,
-        product_uom_id: _Optional[int] = ...,
+        product_uom_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
