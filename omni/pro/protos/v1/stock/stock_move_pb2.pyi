@@ -77,7 +77,7 @@ class StockMoveCreateRequest(_message.Message):
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     picking_id: int
     state: str
-    product_id: int
+    product_id: str
     quantity_done: float
     product_uom_id: int
     description_picking: str
@@ -86,7 +86,7 @@ class StockMoveCreateRequest(_message.Message):
         self,
         picking_id: _Optional[int] = ...,
         state: _Optional[str] = ...,
-        product_id: _Optional[int] = ...,
+        product_id: _Optional[str] = ...,
         quantity_done: _Optional[float] = ...,
         product_uom_id: _Optional[int] = ...,
         description_picking: _Optional[str] = ...,
