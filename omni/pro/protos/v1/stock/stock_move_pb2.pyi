@@ -79,7 +79,7 @@ class StockMoveCreateRequest(_message.Message):
     state: str
     product_id: str
     quantity_done: float
-    product_uom_id: int
+    product_uom_id: str
     description_picking: str
     context: _base_pb2.Context
     def __init__(
@@ -88,7 +88,7 @@ class StockMoveCreateRequest(_message.Message):
         state: _Optional[str] = ...,
         product_id: _Optional[str] = ...,
         quantity_done: _Optional[float] = ...,
-        product_uom_id: _Optional[int] = ...,
+        product_uom_id: _Optional[str] = ...,
         description_picking: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
