@@ -22,6 +22,8 @@ class DeliveryPrice(_message.Message):
         "code",
         "delivery_method",
         "purchase_rank",
+        "operator_price_rank",
+        "price_rank",
         "currency",
         "fixed_price",
         "operator_price",
@@ -39,6 +41,8 @@ class DeliveryPrice(_message.Message):
     CODE_FIELD_NUMBER: _ClassVar[int]
     DELIVERY_METHOD_FIELD_NUMBER: _ClassVar[int]
     PURCHASE_RANK_FIELD_NUMBER: _ClassVar[int]
+    OPERATOR_PRICE_RANK_FIELD_NUMBER: _ClassVar[int]
+    PRICE_RANK_FIELD_NUMBER: _ClassVar[int]
     CURRENCY_FIELD_NUMBER: _ClassVar[int]
     FIXED_PRICE_FIELD_NUMBER: _ClassVar[int]
     OPERATOR_PRICE_FIELD_NUMBER: _ClassVar[int]
@@ -55,7 +59,9 @@ class DeliveryPrice(_message.Message):
     code: str
     delivery_method: _delivery_method_pb2.DeliveryMethod
     purchase_rank: _wrappers_pb2.BoolValue
-    currency: _currency_pb2.Currency
+    operator_price_rank: str
+    price_rank: float
+    currency: str
     fixed_price: float
     operator_price: str
     purchase_price: float
@@ -73,7 +79,9 @@ class DeliveryPrice(_message.Message):
         code: _Optional[str] = ...,
         delivery_method: _Optional[_Union[_delivery_method_pb2.DeliveryMethod, _Mapping]] = ...,
         purchase_rank: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
-        currency: _Optional[_Union[_currency_pb2.Currency, _Mapping]] = ...,
+        operator_price_rank: _Optional[str] = ...,
+        price_rank: _Optional[float] = ...,
+        currency: _Optional[str] = ...,
         fixed_price: _Optional[float] = ...,
         operator_price: _Optional[str] = ...,
         purchase_price: _Optional[float] = ...,
@@ -92,6 +100,8 @@ class DeliveryPriceCreateRequest(_message.Message):
         "code",
         "delivery_method_id",
         "purchase_rank",
+        "operator_price_rank",
+        "price_rank",
         "currency_id",
         "fixed_price",
         "operator_price",
@@ -107,6 +117,8 @@ class DeliveryPriceCreateRequest(_message.Message):
     CODE_FIELD_NUMBER: _ClassVar[int]
     DELIVERY_METHOD_ID_FIELD_NUMBER: _ClassVar[int]
     PURCHASE_RANK_FIELD_NUMBER: _ClassVar[int]
+    OPERATOR_PRICE_RANK_FIELD_NUMBER: _ClassVar[int]
+    PRICE_RANK_FIELD_NUMBER: _ClassVar[int]
     CURRENCY_ID_FIELD_NUMBER: _ClassVar[int]
     FIXED_PRICE_FIELD_NUMBER: _ClassVar[int]
     OPERATOR_PRICE_FIELD_NUMBER: _ClassVar[int]
@@ -121,6 +133,8 @@ class DeliveryPriceCreateRequest(_message.Message):
     code: str
     delivery_method_id: str
     purchase_rank: _wrappers_pb2.BoolValue
+    operator_price_rank: str
+    price_rank: float
     currency_id: str
     fixed_price: float
     operator_price: str
@@ -137,6 +151,8 @@ class DeliveryPriceCreateRequest(_message.Message):
         code: _Optional[str] = ...,
         delivery_method_id: _Optional[str] = ...,
         purchase_rank: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        operator_price_rank: _Optional[str] = ...,
+        price_rank: _Optional[float] = ...,
         currency_id: _Optional[str] = ...,
         fixed_price: _Optional[float] = ...,
         operator_price: _Optional[str] = ...,
