@@ -17,6 +17,8 @@ DESCRIPTOR: _descriptor.FileDescriptor
 class WarehouseHierarchy(_message.Message):
     __slots__ = [
         "id",
+        "name",
+        "code",
         "warehouse",
         "location",
         "quantity_security",
@@ -26,6 +28,8 @@ class WarehouseHierarchy(_message.Message):
         "object_audit",
     ]
     ID_FIELD_NUMBER: _ClassVar[int]
+    NAME_FIELD_NUMBER: _ClassVar[int]
+    CODE_FIELD_NUMBER: _ClassVar[int]
     WAREHOUSE_FIELD_NUMBER: _ClassVar[int]
     LOCATION_FIELD_NUMBER: _ClassVar[int]
     QUANTITY_SECURITY_FIELD_NUMBER: _ClassVar[int]
@@ -34,6 +38,8 @@ class WarehouseHierarchy(_message.Message):
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
+    name: str
+    code: str
     warehouse: _warehouse_pb2.Warehouse
     location: _location_pb2.Location
     quantity_security: float
@@ -44,6 +50,8 @@ class WarehouseHierarchy(_message.Message):
     def __init__(
         self,
         id: _Optional[str] = ...,
+        name: _Optional[str] = ...,
+        code: _Optional[str] = ...,
         warehouse: _Optional[_Union[_warehouse_pb2.Warehouse, _Mapping]] = ...,
         location: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
         quantity_security: _Optional[float] = ...,
@@ -54,13 +62,26 @@ class WarehouseHierarchy(_message.Message):
     ) -> None: ...
 
 class WarehouseHierarchyCreateRequest(_message.Message):
-    __slots__ = ["warehouse_id", "location_id", "quantity_security", "sequence", "sequence_order", "context"]
+    __slots__ = [
+        "name",
+        "code",
+        "warehouse_id",
+        "location_id",
+        "quantity_security",
+        "sequence",
+        "sequence_order",
+        "context",
+    ]
+    NAME_FIELD_NUMBER: _ClassVar[int]
+    CODE_FIELD_NUMBER: _ClassVar[int]
     WAREHOUSE_ID_FIELD_NUMBER: _ClassVar[int]
     LOCATION_ID_FIELD_NUMBER: _ClassVar[int]
     QUANTITY_SECURITY_FIELD_NUMBER: _ClassVar[int]
     SEQUENCE_FIELD_NUMBER: _ClassVar[int]
     SEQUENCE_ORDER_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    name: str
+    code: str
     warehouse_id: int
     location_id: int
     quantity_security: float
@@ -69,6 +90,8 @@ class WarehouseHierarchyCreateRequest(_message.Message):
     context: _base_pb2.Context
     def __init__(
         self,
+        name: _Optional[str] = ...,
+        code: _Optional[str] = ...,
         warehouse_id: _Optional[int] = ...,
         location_id: _Optional[int] = ...,
         quantity_security: _Optional[float] = ...,
