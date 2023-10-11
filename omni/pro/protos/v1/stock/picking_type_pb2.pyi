@@ -99,7 +99,7 @@ class PickingTypeCreateRequest(_message.Message):
         "barcode",
         "reservation_method",
         "type_code",
-        "sequence_id",
+        "sequence_doc_id",
         "context",
     ]
     NAME_FIELD_NUMBER: _ClassVar[int]
@@ -114,7 +114,7 @@ class PickingTypeCreateRequest(_message.Message):
     BARCODE_FIELD_NUMBER: _ClassVar[int]
     RESERVATION_METHOD_FIELD_NUMBER: _ClassVar[int]
     TYPE_CODE_FIELD_NUMBER: _ClassVar[int]
-    SEQUENCE_ID_FIELD_NUMBER: _ClassVar[int]
+    SEQUENCE_DOC_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     sequence_code: str
@@ -128,7 +128,7 @@ class PickingTypeCreateRequest(_message.Message):
     barcode: str
     reservation_method: str
     type_code: str
-    sequence_id: str
+    sequence_doc_id: str
     context: _base_pb2.Context
     def __init__(
         self,
@@ -144,7 +144,7 @@ class PickingTypeCreateRequest(_message.Message):
         barcode: _Optional[str] = ...,
         reservation_method: _Optional[str] = ...,
         type_code: _Optional[str] = ...,
-        sequence_id: _Optional[str] = ...,
+        sequence_doc_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
