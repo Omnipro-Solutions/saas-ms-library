@@ -28,6 +28,8 @@ def to_value(obj):
     Use condictional expression to convert a object to a `Value`.
     """
     if isinstance(obj, dict):
+        if "_id" in obj:
+            obj["id"] = obj.pop("_id")
         return struct_pb2.Value(struct_value=to_struct(obj))
     elif isinstance(obj, list) or isinstance(obj, Cursor):
         return struct_pb2.Value(list_value=to_list_value(obj))
