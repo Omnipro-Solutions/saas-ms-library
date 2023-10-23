@@ -80,11 +80,12 @@ def handle_error(service_model: str, service_method: str, logger, error: Excepti
         ),
     }
 
-    error_message, error_response = error_handlers.get(type(error), ("Unknown error", None))
-
+    error_message, lambda_function = error_handlers.get(type(error), ("Unknown error", None))
+    if lambda_function:
+        error_response = lambda_function(error)
     LoggerTraceback.error(error_message, error, logger)
 
-    message = f"{error_message}:\n\nTraceback:\n\n{tb}\n\nError Response:\n\n{error_response}"
+    message = f"{error_message}: {error_response}"
 
     if isinstance(error, OperationalError):
         return message_response.internal_response(message=message)
