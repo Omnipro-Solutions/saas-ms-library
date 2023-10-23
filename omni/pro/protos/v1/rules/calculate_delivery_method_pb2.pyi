@@ -13,21 +13,30 @@ from omni.pro.protos.common import base_pb2 as _base_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
-class CalculateDeliveryMethodRequest(_message.Message):
-    __slots__ = ["cart_details", "items", "shipping_details", "context"]
+class CalculateDeliveryMethodData(_message.Message):
+    __slots__ = ["cart_details", "items", "shipping_details"]
     CART_DETAILS_FIELD_NUMBER: _ClassVar[int]
     ITEMS_FIELD_NUMBER: _ClassVar[int]
     SHIPPING_DETAILS_FIELD_NUMBER: _ClassVar[int]
-    CONTEXT_FIELD_NUMBER: _ClassVar[int]
     cart_details: _struct_pb2.Struct
     items: _containers.RepeatedCompositeFieldContainer[_struct_pb2.Struct]
     shipping_details: _struct_pb2.Struct
-    context: _base_pb2.Context
     def __init__(
         self,
         cart_details: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         items: _Optional[_Iterable[_Union[_struct_pb2.Struct, _Mapping]]] = ...,
         shipping_details: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
+    ) -> None: ...
+
+class CalculateDeliveryMethodRequest(_message.Message):
+    __slots__ = ["data", "context"]
+    DATA_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    data: _containers.RepeatedCompositeFieldContainer[CalculateDeliveryMethodData]
+    context: _base_pb2.Context
+    def __init__(
+        self,
+        data: _Optional[_Iterable[_Union[CalculateDeliveryMethodData, _Mapping]]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
