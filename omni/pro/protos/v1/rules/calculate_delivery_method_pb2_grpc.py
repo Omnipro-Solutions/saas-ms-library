@@ -14,9 +14,9 @@ class CalculateDeliveryMethodServiceStub(object):
             channel: A grpc.Channel.
         """
         self.CalculateDeliveryMethod = channel.unary_unary(
-            "/pro.omni.oms.api.v1.rules.delivery_coverage.CalculateDeliveryMethodService/CalculateDeliveryMethod",
+            "/pro.omni.oms.api.v1.rules.calculate_delivery_method.CalculateDeliveryMethodService/CalculateDeliveryMethod",
             request_serializer=v1_dot_rules_dot_calculate__delivery__method__pb2.CalculateDeliveryMethodRequest.SerializeToString,
-            response_deserializer=v1_dot_rules_dot_calculate__delivery__method__pb2.CalculateDeliveryMethodRequest.FromString,
+            response_deserializer=v1_dot_rules_dot_calculate__delivery__method__pb2.CalculateDeliveryMethodResponse.FromString,
         )
 
 
@@ -35,11 +35,11 @@ def add_CalculateDeliveryMethodServiceServicer_to_server(servicer, server):
         "CalculateDeliveryMethod": grpc.unary_unary_rpc_method_handler(
             servicer.CalculateDeliveryMethod,
             request_deserializer=v1_dot_rules_dot_calculate__delivery__method__pb2.CalculateDeliveryMethodRequest.FromString,
-            response_serializer=v1_dot_rules_dot_calculate__delivery__method__pb2.CalculateDeliveryMethodRequest.SerializeToString,
+            response_serializer=v1_dot_rules_dot_calculate__delivery__method__pb2.CalculateDeliveryMethodResponse.SerializeToString,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-        "pro.omni.oms.api.v1.rules.delivery_coverage.CalculateDeliveryMethodService", rpc_method_handlers
+        "pro.omni.oms.api.v1.rules.calculate_delivery_method.CalculateDeliveryMethodService", rpc_method_handlers
     )
     server.add_generic_rpc_handlers((generic_handler,))
 
@@ -64,9 +64,9 @@ class CalculateDeliveryMethodService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            "/pro.omni.oms.api.v1.rules.delivery_coverage.CalculateDeliveryMethodService/CalculateDeliveryMethod",
+            "/pro.omni.oms.api.v1.rules.calculate_delivery_method.CalculateDeliveryMethodService/CalculateDeliveryMethod",
             v1_dot_rules_dot_calculate__delivery__method__pb2.CalculateDeliveryMethodRequest.SerializeToString,
-            v1_dot_rules_dot_calculate__delivery__method__pb2.CalculateDeliveryMethodRequest.FromString,
+            v1_dot_rules_dot_calculate__delivery__method__pb2.CalculateDeliveryMethodResponse.FromString,
             options,
             channel_credentials,
             insecure,
