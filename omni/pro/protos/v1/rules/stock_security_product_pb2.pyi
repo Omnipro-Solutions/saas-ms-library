@@ -13,6 +13,14 @@ from omni.pro.protos.common import base_pb2 as _base_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
+class Sku(_message.Message):
+    __slots__ = ["sku", "qty"]
+    SKU_FIELD_NUMBER: _ClassVar[int]
+    QTY_FIELD_NUMBER: _ClassVar[int]
+    sku: str
+    qty: str
+    def __init__(self, sku: _Optional[str] = ..., qty: _Optional[str] = ...) -> None: ...
+
 class StockSecurityProduct(_message.Message):
     __slots__ = ["id", "name", "code", "type", "skus", "active", "object_audit"]
     ID_FIELD_NUMBER: _ClassVar[int]
@@ -26,7 +34,7 @@ class StockSecurityProduct(_message.Message):
     name: str
     code: str
     type: str
-    skus: _containers.RepeatedCompositeFieldContainer[_struct_pb2.Struct]
+    skus: _containers.RepeatedCompositeFieldContainer[Sku]
     active: _wrappers_pb2.BoolValue
     object_audit: _base_pb2.ObjectAudit
     def __init__(
@@ -35,7 +43,7 @@ class StockSecurityProduct(_message.Message):
         name: _Optional[str] = ...,
         code: _Optional[str] = ...,
         type: _Optional[str] = ...,
-        skus: _Optional[_Iterable[_Union[_struct_pb2.Struct, _Mapping]]] = ...,
+        skus: _Optional[_Iterable[_Union[Sku, _Mapping]]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
@@ -50,14 +58,14 @@ class StockSecurityProductCreateRequest(_message.Message):
     name: str
     code: str
     type: str
-    skus: _containers.RepeatedCompositeFieldContainer[_struct_pb2.Struct]
+    skus: _containers.RepeatedCompositeFieldContainer[Sku]
     context: _base_pb2.Context
     def __init__(
         self,
         name: _Optional[str] = ...,
         code: _Optional[str] = ...,
         type: _Optional[str] = ...,
-        skus: _Optional[_Iterable[_Union[_struct_pb2.Struct, _Mapping]]] = ...,
+        skus: _Optional[_Iterable[_Union[Sku, _Mapping]]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
