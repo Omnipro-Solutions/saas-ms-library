@@ -12,18 +12,20 @@ from omni.pro.protos.common import base_pb2 as _base_pb2
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Warehouse(_message.Message):
-    __slots__ = ["id", "name", "code", "warehouse_sql_id", "locality_available", "object_audit"]
+    __slots__ = ["id", "name", "code", "warehouse_sql_id", "locality_available", "lock_stock_sql_id", "object_audit"]
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
     WAREHOUSE_SQL_ID_FIELD_NUMBER: _ClassVar[int]
     LOCALITY_AVAILABLE_FIELD_NUMBER: _ClassVar[int]
+    LOCK_STOCK_SQL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
     code: str
     warehouse_sql_id: int
     locality_available: str
+    lock_stock_sql_id: int
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
@@ -32,20 +34,23 @@ class Warehouse(_message.Message):
         code: _Optional[str] = ...,
         warehouse_sql_id: _Optional[int] = ...,
         locality_available: _Optional[str] = ...,
+        lock_stock_sql_id: _Optional[int] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
 class WarehouseCreateRequest(_message.Message):
-    __slots__ = ["name", "code", "warehouse_sql_id", "locality_available", "context"]
+    __slots__ = ["name", "code", "warehouse_sql_id", "locality_available", "lock_stock_sql_id", "context"]
     NAME_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
     WAREHOUSE_SQL_ID_FIELD_NUMBER: _ClassVar[int]
     LOCALITY_AVAILABLE_FIELD_NUMBER: _ClassVar[int]
+    LOCK_STOCK_SQL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     code: str
     warehouse_sql_id: int
     locality_available: str
+    lock_stock_sql_id: int
     context: _base_pb2.Context
     def __init__(
         self,
@@ -53,6 +58,7 @@ class WarehouseCreateRequest(_message.Message):
         code: _Optional[str] = ...,
         warehouse_sql_id: _Optional[int] = ...,
         locality_available: _Optional[str] = ...,
+        lock_stock_sql_id: _Optional[int] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
