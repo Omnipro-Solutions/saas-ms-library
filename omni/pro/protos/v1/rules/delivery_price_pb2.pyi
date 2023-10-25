@@ -61,7 +61,7 @@ class DeliveryPrice(_message.Message):
     purchase_rank: _wrappers_pb2.BoolValue
     operator_price_rank: str
     price_rank: float
-    currency: str
+    currency: _currency_pb2.Currency
     fixed_price: float
     operator_price: str
     purchase_price: float
@@ -81,7 +81,7 @@ class DeliveryPrice(_message.Message):
         purchase_rank: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         operator_price_rank: _Optional[str] = ...,
         price_rank: _Optional[float] = ...,
-        currency: _Optional[str] = ...,
+        currency: _Optional[_Union[_currency_pb2.Currency, _Mapping]] = ...,
         fixed_price: _Optional[float] = ...,
         operator_price: _Optional[str] = ...,
         purchase_price: _Optional[float] = ...,
