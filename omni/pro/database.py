@@ -661,6 +661,23 @@ class QueryBuilder:
     DEFAULT_PAGE_SIZE = 10
 
     @classmethod
+    def pre_to_in(cls, filters: base_pb2.Filter) -> list:
+        str_filter = filters.filter.replace("true", "True").replace("false", "False")
+        expression = ast.literal_eval(str_filter)
+        stack = []
+        result = []
+        for item in expression:
+            if isinstance(item, tuple):
+                if stack:
+                    result.append(item)
+                    result.append(stack.pop())
+                else:
+                    result.append(item)
+            else:
+                stack.append(item)
+        return result
+
+    @classmethod
     def build_filter(
         cls,
         model,
