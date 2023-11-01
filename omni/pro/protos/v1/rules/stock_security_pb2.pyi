@@ -6,35 +6,38 @@ from typing import Union as _Union
 
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
-from google.protobuf import struct_pb2 as _struct_pb2
 from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
-class Sku(_message.Message):
-    __slots__ = ["sku", "qty"]
+class ProductStockSecurity(_message.Message):
+    __slots__ = ["product_doc_id", "sku", "quantity_security"]
+    PRODUCT_DOC_ID_FIELD_NUMBER: _ClassVar[int]
     SKU_FIELD_NUMBER: _ClassVar[int]
-    QTY_FIELD_NUMBER: _ClassVar[int]
+    QUANTITY_SECURITY_FIELD_NUMBER: _ClassVar[int]
+    product_doc_id: str
     sku: str
-    qty: str
-    def __init__(self, sku: _Optional[str] = ..., qty: _Optional[str] = ...) -> None: ...
+    quantity_security: str
+    def __init__(
+        self, product_doc_id: _Optional[str] = ..., sku: _Optional[str] = ..., quantity_security: _Optional[str] = ...
+    ) -> None: ...
 
-class StockSecurityProduct(_message.Message):
-    __slots__ = ["id", "name", "code", "type", "skus", "active", "object_audit"]
+class StockSecurity(_message.Message):
+    __slots__ = ["id", "name", "code", "type", "products", "active", "object_audit"]
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
     TYPE_FIELD_NUMBER: _ClassVar[int]
-    SKUS_FIELD_NUMBER: _ClassVar[int]
+    PRODUCTS_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
     code: str
     type: str
-    skus: _containers.RepeatedCompositeFieldContainer[Sku]
+    products: _containers.RepeatedCompositeFieldContainer[ProductStockSecurity]
     active: _wrappers_pb2.BoolValue
     object_audit: _base_pb2.ObjectAudit
     def __init__(
@@ -43,45 +46,45 @@ class StockSecurityProduct(_message.Message):
         name: _Optional[str] = ...,
         code: _Optional[str] = ...,
         type: _Optional[str] = ...,
-        skus: _Optional[_Iterable[_Union[Sku, _Mapping]]] = ...,
+        products: _Optional[_Iterable[_Union[ProductStockSecurity, _Mapping]]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
-class StockSecurityProductCreateRequest(_message.Message):
-    __slots__ = ["name", "code", "type", "skus", "context"]
+class StockSecurityCreateRequest(_message.Message):
+    __slots__ = ["name", "code", "type", "products", "context"]
     NAME_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
     TYPE_FIELD_NUMBER: _ClassVar[int]
-    SKUS_FIELD_NUMBER: _ClassVar[int]
+    PRODUCTS_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     code: str
     type: str
-    skus: _containers.RepeatedCompositeFieldContainer[Sku]
+    products: _containers.RepeatedCompositeFieldContainer[ProductStockSecurity]
     context: _base_pb2.Context
     def __init__(
         self,
         name: _Optional[str] = ...,
         code: _Optional[str] = ...,
         type: _Optional[str] = ...,
-        skus: _Optional[_Iterable[_Union[Sku, _Mapping]]] = ...,
+        products: _Optional[_Iterable[_Union[ProductStockSecurity, _Mapping]]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
-class StockSecurityProductCreateResponse(_message.Message):
-    __slots__ = ["stock_security_product", "response_standard"]
-    STOCK_SECURITY_PRODUCT_FIELD_NUMBER: _ClassVar[int]
+class StockSecurityCreateResponse(_message.Message):
+    __slots__ = ["stock_security", "response_standard"]
+    STOCK_SECURITY_FIELD_NUMBER: _ClassVar[int]
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
-    stock_security_product: StockSecurityProduct
+    stock_security: StockSecurity
     response_standard: _base_pb2.ResponseStandard
     def __init__(
         self,
-        stock_security_product: _Optional[_Union[StockSecurityProduct, _Mapping]] = ...,
+        stock_security: _Optional[_Union[StockSecurity, _Mapping]] = ...,
         response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
     ) -> None: ...
 
-class StockSecurityProductReadRequest(_message.Message):
+class StockSecurityReadRequest(_message.Message):
     __slots__ = ["group_by", "sort_by", "fields", "filter", "paginated", "id", "context"]
     GROUP_BY_FIELD_NUMBER: _ClassVar[int]
     SORT_BY_FIELD_NUMBER: _ClassVar[int]
@@ -108,46 +111,46 @@ class StockSecurityProductReadRequest(_message.Message):
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
-class StockSecurityProductReadResponse(_message.Message):
-    __slots__ = ["stock_security_products", "meta_data", "response_standard"]
-    STOCK_SECURITY_PRODUCTS_FIELD_NUMBER: _ClassVar[int]
+class StockSecurityReadResponse(_message.Message):
+    __slots__ = ["stock_security", "meta_data", "response_standard"]
+    STOCK_SECURITY_FIELD_NUMBER: _ClassVar[int]
     META_DATA_FIELD_NUMBER: _ClassVar[int]
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
-    stock_security_products: _containers.RepeatedCompositeFieldContainer[StockSecurityProduct]
+    stock_security: _containers.RepeatedCompositeFieldContainer[StockSecurity]
     meta_data: _base_pb2.MetaData
     response_standard: _base_pb2.ResponseStandard
     def __init__(
         self,
-        stock_security_products: _Optional[_Iterable[_Union[StockSecurityProduct, _Mapping]]] = ...,
+        stock_security: _Optional[_Iterable[_Union[StockSecurity, _Mapping]]] = ...,
         meta_data: _Optional[_Union[_base_pb2.MetaData, _Mapping]] = ...,
         response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
     ) -> None: ...
 
-class StockSecurityProductUpdateRequest(_message.Message):
-    __slots__ = ["stock_security_product", "context"]
-    STOCK_SECURITY_PRODUCT_FIELD_NUMBER: _ClassVar[int]
+class StockSecurityUpdateRequest(_message.Message):
+    __slots__ = ["stock_security", "context"]
+    STOCK_SECURITY_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    stock_security_product: StockSecurityProduct
+    stock_security: StockSecurity
     context: _base_pb2.Context
     def __init__(
         self,
-        stock_security_product: _Optional[_Union[StockSecurityProduct, _Mapping]] = ...,
+        stock_security: _Optional[_Union[StockSecurity, _Mapping]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
-class StockSecurityProductUpdateResponse(_message.Message):
-    __slots__ = ["stock_security_product", "response_standard"]
-    STOCK_SECURITY_PRODUCT_FIELD_NUMBER: _ClassVar[int]
+class StockSecurityUpdateResponse(_message.Message):
+    __slots__ = ["stock_security", "response_standard"]
+    STOCK_SECURITY_FIELD_NUMBER: _ClassVar[int]
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
-    stock_security_product: StockSecurityProduct
+    stock_security: StockSecurity
     response_standard: _base_pb2.ResponseStandard
     def __init__(
         self,
-        stock_security_product: _Optional[_Union[StockSecurityProduct, _Mapping]] = ...,
+        stock_security: _Optional[_Union[StockSecurity, _Mapping]] = ...,
         response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
     ) -> None: ...
 
-class StockSecurityProductDeleteRequest(_message.Message):
+class StockSecurityDeleteRequest(_message.Message):
     __slots__ = ["id", "context"]
     ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
@@ -157,7 +160,7 @@ class StockSecurityProductDeleteRequest(_message.Message):
         self, id: _Optional[str] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
     ) -> None: ...
 
-class StockSecurityProductDeleteResponse(_message.Message):
+class StockSecurityDeleteResponse(_message.Message):
     __slots__ = ["response_standard"]
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
     response_standard: _base_pb2.ResponseStandard
