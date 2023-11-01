@@ -653,7 +653,7 @@ class QueryBuilder:
         ">": operator.gt,
         ">=": operator.ge,
         "!=": operator.ne,
-        "in": operator.contains,
+        "in": lambda x, y: x.in_(y),
         "and": operator.and_,
         "or": operator.or_,
         "not": lambda x: ~(x),
