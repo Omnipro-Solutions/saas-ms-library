@@ -34,7 +34,7 @@ class DeliveryMethod(_message.Message):
         "category_template",
         "locality_available",
         "schedule_template",
-        "stock_security_product",
+        "stock_security",
         "active",
         "object_audit",
     ]
@@ -51,7 +51,7 @@ class DeliveryMethod(_message.Message):
     CATEGORY_TEMPLATE_FIELD_NUMBER: _ClassVar[int]
     LOCALITY_AVAILABLE_FIELD_NUMBER: _ClassVar[int]
     SCHEDULE_TEMPLATE_FIELD_NUMBER: _ClassVar[int]
-    STOCK_SECURITY_PRODUCT_FIELD_NUMBER: _ClassVar[int]
+    STOCK_SECURITY_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
@@ -67,7 +67,7 @@ class DeliveryMethod(_message.Message):
     category_template: _delivery_category_pb2.DeliveryCategory
     locality_available: _delivery_locality_pb2.DeliveryLocality
     schedule_template: _delivery_schedule_pb2.DeliverySchedule
-    stock_security_product: _stock_security_pb2.StockSecurity
+    stock_security: _stock_security_pb2.StockSecurity
     active: _wrappers_pb2.BoolValue
     object_audit: _base_pb2.ObjectAudit
     def __init__(
@@ -85,7 +85,7 @@ class DeliveryMethod(_message.Message):
         category_template: _Optional[_Union[_delivery_category_pb2.DeliveryCategory, _Mapping]] = ...,
         locality_available: _Optional[_Union[_delivery_locality_pb2.DeliveryLocality, _Mapping]] = ...,
         schedule_template: _Optional[_Union[_delivery_schedule_pb2.DeliverySchedule, _Mapping]] = ...,
-        stock_security_product: _Optional[_Union[_stock_security_pb2.StockSecurity, _Mapping]] = ...,
+        stock_security: _Optional[_Union[_stock_security_pb2.StockSecurity, _Mapping]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
