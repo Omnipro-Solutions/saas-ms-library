@@ -222,6 +222,7 @@ def add_or_remove_document_relations(
     request_context,
     element_name,
     element_relation_name,
+    multiple_params=False,
 ):
     """
     The add_or_remove_document_relations function process and get registers to remove and add, to apply changes and return a list of result.
@@ -237,6 +238,7 @@ def add_or_remove_document_relations(
     request_context: Context of the request. Contexto de la petición.
     element_name: Model name. Nombre del modelo.
     element_relation_name: Relation name. Nombre de la relación.
+    multiple_params: If the search is by multiple params. Si la búsqueda es por múltiples parámetros.
 
     Returns:
     The list of relations process.
@@ -244,11 +246,14 @@ def add_or_remove_document_relations(
     """
 
     relations_list = set([x.__getattribute__(attribute_search) for x in exsitent_relations_list])
-    new_relations_list = set(new_relations_list)
-
-    remove_relations_list = list(relations_list - new_relations_list)
-    add_relations_list = list(new_relations_list - relations_list)
-
+    set_new_relations_list = set(
+        new_relations_list if multiple_params is False else [x["code"] for x in new_relations_list]
+    )
+    remove_relations_list = list(relations_list - set_new_relations_list)
+    if multiple_params:
+        add_relations_list = [item for item in new_relations_list if item["code"] not in relations_list]
+    else:
+        add_relations_list = list(set_new_relations_list - relations_list)
     result_list = []
 
     result_list = remove_document_relations(
@@ -260,6 +265,7 @@ def add_or_remove_document_relations(
         request_context,
         element_name,
         element_relation_name,
+        multiple_params,
     )
     result_list = add_document_relations(
         context,
@@ -270,6 +276,7 @@ def add_or_remove_document_relations(
         request_context,
         element_name,
         element_relation_name,
+        multiple_params,
     )
     return result_list
 
@@ -283,6 +290,7 @@ def remove_document_relations(
     request_context,
     element_name,
     element_relation_name,
+    multiple_params=False,
 ):
     """
     The remove_document_relations function remove resgisters of list_registers the elements defined on list_elements.
@@ -297,6 +305,7 @@ def remove_document_relations(
     request_context: Context of the request. Contexto de la petición.
     element_name: Model name. Nombre del modelo.
     element_relation_name: Relation name. Nombre de la relación.
+    multiple_params: If the search is by multiple params. Si la búsqueda es por múltiples parámetros.
 
     Returns:
     The list of relations process.
@@ -304,7 +313,7 @@ def remove_document_relations(
     """
     with ExitStackDocument(document_classes=document.reference_list(), db_alias=context.db_name):
         for element in list_elements:
-            register = get_register(attribute_search, context, document, element, request_context)
+            register = get_register(attribute_search, context, document, element, request_context, multiple_params)
             if register not in list_registers:
                 raise NotFoundError(message=f"{element_name} {element} not defined in {element_relation_name}")
             list_registers.remove(register)
@@ -321,6 +330,7 @@ def add_document_relations(
     request_context,
     element_name,
     element_relation_name,
+    multiple_params=False,
 ):
     """
     The add_document_relations function add resgisters to list_registers from elements defined on list_elements.
@@ -335,6 +345,7 @@ def add_document_relations(
     request_context: Context of the request. Contexto de la petición.
     element_name: Model name. Nombre del modelo.
     element_relation_name: Relation name. Nombre de la relación.
+    multiple_params: If the search is by multiple params. Si la búsqueda es por múltiples parámetros.
 
     Returns:
     The list of relations process.
@@ -342,7 +353,7 @@ def add_document_relations(
     """
     with ExitStackDocument(document_classes=document.reference_list(), db_alias=context.db_name):
         for element in list_elements:
-            register = get_register(attribute_search, context, document, element, request_context)
+            register = get_register(attribute_search, context, document, element, request_context, multiple_params)
             if not register:
                 raise NotFoundError(message=f"{element_name} {element} not found")
             if register in list_registers:
@@ -352,7 +363,7 @@ def add_document_relations(
         return list_registers
 
 
-def get_register(attribute_search, context, document, element, request_context):
+def get_register(attribute_search, context, document, element, request_context, multiple_params):
     """
     The get_register function get resgister from diferent type search by id or get_or_sync.
     La función get_register obtiene el registro de la búsqueda de diferentes tipos por id o get_or_sync.
@@ -363,6 +374,7 @@ def get_register(attribute_search, context, document, element, request_context):
     document: Class document to validate. Clase documento a validar.
     element: Element to search. Elemento a buscar.
     request_context: Context of the request. Contexto de la petición.
+    multiple_params: If the search is by multiple params. Si la búsqueda es por múltiples parámetros.
 
     Returns:
     Object of the register.
@@ -372,7 +384,8 @@ def get_register(attribute_search, context, document, element, request_context):
         return context.db_manager.get_document(
             context.db_name, request_context.get("tenant"), document, **{attribute_search: element}
         )
-
+    if multiple_params:
+        return document.get_or_sync(request_context, **element)
     return document.get_or_sync(request_context, **{attribute_search: element})
 
 
