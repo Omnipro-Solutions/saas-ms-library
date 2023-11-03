@@ -222,6 +222,7 @@ def add_or_remove_document_relations(
     request_context,
     element_name,
     element_relation_name,
+    multiple_params=False,
 ):
     """
     The add_or_remove_document_relations function process and get registers to remove and add, to apply changes and return a list of result.
@@ -244,11 +245,14 @@ def add_or_remove_document_relations(
     """
 
     relations_list = set([x.__getattribute__(attribute_search) for x in exsitent_relations_list])
-    new_relations_list = set(new_relations_list)
-
-    remove_relations_list = list(relations_list - new_relations_list)
-    add_relations_list = list(new_relations_list - relations_list)
-
+    set_new_relations_list = set(
+        new_relations_list if multiple_params is False else [x["code"] for x in new_relations_list]
+    )
+    remove_relations_list = list(relations_list - set_new_relations_list)
+    if multiple_params:
+        add_relations_list = [item for item in new_relations_list if item["code"] not in relations_list]
+    else:
+        add_relations_list = list(set_new_relations_list - relations_list)
     result_list = []
 
     result_list = remove_document_relations(
@@ -266,7 +270,7 @@ def add_or_remove_document_relations(
         document,
         add_relations_list,
         result_list,
-        attribute_search,
+        attribute_search if multiple_params is False else "multiple",
         request_context,
         element_name,
         element_relation_name,
@@ -372,7 +376,8 @@ def get_register(attribute_search, context, document, element, request_context):
         return context.db_manager.get_document(
             context.db_name, request_context.get("tenant"), document, **{attribute_search: element}
         )
-
+    if attribute_search == "multiple":
+        return document.get_or_sync(request_context, **element)
     return document.get_or_sync(request_context, **{attribute_search: element})
 
 
