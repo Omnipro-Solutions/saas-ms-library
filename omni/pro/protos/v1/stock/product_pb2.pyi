@@ -13,17 +13,19 @@ from omni.pro.protos.common import base_pb2 as _base_pb2
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Product(_message.Message):
-    __slots__ = ["id", "product_doc_id", "template_doc_id", "name", "active", "object_audit"]
+    __slots__ = ["id", "product_doc_id", "template_doc_id", "name", "code", "active", "object_audit"]
     ID_FIELD_NUMBER: _ClassVar[int]
     PRODUCT_DOC_ID_FIELD_NUMBER: _ClassVar[int]
     TEMPLATE_DOC_ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
+    CODE_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: int
     product_doc_id: str
     template_doc_id: str
     name: str
+    code: str
     active: _wrappers_pb2.BoolValue
     object_audit: _base_pb2.ObjectAudit
     def __init__(
@@ -32,25 +34,29 @@ class Product(_message.Message):
         product_doc_id: _Optional[str] = ...,
         template_doc_id: _Optional[str] = ...,
         name: _Optional[str] = ...,
+        code: _Optional[str] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
 class ProductCreateRequest(_message.Message):
-    __slots__ = ["product_doc_id", "template_doc_id", "name", "context"]
+    __slots__ = ["product_doc_id", "template_doc_id", "name", "code", "context"]
     PRODUCT_DOC_ID_FIELD_NUMBER: _ClassVar[int]
     TEMPLATE_DOC_ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
+    CODE_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     product_doc_id: str
     template_doc_id: str
     name: str
+    code: str
     context: _base_pb2.Context
     def __init__(
         self,
         product_doc_id: _Optional[str] = ...,
         template_doc_id: _Optional[str] = ...,
         name: _Optional[str] = ...,
+        code: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 

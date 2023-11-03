@@ -93,6 +93,11 @@ class FamilyServiceStub(object):
             request_serializer=v1_dot_catalogs_dot_family__pb2.AttributeVariantDeleteRequest.SerializeToString,
             response_deserializer=v1_dot_catalogs_dot_family__pb2.AttributeVariantDeleteResponse.FromString,
         )
+        self.CategoryRead = channel.unary_unary(
+            "/pro.omni.oms.api.v1.catalogs.family.FamilyService/CategoryRead",
+            request_serializer=v1_dot_catalogs_dot_family__pb2.CategoryReadRequest.SerializeToString,
+            response_deserializer=v1_dot_catalogs_dot_family__pb2.CategoryReadResponse.FromString,
+        )
 
 
 class FamilyServiceServicer(object):
@@ -194,6 +199,12 @@ class FamilyServiceServicer(object):
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
+    def CategoryRead(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
 
 def add_FamilyServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -276,6 +287,11 @@ def add_FamilyServiceServicer_to_server(servicer, server):
             servicer.AttributeVariantDelete,
             request_deserializer=v1_dot_catalogs_dot_family__pb2.AttributeVariantDeleteRequest.FromString,
             response_serializer=v1_dot_catalogs_dot_family__pb2.AttributeVariantDeleteResponse.SerializeToString,
+        ),
+        "CategoryRead": grpc.unary_unary_rpc_method_handler(
+            servicer.CategoryRead,
+            request_deserializer=v1_dot_catalogs_dot_family__pb2.CategoryReadRequest.FromString,
+            response_serializer=v1_dot_catalogs_dot_family__pb2.CategoryReadResponse.SerializeToString,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -742,6 +758,35 @@ class FamilyService(object):
             "/pro.omni.oms.api.v1.catalogs.family.FamilyService/AttributeVariantDelete",
             v1_dot_catalogs_dot_family__pb2.AttributeVariantDeleteRequest.SerializeToString,
             v1_dot_catalogs_dot_family__pb2.AttributeVariantDeleteResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
+
+    @staticmethod
+    def CategoryRead(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            "/pro.omni.oms.api.v1.catalogs.family.FamilyService/CategoryRead",
+            v1_dot_catalogs_dot_family__pb2.CategoryReadRequest.SerializeToString,
+            v1_dot_catalogs_dot_family__pb2.CategoryReadResponse.FromString,
             options,
             channel_credentials,
             insecure,

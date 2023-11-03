@@ -531,6 +531,17 @@ class RedisManager(object):
         tenant_obj = self.get_json(tenant)
         return tenant_obj.get("user_admin") or {}
 
+    def get_load_balancer_config(self, service_id, tennat):
+        config = self.get_resource_config(service_id, tennat)
+        return {
+            "host": nested(config, "load_balancer"),
+            "port": nested(config, "port"),
+        }
+
+    def get_load_balancer_name(self, service_id, tennat):
+        config = self.get_load_balancer_config(service_id, tennat)
+        return f"{config.get('host')}:{config.get('port')}"
+
 
 class PolishNotationToMongoDB:
     def __init__(self, expression):

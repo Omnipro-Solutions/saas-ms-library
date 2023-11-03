@@ -24,6 +24,7 @@ class WarehouseHierarchy(_message.Message):
         "quantity_security",
         "sequence",
         "sequence_order",
+        "gift_code",
         "active",
         "object_audit",
     ]
@@ -35,6 +36,7 @@ class WarehouseHierarchy(_message.Message):
     QUANTITY_SECURITY_FIELD_NUMBER: _ClassVar[int]
     SEQUENCE_FIELD_NUMBER: _ClassVar[int]
     SEQUENCE_ORDER_FIELD_NUMBER: _ClassVar[int]
+    GIFT_CODE_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
@@ -45,6 +47,7 @@ class WarehouseHierarchy(_message.Message):
     quantity_security: float
     sequence: int
     sequence_order: _wrappers_pb2.BoolValue
+    gift_code: str
     active: _wrappers_pb2.BoolValue
     object_audit: _base_pb2.ObjectAudit
     def __init__(
@@ -57,6 +60,7 @@ class WarehouseHierarchy(_message.Message):
         quantity_security: _Optional[float] = ...,
         sequence: _Optional[int] = ...,
         sequence_order: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        gift_code: _Optional[str] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
@@ -69,6 +73,7 @@ class WarehouseHierarchyCreateRequest(_message.Message):
         "location_id",
         "quantity_security",
         "sequence",
+        "gift_code",
         "sequence_order",
         "context",
     ]
@@ -78,6 +83,7 @@ class WarehouseHierarchyCreateRequest(_message.Message):
     LOCATION_ID_FIELD_NUMBER: _ClassVar[int]
     QUANTITY_SECURITY_FIELD_NUMBER: _ClassVar[int]
     SEQUENCE_FIELD_NUMBER: _ClassVar[int]
+    GIFT_CODE_FIELD_NUMBER: _ClassVar[int]
     SEQUENCE_ORDER_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
@@ -86,6 +92,7 @@ class WarehouseHierarchyCreateRequest(_message.Message):
     location_id: int
     quantity_security: float
     sequence: int
+    gift_code: str
     sequence_order: _wrappers_pb2.BoolValue
     context: _base_pb2.Context
     def __init__(
@@ -96,6 +103,7 @@ class WarehouseHierarchyCreateRequest(_message.Message):
         location_id: _Optional[int] = ...,
         quantity_security: _Optional[float] = ...,
         sequence: _Optional[int] = ...,
+        gift_code: _Optional[str] = ...,
         sequence_order: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
