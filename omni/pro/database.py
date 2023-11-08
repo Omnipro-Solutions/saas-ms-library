@@ -11,8 +11,8 @@ from omni.pro.config import Config
 from omni.pro.logger import configure_logger
 from omni.pro.protos.common import base_pb2
 from omni.pro.util import nested
-from sqlalchemy import asc, create_engine, desc
-from sqlalchemy.orm import scoped_session, sessionmaker
+from sqlalchemy import and_, asc, create_engine, desc, not_, or_
+from sqlalchemy.orm import aliased, scoped_session, sessionmaker
 
 logger = configure_logger(name=__name__)
 
@@ -239,6 +239,8 @@ class PostgresDatabaseManager(SessionManager):
                     Contraseña para conectarse a la base de datos.
     """
 
+    DEFAULT_PAGE_SIZE = 10
+
     def __init__(self, name: str, host: str, port: str, user: str, password: str):
         """
         Initializes the PostgresDatabaseManager with the given database details.
@@ -385,9 +387,43 @@ class PostgresDatabaseManager(SessionManager):
         (list): A list of records based on the provided parameters.
                 Una lista de registros basados en los parámetros proporcionados.
         """
-        records = QueryBuilder.build_filter(model, session, id, fields, filter, group_by, sort_by, paginated)
+        # records = QueryBuilder.build_filter(model, session, id, fields, filter, group_by, sort_by, paginated)
 
-        return records
+        # Uso de la clase
+        expression = ast.literal_eval(filter.filter)  # Tu expresión en notación polaca inversa
+        converter = PolishNotationToSQLAlchemy(model, expression)
+        filter_condition, aliases = converter.convert()
+
+        # Aplicar el filtro a la consulta
+        query = session.query(model)
+        for alias in aliases.values():
+            query = query.join(alias)
+
+        query = query.filter(filter_condition)
+        if id:
+            query = query.filter(model.id == id)
+
+        if fields.ListFields():
+            query = query.with_entities(*[getattr(model, f) for f in fields.name_field])
+
+        if sort_by.ListFields():
+            order_by_fields = self.build_sort_by(model, sort_by)
+            query = query.order_by(*order_by_fields)
+
+        total = query.count()
+
+        page = paginated.offset or 1
+        limit = paginated.limit or self.DEFAULT_PAGE_SIZE
+        offset = (page - 1) * limit
+        query = query.offset(offset).limit(limit)
+
+        return query.all(), total
+
+    def build_sort_by(self, model, sort_by: base_pb2.SortBy):
+        field = getattr(model, sort_by.name_field)
+        if sort_by.type == sort_by.DESC:
+            return [desc(field)]
+        return [asc(field)]
 
     def update_record(self, model, session, model_id, update_dict):
         """
@@ -654,6 +690,84 @@ class DBUtil(object):
             return ObjectId(id)
         except:
             return ObjectId(None)
+
+
+class PolishNotationToSQLAlchemy:
+    def __init__(self, model, expression):
+        self.model = model
+        self.expression = expression
+        self.aliases = {}
+
+    def is_logical_operator(self, token):
+        return token in ["and", "or", "not"]
+
+    def is_comparison_operator(self, token):
+        return token in ["=", "!=", "like", "!like", "in", "nin", ">", "<", ">=", "<="]
+
+    def is_tuple(self, token):
+        return isinstance(token, tuple) and len(token) == 3
+
+    def get_field(self, model, field_path):
+        fields = field_path.split("__")
+        for field in fields[:-1]:  # process relationships
+            relationship = getattr(model, field, None)
+            if relationship is None:
+                raise AttributeError(f"No such relationship {field} on {model}")
+            if relationship in self.aliases:
+                model = self.aliases[relationship]
+            else:
+                alias = aliased(relationship.property.mapper.class_)
+                self.aliases[relationship] = alias
+                model = alias
+        return getattr(model, fields[-1], None), model
+
+    def create_filter(self, model, field_path, operator, value):
+        field, model = self.get_field(model, field_path)
+        if operator == "=":
+            return field == value
+        elif operator == "!=":
+            return field != value
+        elif operator == "like":
+            return field.like(value)
+        elif operator == "!like":
+            return not_(field.like(value))
+        elif operator == "in":
+            return field.in_(value)
+        elif operator == "nin":
+            return not_(field.in_(value))
+        elif operator == ">":
+            return field > value
+        elif operator == "<":
+            return field < value
+        elif operator == ">=":
+            return field >= value
+        elif operator == "<=":
+            return field <= value
+        else:
+            raise ValueError(f"Unknown operator: {operator}")
+
+    def convert(self):
+        operand_stack = []
+
+        for token in reversed(self.expression):
+            if self.is_logical_operator(token):
+                operands = [operand_stack.pop() for _ in range(2)]
+                if token == "and":
+                    operand_stack.append(and_(*operands))
+                elif token == "or":
+                    operand_stack.append(or_(*operands))
+                elif token == "not":
+                    operand_stack.append(not_(operands[0]))
+            elif self.is_tuple(token):
+                field_path, operator, value = token
+                operand_stack.append(self.create_filter(self.model, field_path, operator, value))
+            else:
+                raise ValueError(f"Unexpected token: {token}")
+
+        if len(operand_stack) != 1:
+            raise ValueError("The expression does not resolve to a single operand.")
+
+        return operand_stack[0], self.aliases
 
 
 class QueryBuilder:
