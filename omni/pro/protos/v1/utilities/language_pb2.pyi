@@ -25,6 +25,7 @@ class Language(_message.Message):
         "thousands_separator",
         "grouping",
         "week_start",
+        "icon",
         "active",
         "object_audit",
     ]
@@ -39,6 +40,7 @@ class Language(_message.Message):
     THOUSANDS_SEPARATOR_FIELD_NUMBER: _ClassVar[int]
     GROUPING_FIELD_NUMBER: _ClassVar[int]
     WEEK_START_FIELD_NUMBER: _ClassVar[int]
+    ICON_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
@@ -52,6 +54,7 @@ class Language(_message.Message):
     thousands_separator: str
     grouping: str
     week_start: str
+    icon: bytes
     active: _wrappers_pb2.BoolValue
     object_audit: _base_pb2.ObjectAudit
     def __init__(
@@ -67,6 +70,7 @@ class Language(_message.Message):
         thousands_separator: _Optional[str] = ...,
         grouping: _Optional[str] = ...,
         week_start: _Optional[str] = ...,
+        icon: _Optional[bytes] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
@@ -83,6 +87,7 @@ class LanguageAddRequest(_message.Message):
         "thousands_separator",
         "grouping",
         "week_start",
+        "icon",
         "active",
         "context",
     ]
@@ -96,6 +101,7 @@ class LanguageAddRequest(_message.Message):
     THOUSANDS_SEPARATOR_FIELD_NUMBER: _ClassVar[int]
     GROUPING_FIELD_NUMBER: _ClassVar[int]
     WEEK_START_FIELD_NUMBER: _ClassVar[int]
+    ICON_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
@@ -108,6 +114,7 @@ class LanguageAddRequest(_message.Message):
     thousands_separator: str
     grouping: str
     week_start: str
+    icon: bytes
     active: _wrappers_pb2.BoolValue
     context: _base_pb2.Context
     def __init__(
@@ -122,6 +129,7 @@ class LanguageAddRequest(_message.Message):
         thousands_separator: _Optional[str] = ...,
         grouping: _Optional[str] = ...,
         week_start: _Optional[str] = ...,
+        icon: _Optional[bytes] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
