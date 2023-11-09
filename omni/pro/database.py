@@ -18,7 +18,9 @@ logger = configure_logger(name=__name__)
 
 
 class DatabaseManager(object):
-    def __init__(self, host: str, port: int, db: str, user: str, password: str, complement: dict) -> None:
+    def __init__(
+        self, host: str, port: int, db: str, user: str, password: str, complement: dict
+    ) -> None:
         """
         :param db_object: Database object
         Example:
@@ -55,12 +57,16 @@ class DatabaseManager(object):
         document.save()
         return document
 
-    def get_document(self, db_name: str, tenant: str, document_class, **kwargs) -> object:
+    def get_document(
+        self, db_name: str, tenant: str, document_class, **kwargs
+    ) -> object:
         document = document_class.objects(**kwargs, context__tenant=tenant).first()
         # document.to_proto()
         return document
 
-    def update_document(self, db_name: str, document_class, id: str, **kwargs) -> object:
+    def update_document(
+        self, db_name: str, document_class, id: str, **kwargs
+    ) -> object:
         document = document_class.objects(id=id).first()
         document_class.objects(id=document.id).first().update(**kwargs)
         document.reload()
@@ -105,7 +111,9 @@ class DatabaseManager(object):
         # Filter documents based on criteria provided
 
         if filter:
-            query_set = document_class.objects(context__tenant=tenant).filter(__raw__=filter)
+            query_set = document_class.objects(context__tenant=tenant).filter(
+                __raw__=filter
+            )
         else:
             query_set = document_class.objects(context__tenant=tenant)
 
@@ -138,7 +146,12 @@ class DatabaseManager(object):
         return document
 
     def update_embeded_document(
-        self, db_name: str, document_class, filters: dict, update: dict, many: bool = False
+        self,
+        db_name: str,
+        document_class,
+        filters: dict,
+        update: dict,
+        many: bool = False,
     ) -> object:
         # with self.get_connection() as cnn:
         if many:
@@ -385,7 +398,9 @@ class PostgresDatabaseManager(SessionManager):
         (list): A list of records based on the provided parameters.
                 Una lista de registros basados en los parámetros proporcionados.
         """
-        records = QueryBuilder.build_filter(model, session, id, fields, filter, group_by, sort_by, paginated)
+        records = QueryBuilder.build_filter(
+            model, session, id, fields, filter, group_by, sort_by, paginated
+        )
 
         return records
 
@@ -450,7 +465,9 @@ class RedisConnection:
         self.db = db
 
     def __enter__(self) -> redis.StrictRedis:
-        self.redis_client = redis.StrictRedis(host=self.host, port=self.port, db=self.db, decode_responses=True)
+        self.redis_client = redis.StrictRedis(
+            host=self.host, port=self.port, db=self.db, decode_responses=True
+        )
         return self.redis_client
 
     def __exit__(self, exc_type, exc_value, traceback) -> None:
@@ -467,7 +484,9 @@ class RedisManager(object):
     def get_connection(self) -> RedisConnection:
         if Config.TESTING:
             return fakeredis.FakeStrictRedis(
-                server=FakeRedisServer.get_instance(), charset="utf-8", decode_responses=True
+                server=FakeRedisServer.get_instance(),
+                charset="utf-8",
+                decode_responses=True,
             )
         return self._connection
 
@@ -546,7 +565,12 @@ class RedisManager(object):
 class PolishNotationToMongoDB:
     def __init__(self, expression):
         self.expression = expression
-        self.operators_logical = {"and": "$and", "or": "$or", "nor": "$nor", "not": "$not"}
+        self.operators_logical = {
+            "and": "$and",
+            "or": "$or",
+            "nor": "$nor",
+            "not": "$not",
+        }
         self.operators_comparison = {
             "=": "$eq",
             ">": "$gt",
@@ -589,8 +613,18 @@ class PolishNotationToMongoDB:
                     if old_operator == "like":
                         options = {"$options": "i"}
                     elif old_operator == "!like":
-                        options = {self.operators_comparison[old_operator]: {"$regex": value, "$options": "i"}}
-                    operand_stack.append({field: {self.operators_comparison[old_operator]: value} | options})
+                        options = {
+                            self.operators_comparison[old_operator]: {
+                                "$regex": value,
+                                "$options": "i",
+                            }
+                        }
+                    operand_stack.append(
+                        {
+                            field: {self.operators_comparison[old_operator]: value}
+                            | options
+                        }
+                    )
                 else:
                     raise ValueError(f"Unexpected operator: {old_operator}")
             else:
@@ -621,25 +655,42 @@ class DBUtil(object):
         sort_by: base_pb2.SortBy,
     ) -> dict:
         prepared_statement = {}
-        prepared_statement["paginated"] = {"page": paginated.offset, "per_page": paginated.limit or 10}
+        prepared_statement["paginated"] = {
+            "page": paginated.offset,
+            "per_page": paginated.limit or 10,
+        }
         if (ft := filter.ListFields()) or id:
             expression = [("_id", "=", cls.generate_object_id(id))]
             if ft:
-                str_filter = filter.filter.replace("true", "True").replace("false", "False").replace("__", ".")
+                str_filter = (
+                    filter.filter.replace("true", "True")
+                    .replace("false", "False")
+                    .replace("__", ".")
+                )
                 expression = ast.literal_eval(str_filter)
                 # reemplace filter id by _id and convert to ObjectId
                 for idx, exp in enumerate(expression):
                     if isinstance(exp, tuple) and len(exp) == 3 and exp[0] == "id":
                         if type(exp[2]) == list:
-                            expression[idx] = ("_id", exp[1], [cls.generate_object_id(x) for x in exp[2]])
+                            expression[idx] = (
+                                "_id",
+                                exp[1],
+                                [cls.generate_object_id(x) for x in exp[2]],
+                            )
                             continue
-                        expression[idx] = ("_id", exp[1], cls.generate_object_id(exp[2]))
+                        expression[idx] = (
+                            "_id",
+                            exp[1],
+                            cls.generate_object_id(exp[2]),
+                        )
             filter_custom = PolishNotationToMongoDB(expression=expression).convert()
             prepared_statement["filter"] = filter_custom
         if group_by:
             prepared_statement["group_by"] = [x.name_field for x in group_by]
         if sort_by.ListFields():
             prepared_statement["sort_by"] = [cls.db_trans_sort(sort_by)]
+        if fields:
+            prepared_statement["fields"] = fields.name_field
         return prepared_statement
 
     @classmethod
@@ -745,11 +796,19 @@ class QueryBuilder:
                     related_model = getattr(model, related).property.argument
                     related_field = getattr(related_model, field)
                     related_query = cls.filter_ops[op](related_field, value)
-                    query = cls.filter_ops[op](query, related_query) if query else related_query
+                    query = (
+                        cls.filter_ops[op](query, related_query)
+                        if query
+                        else related_query
+                    )
                 else:
                     field = getattr(model, field)
                     field_query = cls.filter_ops[op](field, value)
-                    query = cls.filter_ops[filter_operator](query, field_query) if filter_operator else field_query
+                    query = (
+                        cls.filter_ops[filter_operator](query, field_query)
+                        if filter_operator
+                        else field_query
+                    )
             else:
                 raise ValueError(f"Invalid filter item: {item}")
 
