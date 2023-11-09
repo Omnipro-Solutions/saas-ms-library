@@ -19,9 +19,9 @@ class ProductStockSecurity(_message.Message):
     QUANTITY_SECURITY_FIELD_NUMBER: _ClassVar[int]
     product_doc_id: str
     sku: str
-    quantity_security: str
+    quantity_security: float
     def __init__(
-        self, product_doc_id: _Optional[str] = ..., sku: _Optional[str] = ..., quantity_security: _Optional[str] = ...
+        self, product_doc_id: _Optional[str] = ..., sku: _Optional[str] = ..., quantity_security: _Optional[float] = ...
     ) -> None: ...
 
 class StockSecurity(_message.Message):
