@@ -13,6 +13,24 @@ from omni.pro.protos.v1.rules import category_pb2 as _category_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
+class CategoryValues(_message.Message):
+    __slots__ = ["family_doc_id", "group_code", "attribute_code", "code"]
+    FAMILY_DOC_ID_FIELD_NUMBER: _ClassVar[int]
+    GROUP_CODE_FIELD_NUMBER: _ClassVar[int]
+    ATTRIBUTE_CODE_FIELD_NUMBER: _ClassVar[int]
+    CODE_FIELD_NUMBER: _ClassVar[int]
+    family_doc_id: str
+    group_code: str
+    attribute_code: str
+    code: str
+    def __init__(
+        self,
+        family_doc_id: _Optional[str] = ...,
+        group_code: _Optional[str] = ...,
+        attribute_code: _Optional[str] = ...,
+        code: _Optional[str] = ...,
+    ) -> None: ...
+
 class DeliveryCategory(_message.Message):
     __slots__ = ["id", "name", "categories", "active", "object_audit"]
     ID_FIELD_NUMBER: _ClassVar[int]
@@ -35,17 +53,17 @@ class DeliveryCategory(_message.Message):
     ) -> None: ...
 
 class DeliveryCategoryCreateRequest(_message.Message):
-    __slots__ = ["name", "category_codes", "context"]
+    __slots__ = ["name", "category_values", "context"]
     NAME_FIELD_NUMBER: _ClassVar[int]
-    CATEGORY_CODES_FIELD_NUMBER: _ClassVar[int]
+    CATEGORY_VALUES_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
-    category_codes: _containers.RepeatedScalarFieldContainer[str]
+    category_values: _containers.RepeatedCompositeFieldContainer[CategoryValues]
     context: _base_pb2.Context
     def __init__(
         self,
         name: _Optional[str] = ...,
-        category_codes: _Optional[_Iterable[str]] = ...,
+        category_values: _Optional[_Iterable[_Union[CategoryValues, _Mapping]]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 

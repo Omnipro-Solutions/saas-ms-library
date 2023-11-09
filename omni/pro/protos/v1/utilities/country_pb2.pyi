@@ -28,6 +28,7 @@ class Country(_message.Message):
         "timezones",
         "languages",
         "low_level",
+        "icon",
         "active",
         "object_audit",
     ]
@@ -44,6 +45,7 @@ class Country(_message.Message):
     TIMEZONES_FIELD_NUMBER: _ClassVar[int]
     LANGUAGES_FIELD_NUMBER: _ClassVar[int]
     LOW_LEVEL_FIELD_NUMBER: _ClassVar[int]
+    ICON_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
@@ -59,6 +61,7 @@ class Country(_message.Message):
     timezones: _struct_pb2.ListValue
     languages: _struct_pb2.ListValue
     low_level: str
+    icon: bytes
     active: _wrappers_pb2.BoolValue
     object_audit: _base_pb2.ObjectAudit
     def __init__(
@@ -76,6 +79,7 @@ class Country(_message.Message):
         timezones: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
         languages: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
         low_level: _Optional[str] = ...,
+        icon: _Optional[bytes] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
@@ -94,6 +98,7 @@ class CountryCreateRequest(_message.Message):
         "timezones_ids",
         "languages_ids",
         "low_level",
+        "icon",
         "context",
     ]
     CODE_FIELD_NUMBER: _ClassVar[int]
@@ -108,6 +113,7 @@ class CountryCreateRequest(_message.Message):
     TIMEZONES_IDS_FIELD_NUMBER: _ClassVar[int]
     LANGUAGES_IDS_FIELD_NUMBER: _ClassVar[int]
     LOW_LEVEL_FIELD_NUMBER: _ClassVar[int]
+    ICON_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     code: str
     name: str
@@ -121,6 +127,7 @@ class CountryCreateRequest(_message.Message):
     timezones_ids: _struct_pb2.ListValue
     languages_ids: _struct_pb2.ListValue
     low_level: str
+    icon: bytes
     context: _base_pb2.Context
     def __init__(
         self,
@@ -136,6 +143,7 @@ class CountryCreateRequest(_message.Message):
         timezones_ids: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
         languages_ids: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
         low_level: _Optional[str] = ...,
+        icon: _Optional[bytes] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
