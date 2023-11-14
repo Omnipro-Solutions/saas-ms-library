@@ -23,6 +23,7 @@ class Client(_message.Message):
         "country",
         "addresses",
         "active",
+        "external_id",
         "object_audit",
     ]
     ID_FIELD_NUMBER: _ClassVar[int]
@@ -34,6 +35,7 @@ class Client(_message.Message):
     COUNTRY_FIELD_NUMBER: _ClassVar[int]
     ADDRESSES_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
@@ -44,6 +46,7 @@ class Client(_message.Message):
     country: _base_pb2.Object
     addresses: _containers.RepeatedCompositeFieldContainer[_address_pb2.Address]
     active: bool
+    external_id: str
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
@@ -56,17 +59,19 @@ class Client(_message.Message):
         country: _Optional[_Union[_base_pb2.Object, _Mapping]] = ...,
         addresses: _Optional[_Iterable[_Union[_address_pb2.Address, _Mapping]]] = ...,
         active: bool = ...,
+        external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
 class ClientCreateRequest(_message.Message):
-    __slots__ = ["name", "type_document", "document", "mobile", "email", "country", "context"]
+    __slots__ = ["name", "type_document", "document", "mobile", "email", "country", "external_id", "context"]
     NAME_FIELD_NUMBER: _ClassVar[int]
     TYPE_DOCUMENT_FIELD_NUMBER: _ClassVar[int]
     DOCUMENT_FIELD_NUMBER: _ClassVar[int]
     MOBILE_FIELD_NUMBER: _ClassVar[int]
     EMAIL_FIELD_NUMBER: _ClassVar[int]
     COUNTRY_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     type_document: _base_pb2.Object
@@ -74,6 +79,7 @@ class ClientCreateRequest(_message.Message):
     mobile: str
     email: str
     country: _base_pb2.Object
+    external_id: str
     context: _base_pb2.Context
     def __init__(
         self,
@@ -83,6 +89,7 @@ class ClientCreateRequest(_message.Message):
         mobile: _Optional[str] = ...,
         email: _Optional[str] = ...,
         country: _Optional[_Union[_base_pb2.Object, _Mapping]] = ...,
+        external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 

@@ -29,6 +29,7 @@ class DeliveryTime(_message.Message):
         "value_max",
         "inversely",
         "active",
+        "external_id",
         "object_audit",
     ]
     ID_FIELD_NUMBER: _ClassVar[int]
@@ -43,6 +44,7 @@ class DeliveryTime(_message.Message):
     VALUE_MAX_FIELD_NUMBER: _ClassVar[int]
     INVERSELY_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
@@ -56,6 +58,7 @@ class DeliveryTime(_message.Message):
     value_max: int
     inversely: _wrappers_pb2.BoolValue
     active: _wrappers_pb2.BoolValue
+    external_id: str
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
@@ -71,6 +74,7 @@ class DeliveryTime(_message.Message):
         value_max: _Optional[int] = ...,
         inversely: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
@@ -86,6 +90,7 @@ class DeliveryTimeCreateRequest(_message.Message):
         "warehouse_from_ids",
         "delivery_method_ids",
         "inversely",
+        "external_id",
         "context",
     ]
     NAME_FIELD_NUMBER: _ClassVar[int]
@@ -98,6 +103,7 @@ class DeliveryTimeCreateRequest(_message.Message):
     WAREHOUSE_FROM_IDS_FIELD_NUMBER: _ClassVar[int]
     DELIVERY_METHOD_IDS_FIELD_NUMBER: _ClassVar[int]
     INVERSELY_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     code: str
@@ -109,6 +115,7 @@ class DeliveryTimeCreateRequest(_message.Message):
     warehouse_from_ids: _containers.RepeatedScalarFieldContainer[int]
     delivery_method_ids: _containers.RepeatedScalarFieldContainer[str]
     inversely: _wrappers_pb2.BoolValue
+    external_id: str
     context: _base_pb2.Context
     def __init__(
         self,
@@ -122,6 +129,7 @@ class DeliveryTimeCreateRequest(_message.Message):
         warehouse_from_ids: _Optional[_Iterable[int]] = ...,
         delivery_method_ids: _Optional[_Iterable[str]] = ...,
         inversely: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 

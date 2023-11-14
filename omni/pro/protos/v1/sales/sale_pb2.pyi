@@ -37,6 +37,7 @@ class Sale(_message.Message):
         "json_order",
         "state",
         "active",
+        "external_id",
         "object_audit",
     ]
     ID_FIELD_NUMBER: _ClassVar[int]
@@ -53,6 +54,7 @@ class Sale(_message.Message):
     JSON_ORDER_FIELD_NUMBER: _ClassVar[int]
     STATE_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: int
     name: str
@@ -68,6 +70,7 @@ class Sale(_message.Message):
     json_order: str
     state: _state_pb2.State
     active: _wrappers_pb2.BoolValue
+    external_id: str
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
@@ -85,6 +88,7 @@ class Sale(_message.Message):
         json_order: _Optional[str] = ...,
         state: _Optional[_Union[_state_pb2.State, _Mapping]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
@@ -126,6 +130,7 @@ class SaleCreateRequest(_message.Message):
         "warehouse_id",
         "json_order",
         "state_id",
+        "external_id",
         "context",
     ]
     NAME_FIELD_NUMBER: _ClassVar[int]
@@ -140,6 +145,7 @@ class SaleCreateRequest(_message.Message):
     WAREHOUSE_ID_FIELD_NUMBER: _ClassVar[int]
     JSON_ORDER_FIELD_NUMBER: _ClassVar[int]
     STATE_ID_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     date_order: _timestamp_pb2.Timestamp
@@ -153,6 +159,7 @@ class SaleCreateRequest(_message.Message):
     warehouse_id: int
     json_order: str
     state_id: int
+    external_id: str
     context: _base_pb2.Context
     def __init__(
         self,
@@ -168,6 +175,7 @@ class SaleCreateRequest(_message.Message):
         warehouse_id: _Optional[int] = ...,
         json_order: _Optional[str] = ...,
         state_id: _Optional[int] = ...,
+        external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 

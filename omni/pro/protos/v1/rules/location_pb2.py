@@ -16,7 +16,7 @@ from google.protobuf import wrappers_pb2 as google_dot_protobuf_dot_wrappers__pb
 from omni.pro.protos.common import base_pb2 as common_dot_base__pb2
 
 DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
-    b'\n\x17v1/rules/location.proto\x12"pro.omni.oms.api.v1.rules.location\x1a\x11\x63ommon/base.proto\x1a\x1egoogle/protobuf/wrappers.proto"\xb8\x01\n\x08Location\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0c\n\x04\x63ode\x18\x03 \x01(\t\x12\x17\n\x0flocation_sql_id\x18\x04 \x01(\x05\x12*\n\x06\x61\x63tive\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12?\n\x0cobject_audit\x18\x06 \x01(\x0b\x32).pro.omni.oms.api.common.base.ObjectAudit"\x84\x01\n\x15LocationCreateRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0c\n\x04\x63ode\x18\x02 \x01(\t\x12\x17\n\x0flocation_sql_id\x18\x03 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x04 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xa3\x01\n\x16LocationCreateResponse\x12>\n\x08location\x18\x01 \x01(\x0b\x32,.pro.omni.oms.api.v1.rules.location.Location\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\xf1\x02\n\x13LocationReadRequest\x12\x37\n\x08group_by\x18\x01 \x03(\x0b\x32%.pro.omni.oms.api.common.base.GroupBy\x12\x35\n\x07sort_by\x18\x02 \x01(\x0b\x32$.pro.omni.oms.api.common.base.SortBy\x12\x34\n\x06\x66ields\x18\x03 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Fields\x12\x34\n\x06\x66ilter\x18\x04 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Filter\x12:\n\tpaginated\x18\x05 \x01(\x0b\x32\'.pro.omni.oms.api.common.base.Paginated\x12\n\n\x02id\x18\x06 \x01(\t\x12\x36\n\x07\x63ontext\x18\x07 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xdd\x01\n\x14LocationReadResponse\x12?\n\tlocations\x18\x01 \x03(\x0b\x32,.pro.omni.oms.api.v1.rules.location.Location\x12\x39\n\tmeta_data\x18\x02 \x01(\x0b\x32&.pro.omni.oms.api.common.base.MetaData\x12I\n\x11response_standard\x18\x03 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\x8f\x01\n\x15LocationUpdateRequest\x12>\n\x08location\x18\x01 \x01(\x0b\x32,.pro.omni.oms.api.v1.rules.location.Location\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xa3\x01\n\x16LocationUpdateResponse\x12>\n\x08location\x18\x01 \x01(\x0b\x32,.pro.omni.oms.api.v1.rules.location.Location\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"[\n\x15LocationDeleteRequest\x12\n\n\x02id\x18\x01 \x01(\t\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"c\n\x16LocationDeleteResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard2\xbb\x04\n\x0fLocationService\x12\x89\x01\n\x0eLocationCreate\x12\x39.pro.omni.oms.api.v1.rules.location.LocationCreateRequest\x1a:.pro.omni.oms.api.v1.rules.location.LocationCreateResponse"\x00\x12\x83\x01\n\x0cLocationRead\x12\x37.pro.omni.oms.api.v1.rules.location.LocationReadRequest\x1a\x38.pro.omni.oms.api.v1.rules.location.LocationReadResponse"\x00\x12\x89\x01\n\x0eLocationUpdate\x12\x39.pro.omni.oms.api.v1.rules.location.LocationUpdateRequest\x1a:.pro.omni.oms.api.v1.rules.location.LocationUpdateResponse"\x00\x12\x89\x01\n\x0eLocationDelete\x12\x39.pro.omni.oms.api.v1.rules.location.LocationDeleteRequest\x1a:.pro.omni.oms.api.v1.rules.location.LocationDeleteResponse"\x00\x62\x06proto3'
+    b'\n\x17v1/rules/location.proto\x12"pro.omni.oms.api.v1.rules.location\x1a\x11\x63ommon/base.proto\x1a\x1egoogle/protobuf/wrappers.proto"\xcd\x01\n\x08Location\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0c\n\x04\x63ode\x18\x03 \x01(\t\x12\x17\n\x0flocation_sql_id\x18\x04 \x01(\x05\x12*\n\x06\x61\x63tive\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12\x13\n\x0b\x65xternal_id\x18\x06 \x01(\t\x12?\n\x0cobject_audit\x18\x07 \x01(\x0b\x32).pro.omni.oms.api.common.base.ObjectAudit"\x99\x01\n\x15LocationCreateRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0c\n\x04\x63ode\x18\x02 \x01(\t\x12\x17\n\x0flocation_sql_id\x18\x03 \x01(\x05\x12\x13\n\x0b\x65xternal_id\x18\x04 \x01(\t\x12\x36\n\x07\x63ontext\x18\x05 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xa3\x01\n\x16LocationCreateResponse\x12>\n\x08location\x18\x01 \x01(\x0b\x32,.pro.omni.oms.api.v1.rules.location.Location\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\xf1\x02\n\x13LocationReadRequest\x12\x37\n\x08group_by\x18\x01 \x03(\x0b\x32%.pro.omni.oms.api.common.base.GroupBy\x12\x35\n\x07sort_by\x18\x02 \x01(\x0b\x32$.pro.omni.oms.api.common.base.SortBy\x12\x34\n\x06\x66ields\x18\x03 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Fields\x12\x34\n\x06\x66ilter\x18\x04 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Filter\x12:\n\tpaginated\x18\x05 \x01(\x0b\x32\'.pro.omni.oms.api.common.base.Paginated\x12\n\n\x02id\x18\x06 \x01(\t\x12\x36\n\x07\x63ontext\x18\x07 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xdd\x01\n\x14LocationReadResponse\x12?\n\tlocations\x18\x01 \x03(\x0b\x32,.pro.omni.oms.api.v1.rules.location.Location\x12\x39\n\tmeta_data\x18\x02 \x01(\x0b\x32&.pro.omni.oms.api.common.base.MetaData\x12I\n\x11response_standard\x18\x03 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\x8f\x01\n\x15LocationUpdateRequest\x12>\n\x08location\x18\x01 \x01(\x0b\x32,.pro.omni.oms.api.v1.rules.location.Location\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xa3\x01\n\x16LocationUpdateResponse\x12>\n\x08location\x18\x01 \x01(\x0b\x32,.pro.omni.oms.api.v1.rules.location.Location\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"[\n\x15LocationDeleteRequest\x12\n\n\x02id\x18\x01 \x01(\t\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"c\n\x16LocationDeleteResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard2\xbb\x04\n\x0fLocationService\x12\x89\x01\n\x0eLocationCreate\x12\x39.pro.omni.oms.api.v1.rules.location.LocationCreateRequest\x1a:.pro.omni.oms.api.v1.rules.location.LocationCreateResponse"\x00\x12\x83\x01\n\x0cLocationRead\x12\x37.pro.omni.oms.api.v1.rules.location.LocationReadRequest\x1a\x38.pro.omni.oms.api.v1.rules.location.LocationReadResponse"\x00\x12\x89\x01\n\x0eLocationUpdate\x12\x39.pro.omni.oms.api.v1.rules.location.LocationUpdateRequest\x1a:.pro.omni.oms.api.v1.rules.location.LocationUpdateResponse"\x00\x12\x89\x01\n\x0eLocationDelete\x12\x39.pro.omni.oms.api.v1.rules.location.LocationDeleteRequest\x1a:.pro.omni.oms.api.v1.rules.location.LocationDeleteResponse"\x00\x62\x06proto3'
 )
 
 _globals = globals()
@@ -25,23 +25,23 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, "v1.rules.location_pb2", _gl
 if _descriptor._USE_C_DESCRIPTORS == False:
     DESCRIPTOR._options = None
     _globals["_LOCATION"]._serialized_start = 115
-    _globals["_LOCATION"]._serialized_end = 299
-    _globals["_LOCATIONCREATEREQUEST"]._serialized_start = 302
-    _globals["_LOCATIONCREATEREQUEST"]._serialized_end = 434
-    _globals["_LOCATIONCREATERESPONSE"]._serialized_start = 437
-    _globals["_LOCATIONCREATERESPONSE"]._serialized_end = 600
-    _globals["_LOCATIONREADREQUEST"]._serialized_start = 603
-    _globals["_LOCATIONREADREQUEST"]._serialized_end = 972
-    _globals["_LOCATIONREADRESPONSE"]._serialized_start = 975
-    _globals["_LOCATIONREADRESPONSE"]._serialized_end = 1196
-    _globals["_LOCATIONUPDATEREQUEST"]._serialized_start = 1199
-    _globals["_LOCATIONUPDATEREQUEST"]._serialized_end = 1342
-    _globals["_LOCATIONUPDATERESPONSE"]._serialized_start = 1345
-    _globals["_LOCATIONUPDATERESPONSE"]._serialized_end = 1508
-    _globals["_LOCATIONDELETEREQUEST"]._serialized_start = 1510
-    _globals["_LOCATIONDELETEREQUEST"]._serialized_end = 1601
-    _globals["_LOCATIONDELETERESPONSE"]._serialized_start = 1603
-    _globals["_LOCATIONDELETERESPONSE"]._serialized_end = 1702
-    _globals["_LOCATIONSERVICE"]._serialized_start = 1705
-    _globals["_LOCATIONSERVICE"]._serialized_end = 2276
+    _globals["_LOCATION"]._serialized_end = 320
+    _globals["_LOCATIONCREATEREQUEST"]._serialized_start = 323
+    _globals["_LOCATIONCREATEREQUEST"]._serialized_end = 476
+    _globals["_LOCATIONCREATERESPONSE"]._serialized_start = 479
+    _globals["_LOCATIONCREATERESPONSE"]._serialized_end = 642
+    _globals["_LOCATIONREADREQUEST"]._serialized_start = 645
+    _globals["_LOCATIONREADREQUEST"]._serialized_end = 1014
+    _globals["_LOCATIONREADRESPONSE"]._serialized_start = 1017
+    _globals["_LOCATIONREADRESPONSE"]._serialized_end = 1238
+    _globals["_LOCATIONUPDATEREQUEST"]._serialized_start = 1241
+    _globals["_LOCATIONUPDATEREQUEST"]._serialized_end = 1384
+    _globals["_LOCATIONUPDATERESPONSE"]._serialized_start = 1387
+    _globals["_LOCATIONUPDATERESPONSE"]._serialized_end = 1550
+    _globals["_LOCATIONDELETEREQUEST"]._serialized_start = 1552
+    _globals["_LOCATIONDELETEREQUEST"]._serialized_end = 1643
+    _globals["_LOCATIONDELETERESPONSE"]._serialized_start = 1645
+    _globals["_LOCATIONDELETERESPONSE"]._serialized_end = 1744
+    _globals["_LOCATIONSERVICE"]._serialized_start = 1747
+    _globals["_LOCATIONSERVICE"]._serialized_end = 2318
 # @@protoc_insertion_point(module_scope)

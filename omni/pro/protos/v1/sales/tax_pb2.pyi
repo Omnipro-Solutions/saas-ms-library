@@ -13,16 +13,18 @@ from omni.pro.protos.common import base_pb2 as _base_pb2
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Tax(_message.Message):
-    __slots__ = ["id", "code", "name", "active", "object_audit"]
+    __slots__ = ["id", "code", "name", "active", "external_id", "object_audit"]
     ID_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: int
     code: str
     name: str
     active: _wrappers_pb2.BoolValue
+    external_id: str
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
@@ -30,21 +32,25 @@ class Tax(_message.Message):
         code: _Optional[str] = ...,
         name: _Optional[str] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
 class TaxCreateRequest(_message.Message):
-    __slots__ = ["code", "name", "context"]
+    __slots__ = ["code", "name", "external_id", "context"]
     CODE_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     code: str
     name: str
+    external_id: str
     context: _base_pb2.Context
     def __init__(
         self,
         code: _Optional[str] = ...,
         name: _Optional[str] = ...,
+        external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 

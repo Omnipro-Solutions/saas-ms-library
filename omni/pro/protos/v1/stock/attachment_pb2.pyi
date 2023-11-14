@@ -13,18 +13,20 @@ from omni.pro.protos.common import base_pb2 as _base_pb2
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Attachment(_message.Message):
-    __slots__ = ["id", "doc_id", "name", "type", "active", "object_audit"]
+    __slots__ = ["id", "doc_id", "name", "type", "active", "external_id", "object_audit"]
     ID_FIELD_NUMBER: _ClassVar[int]
     DOC_ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     TYPE_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: int
     doc_id: str
     name: str
     type: str
     active: _wrappers_pb2.BoolValue
+    external_id: str
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
@@ -33,24 +35,28 @@ class Attachment(_message.Message):
         name: _Optional[str] = ...,
         type: _Optional[str] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
 class AttachmentCreateRequest(_message.Message):
-    __slots__ = ["doc_id", "name", "type", "context"]
+    __slots__ = ["doc_id", "name", "type", "external_id", "context"]
     DOC_ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     TYPE_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     doc_id: str
     name: str
     type: str
+    external_id: str
     context: _base_pb2.Context
     def __init__(
         self,
         doc_id: _Optional[str] = ...,
         name: _Optional[str] = ...,
         type: _Optional[str] = ...,
+        external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 

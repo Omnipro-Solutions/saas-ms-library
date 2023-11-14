@@ -13,35 +13,41 @@ from omni.pro.protos.common import base_pb2 as _base_pb2
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class PythonCode(_message.Message):
-    __slots__ = ["id", "name", "python_code", "object_audit"]
+    __slots__ = ["id", "name", "python_code", "external_id", "object_audit"]
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     PYTHON_CODE_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
     python_code: str
+    external_id: str
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
         id: _Optional[str] = ...,
         name: _Optional[str] = ...,
         python_code: _Optional[str] = ...,
+        external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
 class PythonCodeRequest(_message.Message):
-    __slots__ = ["name", "python_code", "context"]
+    __slots__ = ["name", "python_code", "external_id", "context"]
     NAME_FIELD_NUMBER: _ClassVar[int]
     PYTHON_CODE_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     python_code: str
+    external_id: str
     context: _base_pb2.Context
     def __init__(
         self,
         name: _Optional[str] = ...,
         python_code: _Optional[str] = ...,
+        external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 

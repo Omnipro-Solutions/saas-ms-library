@@ -25,13 +25,14 @@ class ProductStockSecurity(_message.Message):
     ) -> None: ...
 
 class StockSecurity(_message.Message):
-    __slots__ = ["id", "name", "code", "type", "products", "active", "object_audit"]
+    __slots__ = ["id", "name", "code", "type", "products", "active", "external_id", "object_audit"]
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
     TYPE_FIELD_NUMBER: _ClassVar[int]
     PRODUCTS_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
@@ -39,6 +40,7 @@ class StockSecurity(_message.Message):
     type: str
     products: _containers.RepeatedCompositeFieldContainer[ProductStockSecurity]
     active: _wrappers_pb2.BoolValue
+    external_id: str
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
@@ -48,20 +50,23 @@ class StockSecurity(_message.Message):
         type: _Optional[str] = ...,
         products: _Optional[_Iterable[_Union[ProductStockSecurity, _Mapping]]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
 class StockSecurityCreateRequest(_message.Message):
-    __slots__ = ["name", "code", "type", "products", "context"]
+    __slots__ = ["name", "code", "type", "products", "external_id", "context"]
     NAME_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
     TYPE_FIELD_NUMBER: _ClassVar[int]
     PRODUCTS_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     code: str
     type: str
     products: _containers.RepeatedCompositeFieldContainer[ProductStockSecurity]
+    external_id: str
     context: _base_pb2.Context
     def __init__(
         self,
@@ -69,6 +74,7 @@ class StockSecurityCreateRequest(_message.Message):
         code: _Optional[str] = ...,
         type: _Optional[str] = ...,
         products: _Optional[_Iterable[_Union[ProductStockSecurity, _Mapping]]] = ...,
+        external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
