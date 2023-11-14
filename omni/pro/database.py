@@ -18,9 +18,7 @@ logger = configure_logger(name=__name__)
 
 
 class DatabaseManager(object):
-    def __init__(
-        self, host: str, port: int, db: str, user: str, password: str, complement: dict
-    ) -> None:
+    def __init__(self, host: str, port: int, db: str, user: str, password: str, complement: dict) -> None:
         """
         :param db_object: Database object
         Example:
@@ -57,16 +55,12 @@ class DatabaseManager(object):
         document.save()
         return document
 
-    def get_document(
-        self, db_name: str, tenant: str, document_class, **kwargs
-    ) -> object:
+    def get_document(self, db_name: str, tenant: str, document_class, **kwargs) -> object:
         document = document_class.objects(**kwargs, context__tenant=tenant).first()
         # document.to_proto()
         return document
 
-    def update_document(
-        self, db_name: str, document_class, id: str, **kwargs
-    ) -> object:
+    def update_document(self, db_name: str, document_class, id: str, **kwargs) -> object:
         document = document_class.objects(id=id).first()
         document_class.objects(id=document.id).first().update(**kwargs)
         document.reload()
@@ -111,9 +105,7 @@ class DatabaseManager(object):
         # Filter documents based on criteria provided
 
         if filter:
-            query_set = document_class.objects(context__tenant=tenant).filter(
-                __raw__=filter
-            )
+            query_set = document_class.objects(context__tenant=tenant).filter(__raw__=filter)
         else:
             query_set = document_class.objects(context__tenant=tenant)
 
@@ -403,18 +395,20 @@ class PostgresDatabaseManager(SessionManager):
         # records = QueryBuilder.build_filter(model, session, id, fields, filter, group_by, sort_by, paginated)
 
         # Uso de la clase
-        expression = ast.literal_eval(
-            filter.filter
-        )  # Tu expresión en notación polaca inversa
-        converter = PolishNotationToSQLAlchemy(model, expression)
-        filter_condition, aliases = converter.convert()
-
-        # Aplicar el filtro a la consulta
         query = session.query(model)
-        for alias in aliases.values():
-            query = query.join(alias)
 
-        query = query.filter(filter_condition)
+        if filter.ListFields():
+            # Uso de la clase
+            expression = ast.literal_eval(filter.filter)  # Tu expresión en notación polaca inversa
+            converter = PolishNotationToSQLAlchemy(model, expression)
+            filter_condition, aliases = converter.convert()
+
+            # Aplicar el filtro a la consulta
+            for alias in aliases.values():
+                query = query.join(alias)
+
+            query = query.filter(filter_condition)
+
         if id:
             query = query.filter(model.id == id)
 
@@ -501,9 +495,7 @@ class RedisConnection:
         self.db = db
 
     def __enter__(self) -> redis.StrictRedis:
-        self.redis_client = redis.StrictRedis(
-            host=self.host, port=self.port, db=self.db, decode_responses=True
-        )
+        self.redis_client = redis.StrictRedis(host=self.host, port=self.port, db=self.db, decode_responses=True)
         return self.redis_client
 
     def __exit__(self, exc_type, exc_value, traceback) -> None:
@@ -655,12 +647,7 @@ class PolishNotationToMongoDB:
                                 "$options": "i",
                             }
                         }
-                    operand_stack.append(
-                        {
-                            field: {self.operators_comparison[old_operator]: value}
-                            | options
-                        }
-                    )
+                    operand_stack.append({field: {self.operators_comparison[old_operator]: value} | options})
                 else:
                     raise ValueError(f"Unexpected operator: {old_operator}")
             else:
@@ -698,11 +685,7 @@ class DBUtil(object):
         if (ft := filter.ListFields()) or id:
             expression = [("_id", "=", cls.generate_object_id(id))]
             if ft:
-                str_filter = (
-                    filter.filter.replace("true", "True")
-                    .replace("false", "False")
-                    .replace("__", ".")
-                )
+                str_filter = filter.filter.replace("true", "True").replace("false", "False").replace("__", ".")
                 expression = ast.literal_eval(str_filter)
                 # reemplace filter id by _id and convert to ObjectId
                 for idx, exp in enumerate(expression):
@@ -811,9 +794,7 @@ class PolishNotationToSQLAlchemy:
                     operand_stack.append(not_(operands[0]))
             elif self.is_tuple(token):
                 field_path, operator, value = token
-                operand_stack.append(
-                    self.create_filter(self.model, field_path, operator, value)
-                )
+                operand_stack.append(self.create_filter(self.model, field_path, operator, value))
             else:
                 raise ValueError(f"Unexpected token: {token}")
 
@@ -929,19 +910,11 @@ class QueryBuilder:
                     related_model = getattr(model, related).property.argument
                     related_field = getattr(related_model, field)
                     related_query = cls.filter_ops[op](related_field, value)
-                    query = (
-                        cls.filter_ops[op](query, related_query)
-                        if query
-                        else related_query
-                    )
+                    query = cls.filter_ops[op](query, related_query) if query else related_query
                 else:
                     field = getattr(model, field)
                     field_query = cls.filter_ops[op](field, value)
-                    query = (
-                        cls.filter_ops[filter_operator](query, field_query)
-                        if filter_operator
-                        else field_query
-                    )
+                    query = cls.filter_ops[filter_operator](query, field_query) if filter_operator else field_query
             else:
                 raise ValueError(f"Invalid filter item: {item}")
 
