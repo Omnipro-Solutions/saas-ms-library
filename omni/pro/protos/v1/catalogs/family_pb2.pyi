@@ -22,6 +22,7 @@ class Family(_message.Message):
         "attribute_as_image",
         "variants",
         "groups",
+        "external_id",
         "active",
         "object_audit",
     ]
@@ -32,6 +33,7 @@ class Family(_message.Message):
     ATTRIBUTE_AS_IMAGE_FIELD_NUMBER: _ClassVar[int]
     VARIANTS_FIELD_NUMBER: _ClassVar[int]
     GROUPS_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
@@ -41,6 +43,7 @@ class Family(_message.Message):
     attribute_as_image: Attribute
     variants: _containers.RepeatedCompositeFieldContainer[_struct_pb2.Struct]
     groups: _containers.RepeatedCompositeFieldContainer[_struct_pb2.Struct]
+    external_id: str
     active: _wrappers_pb2.BoolValue
     object_audit: _base_pb2.ObjectAudit
     def __init__(
@@ -52,21 +55,24 @@ class Family(_message.Message):
         attribute_as_image: _Optional[_Union[Attribute, _Mapping]] = ...,
         variants: _Optional[_Iterable[_Union[_struct_pb2.Struct, _Mapping]]] = ...,
         groups: _Optional[_Iterable[_Union[_struct_pb2.Struct, _Mapping]]] = ...,
+        external_id: _Optional[str] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
 class FamilyCreateRequest(_message.Message):
-    __slots__ = ["name", "code", "attribute_as_label", "attribute_as_image", "context"]
+    __slots__ = ["name", "code", "attribute_as_label", "attribute_as_image", "external_id", "context"]
     NAME_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
     ATTRIBUTE_AS_LABEL_FIELD_NUMBER: _ClassVar[int]
     ATTRIBUTE_AS_IMAGE_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     code: str
     attribute_as_label: str
     attribute_as_image: str
+    external_id: str
     context: _base_pb2.Context
     def __init__(
         self,
@@ -74,6 +80,7 @@ class FamilyCreateRequest(_message.Message):
         code: _Optional[str] = ...,
         attribute_as_label: _Optional[str] = ...,
         attribute_as_image: _Optional[str] = ...,
+        external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
@@ -175,7 +182,17 @@ class FamilyDeleteResponse(_message.Message):
     def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
 
 class Attribute(_message.Message):
-    __slots__ = ["code", "name", "attribute_type", "is_common", "family", "group", "active", "extra_attribute"]
+    __slots__ = [
+        "code",
+        "name",
+        "attribute_type",
+        "is_common",
+        "family",
+        "group",
+        "active",
+        "external_id",
+        "extra_attribute",
+    ]
     CODE_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     ATTRIBUTE_TYPE_FIELD_NUMBER: _ClassVar[int]
@@ -183,6 +200,7 @@ class Attribute(_message.Message):
     FAMILY_FIELD_NUMBER: _ClassVar[int]
     GROUP_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     EXTRA_ATTRIBUTE_FIELD_NUMBER: _ClassVar[int]
     code: str
     name: str
@@ -191,6 +209,7 @@ class Attribute(_message.Message):
     family: _struct_pb2.Struct
     group: _struct_pb2.Struct
     active: _wrappers_pb2.BoolValue
+    external_id: str
     extra_attribute: _struct_pb2.Struct
     def __init__(
         self,
@@ -201,11 +220,22 @@ class Attribute(_message.Message):
         family: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         group: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        external_id: _Optional[str] = ...,
         extra_attribute: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
     ) -> None: ...
 
 class AttributeCreateRequest(_message.Message):
-    __slots__ = ["family_id", "group_code", "code", "name", "attribute_type", "is_common", "extra_attribute", "context"]
+    __slots__ = [
+        "family_id",
+        "group_code",
+        "code",
+        "name",
+        "attribute_type",
+        "is_common",
+        "extra_attribute",
+        "external_id",
+        "context",
+    ]
     FAMILY_ID_FIELD_NUMBER: _ClassVar[int]
     GROUP_CODE_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
@@ -213,6 +243,7 @@ class AttributeCreateRequest(_message.Message):
     ATTRIBUTE_TYPE_FIELD_NUMBER: _ClassVar[int]
     IS_COMMON_FIELD_NUMBER: _ClassVar[int]
     EXTRA_ATTRIBUTE_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     family_id: str
     group_code: str
@@ -221,6 +252,7 @@ class AttributeCreateRequest(_message.Message):
     attribute_type: str
     is_common: bool
     extra_attribute: _struct_pb2.Struct
+    external_id: str
     context: _base_pb2.Context
     def __init__(
         self,
@@ -231,6 +263,7 @@ class AttributeCreateRequest(_message.Message):
         attribute_type: _Optional[str] = ...,
         is_common: bool = ...,
         extra_attribute: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
+        external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
@@ -343,16 +376,18 @@ class AttributeDeleteResponse(_message.Message):
     def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
 
 class Group(_message.Message):
-    __slots__ = ["code", "name", "active", "family", "attributes"]
+    __slots__ = ["code", "name", "active", "family", "external_id", "attributes"]
     CODE_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     FAMILY_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     ATTRIBUTES_FIELD_NUMBER: _ClassVar[int]
     code: str
     name: str
     active: _wrappers_pb2.BoolValue
     family: _struct_pb2.Struct
+    external_id: str
     attributes: _containers.RepeatedCompositeFieldContainer[Attribute]
     def __init__(
         self,
@@ -360,24 +395,28 @@ class Group(_message.Message):
         name: _Optional[str] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         family: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
+        external_id: _Optional[str] = ...,
         attributes: _Optional[_Iterable[_Union[Attribute, _Mapping]]] = ...,
     ) -> None: ...
 
 class GroupCreateRequest(_message.Message):
-    __slots__ = ["family_id", "code", "name", "context"]
+    __slots__ = ["family_id", "code", "name", "external_id", "context"]
     FAMILY_ID_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     family_id: str
     code: str
     name: str
+    external_id: str
     context: _base_pb2.Context
     def __init__(
         self,
         family_id: _Optional[str] = ...,
         code: _Optional[str] = ...,
         name: _Optional[str] = ...,
+        external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
@@ -487,38 +526,44 @@ class GroupDeleteResponse(_message.Message):
     def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
 
 class AttributeVariant(_message.Message):
-    __slots__ = ["attribute", "sequence", "family_id", "active"]
+    __slots__ = ["attribute", "sequence", "family_id", "external_id", "active"]
     ATTRIBUTE_FIELD_NUMBER: _ClassVar[int]
     SEQUENCE_FIELD_NUMBER: _ClassVar[int]
     FAMILY_ID_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     attribute: _struct_pb2.Struct
     sequence: int
     family_id: str
+    external_id: str
     active: _wrappers_pb2.BoolValue
     def __init__(
         self,
         attribute: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         sequence: _Optional[int] = ...,
         family_id: _Optional[str] = ...,
+        external_id: _Optional[str] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
     ) -> None: ...
 
 class AttributeVariantCreateRequest(_message.Message):
-    __slots__ = ["family_id", "attribute_code", "sequence", "context"]
+    __slots__ = ["family_id", "attribute_code", "sequence", "external_id", "context"]
     FAMILY_ID_FIELD_NUMBER: _ClassVar[int]
     ATTRIBUTE_CODE_FIELD_NUMBER: _ClassVar[int]
     SEQUENCE_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     family_id: str
     attribute_code: str
     sequence: int
+    external_id: str
     context: _base_pb2.Context
     def __init__(
         self,
         family_id: _Optional[str] = ...,
         attribute_code: _Optional[str] = ...,
         sequence: _Optional[int] = ...,
+        external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 

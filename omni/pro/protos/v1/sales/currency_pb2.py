@@ -16,7 +16,7 @@ from google.protobuf import wrappers_pb2 as google_dot_protobuf_dot_wrappers__pb
 from omni.pro.protos.common import base_pb2 as common_dot_base__pb2
 
 DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
-    b'\n\x17v1/sales/currency.proto\x12"pro.omni.oms.api.v1.sales.currency\x1a\x11\x63ommon/base.proto\x1a\x1egoogle/protobuf/wrappers.proto"\xb8\x01\n\x08\x43urrency\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0c\n\x04\x63ode\x18\x03 \x01(\t\x12\x17\n\x0f\x63urrency_doc_id\x18\x04 \x01(\t\x12*\n\x06\x61\x63tive\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12?\n\x0cobject_audit\x18\x06 \x01(\x0b\x32).pro.omni.oms.api.common.base.ObjectAudit"\x84\x01\n\x15\x43urrencyCreateRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0c\n\x04\x63ode\x18\x02 \x01(\t\x12\x17\n\x0f\x63urrency_doc_id\x18\x03 \x01(\t\x12\x36\n\x07\x63ontext\x18\x04 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xa3\x01\n\x16\x43urrencyCreateResponse\x12>\n\x08\x63urrency\x18\x01 \x01(\x0b\x32,.pro.omni.oms.api.v1.sales.currency.Currency\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\xf1\x02\n\x13\x43urrencyReadRequest\x12\x37\n\x08group_by\x18\x01 \x03(\x0b\x32%.pro.omni.oms.api.common.base.GroupBy\x12\x35\n\x07sort_by\x18\x02 \x01(\x0b\x32$.pro.omni.oms.api.common.base.SortBy\x12\x34\n\x06\x66ields\x18\x03 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Fields\x12\x34\n\x06\x66ilter\x18\x04 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Filter\x12:\n\tpaginated\x18\x05 \x01(\x0b\x32\'.pro.omni.oms.api.common.base.Paginated\x12\n\n\x02id\x18\x06 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x07 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xde\x01\n\x14\x43urrencyReadResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard\x12\x39\n\tmeta_data\x18\x02 \x01(\x0b\x32&.pro.omni.oms.api.common.base.MetaData\x12@\n\ncurrencies\x18\x03 \x03(\x0b\x32,.pro.omni.oms.api.v1.sales.currency.Currency"\x8f\x01\n\x15\x43urrencyUpdateRequest\x12>\n\x08\x63urrency\x18\x01 \x01(\x0b\x32,.pro.omni.oms.api.v1.sales.currency.Currency\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xa3\x01\n\x16\x43urrencyUpdateResponse\x12>\n\x08\x63urrency\x18\x01 \x01(\x0b\x32,.pro.omni.oms.api.v1.sales.currency.Currency\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"[\n\x15\x43urrencyDeleteRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"c\n\x16\x43urrencyDeleteResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard2\xbb\x04\n\x0f\x43urrencyService\x12\x89\x01\n\x0e\x43urrencyCreate\x12\x39.pro.omni.oms.api.v1.sales.currency.CurrencyCreateRequest\x1a:.pro.omni.oms.api.v1.sales.currency.CurrencyCreateResponse"\x00\x12\x83\x01\n\x0c\x43urrencyRead\x12\x37.pro.omni.oms.api.v1.sales.currency.CurrencyReadRequest\x1a\x38.pro.omni.oms.api.v1.sales.currency.CurrencyReadResponse"\x00\x12\x89\x01\n\x0e\x43urrencyUpdate\x12\x39.pro.omni.oms.api.v1.sales.currency.CurrencyUpdateRequest\x1a:.pro.omni.oms.api.v1.sales.currency.CurrencyUpdateResponse"\x00\x12\x89\x01\n\x0e\x43urrencyDelete\x12\x39.pro.omni.oms.api.v1.sales.currency.CurrencyDeleteRequest\x1a:.pro.omni.oms.api.v1.sales.currency.CurrencyDeleteResponse"\x00\x62\x06proto3'
+    b'\n\x17v1/sales/currency.proto\x12"pro.omni.oms.api.v1.sales.currency\x1a\x11\x63ommon/base.proto\x1a\x1egoogle/protobuf/wrappers.proto"\xcd\x01\n\x08\x43urrency\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0c\n\x04\x63ode\x18\x03 \x01(\t\x12\x17\n\x0f\x63urrency_doc_id\x18\x04 \x01(\t\x12*\n\x06\x61\x63tive\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12\x13\n\x0b\x65xternal_id\x18\x06 \x01(\t\x12?\n\x0cobject_audit\x18\x07 \x01(\x0b\x32).pro.omni.oms.api.common.base.ObjectAudit"\x99\x01\n\x15\x43urrencyCreateRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0c\n\x04\x63ode\x18\x02 \x01(\t\x12\x17\n\x0f\x63urrency_doc_id\x18\x03 \x01(\t\x12\x13\n\x0b\x65xternal_id\x18\x04 \x01(\t\x12\x36\n\x07\x63ontext\x18\x05 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xa3\x01\n\x16\x43urrencyCreateResponse\x12>\n\x08\x63urrency\x18\x01 \x01(\x0b\x32,.pro.omni.oms.api.v1.sales.currency.Currency\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\xf1\x02\n\x13\x43urrencyReadRequest\x12\x37\n\x08group_by\x18\x01 \x03(\x0b\x32%.pro.omni.oms.api.common.base.GroupBy\x12\x35\n\x07sort_by\x18\x02 \x01(\x0b\x32$.pro.omni.oms.api.common.base.SortBy\x12\x34\n\x06\x66ields\x18\x03 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Fields\x12\x34\n\x06\x66ilter\x18\x04 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Filter\x12:\n\tpaginated\x18\x05 \x01(\x0b\x32\'.pro.omni.oms.api.common.base.Paginated\x12\n\n\x02id\x18\x06 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x07 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xde\x01\n\x14\x43urrencyReadResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard\x12\x39\n\tmeta_data\x18\x02 \x01(\x0b\x32&.pro.omni.oms.api.common.base.MetaData\x12@\n\ncurrencies\x18\x03 \x03(\x0b\x32,.pro.omni.oms.api.v1.sales.currency.Currency"\x8f\x01\n\x15\x43urrencyUpdateRequest\x12>\n\x08\x63urrency\x18\x01 \x01(\x0b\x32,.pro.omni.oms.api.v1.sales.currency.Currency\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xa3\x01\n\x16\x43urrencyUpdateResponse\x12>\n\x08\x63urrency\x18\x01 \x01(\x0b\x32,.pro.omni.oms.api.v1.sales.currency.Currency\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"[\n\x15\x43urrencyDeleteRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"c\n\x16\x43urrencyDeleteResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard2\xbb\x04\n\x0f\x43urrencyService\x12\x89\x01\n\x0e\x43urrencyCreate\x12\x39.pro.omni.oms.api.v1.sales.currency.CurrencyCreateRequest\x1a:.pro.omni.oms.api.v1.sales.currency.CurrencyCreateResponse"\x00\x12\x83\x01\n\x0c\x43urrencyRead\x12\x37.pro.omni.oms.api.v1.sales.currency.CurrencyReadRequest\x1a\x38.pro.omni.oms.api.v1.sales.currency.CurrencyReadResponse"\x00\x12\x89\x01\n\x0e\x43urrencyUpdate\x12\x39.pro.omni.oms.api.v1.sales.currency.CurrencyUpdateRequest\x1a:.pro.omni.oms.api.v1.sales.currency.CurrencyUpdateResponse"\x00\x12\x89\x01\n\x0e\x43urrencyDelete\x12\x39.pro.omni.oms.api.v1.sales.currency.CurrencyDeleteRequest\x1a:.pro.omni.oms.api.v1.sales.currency.CurrencyDeleteResponse"\x00\x62\x06proto3'
 )
 
 _globals = globals()
@@ -25,23 +25,23 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, "v1.sales.currency_pb2", _gl
 if _descriptor._USE_C_DESCRIPTORS == False:
     DESCRIPTOR._options = None
     _globals["_CURRENCY"]._serialized_start = 115
-    _globals["_CURRENCY"]._serialized_end = 299
-    _globals["_CURRENCYCREATEREQUEST"]._serialized_start = 302
-    _globals["_CURRENCYCREATEREQUEST"]._serialized_end = 434
-    _globals["_CURRENCYCREATERESPONSE"]._serialized_start = 437
-    _globals["_CURRENCYCREATERESPONSE"]._serialized_end = 600
-    _globals["_CURRENCYREADREQUEST"]._serialized_start = 603
-    _globals["_CURRENCYREADREQUEST"]._serialized_end = 972
-    _globals["_CURRENCYREADRESPONSE"]._serialized_start = 975
-    _globals["_CURRENCYREADRESPONSE"]._serialized_end = 1197
-    _globals["_CURRENCYUPDATEREQUEST"]._serialized_start = 1200
-    _globals["_CURRENCYUPDATEREQUEST"]._serialized_end = 1343
-    _globals["_CURRENCYUPDATERESPONSE"]._serialized_start = 1346
-    _globals["_CURRENCYUPDATERESPONSE"]._serialized_end = 1509
-    _globals["_CURRENCYDELETEREQUEST"]._serialized_start = 1511
-    _globals["_CURRENCYDELETEREQUEST"]._serialized_end = 1602
-    _globals["_CURRENCYDELETERESPONSE"]._serialized_start = 1604
-    _globals["_CURRENCYDELETERESPONSE"]._serialized_end = 1703
-    _globals["_CURRENCYSERVICE"]._serialized_start = 1706
-    _globals["_CURRENCYSERVICE"]._serialized_end = 2277
+    _globals["_CURRENCY"]._serialized_end = 320
+    _globals["_CURRENCYCREATEREQUEST"]._serialized_start = 323
+    _globals["_CURRENCYCREATEREQUEST"]._serialized_end = 476
+    _globals["_CURRENCYCREATERESPONSE"]._serialized_start = 479
+    _globals["_CURRENCYCREATERESPONSE"]._serialized_end = 642
+    _globals["_CURRENCYREADREQUEST"]._serialized_start = 645
+    _globals["_CURRENCYREADREQUEST"]._serialized_end = 1014
+    _globals["_CURRENCYREADRESPONSE"]._serialized_start = 1017
+    _globals["_CURRENCYREADRESPONSE"]._serialized_end = 1239
+    _globals["_CURRENCYUPDATEREQUEST"]._serialized_start = 1242
+    _globals["_CURRENCYUPDATEREQUEST"]._serialized_end = 1385
+    _globals["_CURRENCYUPDATERESPONSE"]._serialized_start = 1388
+    _globals["_CURRENCYUPDATERESPONSE"]._serialized_end = 1551
+    _globals["_CURRENCYDELETEREQUEST"]._serialized_start = 1553
+    _globals["_CURRENCYDELETEREQUEST"]._serialized_end = 1644
+    _globals["_CURRENCYDELETERESPONSE"]._serialized_start = 1646
+    _globals["_CURRENCYDELETERESPONSE"]._serialized_end = 1745
+    _globals["_CURRENCYSERVICE"]._serialized_start = 1748
+    _globals["_CURRENCYSERVICE"]._serialized_end = 2319
 # @@protoc_insertion_point(module_scope)

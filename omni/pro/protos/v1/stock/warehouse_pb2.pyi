@@ -41,6 +41,7 @@ class Warehouse(_message.Message):
         "pick_type",
         "pack_type",
         "out_type",
+        "external_id",
         "object_audit",
     ]
     ID_FIELD_NUMBER: _ClassVar[int]
@@ -66,6 +67,7 @@ class Warehouse(_message.Message):
     PICK_TYPE_FIELD_NUMBER: _ClassVar[int]
     PACK_TYPE_FIELD_NUMBER: _ClassVar[int]
     OUT_TYPE_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: int
     name: str
@@ -90,6 +92,7 @@ class Warehouse(_message.Message):
     pick_type: _picking_type_pb2.PickingType
     pack_type: _picking_type_pb2.PickingType
     out_type: _picking_type_pb2.PickingType
+    external_id: str
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
@@ -116,6 +119,7 @@ class Warehouse(_message.Message):
         pick_type: _Optional[_Union[_picking_type_pb2.PickingType, _Mapping]] = ...,
         pack_type: _Optional[_Union[_picking_type_pb2.PickingType, _Mapping]] = ...,
         out_type: _Optional[_Union[_picking_type_pb2.PickingType, _Mapping]] = ...,
+        external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
@@ -130,6 +134,7 @@ class WarehouseCreateRequest(_message.Message):
         "delivery_steps",
         "reception_steps",
         "locality_available",
+        "external_id",
         "context",
     ]
     NAME_FIELD_NUMBER: _ClassVar[int]
@@ -141,6 +146,7 @@ class WarehouseCreateRequest(_message.Message):
     DELIVERY_STEPS_FIELD_NUMBER: _ClassVar[int]
     RECEPTION_STEPS_FIELD_NUMBER: _ClassVar[int]
     LOCALITY_AVAILABLE_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     code: str
@@ -151,6 +157,7 @@ class WarehouseCreateRequest(_message.Message):
     delivery_steps: str
     reception_steps: str
     locality_available: str
+    external_id: str
     context: _base_pb2.Context
     def __init__(
         self,
@@ -163,6 +170,7 @@ class WarehouseCreateRequest(_message.Message):
         delivery_steps: _Optional[str] = ...,
         reception_steps: _Optional[str] = ...,
         locality_available: _Optional[str] = ...,
+        external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 

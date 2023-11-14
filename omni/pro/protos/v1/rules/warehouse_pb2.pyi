@@ -12,13 +12,23 @@ from omni.pro.protos.common import base_pb2 as _base_pb2
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Warehouse(_message.Message):
-    __slots__ = ["id", "name", "code", "warehouse_sql_id", "locality_available", "lock_stock_sql_id", "object_audit"]
+    __slots__ = [
+        "id",
+        "name",
+        "code",
+        "warehouse_sql_id",
+        "locality_available",
+        "lock_stock_sql_id",
+        "external_id",
+        "object_audit",
+    ]
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
     WAREHOUSE_SQL_ID_FIELD_NUMBER: _ClassVar[int]
     LOCALITY_AVAILABLE_FIELD_NUMBER: _ClassVar[int]
     LOCK_STOCK_SQL_ID_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
@@ -26,6 +36,7 @@ class Warehouse(_message.Message):
     warehouse_sql_id: int
     locality_available: str
     lock_stock_sql_id: int
+    external_id: str
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
@@ -35,22 +46,33 @@ class Warehouse(_message.Message):
         warehouse_sql_id: _Optional[int] = ...,
         locality_available: _Optional[str] = ...,
         lock_stock_sql_id: _Optional[int] = ...,
+        external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
 class WarehouseCreateRequest(_message.Message):
-    __slots__ = ["name", "code", "warehouse_sql_id", "locality_available", "lock_stock_sql_id", "context"]
+    __slots__ = [
+        "name",
+        "code",
+        "warehouse_sql_id",
+        "locality_available",
+        "lock_stock_sql_id",
+        "external_id",
+        "context",
+    ]
     NAME_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
     WAREHOUSE_SQL_ID_FIELD_NUMBER: _ClassVar[int]
     LOCALITY_AVAILABLE_FIELD_NUMBER: _ClassVar[int]
     LOCK_STOCK_SQL_ID_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     code: str
     warehouse_sql_id: int
     locality_available: str
     lock_stock_sql_id: int
+    external_id: str
     context: _base_pb2.Context
     def __init__(
         self,
@@ -59,6 +81,7 @@ class WarehouseCreateRequest(_message.Message):
         warehouse_sql_id: _Optional[int] = ...,
         locality_available: _Optional[str] = ...,
         lock_stock_sql_id: _Optional[int] = ...,
+        external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 

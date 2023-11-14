@@ -28,6 +28,7 @@ class OrderLine(_message.Message):
         "discount",
         "price_total",
         "active",
+        "external_id",
         "object_audit",
     ]
     ID_FIELD_NUMBER: _ClassVar[int]
@@ -40,6 +41,7 @@ class OrderLine(_message.Message):
     DISCOUNT_FIELD_NUMBER: _ClassVar[int]
     PRICE_TOTAL_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: int
     order: _order_pb2.Order
@@ -51,6 +53,7 @@ class OrderLine(_message.Message):
     discount: float
     price_total: float
     active: _wrappers_pb2.BoolValue
+    external_id: str
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
@@ -64,6 +67,7 @@ class OrderLine(_message.Message):
         discount: _Optional[float] = ...,
         price_total: _Optional[float] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
@@ -77,6 +81,7 @@ class OrderLineCreateRequest(_message.Message):
         "tax_id",
         "discount",
         "price_total",
+        "external_id",
         "context",
     ]
     ORDER_ID_FIELD_NUMBER: _ClassVar[int]
@@ -87,6 +92,7 @@ class OrderLineCreateRequest(_message.Message):
     TAX_ID_FIELD_NUMBER: _ClassVar[int]
     DISCOUNT_FIELD_NUMBER: _ClassVar[int]
     PRICE_TOTAL_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     order_id: int
     product_id: str
@@ -96,6 +102,7 @@ class OrderLineCreateRequest(_message.Message):
     tax_id: int
     discount: float
     price_total: float
+    external_id: str
     context: _base_pb2.Context
     def __init__(
         self,
@@ -107,6 +114,7 @@ class OrderLineCreateRequest(_message.Message):
         tax_id: _Optional[int] = ...,
         discount: _Optional[float] = ...,
         price_total: _Optional[float] = ...,
+        external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 

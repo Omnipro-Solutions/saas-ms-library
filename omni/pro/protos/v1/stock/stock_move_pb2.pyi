@@ -25,6 +25,7 @@ class StockMove(_message.Message):
         "product_uom",
         "description_picking",
         "active",
+        "external_id",
         "object_audit",
     ]
     ID_FIELD_NUMBER: _ClassVar[int]
@@ -35,6 +36,7 @@ class StockMove(_message.Message):
     PRODUCT_UOM_FIELD_NUMBER: _ClassVar[int]
     DESCRIPTION_PICKING_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: int
     picking: _picking_pb2.Picking
@@ -44,6 +46,7 @@ class StockMove(_message.Message):
     product_uom: _uom_pb2.Uom
     description_picking: str
     active: _wrappers_pb2.BoolValue
+    external_id: str
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
@@ -55,6 +58,7 @@ class StockMove(_message.Message):
         product_uom: _Optional[_Union[_uom_pb2.Uom, _Mapping]] = ...,
         description_picking: _Optional[str] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
@@ -66,6 +70,7 @@ class StockMoveCreateRequest(_message.Message):
         "quantity_done",
         "product_uom_id",
         "description_picking",
+        "external_id",
         "context",
     ]
     PICKING_ID_FIELD_NUMBER: _ClassVar[int]
@@ -74,6 +79,7 @@ class StockMoveCreateRequest(_message.Message):
     QUANTITY_DONE_FIELD_NUMBER: _ClassVar[int]
     PRODUCT_UOM_ID_FIELD_NUMBER: _ClassVar[int]
     DESCRIPTION_PICKING_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     picking_id: int
     state: str
@@ -81,6 +87,7 @@ class StockMoveCreateRequest(_message.Message):
     quantity_done: float
     product_uom_id: str
     description_picking: str
+    external_id: str
     context: _base_pb2.Context
     def __init__(
         self,
@@ -90,6 +97,7 @@ class StockMoveCreateRequest(_message.Message):
         quantity_done: _Optional[float] = ...,
         product_uom_id: _Optional[str] = ...,
         description_picking: _Optional[str] = ...,
+        external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 

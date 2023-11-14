@@ -15,16 +15,18 @@ from omni.pro.protos.v1.sales import picking_pb2 as _picking_pb2
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class PickingOrder(_message.Message):
-    __slots__ = ["id", "order", "picking", "active", "object_audit"]
+    __slots__ = ["id", "order", "picking", "active", "external_id", "object_audit"]
     ID_FIELD_NUMBER: _ClassVar[int]
     ORDER_FIELD_NUMBER: _ClassVar[int]
     PICKING_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: int
     order: _order_pb2.Order
     picking: _picking_pb2.Picking
     active: _wrappers_pb2.BoolValue
+    external_id: str
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
@@ -32,21 +34,25 @@ class PickingOrder(_message.Message):
         order: _Optional[_Union[_order_pb2.Order, _Mapping]] = ...,
         picking: _Optional[_Union[_picking_pb2.Picking, _Mapping]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
 class PickingOrderCreateRequest(_message.Message):
-    __slots__ = ["order_id", "picking_id", "context"]
+    __slots__ = ["order_id", "picking_id", "external_id", "context"]
     ORDER_ID_FIELD_NUMBER: _ClassVar[int]
     PICKING_ID_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     order_id: int
     picking_id: int
+    external_id: str
     context: _base_pb2.Context
     def __init__(
         self,
         order_id: _Optional[int] = ...,
         picking_id: _Optional[int] = ...,
+        external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 

@@ -29,6 +29,7 @@ class Rule(_message.Message):
         "warehouse",
         "sequence",
         "active",
+        "external_id",
         "object_audit",
     ]
     ID_FIELD_NUMBER: _ClassVar[int]
@@ -42,6 +43,7 @@ class Rule(_message.Message):
     WAREHOUSE_FIELD_NUMBER: _ClassVar[int]
     SEQUENCE_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: int
     name: str
@@ -54,6 +56,7 @@ class Rule(_message.Message):
     warehouse: _warehouse_pb2.Warehouse
     sequence: int
     active: _wrappers_pb2.BoolValue
+    external_id: str
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
@@ -68,6 +71,7 @@ class Rule(_message.Message):
         warehouse: _Optional[_Union[_warehouse_pb2.Warehouse, _Mapping]] = ...,
         sequence: _Optional[int] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
@@ -82,6 +86,7 @@ class RuleCreateRequest(_message.Message):
         "route_id",
         "warehouse_id",
         "sequence",
+        "external_id",
         "context",
     ]
     NAME_FIELD_NUMBER: _ClassVar[int]
@@ -93,6 +98,7 @@ class RuleCreateRequest(_message.Message):
     ROUTE_ID_FIELD_NUMBER: _ClassVar[int]
     WAREHOUSE_ID_FIELD_NUMBER: _ClassVar[int]
     SEQUENCE_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     action: str
@@ -103,6 +109,7 @@ class RuleCreateRequest(_message.Message):
     route_id: int
     warehouse_id: int
     sequence: int
+    external_id: str
     context: _base_pb2.Context
     def __init__(
         self,
@@ -115,6 +122,7 @@ class RuleCreateRequest(_message.Message):
         route_id: _Optional[int] = ...,
         warehouse_id: _Optional[int] = ...,
         sequence: _Optional[int] = ...,
+        external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 

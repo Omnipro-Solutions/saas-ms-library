@@ -14,13 +14,14 @@ from omni.pro.protos.v1.sales import state_pb2 as _state_pb2
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Flow(_message.Message):
-    __slots__ = ["id", "name", "code", "initial_state", "description", "active", "object_audit"]
+    __slots__ = ["id", "name", "code", "initial_state", "description", "active", "external_id", "object_audit"]
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
     INITIAL_STATE_FIELD_NUMBER: _ClassVar[int]
     DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: int
     name: str
@@ -28,6 +29,7 @@ class Flow(_message.Message):
     initial_state: _state_pb2.State
     description: str
     active: _wrappers_pb2.BoolValue
+    external_id: str
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
@@ -37,20 +39,23 @@ class Flow(_message.Message):
         initial_state: _Optional[_Union[_state_pb2.State, _Mapping]] = ...,
         description: _Optional[str] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
 class FlowCreateRequest(_message.Message):
-    __slots__ = ["name", "code", "initial_state_id", "description", "context"]
+    __slots__ = ["name", "code", "initial_state_id", "description", "external_id", "context"]
     NAME_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
     INITIAL_STATE_ID_FIELD_NUMBER: _ClassVar[int]
     DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     code: str
     initial_state_id: int
     description: str
+    external_id: str
     context: _base_pb2.Context
     def __init__(
         self,
@@ -58,6 +63,7 @@ class FlowCreateRequest(_message.Message):
         code: _Optional[str] = ...,
         initial_state_id: _Optional[int] = ...,
         description: _Optional[str] = ...,
+        external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 

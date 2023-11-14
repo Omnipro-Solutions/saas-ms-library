@@ -13,7 +13,18 @@ from omni.pro.protos.common import base_pb2 as _base_pb2
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Tax(_message.Message):
-    __slots__ = ["id", "name", "code", "rate", "rounding", "decimal_places", "position", "active", "object_audit"]
+    __slots__ = [
+        "id",
+        "name",
+        "code",
+        "rate",
+        "rounding",
+        "decimal_places",
+        "position",
+        "active",
+        "external_id",
+        "object_audit",
+    ]
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
@@ -22,6 +33,7 @@ class Tax(_message.Message):
     DECIMAL_PLACES_FIELD_NUMBER: _ClassVar[int]
     POSITION_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
@@ -31,6 +43,7 @@ class Tax(_message.Message):
     decimal_places: int
     position: str
     active: _wrappers_pb2.BoolValue
+    external_id: str
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
@@ -42,17 +55,19 @@ class Tax(_message.Message):
         decimal_places: _Optional[int] = ...,
         position: _Optional[str] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
 class TaxAddRequest(_message.Message):
-    __slots__ = ["name", "code", "rate", "rounding", "decimal_places", "position", "context"]
+    __slots__ = ["name", "code", "rate", "rounding", "decimal_places", "position", "external_id", "context"]
     NAME_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
     RATE_FIELD_NUMBER: _ClassVar[int]
     ROUNDING_FIELD_NUMBER: _ClassVar[int]
     DECIMAL_PLACES_FIELD_NUMBER: _ClassVar[int]
     POSITION_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     code: str
@@ -60,6 +75,7 @@ class TaxAddRequest(_message.Message):
     rounding: float
     decimal_places: int
     position: str
+    external_id: str
     context: _base_pb2.Context
     def __init__(
         self,
@@ -69,6 +85,7 @@ class TaxAddRequest(_message.Message):
         rounding: _Optional[float] = ...,
         decimal_places: _Optional[int] = ...,
         position: _Optional[str] = ...,
+        external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
