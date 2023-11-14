@@ -73,6 +73,7 @@ class BaseDocument(Document):
     context = EmbeddedDocumentField(Context)
     audit = EmbeddedDocumentField(Audit)
     active = BooleanField(default=True)
+    external_id = StringField(unique=True)
 
     meta = {
         "abstract": True,
@@ -105,6 +106,8 @@ class BaseAuditEmbeddedDocument(BaseEmbeddedDocument):
     context = EmbeddedDocumentField(Context)
     audit = EmbeddedDocumentField(Audit)
     active = BooleanField(default=True)
+    external_id = StringField(unique=True)
+
     meta = {
         "abstract": True,
         "strict": False,
@@ -149,8 +152,8 @@ class Base:
         Returns:
             str: The converted snake_case string.
         """
-        s1 = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', name)
-        return re.sub('([a-z0-9])([A-Z])', r'\1_\2', s1).lower()
+        s1 = re.sub("(.)([A-Z][a-z]+)", r"\1_\2", name)
+        return re.sub("([a-z0-9])([A-Z])", r"\1_\2", s1).lower()
 
     @declared_attr
     def __tablename__(cls):
@@ -164,6 +167,7 @@ class Base:
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
+    external_id: Mapped[str] = mapped_column(String(50), unique=True, nullable=True)
     tenant: Mapped[str] = mapped_column(String(30), nullable=False)
     created_by: Mapped[str] = mapped_column(String(50), default=set_created_by, nullable=False)
     updated_by: Mapped[str] = mapped_column(String(50), nullable=False)
@@ -258,13 +262,13 @@ class Base:
 
     def sync_data(self, *args, **kwargs):
         """
-       Synchronize the data for the model instance.
+        Synchronize the data for the model instance.
 
-       This method should be overridden in subclasses.
+        This method should be overridden in subclasses.
 
-       Raises:
-           NotImplementedError: If the method is not overridden in a subclass.
-       """
+        Raises:
+            NotImplementedError: If the method is not overridden in a subclass.
+        """
         raise NotImplementedError
 
     def get_or_sync(self, *args, **kwargs):
