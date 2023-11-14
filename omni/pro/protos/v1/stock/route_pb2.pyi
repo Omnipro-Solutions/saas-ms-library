@@ -24,6 +24,7 @@ class Route(_message.Message):
         "warehouse_selectable",
         "warehouse",
         "active",
+        "external_id",
         "object_audit",
     ]
     ID_FIELD_NUMBER: _ClassVar[int]
@@ -35,6 +36,7 @@ class Route(_message.Message):
     WAREHOUSE_SELECTABLE_FIELD_NUMBER: _ClassVar[int]
     WAREHOUSE_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: int
     name: str
@@ -45,6 +47,7 @@ class Route(_message.Message):
     warehouse_selectable: _wrappers_pb2.BoolValue
     warehouse: _warehouse_pb2.Warehouse
     active: _wrappers_pb2.BoolValue
+    external_id: str
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
@@ -57,6 +60,7 @@ class Route(_message.Message):
         warehouse_selectable: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         warehouse: _Optional[_Union[_warehouse_pb2.Warehouse, _Mapping]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
@@ -69,6 +73,7 @@ class RouteCreateRequest(_message.Message):
         "packing_selectable",
         "warehouse_selectable",
         "warehouse_id",
+        "external_id",
         "context",
     ]
     NAME_FIELD_NUMBER: _ClassVar[int]
@@ -78,6 +83,7 @@ class RouteCreateRequest(_message.Message):
     PACKING_SELECTABLE_FIELD_NUMBER: _ClassVar[int]
     WAREHOUSE_SELECTABLE_FIELD_NUMBER: _ClassVar[int]
     WAREHOUSE_ID_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     sequence: int
@@ -86,6 +92,7 @@ class RouteCreateRequest(_message.Message):
     packing_selectable: _wrappers_pb2.BoolValue
     warehouse_selectable: _wrappers_pb2.BoolValue
     warehouse_id: int
+    external_id: str
     context: _base_pb2.Context
     def __init__(
         self,
@@ -96,6 +103,7 @@ class RouteCreateRequest(_message.Message):
         packing_selectable: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         warehouse_selectable: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         warehouse_id: _Optional[int] = ...,
+        external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 

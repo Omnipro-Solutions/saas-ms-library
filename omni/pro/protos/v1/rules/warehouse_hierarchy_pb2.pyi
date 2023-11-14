@@ -26,6 +26,7 @@ class WarehouseHierarchy(_message.Message):
         "sequence_order",
         "gift_code",
         "active",
+        "external_id",
         "object_audit",
     ]
     ID_FIELD_NUMBER: _ClassVar[int]
@@ -38,6 +39,7 @@ class WarehouseHierarchy(_message.Message):
     SEQUENCE_ORDER_FIELD_NUMBER: _ClassVar[int]
     GIFT_CODE_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
@@ -49,6 +51,7 @@ class WarehouseHierarchy(_message.Message):
     sequence_order: _wrappers_pb2.BoolValue
     gift_code: str
     active: _wrappers_pb2.BoolValue
+    external_id: str
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
@@ -62,6 +65,7 @@ class WarehouseHierarchy(_message.Message):
         sequence_order: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         gift_code: _Optional[str] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
@@ -75,6 +79,7 @@ class WarehouseHierarchyCreateRequest(_message.Message):
         "sequence",
         "gift_code",
         "sequence_order",
+        "external_id",
         "context",
     ]
     NAME_FIELD_NUMBER: _ClassVar[int]
@@ -85,6 +90,7 @@ class WarehouseHierarchyCreateRequest(_message.Message):
     SEQUENCE_FIELD_NUMBER: _ClassVar[int]
     GIFT_CODE_FIELD_NUMBER: _ClassVar[int]
     SEQUENCE_ORDER_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     code: str
@@ -94,6 +100,7 @@ class WarehouseHierarchyCreateRequest(_message.Message):
     sequence: int
     gift_code: str
     sequence_order: _wrappers_pb2.BoolValue
+    external_id: str
     context: _base_pb2.Context
     def __init__(
         self,
@@ -105,6 +112,7 @@ class WarehouseHierarchyCreateRequest(_message.Message):
         sequence: _Optional[int] = ...,
         gift_code: _Optional[str] = ...,
         sequence_order: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 

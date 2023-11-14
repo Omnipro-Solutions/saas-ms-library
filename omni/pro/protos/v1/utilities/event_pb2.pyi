@@ -14,13 +14,14 @@ from omni.pro.protos.v1.utilities import model_pb2 as _model_pb2
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Event(_message.Message):
-    __slots__ = ["id", "name", "code", "model", "operation", "active", "object_audit"]
+    __slots__ = ["id", "name", "code", "model", "operation", "active", "external_id", "object_audit"]
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
     MODEL_FIELD_NUMBER: _ClassVar[int]
     OPERATION_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
@@ -28,6 +29,7 @@ class Event(_message.Message):
     model: _model_pb2.Model
     operation: str
     active: _wrappers_pb2.BoolValue
+    external_id: str
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
@@ -37,20 +39,23 @@ class Event(_message.Message):
         model: _Optional[_Union[_model_pb2.Model, _Mapping]] = ...,
         operation: _Optional[str] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
 class EventCreateRequest(_message.Message):
-    __slots__ = ["name", "code", "model_id", "operation", "context"]
+    __slots__ = ["name", "code", "model_id", "operation", "external_id", "context"]
     NAME_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
     MODEL_ID_FIELD_NUMBER: _ClassVar[int]
     OPERATION_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     code: str
     model_id: str
     operation: str
+    external_id: str
     context: _base_pb2.Context
     def __init__(
         self,
@@ -58,6 +63,7 @@ class EventCreateRequest(_message.Message):
         code: _Optional[str] = ...,
         model_id: _Optional[str] = ...,
         operation: _Optional[str] = ...,
+        external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 

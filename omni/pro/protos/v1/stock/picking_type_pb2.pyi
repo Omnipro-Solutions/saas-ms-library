@@ -31,6 +31,7 @@ class PickingType(_message.Message):
         "reservation_method",
         "type_code",
         "active",
+        "external_id",
         "object_audit",
     ]
     ID_FIELD_NUMBER: _ClassVar[int]
@@ -48,6 +49,7 @@ class PickingType(_message.Message):
     RESERVATION_METHOD_FIELD_NUMBER: _ClassVar[int]
     TYPE_CODE_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: int
     name: str
@@ -64,6 +66,7 @@ class PickingType(_message.Message):
     reservation_method: str
     type_code: str
     active: _wrappers_pb2.BoolValue
+    external_id: str
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
@@ -82,6 +85,7 @@ class PickingType(_message.Message):
         reservation_method: _Optional[str] = ...,
         type_code: _Optional[str] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
@@ -100,6 +104,7 @@ class PickingTypeCreateRequest(_message.Message):
         "reservation_method",
         "type_code",
         "sequence_doc_id",
+        "external_id",
         "context",
     ]
     NAME_FIELD_NUMBER: _ClassVar[int]
@@ -115,6 +120,7 @@ class PickingTypeCreateRequest(_message.Message):
     RESERVATION_METHOD_FIELD_NUMBER: _ClassVar[int]
     TYPE_CODE_FIELD_NUMBER: _ClassVar[int]
     SEQUENCE_DOC_ID_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     sequence_code: str
@@ -129,6 +135,7 @@ class PickingTypeCreateRequest(_message.Message):
     reservation_method: str
     type_code: str
     sequence_doc_id: str
+    external_id: str
     context: _base_pb2.Context
     def __init__(
         self,
@@ -145,6 +152,7 @@ class PickingTypeCreateRequest(_message.Message):
         reservation_method: _Optional[str] = ...,
         type_code: _Optional[str] = ...,
         sequence_doc_id: _Optional[str] = ...,
+        external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 

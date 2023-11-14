@@ -23,6 +23,7 @@ class Address(_message.Message):
         "zip_code",
         "territory_matrixes",
         "active",
+        "external_id",
         "object_audit",
     ]
     COUNTRY_ID_FIELD_NUMBER: _ClassVar[int]
@@ -36,6 +37,7 @@ class Address(_message.Message):
     ZIP_CODE_FIELD_NUMBER: _ClassVar[int]
     TERRITORY_MATRIXES_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     country_id: str
     code: str
@@ -48,6 +50,7 @@ class Address(_message.Message):
     zip_code: str
     territory_matrixes: _struct_pb2.ListValue
     active: bool
+    external_id: str
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
@@ -62,6 +65,7 @@ class Address(_message.Message):
         zip_code: _Optional[str] = ...,
         territory_matrixes: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
         active: bool = ...,
+        external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
@@ -78,6 +82,7 @@ class AddressCreateRequest(_message.Message):
         "lng",
         "zip_code",
         "territory_matrixes",
+        "external_id",
         "context",
     ]
     CLIENT_ID_FIELD_NUMBER: _ClassVar[int]
@@ -91,6 +96,7 @@ class AddressCreateRequest(_message.Message):
     LNG_FIELD_NUMBER: _ClassVar[int]
     ZIP_CODE_FIELD_NUMBER: _ClassVar[int]
     TERRITORY_MATRIXES_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     client_id: str
     country_id: str
@@ -103,6 +109,7 @@ class AddressCreateRequest(_message.Message):
     lng: str
     zip_code: str
     territory_matrixes: _struct_pb2.ListValue
+    external_id: str
     context: _base_pb2.Context
     def __init__(
         self,
@@ -117,6 +124,7 @@ class AddressCreateRequest(_message.Message):
         lng: _Optional[str] = ...,
         zip_code: _Optional[str] = ...,
         territory_matrixes: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
+        external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 

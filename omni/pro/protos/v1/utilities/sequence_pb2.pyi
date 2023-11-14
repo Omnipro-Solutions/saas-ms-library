@@ -24,6 +24,7 @@ class Sequence(_message.Message):
         "number_increment",
         "number_next_actual",
         "active",
+        "external_id",
         "object_audit",
     ]
     ID_FIELD_NUMBER: _ClassVar[int]
@@ -36,6 +37,7 @@ class Sequence(_message.Message):
     NUMBER_INCREMENT_FIELD_NUMBER: _ClassVar[int]
     NUMBER_NEXT_ACTUAL_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
@@ -47,6 +49,7 @@ class Sequence(_message.Message):
     number_increment: int
     number_next_actual: int
     active: _wrappers_pb2.BoolValue
+    external_id: str
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
@@ -60,6 +63,7 @@ class Sequence(_message.Message):
         number_increment: _Optional[int] = ...,
         number_next_actual: _Optional[int] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
@@ -73,6 +77,7 @@ class SequenceCreateRequest(_message.Message):
         "padding",
         "number_increment",
         "number_next_actual",
+        "external_id",
         "context",
     ]
     NAME_FIELD_NUMBER: _ClassVar[int]
@@ -83,6 +88,7 @@ class SequenceCreateRequest(_message.Message):
     PADDING_FIELD_NUMBER: _ClassVar[int]
     NUMBER_INCREMENT_FIELD_NUMBER: _ClassVar[int]
     NUMBER_NEXT_ACTUAL_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     code: str
@@ -92,6 +98,7 @@ class SequenceCreateRequest(_message.Message):
     padding: float
     number_increment: int
     number_next_actual: int
+    external_id: str
     context: _base_pb2.Context
     def __init__(
         self,
@@ -103,6 +110,7 @@ class SequenceCreateRequest(_message.Message):
         padding: _Optional[float] = ...,
         number_increment: _Optional[int] = ...,
         number_next_actual: _Optional[int] = ...,
+        external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 

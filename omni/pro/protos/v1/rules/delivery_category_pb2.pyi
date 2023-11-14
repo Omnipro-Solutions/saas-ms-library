@@ -32,16 +32,18 @@ class CategoryValues(_message.Message):
     ) -> None: ...
 
 class DeliveryCategory(_message.Message):
-    __slots__ = ["id", "name", "categories", "active", "object_audit"]
+    __slots__ = ["id", "name", "categories", "active", "external_id", "object_audit"]
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     CATEGORIES_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
     categories: _containers.RepeatedCompositeFieldContainer[_category_pb2.Category]
     active: _wrappers_pb2.BoolValue
+    external_id: str
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
@@ -49,21 +51,25 @@ class DeliveryCategory(_message.Message):
         name: _Optional[str] = ...,
         categories: _Optional[_Iterable[_Union[_category_pb2.Category, _Mapping]]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
 class DeliveryCategoryCreateRequest(_message.Message):
-    __slots__ = ["name", "category_values", "context"]
+    __slots__ = ["name", "category_values", "external_id", "context"]
     NAME_FIELD_NUMBER: _ClassVar[int]
     CATEGORY_VALUES_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     category_values: _containers.RepeatedCompositeFieldContainer[CategoryValues]
+    external_id: str
     context: _base_pb2.Context
     def __init__(
         self,
         name: _Optional[str] = ...,
         category_values: _Optional[_Iterable[_Union[CategoryValues, _Mapping]]] = ...,
+        external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 

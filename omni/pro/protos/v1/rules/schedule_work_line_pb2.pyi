@@ -14,18 +14,20 @@ from omni.pro.protos.common import base_pb2 as _base_pb2
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class ScheduleWorkLine(_message.Message):
-    __slots__ = ["id", "day", "opening_time", "closing_time", "active", "object_audit"]
+    __slots__ = ["id", "day", "opening_time", "closing_time", "active", "external_id", "object_audit"]
     ID_FIELD_NUMBER: _ClassVar[int]
     DAY_FIELD_NUMBER: _ClassVar[int]
     OPENING_TIME_FIELD_NUMBER: _ClassVar[int]
     CLOSING_TIME_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
     day: str
     opening_time: str
     closing_time: str
     active: _wrappers_pb2.BoolValue
+    external_id: str
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
@@ -34,24 +36,28 @@ class ScheduleWorkLine(_message.Message):
         opening_time: _Optional[str] = ...,
         closing_time: _Optional[str] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
 class ScheduleWorkLineCreateRequest(_message.Message):
-    __slots__ = ["day", "opening_time", "closing_time", "context"]
+    __slots__ = ["day", "opening_time", "closing_time", "external_id", "context"]
     DAY_FIELD_NUMBER: _ClassVar[int]
     OPENING_TIME_FIELD_NUMBER: _ClassVar[int]
     CLOSING_TIME_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     day: str
     opening_time: str
     closing_time: str
+    external_id: str
     context: _base_pb2.Context
     def __init__(
         self,
         day: _Optional[str] = ...,
         opening_time: _Optional[str] = ...,
         closing_time: _Optional[str] = ...,
+        external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 

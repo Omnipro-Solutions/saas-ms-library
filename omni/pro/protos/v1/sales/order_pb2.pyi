@@ -30,6 +30,7 @@ class Order(_message.Message):
         "subtotal",
         "total",
         "active",
+        "external_id",
         "object_audit",
     ]
     ID_FIELD_NUMBER: _ClassVar[int]
@@ -43,6 +44,7 @@ class Order(_message.Message):
     SUBTOTAL_FIELD_NUMBER: _ClassVar[int]
     TOTAL_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: int
     name: str
@@ -55,6 +57,7 @@ class Order(_message.Message):
     subtotal: float
     total: float
     active: _wrappers_pb2.BoolValue
+    external_id: str
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
@@ -69,6 +72,7 @@ class Order(_message.Message):
         subtotal: _Optional[float] = ...,
         total: _Optional[float] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
@@ -83,6 +87,7 @@ class OrderCreateRequest(_message.Message):
         "tax_total",
         "subtotal",
         "total",
+        "external_id",
         "context",
     ]
     NAME_FIELD_NUMBER: _ClassVar[int]
@@ -94,6 +99,7 @@ class OrderCreateRequest(_message.Message):
     TAX_TOTAL_FIELD_NUMBER: _ClassVar[int]
     SUBTOTAL_FIELD_NUMBER: _ClassVar[int]
     TOTAL_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     sale_id: int
@@ -104,6 +110,7 @@ class OrderCreateRequest(_message.Message):
     tax_total: float
     subtotal: float
     total: float
+    external_id: str
     context: _base_pb2.Context
     def __init__(
         self,
@@ -116,6 +123,7 @@ class OrderCreateRequest(_message.Message):
         tax_total: _Optional[float] = ...,
         subtotal: _Optional[float] = ...,
         total: _Optional[float] = ...,
+        external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 

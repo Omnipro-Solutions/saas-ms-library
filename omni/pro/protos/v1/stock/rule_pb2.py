@@ -20,7 +20,7 @@ from omni.pro.protos.v1.stock import route_pb2 as v1_dot_stock_dot_route__pb2
 from omni.pro.protos.v1.stock import warehouse_pb2 as v1_dot_stock_dot_warehouse__pb2
 
 DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
-    b'\n\x13v1/stock/rule.proto\x12\x18pro.omni.oms.api.v1.rule\x1a\x11\x63ommon/base.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x17v1/stock/location.proto\x1a\x1bv1/stock/picking_type.proto\x1a\x14v1/stock/route.proto\x1a\x18v1/stock/warehouse.proto"\x90\x04\n\x04Rule\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0e\n\x06\x61\x63tion\x18\x03 \x01(\t\x12I\n\x0cpicking_type\x18\x04 \x01(\x0b\x32\x33.pro.omni.oms.api.v1.stock.picking_type.PickingType\x12\x42\n\x0clocation_src\x18\x05 \x01(\x0b\x32,.pro.omni.oms.api.v1.stock.location.Location\x12>\n\x08location\x18\x06 \x01(\x0b\x32,.pro.omni.oms.api.v1.stock.location.Location\x12\x16\n\x0eprocure_method\x18\x07 \x01(\t\x12\x35\n\x05route\x18\x08 \x01(\x0b\x32&.pro.omni.oms.api.v1.stock.route.Route\x12\x41\n\twarehouse\x18\t \x01(\x0b\x32..pro.omni.oms.api.v1.stock.warehouse.Warehouse\x12\x10\n\x08sequence\x18\n \x01(\x05\x12*\n\x06\x61\x63tive\x18\x0b \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12?\n\x0cobject_audit\x18\x0c \x01(\x0b\x32).pro.omni.oms.api.common.base.ObjectAudit"\x82\x02\n\x11RuleCreateRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0e\n\x06\x61\x63tion\x18\x02 \x01(\t\x12\x17\n\x0fpicking_type_id\x18\x03 \x01(\x05\x12\x17\n\x0flocation_src_id\x18\x04 \x01(\x05\x12\x13\n\x0blocation_id\x18\x05 \x01(\x05\x12\x16\n\x0eprocure_method\x18\x06 \x01(\t\x12\x10\n\x08route_id\x18\x07 \x01(\x05\x12\x14\n\x0cwarehouse_id\x18\x08 \x01(\x05\x12\x10\n\x08sequence\x18\t \x01(\x05\x12\x36\n\x07\x63ontext\x18\n \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\x8d\x01\n\x12RuleCreateResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard\x12,\n\x04rule\x18\x02 \x01(\x0b\x32\x1e.pro.omni.oms.api.v1.rule.Rule"\xed\x02\n\x0fRuleReadRequest\x12\x37\n\x08group_by\x18\x01 \x03(\x0b\x32%.pro.omni.oms.api.common.base.GroupBy\x12\x35\n\x07sort_by\x18\x02 \x01(\x0b\x32$.pro.omni.oms.api.common.base.SortBy\x12\x34\n\x06\x66ields\x18\x03 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Fields\x12\x34\n\x06\x66ilter\x18\x04 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Filter\x12:\n\tpaginated\x18\x05 \x01(\x0b\x32\'.pro.omni.oms.api.common.base.Paginated\x12\n\n\x02id\x18\x06 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x07 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xc7\x01\n\x10RuleReadResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard\x12\x39\n\tmeta_data\x18\x02 \x01(\x0b\x32&.pro.omni.oms.api.common.base.MetaData\x12-\n\x05rules\x18\x03 \x03(\x0b\x32\x1e.pro.omni.oms.api.v1.rule.Rule"y\n\x11RuleUpdateRequest\x12,\n\x04rule\x18\x01 \x01(\x0b\x32\x1e.pro.omni.oms.api.v1.rule.Rule\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\x8d\x01\n\x12RuleUpdateResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard\x12,\n\x04rule\x18\x02 \x01(\x0b\x32\x1e.pro.omni.oms.api.v1.rule.Rule"W\n\x11RuleDeleteRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"_\n\x12RuleDeleteResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard2\xb3\x03\n\x0bRuleService\x12i\n\nRuleCreate\x12+.pro.omni.oms.api.v1.rule.RuleCreateRequest\x1a,.pro.omni.oms.api.v1.rule.RuleCreateResponse"\x00\x12\x63\n\x08RuleRead\x12).pro.omni.oms.api.v1.rule.RuleReadRequest\x1a*.pro.omni.oms.api.v1.rule.RuleReadResponse"\x00\x12i\n\nRuleUpdate\x12+.pro.omni.oms.api.v1.rule.RuleUpdateRequest\x1a,.pro.omni.oms.api.v1.rule.RuleUpdateResponse"\x00\x12i\n\nRuleDelete\x12+.pro.omni.oms.api.v1.rule.RuleDeleteRequest\x1a,.pro.omni.oms.api.v1.rule.RuleDeleteResponse"\x00\x62\x06proto3'
+    b'\n\x13v1/stock/rule.proto\x12\x18pro.omni.oms.api.v1.rule\x1a\x11\x63ommon/base.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x17v1/stock/location.proto\x1a\x1bv1/stock/picking_type.proto\x1a\x14v1/stock/route.proto\x1a\x18v1/stock/warehouse.proto"\xa5\x04\n\x04Rule\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0e\n\x06\x61\x63tion\x18\x03 \x01(\t\x12I\n\x0cpicking_type\x18\x04 \x01(\x0b\x32\x33.pro.omni.oms.api.v1.stock.picking_type.PickingType\x12\x42\n\x0clocation_src\x18\x05 \x01(\x0b\x32,.pro.omni.oms.api.v1.stock.location.Location\x12>\n\x08location\x18\x06 \x01(\x0b\x32,.pro.omni.oms.api.v1.stock.location.Location\x12\x16\n\x0eprocure_method\x18\x07 \x01(\t\x12\x35\n\x05route\x18\x08 \x01(\x0b\x32&.pro.omni.oms.api.v1.stock.route.Route\x12\x41\n\twarehouse\x18\t \x01(\x0b\x32..pro.omni.oms.api.v1.stock.warehouse.Warehouse\x12\x10\n\x08sequence\x18\n \x01(\x05\x12*\n\x06\x61\x63tive\x18\x0b \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12\x13\n\x0b\x65xternal_id\x18\x0c \x01(\t\x12?\n\x0cobject_audit\x18\r \x01(\x0b\x32).pro.omni.oms.api.common.base.ObjectAudit"\x97\x02\n\x11RuleCreateRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0e\n\x06\x61\x63tion\x18\x02 \x01(\t\x12\x17\n\x0fpicking_type_id\x18\x03 \x01(\x05\x12\x17\n\x0flocation_src_id\x18\x04 \x01(\x05\x12\x13\n\x0blocation_id\x18\x05 \x01(\x05\x12\x16\n\x0eprocure_method\x18\x06 \x01(\t\x12\x10\n\x08route_id\x18\x07 \x01(\x05\x12\x14\n\x0cwarehouse_id\x18\x08 \x01(\x05\x12\x10\n\x08sequence\x18\t \x01(\x05\x12\x13\n\x0b\x65xternal_id\x18\n \x01(\t\x12\x36\n\x07\x63ontext\x18\x0b \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\x8d\x01\n\x12RuleCreateResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard\x12,\n\x04rule\x18\x02 \x01(\x0b\x32\x1e.pro.omni.oms.api.v1.rule.Rule"\xed\x02\n\x0fRuleReadRequest\x12\x37\n\x08group_by\x18\x01 \x03(\x0b\x32%.pro.omni.oms.api.common.base.GroupBy\x12\x35\n\x07sort_by\x18\x02 \x01(\x0b\x32$.pro.omni.oms.api.common.base.SortBy\x12\x34\n\x06\x66ields\x18\x03 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Fields\x12\x34\n\x06\x66ilter\x18\x04 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Filter\x12:\n\tpaginated\x18\x05 \x01(\x0b\x32\'.pro.omni.oms.api.common.base.Paginated\x12\n\n\x02id\x18\x06 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x07 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xc7\x01\n\x10RuleReadResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard\x12\x39\n\tmeta_data\x18\x02 \x01(\x0b\x32&.pro.omni.oms.api.common.base.MetaData\x12-\n\x05rules\x18\x03 \x03(\x0b\x32\x1e.pro.omni.oms.api.v1.rule.Rule"y\n\x11RuleUpdateRequest\x12,\n\x04rule\x18\x01 \x01(\x0b\x32\x1e.pro.omni.oms.api.v1.rule.Rule\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\x8d\x01\n\x12RuleUpdateResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard\x12,\n\x04rule\x18\x02 \x01(\x0b\x32\x1e.pro.omni.oms.api.v1.rule.Rule"W\n\x11RuleDeleteRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"_\n\x12RuleDeleteResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard2\xb3\x03\n\x0bRuleService\x12i\n\nRuleCreate\x12+.pro.omni.oms.api.v1.rule.RuleCreateRequest\x1a,.pro.omni.oms.api.v1.rule.RuleCreateResponse"\x00\x12\x63\n\x08RuleRead\x12).pro.omni.oms.api.v1.rule.RuleReadRequest\x1a*.pro.omni.oms.api.v1.rule.RuleReadResponse"\x00\x12i\n\nRuleUpdate\x12+.pro.omni.oms.api.v1.rule.RuleUpdateRequest\x1a,.pro.omni.oms.api.v1.rule.RuleUpdateResponse"\x00\x12i\n\nRuleDelete\x12+.pro.omni.oms.api.v1.rule.RuleDeleteRequest\x1a,.pro.omni.oms.api.v1.rule.RuleDeleteResponse"\x00\x62\x06proto3'
 )
 
 _globals = globals()
@@ -29,23 +29,23 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, "v1.stock.rule_pb2", _global
 if _descriptor._USE_C_DESCRIPTORS == False:
     DESCRIPTOR._options = None
     _globals["_RULE"]._serialized_start = 203
-    _globals["_RULE"]._serialized_end = 731
-    _globals["_RULECREATEREQUEST"]._serialized_start = 734
-    _globals["_RULECREATEREQUEST"]._serialized_end = 992
-    _globals["_RULECREATERESPONSE"]._serialized_start = 995
-    _globals["_RULECREATERESPONSE"]._serialized_end = 1136
-    _globals["_RULEREADREQUEST"]._serialized_start = 1139
-    _globals["_RULEREADREQUEST"]._serialized_end = 1504
-    _globals["_RULEREADRESPONSE"]._serialized_start = 1507
-    _globals["_RULEREADRESPONSE"]._serialized_end = 1706
-    _globals["_RULEUPDATEREQUEST"]._serialized_start = 1708
-    _globals["_RULEUPDATEREQUEST"]._serialized_end = 1829
-    _globals["_RULEUPDATERESPONSE"]._serialized_start = 1832
-    _globals["_RULEUPDATERESPONSE"]._serialized_end = 1973
-    _globals["_RULEDELETEREQUEST"]._serialized_start = 1975
-    _globals["_RULEDELETEREQUEST"]._serialized_end = 2062
-    _globals["_RULEDELETERESPONSE"]._serialized_start = 2064
-    _globals["_RULEDELETERESPONSE"]._serialized_end = 2159
-    _globals["_RULESERVICE"]._serialized_start = 2162
-    _globals["_RULESERVICE"]._serialized_end = 2597
+    _globals["_RULE"]._serialized_end = 752
+    _globals["_RULECREATEREQUEST"]._serialized_start = 755
+    _globals["_RULECREATEREQUEST"]._serialized_end = 1034
+    _globals["_RULECREATERESPONSE"]._serialized_start = 1037
+    _globals["_RULECREATERESPONSE"]._serialized_end = 1178
+    _globals["_RULEREADREQUEST"]._serialized_start = 1181
+    _globals["_RULEREADREQUEST"]._serialized_end = 1546
+    _globals["_RULEREADRESPONSE"]._serialized_start = 1549
+    _globals["_RULEREADRESPONSE"]._serialized_end = 1748
+    _globals["_RULEUPDATEREQUEST"]._serialized_start = 1750
+    _globals["_RULEUPDATEREQUEST"]._serialized_end = 1871
+    _globals["_RULEUPDATERESPONSE"]._serialized_start = 1874
+    _globals["_RULEUPDATERESPONSE"]._serialized_end = 2015
+    _globals["_RULEDELETEREQUEST"]._serialized_start = 2017
+    _globals["_RULEDELETEREQUEST"]._serialized_end = 2104
+    _globals["_RULEDELETERESPONSE"]._serialized_start = 2106
+    _globals["_RULEDELETERESPONSE"]._serialized_end = 2201
+    _globals["_RULESERVICE"]._serialized_start = 2204
+    _globals["_RULESERVICE"]._serialized_end = 2639
 # @@protoc_insertion_point(module_scope)
