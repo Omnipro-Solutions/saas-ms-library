@@ -30,6 +30,7 @@ class Country(_message.Message):
         "low_level",
         "icon",
         "active",
+        "external_id",
         "object_audit",
     ]
     ID_FIELD_NUMBER: _ClassVar[int]
@@ -47,6 +48,7 @@ class Country(_message.Message):
     LOW_LEVEL_FIELD_NUMBER: _ClassVar[int]
     ICON_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
     code: str
@@ -63,6 +65,7 @@ class Country(_message.Message):
     low_level: str
     icon: bytes
     active: _wrappers_pb2.BoolValue
+    external_id: str
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
@@ -81,6 +84,7 @@ class Country(_message.Message):
         low_level: _Optional[str] = ...,
         icon: _Optional[bytes] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
@@ -99,6 +103,7 @@ class CountryCreateRequest(_message.Message):
         "languages_ids",
         "low_level",
         "icon",
+        "external_id",
         "context",
     ]
     CODE_FIELD_NUMBER: _ClassVar[int]
@@ -114,6 +119,7 @@ class CountryCreateRequest(_message.Message):
     LANGUAGES_IDS_FIELD_NUMBER: _ClassVar[int]
     LOW_LEVEL_FIELD_NUMBER: _ClassVar[int]
     ICON_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     code: str
     name: str
@@ -128,6 +134,7 @@ class CountryCreateRequest(_message.Message):
     languages_ids: _struct_pb2.ListValue
     low_level: str
     icon: bytes
+    external_id: str
     context: _base_pb2.Context
     def __init__(
         self,
@@ -144,6 +151,7 @@ class CountryCreateRequest(_message.Message):
         languages_ids: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
         low_level: _Optional[str] = ...,
         icon: _Optional[bytes] = ...,
+        external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 

@@ -24,6 +24,7 @@ class Transition(_message.Message):
         "description",
         "logic",
         "active",
+        "external_id",
         "object_audit",
     ]
     ID_FIELD_NUMBER: _ClassVar[int]
@@ -34,6 +35,7 @@ class Transition(_message.Message):
     DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
     LOGIC_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: int
     flow: _flow_pb2.Flow
@@ -43,6 +45,7 @@ class Transition(_message.Message):
     description: str
     logic: str
     active: _wrappers_pb2.BoolValue
+    external_id: str
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
@@ -54,17 +57,28 @@ class Transition(_message.Message):
         description: _Optional[str] = ...,
         logic: _Optional[str] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
 class TransitionCreateRequest(_message.Message):
-    __slots__ = ["flow_id", "source_state_id", "destination_state_id", "trigger", "description", "logic", "context"]
+    __slots__ = [
+        "flow_id",
+        "source_state_id",
+        "destination_state_id",
+        "trigger",
+        "description",
+        "logic",
+        "external_id",
+        "context",
+    ]
     FLOW_ID_FIELD_NUMBER: _ClassVar[int]
     SOURCE_STATE_ID_FIELD_NUMBER: _ClassVar[int]
     DESTINATION_STATE_ID_FIELD_NUMBER: _ClassVar[int]
     TRIGGER_FIELD_NUMBER: _ClassVar[int]
     DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
     LOGIC_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     flow_id: int
     source_state_id: int
@@ -72,6 +86,7 @@ class TransitionCreateRequest(_message.Message):
     trigger: str
     description: str
     logic: str
+    external_id: str
     context: _base_pb2.Context
     def __init__(
         self,
@@ -81,6 +96,7 @@ class TransitionCreateRequest(_message.Message):
         trigger: _Optional[str] = ...,
         description: _Optional[str] = ...,
         logic: _Optional[str] = ...,
+        external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 

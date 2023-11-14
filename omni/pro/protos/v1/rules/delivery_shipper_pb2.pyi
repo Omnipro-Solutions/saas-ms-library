@@ -31,6 +31,7 @@ class DeliveryShipper(_message.Message):
         "internal_transfer",
         "warehouses",
         "active",
+        "external_id",
         "object_audit",
     ]
     ID_FIELD_NUMBER: _ClassVar[int]
@@ -45,6 +46,7 @@ class DeliveryShipper(_message.Message):
     INTERNAL_TRANSFER_FIELD_NUMBER: _ClassVar[int]
     WAREHOUSES_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
@@ -58,6 +60,7 @@ class DeliveryShipper(_message.Message):
     internal_transfer: _wrappers_pb2.BoolValue
     warehouses: _containers.RepeatedCompositeFieldContainer[_warehouse_pb2.Warehouse]
     active: _wrappers_pb2.BoolValue
+    external_id: str
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
@@ -73,6 +76,7 @@ class DeliveryShipper(_message.Message):
         internal_transfer: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         warehouses: _Optional[_Iterable[_Union[_warehouse_pb2.Warehouse, _Mapping]]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
@@ -88,6 +92,7 @@ class DeliveryShipperCreateRequest(_message.Message):
         "locality_available_id",
         "internal_transfer",
         "warehouse_ids",
+        "external_id",
         "context",
     ]
     NAME_FIELD_NUMBER: _ClassVar[int]
@@ -100,6 +105,7 @@ class DeliveryShipperCreateRequest(_message.Message):
     LOCALITY_AVAILABLE_ID_FIELD_NUMBER: _ClassVar[int]
     INTERNAL_TRANSFER_FIELD_NUMBER: _ClassVar[int]
     WAREHOUSE_IDS_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     code: str
@@ -111,6 +117,7 @@ class DeliveryShipperCreateRequest(_message.Message):
     locality_available_id: str
     internal_transfer: _wrappers_pb2.BoolValue
     warehouse_ids: _containers.RepeatedScalarFieldContainer[int]
+    external_id: str
     context: _base_pb2.Context
     def __init__(
         self,
@@ -124,6 +131,7 @@ class DeliveryShipperCreateRequest(_message.Message):
         locality_available_id: _Optional[str] = ...,
         internal_transfer: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         warehouse_ids: _Optional[_Iterable[int]] = ...,
+        external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 

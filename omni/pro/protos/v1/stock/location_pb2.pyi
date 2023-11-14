@@ -13,7 +13,18 @@ from omni.pro.protos.common import base_pb2 as _base_pb2
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Location(_message.Message):
-    __slots__ = ["id", "name", "parent", "code", "type_location", "barcode", "warehouse", "active", "object_audit"]
+    __slots__ = [
+        "id",
+        "name",
+        "parent",
+        "code",
+        "type_location",
+        "barcode",
+        "warehouse",
+        "active",
+        "external_id",
+        "object_audit",
+    ]
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     PARENT_FIELD_NUMBER: _ClassVar[int]
@@ -22,6 +33,7 @@ class Location(_message.Message):
     BARCODE_FIELD_NUMBER: _ClassVar[int]
     WAREHOUSE_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: int
     name: str
@@ -31,6 +43,7 @@ class Location(_message.Message):
     barcode: str
     warehouse: _base_pb2.ObjectResponse
     active: _wrappers_pb2.BoolValue
+    external_id: str
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
@@ -42,17 +55,19 @@ class Location(_message.Message):
         barcode: _Optional[str] = ...,
         warehouse: _Optional[_Union[_base_pb2.ObjectResponse, _Mapping]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
 class LocationCreateRequest(_message.Message):
-    __slots__ = ["name", "parent_id", "code", "type_location", "barcode", "warehouse_id", "context"]
+    __slots__ = ["name", "parent_id", "code", "type_location", "barcode", "warehouse_id", "external_id", "context"]
     NAME_FIELD_NUMBER: _ClassVar[int]
     PARENT_ID_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
     TYPE_LOCATION_FIELD_NUMBER: _ClassVar[int]
     BARCODE_FIELD_NUMBER: _ClassVar[int]
     WAREHOUSE_ID_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     parent_id: int
@@ -60,6 +75,7 @@ class LocationCreateRequest(_message.Message):
     type_location: str
     barcode: str
     warehouse_id: int
+    external_id: str
     context: _base_pb2.Context
     def __init__(
         self,
@@ -69,6 +85,7 @@ class LocationCreateRequest(_message.Message):
         type_location: _Optional[str] = ...,
         barcode: _Optional[str] = ...,
         warehouse_id: _Optional[int] = ...,
+        external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 

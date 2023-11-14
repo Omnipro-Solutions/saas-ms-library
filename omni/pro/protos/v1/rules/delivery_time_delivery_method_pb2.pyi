@@ -12,16 +12,18 @@ from omni.pro.protos.common import base_pb2 as _base_pb2
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class DeliveryTimeDeliveryMethod(_message.Message):
-    __slots__ = ["id", "delivery_time_id", "delivery_method_id", "active", "object_audit"]
+    __slots__ = ["id", "delivery_time_id", "delivery_method_id", "active", "external_id", "object_audit"]
     ID_FIELD_NUMBER: _ClassVar[int]
     DELIVERY_TIME_ID_FIELD_NUMBER: _ClassVar[int]
     DELIVERY_METHOD_ID_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: int
     delivery_time_id: int
     delivery_method_id: int
     active: bool
+    external_id: str
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
@@ -29,21 +31,25 @@ class DeliveryTimeDeliveryMethod(_message.Message):
         delivery_time_id: _Optional[int] = ...,
         delivery_method_id: _Optional[int] = ...,
         active: bool = ...,
+        external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
 class DeliveryTimeDeliveryMethodCreateRequest(_message.Message):
-    __slots__ = ["delivery_time_id", "delivery_method_id", "context"]
+    __slots__ = ["delivery_time_id", "delivery_method_id", "external_id", "context"]
     DELIVERY_TIME_ID_FIELD_NUMBER: _ClassVar[int]
     DELIVERY_METHOD_ID_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     delivery_time_id: int
     delivery_method_id: int
+    external_id: str
     context: _base_pb2.Context
     def __init__(
         self,
         delivery_time_id: _Optional[int] = ...,
         delivery_method_id: _Optional[int] = ...,
+        external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 

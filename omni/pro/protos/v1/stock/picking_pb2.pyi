@@ -43,6 +43,7 @@ class Picking(_message.Message):
         "state",
         "dependency",
         "active",
+        "external_id",
         "object_audit",
     ]
     ID_FIELD_NUMBER: _ClassVar[int]
@@ -67,6 +68,7 @@ class Picking(_message.Message):
     STATE_FIELD_NUMBER: _ClassVar[int]
     DEPENDENCY_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: int
     name: str
@@ -90,6 +92,7 @@ class Picking(_message.Message):
     state: str
     dependency: _base_pb2.ObjectResponse
     active: _wrappers_pb2.BoolValue
+    external_id: str
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
@@ -115,6 +118,7 @@ class Picking(_message.Message):
         state: _Optional[str] = ...,
         dependency: _Optional[_Union[_base_pb2.ObjectResponse, _Mapping]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
@@ -140,6 +144,7 @@ class PickingCreateRequest(_message.Message):
         "shipping_weight",
         "state",
         "dependency_id",
+        "external_id",
         "context",
     ]
     NAME_FIELD_NUMBER: _ClassVar[int]
@@ -162,6 +167,7 @@ class PickingCreateRequest(_message.Message):
     SHIPPING_WEIGHT_FIELD_NUMBER: _ClassVar[int]
     STATE_FIELD_NUMBER: _ClassVar[int]
     DEPENDENCY_ID_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     picking_type_id: int
@@ -183,6 +189,7 @@ class PickingCreateRequest(_message.Message):
     shipping_weight: float
     state: str
     dependency_id: int
+    external_id: str
     context: _base_pb2.Context
     def __init__(
         self,
@@ -206,6 +213,7 @@ class PickingCreateRequest(_message.Message):
         shipping_weight: _Optional[float] = ...,
         state: _Optional[str] = ...,
         dependency_id: _Optional[int] = ...,
+        external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 

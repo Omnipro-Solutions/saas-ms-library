@@ -26,6 +26,7 @@ class Quant(_message.Message):
         "quantity",
         "uom",
         "active",
+        "external_id",
         "object_audit",
     ]
     ID_FIELD_NUMBER: _ClassVar[int]
@@ -37,6 +38,7 @@ class Quant(_message.Message):
     QUANTITY_FIELD_NUMBER: _ClassVar[int]
     UOM_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: int
     product: _product_pb2.Product
@@ -47,6 +49,7 @@ class Quant(_message.Message):
     quantity: float
     uom: _uom_pb2.Uom
     active: _wrappers_pb2.BoolValue
+    external_id: str
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
@@ -59,6 +62,7 @@ class Quant(_message.Message):
         quantity: _Optional[float] = ...,
         uom: _Optional[_Union[_uom_pb2.Uom, _Mapping]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
@@ -71,6 +75,7 @@ class QuantCreateRequest(_message.Message):
         "reserved_quantity",
         "quantity",
         "uom_id",
+        "external_id",
         "context",
     ]
     PRODUCT_ID_FIELD_NUMBER: _ClassVar[int]
@@ -80,6 +85,7 @@ class QuantCreateRequest(_message.Message):
     RESERVED_QUANTITY_FIELD_NUMBER: _ClassVar[int]
     QUANTITY_FIELD_NUMBER: _ClassVar[int]
     UOM_ID_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     product_id: str
     location_id: int
@@ -88,6 +94,7 @@ class QuantCreateRequest(_message.Message):
     reserved_quantity: float
     quantity: float
     uom_id: str
+    external_id: str
     context: _base_pb2.Context
     def __init__(
         self,
@@ -98,6 +105,7 @@ class QuantCreateRequest(_message.Message):
         reserved_quantity: _Optional[float] = ...,
         quantity: _Optional[float] = ...,
         uom_id: _Optional[str] = ...,
+        external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 

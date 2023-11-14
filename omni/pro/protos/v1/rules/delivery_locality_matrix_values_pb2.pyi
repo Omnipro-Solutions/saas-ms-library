@@ -13,16 +13,18 @@ from omni.pro.protos.common import base_pb2 as _base_pb2
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class DeliveryLocalityMatrixValues(_message.Message):
-    __slots__ = ["id", "delivery_locality_id", "territory_matrix_values_id", "active", "object_audit"]
+    __slots__ = ["id", "delivery_locality_id", "territory_matrix_values_id", "active", "external_id", "object_audit"]
     ID_FIELD_NUMBER: _ClassVar[int]
     DELIVERY_LOCALITY_ID_FIELD_NUMBER: _ClassVar[int]
     TERRITORY_MATRIX_VALUES_ID_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: int
     delivery_locality_id: int
     territory_matrix_values_id: int
     active: _wrappers_pb2.BoolValue
+    external_id: str
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
@@ -30,21 +32,25 @@ class DeliveryLocalityMatrixValues(_message.Message):
         delivery_locality_id: _Optional[int] = ...,
         territory_matrix_values_id: _Optional[int] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
 class DeliveryLocalityMatrixValuesCreateRequest(_message.Message):
-    __slots__ = ["delivery_locality_id", "territory_matrix_values_id", "context"]
+    __slots__ = ["delivery_locality_id", "territory_matrix_values_id", "external_id", "context"]
     DELIVERY_LOCALITY_ID_FIELD_NUMBER: _ClassVar[int]
     TERRITORY_MATRIX_VALUES_ID_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     delivery_locality_id: int
     territory_matrix_values_id: int
+    external_id: str
     context: _base_pb2.Context
     def __init__(
         self,
         delivery_locality_id: _Optional[int] = ...,
         territory_matrix_values_id: _Optional[int] = ...,
+        external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 

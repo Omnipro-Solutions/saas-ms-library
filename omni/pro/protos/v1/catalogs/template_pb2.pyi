@@ -15,18 +15,20 @@ from omni.pro.protos.v1.catalogs import family_pb2 as _family_pb2
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class ProductTemplate(_message.Message):
-    __slots__ = ["id", "code", "name", "family", "attribute_values", "active"]
+    __slots__ = ["id", "code", "name", "family", "attribute_values", "external_id", "active"]
     ID_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     FAMILY_FIELD_NUMBER: _ClassVar[int]
     ATTRIBUTE_VALUES_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     id: str
     code: str
     name: str
     family: _family_pb2.Family
     attribute_values: _struct_pb2.Struct
+    external_id: str
     active: _wrappers_pb2.BoolValue
     def __init__(
         self,
@@ -35,20 +37,23 @@ class ProductTemplate(_message.Message):
         name: _Optional[str] = ...,
         family: _Optional[_Union[_family_pb2.Family, _Mapping]] = ...,
         attribute_values: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
+        external_id: _Optional[str] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
     ) -> None: ...
 
 class ProductTemplateCreateRequest(_message.Message):
-    __slots__ = ["code", "name", "family_id", "attribute_values", "context"]
+    __slots__ = ["code", "name", "family_id", "attribute_values", "external_id", "context"]
     CODE_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     FAMILY_ID_FIELD_NUMBER: _ClassVar[int]
     ATTRIBUTE_VALUES_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     code: str
     name: str
     family_id: str
     attribute_values: _struct_pb2.Struct
+    external_id: str
     context: _base_pb2.Context
     def __init__(
         self,
@@ -56,6 +61,7 @@ class ProductTemplateCreateRequest(_message.Message):
         name: _Optional[str] = ...,
         family_id: _Optional[str] = ...,
         attribute_values: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
+        external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
@@ -154,18 +160,20 @@ class ProductTemplateDeleteResponse(_message.Message):
     def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
 
 class Product(_message.Message):
-    __slots__ = ["id", "code", "name", "product_template_id", "attribute_values", "active"]
+    __slots__ = ["id", "code", "name", "product_template_id", "attribute_values", "external_id", "active"]
     ID_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     PRODUCT_TEMPLATE_ID_FIELD_NUMBER: _ClassVar[int]
     ATTRIBUTE_VALUES_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     id: str
     code: str
     name: str
     product_template_id: str
     attribute_values: _struct_pb2.Struct
+    external_id: str
     active: _wrappers_pb2.BoolValue
     def __init__(
         self,
@@ -174,20 +182,23 @@ class Product(_message.Message):
         name: _Optional[str] = ...,
         product_template_id: _Optional[str] = ...,
         attribute_values: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
+        external_id: _Optional[str] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
     ) -> None: ...
 
 class ProductCreateRequest(_message.Message):
-    __slots__ = ["code", "name", "product_template_id", "attribute_values", "context"]
+    __slots__ = ["code", "name", "product_template_id", "attribute_values", "external_id", "context"]
     CODE_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     PRODUCT_TEMPLATE_ID_FIELD_NUMBER: _ClassVar[int]
     ATTRIBUTE_VALUES_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     code: str
     name: str
     product_template_id: str
     attribute_values: _struct_pb2.Struct
+    external_id: str
     context: _base_pb2.Context
     def __init__(
         self,
@@ -195,6 +206,7 @@ class ProductCreateRequest(_message.Message):
         name: _Optional[str] = ...,
         product_template_id: _Optional[str] = ...,
         attribute_values: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
+        external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 

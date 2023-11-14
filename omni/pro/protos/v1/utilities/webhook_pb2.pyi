@@ -6,66 +6,80 @@ from typing import Union as _Union
 
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
+from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
+from omni.pro.protos.v1.utilities import event_pb2 as _event_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
-class DeliveryPriceDeliveryMethod(_message.Message):
-    __slots__ = ["id", "delivery_price_id", "delivery_method_id", "active", "external_id", "object_audit"]
+class Webhook(_message.Message):
+    __slots__ = ["id", "event", "url", "method", "format", "log", "active", "object_audit"]
     ID_FIELD_NUMBER: _ClassVar[int]
-    DELIVERY_PRICE_ID_FIELD_NUMBER: _ClassVar[int]
-    DELIVERY_METHOD_ID_FIELD_NUMBER: _ClassVar[int]
+    EVENT_FIELD_NUMBER: _ClassVar[int]
+    URL_FIELD_NUMBER: _ClassVar[int]
+    METHOD_FIELD_NUMBER: _ClassVar[int]
+    FORMAT_FIELD_NUMBER: _ClassVar[int]
+    LOG_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
-    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
-    id: int
-    delivery_price_id: int
-    delivery_method_id: int
-    active: bool
-    external_id: str
+    id: str
+    event: _event_pb2.Event
+    url: str
+    method: str
+    format: str
+    log: _wrappers_pb2.BoolValue
+    active: _wrappers_pb2.BoolValue
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
-        id: _Optional[int] = ...,
-        delivery_price_id: _Optional[int] = ...,
-        delivery_method_id: _Optional[int] = ...,
-        active: bool = ...,
-        external_id: _Optional[str] = ...,
+        id: _Optional[str] = ...,
+        event: _Optional[_Union[_event_pb2.Event, _Mapping]] = ...,
+        url: _Optional[str] = ...,
+        method: _Optional[str] = ...,
+        format: _Optional[str] = ...,
+        log: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
-class DeliveryPriceDeliveryMethodCreateRequest(_message.Message):
-    __slots__ = ["delivery_price_id", "delivery_method_id", "external_id", "context"]
-    DELIVERY_PRICE_ID_FIELD_NUMBER: _ClassVar[int]
-    DELIVERY_METHOD_ID_FIELD_NUMBER: _ClassVar[int]
-    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
+class WebhookCreateRequest(_message.Message):
+    __slots__ = ["event_id", "url", "method", "format", "log", "context"]
+    EVENT_ID_FIELD_NUMBER: _ClassVar[int]
+    URL_FIELD_NUMBER: _ClassVar[int]
+    METHOD_FIELD_NUMBER: _ClassVar[int]
+    FORMAT_FIELD_NUMBER: _ClassVar[int]
+    LOG_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    delivery_price_id: int
-    delivery_method_id: int
-    external_id: str
+    event_id: str
+    url: str
+    method: str
+    format: str
+    log: _wrappers_pb2.BoolValue
     context: _base_pb2.Context
     def __init__(
         self,
-        delivery_price_id: _Optional[int] = ...,
-        delivery_method_id: _Optional[int] = ...,
-        external_id: _Optional[str] = ...,
+        event_id: _Optional[str] = ...,
+        url: _Optional[str] = ...,
+        method: _Optional[str] = ...,
+        format: _Optional[str] = ...,
+        log: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
-class DeliveryPriceDeliveryMethodCreateResponse(_message.Message):
-    __slots__ = ["delivery_price_delivery_method", "response_standard"]
-    DELIVERY_PRICE_DELIVERY_METHOD_FIELD_NUMBER: _ClassVar[int]
+class WebhookCreateResponse(_message.Message):
+    __slots__ = ["response_standard", "webhook"]
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
-    delivery_price_delivery_method: DeliveryPriceDeliveryMethod
+    WEBHOOK_FIELD_NUMBER: _ClassVar[int]
     response_standard: _base_pb2.ResponseStandard
+    webhook: Webhook
     def __init__(
         self,
-        delivery_price_delivery_method: _Optional[_Union[DeliveryPriceDeliveryMethod, _Mapping]] = ...,
         response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
+        webhook: _Optional[_Union[Webhook, _Mapping]] = ...,
     ) -> None: ...
 
-class DeliveryPriceDeliveryMethodReadRequest(_message.Message):
+class WebhookReadRequest(_message.Message):
     __slots__ = ["group_by", "sort_by", "fields", "filter", "paginated", "id", "context"]
     GROUP_BY_FIELD_NUMBER: _ClassVar[int]
     SORT_BY_FIELD_NUMBER: _ClassVar[int]
@@ -79,7 +93,7 @@ class DeliveryPriceDeliveryMethodReadRequest(_message.Message):
     fields: _base_pb2.Fields
     filter: _base_pb2.Filter
     paginated: _base_pb2.Paginated
-    id: int
+    id: str
     context: _base_pb2.Context
     def __init__(
         self,
@@ -88,60 +102,60 @@ class DeliveryPriceDeliveryMethodReadRequest(_message.Message):
         fields: _Optional[_Union[_base_pb2.Fields, _Mapping]] = ...,
         filter: _Optional[_Union[_base_pb2.Filter, _Mapping]] = ...,
         paginated: _Optional[_Union[_base_pb2.Paginated, _Mapping]] = ...,
-        id: _Optional[int] = ...,
+        id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
-class DeliveryPriceDeliveryMethodReadResponse(_message.Message):
-    __slots__ = ["delivery_price_delivery_method", "meta_data", "response_standard"]
-    DELIVERY_PRICE_DELIVERY_METHOD_FIELD_NUMBER: _ClassVar[int]
-    META_DATA_FIELD_NUMBER: _ClassVar[int]
+class WebhookReadResponse(_message.Message):
+    __slots__ = ["response_standard", "meta_data", "webhooks"]
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
-    delivery_price_delivery_method: _containers.RepeatedCompositeFieldContainer[DeliveryPriceDeliveryMethod]
-    meta_data: _base_pb2.MetaData
+    META_DATA_FIELD_NUMBER: _ClassVar[int]
+    WEBHOOKS_FIELD_NUMBER: _ClassVar[int]
     response_standard: _base_pb2.ResponseStandard
+    meta_data: _base_pb2.MetaData
+    webhooks: _containers.RepeatedCompositeFieldContainer[Webhook]
     def __init__(
         self,
-        delivery_price_delivery_method: _Optional[_Iterable[_Union[DeliveryPriceDeliveryMethod, _Mapping]]] = ...,
-        meta_data: _Optional[_Union[_base_pb2.MetaData, _Mapping]] = ...,
         response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
+        meta_data: _Optional[_Union[_base_pb2.MetaData, _Mapping]] = ...,
+        webhooks: _Optional[_Iterable[_Union[Webhook, _Mapping]]] = ...,
     ) -> None: ...
 
-class DeliveryPriceDeliveryMethodUpdateRequest(_message.Message):
-    __slots__ = ["delivery_price_delivery_method", "context"]
-    DELIVERY_PRICE_DELIVERY_METHOD_FIELD_NUMBER: _ClassVar[int]
+class WebhookUpdateRequest(_message.Message):
+    __slots__ = ["webhook", "context"]
+    WEBHOOK_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    delivery_price_delivery_method: DeliveryPriceDeliveryMethod
+    webhook: Webhook
     context: _base_pb2.Context
     def __init__(
         self,
-        delivery_price_delivery_method: _Optional[_Union[DeliveryPriceDeliveryMethod, _Mapping]] = ...,
+        webhook: _Optional[_Union[Webhook, _Mapping]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
-class DeliveryPriceDeliveryMethodUpdateResponse(_message.Message):
-    __slots__ = ["delivery_price_delivery_method", "response_standard"]
-    DELIVERY_PRICE_DELIVERY_METHOD_FIELD_NUMBER: _ClassVar[int]
+class WebhookUpdateResponse(_message.Message):
+    __slots__ = ["response_standard", "webhook"]
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
-    delivery_price_delivery_method: DeliveryPriceDeliveryMethod
+    WEBHOOK_FIELD_NUMBER: _ClassVar[int]
     response_standard: _base_pb2.ResponseStandard
+    webhook: Webhook
     def __init__(
         self,
-        delivery_price_delivery_method: _Optional[_Union[DeliveryPriceDeliveryMethod, _Mapping]] = ...,
         response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
+        webhook: _Optional[_Union[Webhook, _Mapping]] = ...,
     ) -> None: ...
 
-class DeliveryPriceDeliveryMethodDeleteRequest(_message.Message):
+class WebhookDeleteRequest(_message.Message):
     __slots__ = ["id", "context"]
     ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    id: int
+    id: str
     context: _base_pb2.Context
     def __init__(
-        self, id: _Optional[int] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
+        self, id: _Optional[str] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
     ) -> None: ...
 
-class DeliveryPriceDeliveryMethodDeleteResponse(_message.Message):
+class WebhookDeleteResponse(_message.Message):
     __slots__ = ["response_standard"]
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
     response_standard: _base_pb2.ResponseStandard

@@ -13,13 +13,14 @@ from omni.pro.protos.common import base_pb2 as _base_pb2
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Timezone(_message.Message):
-    __slots__ = ["id", "name", "code", "offset", "offset_dst", "active", "object_audit"]
+    __slots__ = ["id", "name", "code", "offset", "offset_dst", "active", "external_id", "object_audit"]
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
     OFFSET_FIELD_NUMBER: _ClassVar[int]
     OFFSET_DST_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
@@ -27,6 +28,7 @@ class Timezone(_message.Message):
     offset: int
     offset_dst: int
     active: _wrappers_pb2.BoolValue
+    external_id: str
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
@@ -36,22 +38,25 @@ class Timezone(_message.Message):
         offset: _Optional[int] = ...,
         offset_dst: _Optional[int] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
 class TimezoneAddRequest(_message.Message):
-    __slots__ = ["name", "code", "offset", "offset_dst", "active", "context"]
+    __slots__ = ["name", "code", "offset", "offset_dst", "active", "external_id", "context"]
     NAME_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
     OFFSET_FIELD_NUMBER: _ClassVar[int]
     OFFSET_DST_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     code: str
     offset: int
     offset_dst: int
     active: _wrappers_pb2.BoolValue
+    external_id: str
     context: _base_pb2.Context
     def __init__(
         self,
@@ -60,6 +65,7 @@ class TimezoneAddRequest(_message.Message):
         offset: _Optional[int] = ...,
         offset_dst: _Optional[int] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
