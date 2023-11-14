@@ -106,7 +106,7 @@ class BaseAuditEmbeddedDocument(BaseEmbeddedDocument):
     context = EmbeddedDocumentField(Context)
     audit = EmbeddedDocumentField(Audit)
     active = BooleanField(default=True)
-    external_id = StringField(unique=True)
+    external_id = StringField()
 
     meta = {
         "abstract": True,
