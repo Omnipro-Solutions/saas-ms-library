@@ -15,7 +15,17 @@ from omni.pro.protos.v1.rules import country_pb2 as _country_pb2
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class DeliveryLocality(_message.Message):
-    __slots__ = ["id", "name", "country", "code_collection", "items", "active", "external_id", "object_audit"]
+    __slots__ = [
+        "id",
+        "name",
+        "country",
+        "code_collection",
+        "items",
+        "active",
+        "external_id",
+        "territory_matrix_values_front",
+        "object_audit",
+    ]
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     COUNTRY_FIELD_NUMBER: _ClassVar[int]
@@ -23,6 +33,7 @@ class DeliveryLocality(_message.Message):
     ITEMS_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
+    TERRITORY_MATRIX_VALUES_FRONT_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
@@ -31,6 +42,7 @@ class DeliveryLocality(_message.Message):
     items: _struct_pb2.ListValue
     active: _wrappers_pb2.BoolValue
     external_id: str
+    territory_matrix_values_front: _struct_pb2.Struct
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
@@ -41,22 +53,33 @@ class DeliveryLocality(_message.Message):
         items: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         external_id: _Optional[str] = ...,
+        territory_matrix_values_front: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
 class DeliveryLocalityCreateRequest(_message.Message):
-    __slots__ = ["name", "country_id", "code_collection", "items", "external_id", "context"]
+    __slots__ = [
+        "name",
+        "country_id",
+        "code_collection",
+        "items",
+        "external_id",
+        "territory_matrix_values_front",
+        "context",
+    ]
     NAME_FIELD_NUMBER: _ClassVar[int]
     COUNTRY_ID_FIELD_NUMBER: _ClassVar[int]
     CODE_COLLECTION_FIELD_NUMBER: _ClassVar[int]
     ITEMS_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
+    TERRITORY_MATRIX_VALUES_FRONT_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     country_id: str
     code_collection: str
     items: _containers.RepeatedScalarFieldContainer[str]
     external_id: str
+    territory_matrix_values_front: _struct_pb2.Struct
     context: _base_pb2.Context
     def __init__(
         self,
@@ -65,6 +88,7 @@ class DeliveryLocalityCreateRequest(_message.Message):
         code_collection: _Optional[str] = ...,
         items: _Optional[_Iterable[str]] = ...,
         external_id: _Optional[str] = ...,
+        territory_matrix_values_front: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
