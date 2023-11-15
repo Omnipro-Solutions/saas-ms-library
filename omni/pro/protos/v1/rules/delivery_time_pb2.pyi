@@ -9,6 +9,7 @@ from google.protobuf import message as _message
 from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
+from omni.pro.protos.v1.rules import delivery_category_pb2 as _delivery_category_pb2
 from omni.pro.protos.v1.rules import delivery_locality_pb2 as _delivery_locality_pb2
 from omni.pro.protos.v1.rules import delivery_method_pb2 as _delivery_method_pb2
 from omni.pro.protos.v1.rules import warehouse_pb2 as _warehouse_pb2
@@ -28,6 +29,10 @@ class DeliveryTime(_message.Message):
         "value_min",
         "value_max",
         "inversely",
+        "variable_factor",
+        "operator_factor",
+        "amount_factor",
+        "category_template_not_allowed",
         "active",
         "external_id",
         "object_audit",
@@ -43,6 +48,10 @@ class DeliveryTime(_message.Message):
     VALUE_MIN_FIELD_NUMBER: _ClassVar[int]
     VALUE_MAX_FIELD_NUMBER: _ClassVar[int]
     INVERSELY_FIELD_NUMBER: _ClassVar[int]
+    VARIABLE_FACTOR_FIELD_NUMBER: _ClassVar[int]
+    OPERATOR_FACTOR_FIELD_NUMBER: _ClassVar[int]
+    AMOUNT_FACTOR_FIELD_NUMBER: _ClassVar[int]
+    CATEGORY_TEMPLATE_NOT_ALLOWED_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
@@ -57,6 +66,10 @@ class DeliveryTime(_message.Message):
     value_min: int
     value_max: int
     inversely: _wrappers_pb2.BoolValue
+    variable_factor: str
+    operator_factor: str
+    amount_factor: float
+    category_template_not_allowed: _delivery_category_pb2.DeliveryCategory
     active: _wrappers_pb2.BoolValue
     external_id: str
     object_audit: _base_pb2.ObjectAudit
@@ -73,6 +86,10 @@ class DeliveryTime(_message.Message):
         value_min: _Optional[int] = ...,
         value_max: _Optional[int] = ...,
         inversely: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        variable_factor: _Optional[str] = ...,
+        operator_factor: _Optional[str] = ...,
+        amount_factor: _Optional[float] = ...,
+        category_template_not_allowed: _Optional[_Union[_delivery_category_pb2.DeliveryCategory, _Mapping]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
@@ -91,6 +108,10 @@ class DeliveryTimeCreateRequest(_message.Message):
         "delivery_method_ids",
         "inversely",
         "external_id",
+        "variable_factor",
+        "operator_factor",
+        "amount_factor",
+        "category_template_not_allowed_id",
         "context",
     ]
     NAME_FIELD_NUMBER: _ClassVar[int]
@@ -104,6 +125,10 @@ class DeliveryTimeCreateRequest(_message.Message):
     DELIVERY_METHOD_IDS_FIELD_NUMBER: _ClassVar[int]
     INVERSELY_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
+    VARIABLE_FACTOR_FIELD_NUMBER: _ClassVar[int]
+    OPERATOR_FACTOR_FIELD_NUMBER: _ClassVar[int]
+    AMOUNT_FACTOR_FIELD_NUMBER: _ClassVar[int]
+    CATEGORY_TEMPLATE_NOT_ALLOWED_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     code: str
@@ -116,6 +141,10 @@ class DeliveryTimeCreateRequest(_message.Message):
     delivery_method_ids: _containers.RepeatedScalarFieldContainer[str]
     inversely: _wrappers_pb2.BoolValue
     external_id: str
+    variable_factor: str
+    operator_factor: str
+    amount_factor: float
+    category_template_not_allowed_id: str
     context: _base_pb2.Context
     def __init__(
         self,
@@ -130,6 +159,10 @@ class DeliveryTimeCreateRequest(_message.Message):
         delivery_method_ids: _Optional[_Iterable[str]] = ...,
         inversely: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         external_id: _Optional[str] = ...,
+        variable_factor: _Optional[str] = ...,
+        operator_factor: _Optional[str] = ...,
+        amount_factor: _Optional[float] = ...,
+        category_template_not_allowed_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
