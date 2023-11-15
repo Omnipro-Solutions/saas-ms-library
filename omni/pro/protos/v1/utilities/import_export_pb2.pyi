@@ -77,7 +77,7 @@ class ImportExportCreateRequest(_message.Message):
     __slots__ = [
         "micro_id",
         "type_operation",
-        "model",
+        "model_id",
         "name_file",
         "type_file",
         "date_load",
@@ -89,7 +89,7 @@ class ImportExportCreateRequest(_message.Message):
     ]
     MICRO_ID_FIELD_NUMBER: _ClassVar[int]
     TYPE_OPERATION_FIELD_NUMBER: _ClassVar[int]
-    MODEL_FIELD_NUMBER: _ClassVar[int]
+    MODEL_ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FILE_FIELD_NUMBER: _ClassVar[int]
     TYPE_FILE_FIELD_NUMBER: _ClassVar[int]
     DATE_LOAD_FIELD_NUMBER: _ClassVar[int]
@@ -100,7 +100,7 @@ class ImportExportCreateRequest(_message.Message):
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     micro_id: str
     type_operation: str
-    model: _model_pb2.Model
+    model_id: str
     name_file: str
     type_file: str
     date_load: _timestamp_pb2.Timestamp
@@ -113,7 +113,7 @@ class ImportExportCreateRequest(_message.Message):
         self,
         micro_id: _Optional[str] = ...,
         type_operation: _Optional[str] = ...,
-        model: _Optional[_Union[_model_pb2.Model, _Mapping]] = ...,
+        model_id: _Optional[str] = ...,
         name_file: _Optional[str] = ...,
         type_file: _Optional[str] = ...,
         date_load: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
