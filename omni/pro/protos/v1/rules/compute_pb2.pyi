@@ -6,7 +6,6 @@ from typing import Union as _Union
 
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
-from google.protobuf import struct_pb2 as _struct_pb2
 from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
@@ -34,9 +33,9 @@ class Compute(_message.Message):
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
     data_request: str
-    data_process: _struct_pb2.ListValue
-    data_response_internal: _struct_pb2.ListValue
-    data_response_external: _struct_pb2.ListValue
+    data_process: str
+    data_response_internal: str
+    data_response_external: str
     time: float
     active: _wrappers_pb2.BoolValue
     object_audit: _base_pb2.ObjectAudit
@@ -44,9 +43,9 @@ class Compute(_message.Message):
         self,
         id: _Optional[str] = ...,
         data_request: _Optional[str] = ...,
-        data_process: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
-        data_response_internal: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
-        data_response_external: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
+        data_process: _Optional[str] = ...,
+        data_response_internal: _Optional[str] = ...,
+        data_response_external: _Optional[str] = ...,
         time: _Optional[float] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
@@ -61,17 +60,17 @@ class ComputeCreateRequest(_message.Message):
     TIME_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     data_request: str
-    data_process: _struct_pb2.ListValue
-    data_response_internal: _struct_pb2.ListValue
-    data_response_external: _struct_pb2.ListValue
+    data_process: str
+    data_response_internal: str
+    data_response_external: str
     time: float
     context: _base_pb2.Context
     def __init__(
         self,
         data_request: _Optional[str] = ...,
-        data_process: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
-        data_response_internal: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
-        data_response_external: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
+        data_process: _Optional[str] = ...,
+        data_response_internal: _Optional[str] = ...,
+        data_response_external: _Optional[str] = ...,
         time: _Optional[float] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
@@ -116,14 +115,17 @@ class ComputeReadRequest(_message.Message):
     ) -> None: ...
 
 class ComputeReadResponse(_message.Message):
-    __slots__ = ["response_standard", "compute"]
+    __slots__ = ["response_standard", "meta_data", "compute"]
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
+    META_DATA_FIELD_NUMBER: _ClassVar[int]
     COMPUTE_FIELD_NUMBER: _ClassVar[int]
     response_standard: _base_pb2.ResponseStandard
+    meta_data: _base_pb2.MetaData
     compute: _containers.RepeatedCompositeFieldContainer[Compute]
     def __init__(
         self,
         response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
+        meta_data: _Optional[_Union[_base_pb2.MetaData, _Mapping]] = ...,
         compute: _Optional[_Iterable[_Union[Compute, _Mapping]]] = ...,
     ) -> None: ...
 
