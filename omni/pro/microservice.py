@@ -11,6 +11,8 @@ class MicroService(Enum):
     SAAS_MS_SALE = "saas-ms-sale"
     SAAS_MS_RULE = "saas-ms-rule"
 
-
+    @classmethod
+    def valid_value(cls, value: str) -> bool:
+        return value in cls._value2member_map_
 class MicroServiceDocument(object):
     pass
