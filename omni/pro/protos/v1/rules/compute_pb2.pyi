@@ -19,7 +19,7 @@ class Compute(_message.Message):
         "data_request",
         "data_process",
         "data_response_internal",
-        "data_response",
+        "data_response_external",
         "time",
         "active",
         "object_audit",
@@ -28,50 +28,50 @@ class Compute(_message.Message):
     DATA_REQUEST_FIELD_NUMBER: _ClassVar[int]
     DATA_PROCESS_FIELD_NUMBER: _ClassVar[int]
     DATA_RESPONSE_INTERNAL_FIELD_NUMBER: _ClassVar[int]
-    DATA_RESPONSE_FIELD_NUMBER: _ClassVar[int]
+    DATA_RESPONSE_EXTERNAL_FIELD_NUMBER: _ClassVar[int]
     TIME_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
-    data_request: _struct_pb2.ListValue
+    data_request: str
     data_process: _struct_pb2.ListValue
     data_response_internal: _struct_pb2.ListValue
-    data_response: _struct_pb2.ListValue
+    data_response_external: _struct_pb2.ListValue
     time: float
     active: _wrappers_pb2.BoolValue
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
         id: _Optional[str] = ...,
-        data_request: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
+        data_request: _Optional[str] = ...,
         data_process: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
         data_response_internal: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
-        data_response: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
+        data_response_external: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
         time: _Optional[float] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
 class ComputeCreateRequest(_message.Message):
-    __slots__ = ["data_request", "data_process", "data_response_internal", "data_response", "time", "context"]
+    __slots__ = ["data_request", "data_process", "data_response_internal", "data_response_external", "time", "context"]
     DATA_REQUEST_FIELD_NUMBER: _ClassVar[int]
     DATA_PROCESS_FIELD_NUMBER: _ClassVar[int]
     DATA_RESPONSE_INTERNAL_FIELD_NUMBER: _ClassVar[int]
-    DATA_RESPONSE_FIELD_NUMBER: _ClassVar[int]
+    DATA_RESPONSE_EXTERNAL_FIELD_NUMBER: _ClassVar[int]
     TIME_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    data_request: _struct_pb2.ListValue
+    data_request: str
     data_process: _struct_pb2.ListValue
     data_response_internal: _struct_pb2.ListValue
-    data_response: _struct_pb2.ListValue
+    data_response_external: _struct_pb2.ListValue
     time: float
     context: _base_pb2.Context
     def __init__(
         self,
-        data_request: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
+        data_request: _Optional[str] = ...,
         data_process: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
         data_response_internal: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
-        data_response: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
+        data_response_external: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
         time: _Optional[float] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
