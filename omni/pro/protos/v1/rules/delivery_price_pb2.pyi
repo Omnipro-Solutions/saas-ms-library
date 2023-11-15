@@ -12,6 +12,7 @@ from omni.pro.protos.common import base_pb2 as _base_pb2
 from omni.pro.protos.v1.rules import currency_pb2 as _currency_pb2
 from omni.pro.protos.v1.rules import delivery_locality_pb2 as _delivery_locality_pb2
 from omni.pro.protos.v1.rules import delivery_method_pb2 as _delivery_method_pb2
+from omni.pro.protos.v1.rules import python_code_pb2 as _python_code_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
@@ -23,7 +24,7 @@ class DeliveryPrice(_message.Message):
         "delivery_method",
         "purchase_rank",
         "operator_price_rank",
-        "price_rank",
+        "purchase_price_rank",
         "currency",
         "fixed_price",
         "operator_price",
@@ -43,7 +44,7 @@ class DeliveryPrice(_message.Message):
     DELIVERY_METHOD_FIELD_NUMBER: _ClassVar[int]
     PURCHASE_RANK_FIELD_NUMBER: _ClassVar[int]
     OPERATOR_PRICE_RANK_FIELD_NUMBER: _ClassVar[int]
-    PRICE_RANK_FIELD_NUMBER: _ClassVar[int]
+    PURCHASE_PRICE_RANK_FIELD_NUMBER: _ClassVar[int]
     CURRENCY_FIELD_NUMBER: _ClassVar[int]
     FIXED_PRICE_FIELD_NUMBER: _ClassVar[int]
     OPERATOR_PRICE_FIELD_NUMBER: _ClassVar[int]
@@ -62,7 +63,7 @@ class DeliveryPrice(_message.Message):
     delivery_method: _delivery_method_pb2.DeliveryMethod
     purchase_rank: _wrappers_pb2.BoolValue
     operator_price_rank: str
-    price_rank: float
+    purchase_price_rank: float
     currency: _currency_pb2.Currency
     fixed_price: float
     operator_price: str
@@ -71,7 +72,7 @@ class DeliveryPrice(_message.Message):
     usage: str
     price_by_variable_factor: float
     locality_available: _delivery_locality_pb2.DeliveryLocality
-    python_code: str
+    python_code: _python_code_pb2.PythonCode
     active: _wrappers_pb2.BoolValue
     external_id: str
     object_audit: _base_pb2.ObjectAudit
@@ -83,7 +84,7 @@ class DeliveryPrice(_message.Message):
         delivery_method: _Optional[_Union[_delivery_method_pb2.DeliveryMethod, _Mapping]] = ...,
         purchase_rank: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         operator_price_rank: _Optional[str] = ...,
-        price_rank: _Optional[float] = ...,
+        purchase_price_rank: _Optional[float] = ...,
         currency: _Optional[_Union[_currency_pb2.Currency, _Mapping]] = ...,
         fixed_price: _Optional[float] = ...,
         operator_price: _Optional[str] = ...,
@@ -92,7 +93,7 @@ class DeliveryPrice(_message.Message):
         usage: _Optional[str] = ...,
         price_by_variable_factor: _Optional[float] = ...,
         locality_available: _Optional[_Union[_delivery_locality_pb2.DeliveryLocality, _Mapping]] = ...,
-        python_code: _Optional[str] = ...,
+        python_code: _Optional[_Union[_python_code_pb2.PythonCode, _Mapping]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
@@ -105,7 +106,7 @@ class DeliveryPriceCreateRequest(_message.Message):
         "delivery_method_id",
         "purchase_rank",
         "operator_price_rank",
-        "price_rank",
+        "purchase_price_rank",
         "currency_id",
         "fixed_price",
         "operator_price",
@@ -114,7 +115,7 @@ class DeliveryPriceCreateRequest(_message.Message):
         "usage",
         "price_by_variable_factor",
         "locality_available_id",
-        "python_code",
+        "python_code_id",
         "external_id",
         "context",
     ]
@@ -123,7 +124,7 @@ class DeliveryPriceCreateRequest(_message.Message):
     DELIVERY_METHOD_ID_FIELD_NUMBER: _ClassVar[int]
     PURCHASE_RANK_FIELD_NUMBER: _ClassVar[int]
     OPERATOR_PRICE_RANK_FIELD_NUMBER: _ClassVar[int]
-    PRICE_RANK_FIELD_NUMBER: _ClassVar[int]
+    PURCHASE_PRICE_RANK_FIELD_NUMBER: _ClassVar[int]
     CURRENCY_ID_FIELD_NUMBER: _ClassVar[int]
     FIXED_PRICE_FIELD_NUMBER: _ClassVar[int]
     OPERATOR_PRICE_FIELD_NUMBER: _ClassVar[int]
@@ -132,7 +133,7 @@ class DeliveryPriceCreateRequest(_message.Message):
     USAGE_FIELD_NUMBER: _ClassVar[int]
     PRICE_BY_VARIABLE_FACTOR_FIELD_NUMBER: _ClassVar[int]
     LOCALITY_AVAILABLE_ID_FIELD_NUMBER: _ClassVar[int]
-    PYTHON_CODE_FIELD_NUMBER: _ClassVar[int]
+    PYTHON_CODE_ID_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
@@ -140,7 +141,7 @@ class DeliveryPriceCreateRequest(_message.Message):
     delivery_method_id: str
     purchase_rank: _wrappers_pb2.BoolValue
     operator_price_rank: str
-    price_rank: float
+    purchase_price_rank: float
     currency_id: str
     fixed_price: float
     operator_price: str
@@ -149,7 +150,7 @@ class DeliveryPriceCreateRequest(_message.Message):
     usage: str
     price_by_variable_factor: float
     locality_available_id: str
-    python_code: str
+    python_code_id: str
     external_id: str
     context: _base_pb2.Context
     def __init__(
@@ -159,7 +160,7 @@ class DeliveryPriceCreateRequest(_message.Message):
         delivery_method_id: _Optional[str] = ...,
         purchase_rank: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         operator_price_rank: _Optional[str] = ...,
-        price_rank: _Optional[float] = ...,
+        purchase_price_rank: _Optional[float] = ...,
         currency_id: _Optional[str] = ...,
         fixed_price: _Optional[float] = ...,
         operator_price: _Optional[str] = ...,
@@ -168,7 +169,7 @@ class DeliveryPriceCreateRequest(_message.Message):
         usage: _Optional[str] = ...,
         price_by_variable_factor: _Optional[float] = ...,
         locality_available_id: _Optional[str] = ...,
-        python_code: _Optional[str] = ...,
+        python_code_id: _Optional[str] = ...,
         external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...

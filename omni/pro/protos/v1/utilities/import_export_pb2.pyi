@@ -17,7 +17,7 @@ DESCRIPTOR: _descriptor.FileDescriptor
 class ImportExport(_message.Message):
     __slots__ = [
         "id",
-        "micro_id",
+        "micro",
         "type_operation",
         "model",
         "name_file",
@@ -31,7 +31,7 @@ class ImportExport(_message.Message):
         "object_audit",
     ]
     ID_FIELD_NUMBER: _ClassVar[int]
-    MICRO_ID_FIELD_NUMBER: _ClassVar[int]
+    MICRO_FIELD_NUMBER: _ClassVar[int]
     TYPE_OPERATION_FIELD_NUMBER: _ClassVar[int]
     MODEL_FIELD_NUMBER: _ClassVar[int]
     NAME_FILE_FIELD_NUMBER: _ClassVar[int]
@@ -44,7 +44,7 @@ class ImportExport(_message.Message):
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
-    micro_id: str
+    micro: str
     type_operation: str
     model: _model_pb2.Model
     name_file: str
@@ -59,7 +59,7 @@ class ImportExport(_message.Message):
     def __init__(
         self,
         id: _Optional[str] = ...,
-        micro_id: _Optional[str] = ...,
+        micro: _Optional[str] = ...,
         type_operation: _Optional[str] = ...,
         model: _Optional[_Union[_model_pb2.Model, _Mapping]] = ...,
         name_file: _Optional[str] = ...,
@@ -75,7 +75,7 @@ class ImportExport(_message.Message):
 
 class ImportExportCreateRequest(_message.Message):
     __slots__ = [
-        "micro_id",
+        "micro",
         "type_operation",
         "model_id",
         "name_file",
@@ -87,7 +87,7 @@ class ImportExportCreateRequest(_message.Message):
         "skip_error",
         "context",
     ]
-    MICRO_ID_FIELD_NUMBER: _ClassVar[int]
+    MICRO_FIELD_NUMBER: _ClassVar[int]
     TYPE_OPERATION_FIELD_NUMBER: _ClassVar[int]
     MODEL_ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FILE_FIELD_NUMBER: _ClassVar[int]
@@ -98,7 +98,7 @@ class ImportExportCreateRequest(_message.Message):
     MESSAGE_FIELD_NUMBER: _ClassVar[int]
     SKIP_ERROR_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    micro_id: str
+    micro: str
     type_operation: str
     model_id: str
     name_file: str
@@ -111,7 +111,7 @@ class ImportExportCreateRequest(_message.Message):
     context: _base_pb2.Context
     def __init__(
         self,
-        micro_id: _Optional[str] = ...,
+        micro: _Optional[str] = ...,
         type_operation: _Optional[str] = ...,
         model_id: _Optional[str] = ...,
         name_file: _Optional[str] = ...,
@@ -164,14 +164,17 @@ class ImportExportReadRequest(_message.Message):
     ) -> None: ...
 
 class ImportExportReadResponse(_message.Message):
-    __slots__ = ["response_standard", "import_export"]
+    __slots__ = ["response_standard", "meta_data", "import_export"]
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
+    META_DATA_FIELD_NUMBER: _ClassVar[int]
     IMPORT_EXPORT_FIELD_NUMBER: _ClassVar[int]
     response_standard: _base_pb2.ResponseStandard
+    meta_data: _base_pb2.MetaData
     import_export: _containers.RepeatedCompositeFieldContainer[ImportExport]
     def __init__(
         self,
         response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
+        meta_data: _Optional[_Union[_base_pb2.MetaData, _Mapping]] = ...,
         import_export: _Optional[_Iterable[_Union[ImportExport, _Mapping]]] = ...,
     ) -> None: ...
 
