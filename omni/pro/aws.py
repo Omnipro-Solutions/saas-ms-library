@@ -1,5 +1,6 @@
 import boto3
 from botocore.exceptions import ClientError
+from botocore.config import Config
 from omni.pro.util import HTTPStatus, generate_strong_password, nested
 
 
@@ -202,11 +203,46 @@ class AWSCognitoClient(AWSClient):
         return status_code, auth_result, message
 
 
-class S3Client(AWSClient):
+class AWSS3Client(AWSClient):
     def __init__(
-        self, service_name: str, region_name: str, aws_access_key_id: str, aws_secret_access_key: str, **kwargs
+        self, bucket_name: str, region_name: str, aws_access_key_id: str, aws_secret_access_key: str, **kwargs
     ) -> None:
-        super().__init__(service_name, region_name, aws_access_key_id, aws_secret_access_key, **kwargs)
+        """
+        Initializes a client for interacting with Amazon S3.
+
+        :param bucket_name: str
+        The name of the S3 bucket the client will access.
+
+        :param region_name: str
+        The region where the S3 bucket is hosted.
+
+        :param aws_access_key_id: str
+        The AWS access key ID.
+
+        :param aws_secret_access_key: str
+        The AWS secret access key.
+
+        Additional kwargs are passed to the base class AWSClient constructor, allowing further configuration.
+        """
+        kwargs["config"] = Config(
+            region_name=region_name, signature_version="v4", retries={"max_attempts": 10, "mode": "standard"}
+        )
+        self.bucket_name = bucket_name
+        super().__init__("s3", region_name, aws_access_key_id, aws_secret_access_key, **kwargs)
+
+    def download_file(self, object_name: str, file_name: str):
+        """
+        Downloads a file from an S3 bucket.
+
+        :param object_name: str
+        The name of the object in S3 to be downloaded.
+
+        :param file_name: str
+        The name of the local file where the downloaded object will be saved.
+
+        :return: None
+        """
+        return self.client.download_file(self.bucket_name, object_name, file_name)
 
 
 class AWSCloudMap(AWSClient):
