@@ -549,6 +549,29 @@ class RedisManager(object):
             "client_id": nested(config, "aws.cognito.client_id"),
         }
 
+    def get_aws_s3_config(self, service_id: str, tenant_code: str) -> dict:
+        """
+        Retrieves the configuration settings for an AWS S3 service based on a given service ID and tenant code.
+
+        :param service_id: str
+        The unique identifier for the service.
+
+        :param tenant_code: str
+        The code representing the tenant for which the configuration is required.
+
+        :return: dict
+        Returns a dictionary containing the S3 configuration, including region name, access key ID, secret access key, and bucket name.
+
+        The method retrieves the configuration using `get_resource_config` and extracts S3-specific settings such as the region, access keys, and bucket name.
+        """
+        config = self.get_resource_config(service_id, tenant_code)
+        return {
+            "region_name": nested(config, "aws.s3.region"),
+            "aws_access_key_id": config.get("aws_access_key_id"),
+            "aws_secret_access_key": config.get("aws_secret_access_key"),
+            "bucket_name": nested(config, "aws.s3.bucket_name"),
+        }
+
     def get_mongodb_config(self, service_id: str, tenant_code: str) -> dict:
         config = self.get_resource_config(service_id, tenant_code)
         return {
