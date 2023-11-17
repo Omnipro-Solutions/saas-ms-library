@@ -51,30 +51,18 @@ class ComputeMethodResponse(_message.Message):
         response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
     ) -> None: ...
 
-class ComputeMethodStockAvailableData(_message.Message):
-    __slots__ = ["data", "methods", "items"]
-    DATA_FIELD_NUMBER: _ClassVar[int]
+class ComputeMethodStockAvailableRequest(_message.Message):
+    __slots__ = ["methods", "items", "context"]
     METHODS_FIELD_NUMBER: _ClassVar[int]
     ITEMS_FIELD_NUMBER: _ClassVar[int]
-    data: _struct_pb2.Struct
-    methods: _containers.RepeatedCompositeFieldContainer[_struct_pb2.Struct]
-    items: _struct_pb2.Struct
-    def __init__(
-        self,
-        data: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
-        methods: _Optional[_Iterable[_Union[_struct_pb2.Struct, _Mapping]]] = ...,
-        items: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
-    ) -> None: ...
-
-class ComputeMethodStockAvailableRequest(_message.Message):
-    __slots__ = ["data", "context"]
-    DATA_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    data: _containers.RepeatedCompositeFieldContainer[ComputeMethodStockAvailableData]
+    methods: _containers.RepeatedCompositeFieldContainer[_struct_pb2.Struct]
+    items: _containers.RepeatedCompositeFieldContainer[_struct_pb2.Struct]
     context: _base_pb2.Context
     def __init__(
         self,
-        data: _Optional[_Iterable[_Union[ComputeMethodStockAvailableData, _Mapping]]] = ...,
+        methods: _Optional[_Iterable[_Union[_struct_pb2.Struct, _Mapping]]] = ...,
+        items: _Optional[_Iterable[_Union[_struct_pb2.Struct, _Mapping]]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
