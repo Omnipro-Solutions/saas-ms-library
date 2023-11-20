@@ -147,7 +147,7 @@ class Resource(object):
     AWS_COGNITO = "cognito"
     MONGODB = "mongodb"
     POSTGRES = "postgres"
-    S3 = "s3"
+    AWS_S3 = "s3"
 
 
 def generate_hash(obj):

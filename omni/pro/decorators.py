@@ -18,7 +18,7 @@ def resources_decorator(resource_list: list) -> callable:
                     cognito_params = redis_manager.get_aws_cognito_config(Config.SERVICE_ID, request.context.tenant)
                     # logger.info(f"Cognito params: {cognito_params}")
                     context.cognito_client = AWSCognitoClient(**cognito_params)
-                if Resource.S3 in resource_list:
+                if Resource.AWS_S3 in resource_list:
                     s3_params = redis_manager.get_aws_s3_config(Config.SERVICE_ID, request.context.tenant)
                     # logger.info(f"S3 params: {s3_params}")
                     context.s3_client = AWSS3Client(**s3_params)

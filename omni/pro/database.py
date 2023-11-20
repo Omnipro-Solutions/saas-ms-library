@@ -570,6 +570,7 @@ class RedisManager(object):
             "aws_access_key_id": config.get("aws_access_key_id"),
             "aws_secret_access_key": config.get("aws_secret_access_key"),
             "bucket_name": nested(config, "aws.s3.bucket_name"),
+            "allowed_files": nested(config, "aws.s3.allowed_files") or [],
         }
 
     def get_mongodb_config(self, service_id: str, tenant_code: str) -> dict:
