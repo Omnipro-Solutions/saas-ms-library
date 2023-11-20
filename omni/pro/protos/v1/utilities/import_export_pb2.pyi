@@ -26,6 +26,7 @@ class ImportExport(_message.Message):
         "date_process",
         "status",
         "message",
+        "required_fields",
         "skip_error",
         "active",
         "object_audit",
@@ -40,6 +41,7 @@ class ImportExport(_message.Message):
     DATE_PROCESS_FIELD_NUMBER: _ClassVar[int]
     STATUS_FIELD_NUMBER: _ClassVar[int]
     MESSAGE_FIELD_NUMBER: _ClassVar[int]
+    REQUIRED_FIELDS_FIELD_NUMBER: _ClassVar[int]
     SKIP_ERROR_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
@@ -53,6 +55,7 @@ class ImportExport(_message.Message):
     date_process: _timestamp_pb2.Timestamp
     status: str
     message: str
+    required_fields: _containers.RepeatedScalarFieldContainer[str]
     skip_error: _wrappers_pb2.BoolValue
     active: _wrappers_pb2.BoolValue
     object_audit: _base_pb2.ObjectAudit
@@ -68,6 +71,7 @@ class ImportExport(_message.Message):
         date_process: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
         status: _Optional[str] = ...,
         message: _Optional[str] = ...,
+        required_fields: _Optional[_Iterable[str]] = ...,
         skip_error: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
@@ -80,10 +84,7 @@ class ImportExportCreateRequest(_message.Message):
         "model_id",
         "name_file",
         "type_file",
-        "date_load",
-        "date_process",
-        "status",
-        "message",
+        "required_fields",
         "skip_error",
         "context",
     ]
@@ -92,10 +93,7 @@ class ImportExportCreateRequest(_message.Message):
     MODEL_ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FILE_FIELD_NUMBER: _ClassVar[int]
     TYPE_FILE_FIELD_NUMBER: _ClassVar[int]
-    DATE_LOAD_FIELD_NUMBER: _ClassVar[int]
-    DATE_PROCESS_FIELD_NUMBER: _ClassVar[int]
-    STATUS_FIELD_NUMBER: _ClassVar[int]
-    MESSAGE_FIELD_NUMBER: _ClassVar[int]
+    REQUIRED_FIELDS_FIELD_NUMBER: _ClassVar[int]
     SKIP_ERROR_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     micro: str
@@ -103,10 +101,7 @@ class ImportExportCreateRequest(_message.Message):
     model_id: str
     name_file: str
     type_file: str
-    date_load: _timestamp_pb2.Timestamp
-    date_process: _timestamp_pb2.Timestamp
-    status: str
-    message: str
+    required_fields: _containers.RepeatedScalarFieldContainer[str]
     skip_error: _wrappers_pb2.BoolValue
     context: _base_pb2.Context
     def __init__(
@@ -116,10 +111,7 @@ class ImportExportCreateRequest(_message.Message):
         model_id: _Optional[str] = ...,
         name_file: _Optional[str] = ...,
         type_file: _Optional[str] = ...,
-        date_load: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
-        date_process: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
-        status: _Optional[str] = ...,
-        message: _Optional[str] = ...,
+        required_fields: _Optional[_Iterable[str]] = ...,
         skip_error: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
