@@ -205,7 +205,13 @@ class AWSCognitoClient(AWSClient):
 
 class AWSS3Client(AWSClient):
     def __init__(
-        self, bucket_name: str, region_name: str, aws_access_key_id: str, aws_secret_access_key: str, **kwargs
+        self,
+        bucket_name: str,
+        region_name: str,
+        aws_access_key_id: str,
+        aws_secret_access_key: str,
+        allowed_files: list,
+        **kwargs,
     ) -> None:
         """
         Initializes a client for interacting with Amazon S3.
@@ -228,21 +234,23 @@ class AWSS3Client(AWSClient):
             region_name=region_name, signature_version="v4", retries={"max_attempts": 10, "mode": "standard"}
         )
         self.bucket_name = bucket_name
+        self.allowed_files = allowed_files
         super().__init__("s3", region_name, aws_access_key_id, aws_secret_access_key, **kwargs)
 
-    def download_file(self, object_name: str, file_name: str):
+    def download_file(self, object_name: str, file_path: str):
         """
         Downloads a file from an S3 bucket.
 
         :param object_name: str
         The name of the object in S3 to be downloaded.
 
-        :param file_name: str
-        The name of the local file where the downloaded object will be saved.
+        :param file_path: str
+        The path of the local file where the downloaded object will be saved.
 
         :return: None
         """
-        return self.client.download_file(self.bucket_name, object_name, file_name)
+        result = self.client.download_file(self.bucket_name, object_name, file_path)
+        return result
 
 
 class AWSCloudMap(AWSClient):
