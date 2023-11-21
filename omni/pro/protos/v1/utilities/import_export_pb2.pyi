@@ -6,6 +6,7 @@ from typing import Union as _Union
 
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
+from google.protobuf import struct_pb2 as _struct_pb2
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
@@ -27,6 +28,7 @@ class ImportExport(_message.Message):
         "status",
         "message",
         "required_fields",
+        "process_data",
         "skip_error",
         "active",
         "object_audit",
@@ -42,6 +44,7 @@ class ImportExport(_message.Message):
     STATUS_FIELD_NUMBER: _ClassVar[int]
     MESSAGE_FIELD_NUMBER: _ClassVar[int]
     REQUIRED_FIELDS_FIELD_NUMBER: _ClassVar[int]
+    PROCESS_DATA_FIELD_NUMBER: _ClassVar[int]
     SKIP_ERROR_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
@@ -56,6 +59,7 @@ class ImportExport(_message.Message):
     status: str
     message: str
     required_fields: _containers.RepeatedScalarFieldContainer[str]
+    process_data: _struct_pb2.Struct
     skip_error: _wrappers_pb2.BoolValue
     active: _wrappers_pb2.BoolValue
     object_audit: _base_pb2.ObjectAudit
@@ -72,6 +76,7 @@ class ImportExport(_message.Message):
         status: _Optional[str] = ...,
         message: _Optional[str] = ...,
         required_fields: _Optional[_Iterable[str]] = ...,
+        process_data: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         skip_error: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
