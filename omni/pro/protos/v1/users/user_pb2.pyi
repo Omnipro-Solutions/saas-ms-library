@@ -28,6 +28,7 @@ class User(_message.Message):
         "active",
         "mfa",
         "external_id",
+        "type",
         "object_audit",
         "permissions",
     ]
@@ -44,6 +45,7 @@ class User(_message.Message):
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     MFA_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
+    TYPE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     PERMISSIONS_FIELD_NUMBER: _ClassVar[int]
     id: str
@@ -59,6 +61,7 @@ class User(_message.Message):
     active: _wrappers_pb2.BoolValue
     mfa: _wrappers_pb2.BoolValue
     external_id: str
+    type: str
     object_audit: _base_pb2.ObjectAudit
     permissions: _containers.RepeatedScalarFieldContainer[str]
     def __init__(
@@ -76,6 +79,7 @@ class User(_message.Message):
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         mfa: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         external_id: _Optional[str] = ...,
+        type: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
         permissions: _Optional[_Iterable[str]] = ...,
     ) -> None: ...
@@ -186,6 +190,7 @@ class UserCreateRequest(_message.Message):
         "language",
         "timezone",
         "external_id",
+        "type",
         "context",
     ]
     NAME_FIELD_NUMBER: _ClassVar[int]
@@ -199,6 +204,7 @@ class UserCreateRequest(_message.Message):
     LANGUAGE_FIELD_NUMBER: _ClassVar[int]
     TIMEZONE_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
+    TYPE_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     username: str
@@ -211,6 +217,7 @@ class UserCreateRequest(_message.Message):
     language: _base_pb2.Object
     timezone: _base_pb2.Object
     external_id: str
+    type: str
     context: _base_pb2.Context
     def __init__(
         self,
@@ -225,6 +232,7 @@ class UserCreateRequest(_message.Message):
         language: _Optional[_Union[_base_pb2.Object, _Mapping]] = ...,
         timezone: _Optional[_Union[_base_pb2.Object, _Mapping]] = ...,
         external_id: _Optional[str] = ...,
+        type: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
@@ -809,6 +817,33 @@ class LoginRequest(_message.Message):
         username: _Optional[str] = ...,
         password: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
+    ) -> None: ...
+
+class TokenRequest(_message.Message):
+    __slots__ = ["client_id", "client_secret", "context"]
+    CLIENT_ID_FIELD_NUMBER: _ClassVar[int]
+    CLIENT_SECRET_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    client_id: str
+    client_secret: str
+    context: _base_pb2.Context
+    def __init__(
+        self,
+        client_id: _Optional[str] = ...,
+        client_secret: _Optional[str] = ...,
+        context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
+    ) -> None: ...
+
+class TokenResponse(_message.Message):
+    __slots__ = ["response_standard", "authentication_result"]
+    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
+    AUTHENTICATION_RESULT_FIELD_NUMBER: _ClassVar[int]
+    response_standard: _base_pb2.ResponseStandard
+    authentication_result: AuthenticationResult
+    def __init__(
+        self,
+        response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
+        authentication_result: _Optional[_Union[AuthenticationResult, _Mapping]] = ...,
     ) -> None: ...
 
 class AuthenticationResult(_message.Message):
