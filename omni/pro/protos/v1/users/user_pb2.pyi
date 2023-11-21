@@ -85,14 +85,13 @@ class User(_message.Message):
     ) -> None: ...
 
 class Group(_message.Message):
-    __slots__ = ["id", "name", "code", "access", "active", "external_id", "type", "object_audit"]
+    __slots__ = ["id", "name", "code", "access", "active", "external_id", "object_audit"]
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
     ACCESS_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
-    TYPE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
@@ -100,7 +99,6 @@ class Group(_message.Message):
     access: _struct_pb2.ListValue
     active: _wrappers_pb2.BoolValue
     external_id: str
-    type: str
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
@@ -110,7 +108,6 @@ class Group(_message.Message):
         access: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         external_id: _Optional[str] = ...,
-        type: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
@@ -193,6 +190,7 @@ class UserCreateRequest(_message.Message):
         "language",
         "timezone",
         "external_id",
+        "type",
         "context",
     ]
     NAME_FIELD_NUMBER: _ClassVar[int]
@@ -206,6 +204,7 @@ class UserCreateRequest(_message.Message):
     LANGUAGE_FIELD_NUMBER: _ClassVar[int]
     TIMEZONE_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
+    TYPE_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     username: str
@@ -218,6 +217,7 @@ class UserCreateRequest(_message.Message):
     language: _base_pb2.Object
     timezone: _base_pb2.Object
     external_id: str
+    type: str
     context: _base_pb2.Context
     def __init__(
         self,
@@ -232,6 +232,7 @@ class UserCreateRequest(_message.Message):
         language: _Optional[_Union[_base_pb2.Object, _Mapping]] = ...,
         timezone: _Optional[_Union[_base_pb2.Object, _Mapping]] = ...,
         external_id: _Optional[str] = ...,
+        type: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
