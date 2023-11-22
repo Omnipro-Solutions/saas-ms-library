@@ -111,7 +111,7 @@ class FileProcessor:
         :param extension: Extension to check.
         :return: Boolean indicating if the extension is allowed.
         """
-        return extension.value in self.allowed_extensions
+        return extension in self.allowed_extensions
 
     def get_document_processor(self, file_type: FilesType, file_library: object):
         """
