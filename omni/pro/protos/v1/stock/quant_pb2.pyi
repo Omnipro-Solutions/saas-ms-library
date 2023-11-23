@@ -208,12 +208,12 @@ class ProductAvailable(_message.Message):
     AVAILABLE_FIELD_NUMBER: _ClassVar[int]
     AVAILABLE_QUANTITY_FIELD_NUMBER: _ClassVar[int]
     QUANT_FIELD_NUMBER: _ClassVar[int]
-    available: bool
+    available: _wrappers_pb2.BoolValue
     available_quantity: float
     quant: Quant
     def __init__(
         self,
-        available: bool = ...,
+        available: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         available_quantity: _Optional[float] = ...,
         quant: _Optional[_Union[Quant, _Mapping]] = ...,
     ) -> None: ...
@@ -228,14 +228,14 @@ class ProductAvailableRequest(_message.Message):
     location_id: int
     product_id: str
     product_sku: str
-    required_quantity: int
+    required_quantity: float
     context: _base_pb2.Context
     def __init__(
         self,
         location_id: _Optional[int] = ...,
         product_id: _Optional[str] = ...,
         product_sku: _Optional[str] = ...,
-        required_quantity: _Optional[int] = ...,
+        required_quantity: _Optional[float] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
