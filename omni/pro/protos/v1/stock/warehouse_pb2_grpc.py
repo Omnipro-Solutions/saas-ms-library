@@ -33,6 +33,11 @@ class WarehouseServiceStub(object):
             request_serializer=v1_dot_stock_dot_warehouse__pb2.WarehouseDeleteRequest.SerializeToString,
             response_deserializer=v1_dot_stock_dot_warehouse__pb2.WarehouseDeleteResponse.FromString,
         )
+        self.WarehouseStockManagement = channel.unary_unary(
+            "/pro.omni.oms.api.v1.stock.warehouse.WarehouseService/WarehouseStockManagement",
+            request_serializer=v1_dot_stock_dot_warehouse__pb2.WarehouseStockManagementRequest.SerializeToString,
+            response_deserializer=v1_dot_stock_dot_warehouse__pb2.WarehouseStockManagementResponse.FromString,
+        )
 
 
 class WarehouseServiceServicer(object):
@@ -62,6 +67,12 @@ class WarehouseServiceServicer(object):
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
+    def WarehouseStockManagement(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
 
 def add_WarehouseServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -84,6 +95,11 @@ def add_WarehouseServiceServicer_to_server(servicer, server):
             servicer.WarehouseDelete,
             request_deserializer=v1_dot_stock_dot_warehouse__pb2.WarehouseDeleteRequest.FromString,
             response_serializer=v1_dot_stock_dot_warehouse__pb2.WarehouseDeleteResponse.SerializeToString,
+        ),
+        "WarehouseStockManagement": grpc.unary_unary_rpc_method_handler(
+            servicer.WarehouseStockManagement,
+            request_deserializer=v1_dot_stock_dot_warehouse__pb2.WarehouseStockManagementRequest.FromString,
+            response_serializer=v1_dot_stock_dot_warehouse__pb2.WarehouseStockManagementResponse.SerializeToString,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -202,6 +218,35 @@ class WarehouseService(object):
             "/pro.omni.oms.api.v1.stock.warehouse.WarehouseService/WarehouseDelete",
             v1_dot_stock_dot_warehouse__pb2.WarehouseDeleteRequest.SerializeToString,
             v1_dot_stock_dot_warehouse__pb2.WarehouseDeleteResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
+
+    @staticmethod
+    def WarehouseStockManagement(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            "/pro.omni.oms.api.v1.stock.warehouse.WarehouseService/WarehouseStockManagement",
+            v1_dot_stock_dot_warehouse__pb2.WarehouseStockManagementRequest.SerializeToString,
+            v1_dot_stock_dot_warehouse__pb2.WarehouseStockManagementResponse.FromString,
             options,
             channel_credentials,
             insecure,
