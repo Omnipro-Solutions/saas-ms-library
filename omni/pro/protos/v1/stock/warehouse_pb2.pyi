@@ -123,6 +123,18 @@ class Warehouse(_message.Message):
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
+class OrderLine(_message.Message):
+    __slots__ = ["product_id", "product_uom_qty", "uom_code"]
+    PRODUCT_ID_FIELD_NUMBER: _ClassVar[int]
+    PRODUCT_UOM_QTY_FIELD_NUMBER: _ClassVar[int]
+    UOM_CODE_FIELD_NUMBER: _ClassVar[int]
+    product_id: str
+    product_uom_qty: float
+    uom_code: str
+    def __init__(
+        self, product_id: _Optional[str] = ..., product_uom_qty: _Optional[float] = ..., uom_code: _Optional[str] = ...
+    ) -> None: ...
+
 class WarehouseCreateRequest(_message.Message):
     __slots__ = [
         "name",
@@ -263,6 +275,36 @@ class WarehouseDeleteRequest(_message.Message):
     ) -> None: ...
 
 class WarehouseDeleteResponse(_message.Message):
+    __slots__ = ["response_standard"]
+    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
+    response_standard: _base_pb2.ResponseStandard
+    def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
+
+class WarehouseStockManagementRequest(_message.Message):
+    __slots__ = ["order_id", "warehouse_id", "customer_id", "address_code", "order_lines", "context"]
+    ORDER_ID_FIELD_NUMBER: _ClassVar[int]
+    WAREHOUSE_ID_FIELD_NUMBER: _ClassVar[int]
+    CUSTOMER_ID_FIELD_NUMBER: _ClassVar[int]
+    ADDRESS_CODE_FIELD_NUMBER: _ClassVar[int]
+    ORDER_LINES_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    order_id: str
+    warehouse_id: int
+    customer_id: str
+    address_code: str
+    order_lines: _containers.RepeatedCompositeFieldContainer[OrderLine]
+    context: _base_pb2.Context
+    def __init__(
+        self,
+        order_id: _Optional[str] = ...,
+        warehouse_id: _Optional[int] = ...,
+        customer_id: _Optional[str] = ...,
+        address_code: _Optional[str] = ...,
+        order_lines: _Optional[_Iterable[_Union[OrderLine, _Mapping]]] = ...,
+        context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
+    ) -> None: ...
+
+class WarehouseStockManagementResponse(_message.Message):
     __slots__ = ["response_standard"]
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
     response_standard: _base_pb2.ResponseStandard
