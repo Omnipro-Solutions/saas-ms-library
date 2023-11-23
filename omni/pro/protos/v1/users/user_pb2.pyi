@@ -29,6 +29,7 @@ class User(_message.Message):
         "mfa",
         "external_id",
         "type",
+        "password",
         "object_audit",
         "permissions",
     ]
@@ -46,6 +47,7 @@ class User(_message.Message):
     MFA_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     TYPE_FIELD_NUMBER: _ClassVar[int]
+    PASSWORD_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     PERMISSIONS_FIELD_NUMBER: _ClassVar[int]
     id: str
@@ -62,6 +64,7 @@ class User(_message.Message):
     mfa: _wrappers_pb2.BoolValue
     external_id: str
     type: str
+    password: str
     object_audit: _base_pb2.ObjectAudit
     permissions: _containers.RepeatedScalarFieldContainer[str]
     def __init__(
@@ -80,6 +83,7 @@ class User(_message.Message):
         mfa: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         external_id: _Optional[str] = ...,
         type: _Optional[str] = ...,
+        password: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
         permissions: _Optional[_Iterable[str]] = ...,
     ) -> None: ...
