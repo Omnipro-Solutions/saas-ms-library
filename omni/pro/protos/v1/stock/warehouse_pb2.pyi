@@ -12,6 +12,7 @@ from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
 from omni.pro.protos.v1.stock import country_pb2 as _country_pb2
 from omni.pro.protos.v1.stock import location_pb2 as _location_pb2
+from omni.pro.protos.v1.stock import picking_pb2 as _picking_pb2
 from omni.pro.protos.v1.stock import picking_type_pb2 as _picking_type_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
@@ -280,7 +281,7 @@ class WarehouseDeleteResponse(_message.Message):
     response_standard: _base_pb2.ResponseStandard
     def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
 
-class WarehouseStockManagementRequest(_message.Message):
+class OrderConfirmRequest(_message.Message):
     __slots__ = ["order_id", "warehouse_id", "customer_id", "address_code", "order_lines", "context"]
     ORDER_ID_FIELD_NUMBER: _ClassVar[int]
     WAREHOUSE_ID_FIELD_NUMBER: _ClassVar[int]
@@ -304,8 +305,14 @@ class WarehouseStockManagementRequest(_message.Message):
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
-class WarehouseStockManagementResponse(_message.Message):
-    __slots__ = ["response_standard"]
+class OrderConfirmResponse(_message.Message):
+    __slots__ = ["response_standard", "pickings"]
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
+    PICKINGS_FIELD_NUMBER: _ClassVar[int]
     response_standard: _base_pb2.ResponseStandard
-    def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
+    pickings: _containers.RepeatedCompositeFieldContainer[_picking_pb2.Picking]
+    def __init__(
+        self,
+        response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
+        pickings: _Optional[_Iterable[_Union[_picking_pb2.Picking, _Mapping]]] = ...,
+    ) -> None: ...
