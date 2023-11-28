@@ -168,6 +168,7 @@ class DatabaseManager(object):
         bulk_operations = [UpdateOne({"external_id": obj["external_id"]}, {"$set": obj}, upsert=True) for obj in data]
 
         result = document_isntance.bulk_write(bulk_operations)
+        return result
 
 
 class MongoConnection(object):
