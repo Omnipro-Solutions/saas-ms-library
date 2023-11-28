@@ -26,6 +26,14 @@ class DocumentStrategy(ABC):
         pass
 
     @abstractmethod
+    def get_data(self, file_path):
+        """
+        Gets the data from the file.
+        :param file_path: Path of the file to be opened.
+        """
+        pass
+
+    @abstractmethod
     def validate(self, expected, file_path):
         """
         Validates the file against the expected criteria.
@@ -54,6 +62,15 @@ class CSVDocumentStrategy(DocumentStrategy):
         :return: DataFrame object of the opened file.
         """
         return self.file_library.read_csv(file_path)
+
+    def get_data(self, file_path):
+        """
+        Opens and reads a CSV file using the specified file library.
+        :param file_path: Path of the CSV file to be opened.
+        :return: List of dictionaries of the opened file.
+        """
+        csv_file = self.open_file(file_path)
+        return csv_file.to_dict(orient="records")
 
     def validate(self, expected, file_path):
         """
@@ -111,7 +128,7 @@ class FileProcessor:
         :param extension: Extension to check.
         :return: Boolean indicating if the extension is allowed.
         """
-        return extension.value in self.allowed_extensions
+        return extension in self.allowed_extensions
 
     def get_document_processor(self, file_type: FilesType, file_library: object):
         """

@@ -252,6 +252,43 @@ class AWSS3Client(AWSClient):
         result = self.client.download_file(self.bucket_name, object_name, file_path)
         return result
 
+    def upload_file(self, object_name: str, file_path: str):
+        """
+        Uploads a file to an S3 bucket.
+
+        :param file_path: str
+        The path of the local file to be uploaded.
+
+        :param object_name: str
+        The name of the object in S3 to be uploaded.
+
+        :return: None
+        """
+        self.client.upload_file(file_path, self.bucket_name, object_name)
+        return object_name
+
+    def generate_presigned_post(self, object_name: str):
+        """
+        Generate presigned post to upload file to an S3 bucket.
+
+        :param object_name: str
+        The name of the object in S3 to be uploaded.
+
+        :return: presigned url
+        """
+        return self.client.generate_presigned_post(self.bucket_name, object_name, ExpiresIn=3600)
+
+    def generate_presigned_url(self, object_name: str):
+        """
+        Generate presigned url to download file from an S3 bucket.
+
+        :param object_name: str
+        The name of the object in S3 to be uploaded.
+
+        :return: presigned url
+        """
+        return self.client.generate_presigned_url("get_object", Params={"Bucket": self.bucket_name, "Key": object_name})
+
 
 class AWSCloudMap(AWSClient):
     def __init__(
