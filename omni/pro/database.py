@@ -165,7 +165,14 @@ class DatabaseManager(object):
             data (list): A list of dictionaries containing the records to upsert.
         """
 
-        bulk_operations = [UpdateOne({"external_id": obj["external_id"]}, {"$set": obj}, upsert=True) for obj in data]
+        bulk_operations = [
+            UpdateOne(
+                {"external_id": obj["external_id"]},
+                {"$set": obj | {"tenant": data["context"]["tenant"], "updated_by": data["context"]["user"]}},
+                upsert=True,
+            )
+            for obj in data["models"]
+        ]
 
         result = document_isntance.bulk_write(bulk_operations)
         return result
@@ -521,7 +528,8 @@ class PostgresDatabaseManager(SessionManager):
                 Una lista de registros que fueron actualizados.
         """
         try:
-            for registro in data:
+            for registro in data["models"]:
+                registro | {"tenant": data["context"]["tenant"], "updated_by": data["context"]["user"]}
                 obj = session.query(model).filter_by(external_id=registro["external_id"]).first()
                 if obj:
                     for key, value in registro.items():
