@@ -334,15 +334,13 @@ class ValidatePickingResponse(_message.Message):
     ) -> None: ...
 
 class PickingMovesRequest(_message.Message):
-    __slots__ = ["data", "context"]
-    DATA_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["id", "context"]
+    ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    data: _struct_pb2.Struct
+    id: int
     context: _base_pb2.Context
     def __init__(
-        self,
-        data: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
-        context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
+        self, id: _Optional[int] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
     ) -> None: ...
 
 class PickingMovesResponse(_message.Message):

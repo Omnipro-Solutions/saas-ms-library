@@ -10,23 +10,24 @@ from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
 from omni.pro.protos.v1.rules import schedule_work_pb2 as _schedule_work_pb2
-from omni.pro.protos.v1.rules import warehouse_hierarchy_pb2 as _warehouse_hierarchy_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class DeliverySchedule(_message.Message):
-    __slots__ = ["id", "name", "schedule_work", "active", "external_id", "object_audit"]
+    __slots__ = ["id", "name", "schedule_work", "active", "external_id", "holidays", "object_audit"]
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     SCHEDULE_WORK_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
+    HOLIDAYS_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
     schedule_work: _schedule_work_pb2.ScheduleWork
     active: _wrappers_pb2.BoolValue
     external_id: str
+    holidays: _containers.RepeatedScalarFieldContainer[str]
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
@@ -35,24 +36,28 @@ class DeliverySchedule(_message.Message):
         schedule_work: _Optional[_Union[_schedule_work_pb2.ScheduleWork, _Mapping]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         external_id: _Optional[str] = ...,
+        holidays: _Optional[_Iterable[str]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
 class DeliveryScheduleCreateRequest(_message.Message):
-    __slots__ = ["name", "schedule_work_id", "external_id", "context"]
+    __slots__ = ["name", "schedule_work_id", "external_id", "holidays", "context"]
     NAME_FIELD_NUMBER: _ClassVar[int]
     SCHEDULE_WORK_ID_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
+    HOLIDAYS_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     schedule_work_id: str
     external_id: str
+    holidays: _containers.RepeatedScalarFieldContainer[str]
     context: _base_pb2.Context
     def __init__(
         self,
         name: _Optional[str] = ...,
         schedule_work_id: _Optional[str] = ...,
         external_id: _Optional[str] = ...,
+        holidays: _Optional[_Iterable[str]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
