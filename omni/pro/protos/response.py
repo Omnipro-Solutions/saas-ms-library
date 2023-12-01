@@ -149,6 +149,15 @@ class MessageResponse(object):
             **kwargs,
         )
 
+    def success_response(self, message: str, **kwargs):
+        return self.response(
+            success=True,
+            message=message,
+            status_code=HTTPStatus.OK,
+            message_code=MessageCode.RESOURCE_READ,
+            **kwargs,
+        )
+
 
 def read_response(
     request,
