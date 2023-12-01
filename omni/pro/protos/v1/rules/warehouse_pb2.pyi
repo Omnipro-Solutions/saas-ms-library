@@ -8,6 +8,7 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
+from omni.pro.protos.v1.rules import delivery_schedule_pb2 as _delivery_schedule_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
@@ -20,6 +21,7 @@ class Warehouse(_message.Message):
         "locality_available",
         "lock_stock_sql_id",
         "external_id",
+        "schedule_template",
         "object_audit",
     ]
     ID_FIELD_NUMBER: _ClassVar[int]
@@ -29,6 +31,7 @@ class Warehouse(_message.Message):
     LOCALITY_AVAILABLE_FIELD_NUMBER: _ClassVar[int]
     LOCK_STOCK_SQL_ID_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
+    SCHEDULE_TEMPLATE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
@@ -37,6 +40,7 @@ class Warehouse(_message.Message):
     locality_available: str
     lock_stock_sql_id: int
     external_id: str
+    schedule_template: _delivery_schedule_pb2.DeliverySchedule
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
@@ -47,6 +51,7 @@ class Warehouse(_message.Message):
         locality_available: _Optional[str] = ...,
         lock_stock_sql_id: _Optional[int] = ...,
         external_id: _Optional[str] = ...,
+        schedule_template: _Optional[_Union[_delivery_schedule_pb2.DeliverySchedule, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
@@ -58,6 +63,7 @@ class WarehouseCreateRequest(_message.Message):
         "locality_available",
         "lock_stock_sql_id",
         "external_id",
+        "schedule_template_id",
         "context",
     ]
     NAME_FIELD_NUMBER: _ClassVar[int]
@@ -66,6 +72,7 @@ class WarehouseCreateRequest(_message.Message):
     LOCALITY_AVAILABLE_FIELD_NUMBER: _ClassVar[int]
     LOCK_STOCK_SQL_ID_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
+    SCHEDULE_TEMPLATE_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     code: str
@@ -73,6 +80,7 @@ class WarehouseCreateRequest(_message.Message):
     locality_available: str
     lock_stock_sql_id: int
     external_id: str
+    schedule_template_id: str
     context: _base_pb2.Context
     def __init__(
         self,
@@ -82,6 +90,7 @@ class WarehouseCreateRequest(_message.Message):
         locality_available: _Optional[str] = ...,
         lock_stock_sql_id: _Optional[int] = ...,
         external_id: _Optional[str] = ...,
+        schedule_template_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 

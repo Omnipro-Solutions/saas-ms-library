@@ -38,6 +38,7 @@ class DeliveryMethod(_message.Message):
         "transfer_between_delivery_warehouses",
         "active",
         "external_id",
+        "time_zone",
         "object_audit",
     ]
     ID_FIELD_NUMBER: _ClassVar[int]
@@ -57,6 +58,7 @@ class DeliveryMethod(_message.Message):
     TRANSFER_BETWEEN_DELIVERY_WAREHOUSES_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
+    TIME_ZONE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
@@ -75,6 +77,7 @@ class DeliveryMethod(_message.Message):
     transfer_between_delivery_warehouses: _wrappers_pb2.BoolValue
     active: _wrappers_pb2.BoolValue
     external_id: str
+    time_zone: str
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
@@ -95,6 +98,7 @@ class DeliveryMethod(_message.Message):
         transfer_between_delivery_warehouses: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         external_id: _Optional[str] = ...,
+        time_zone: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
@@ -115,6 +119,7 @@ class DeliveryMethodCreateRequest(_message.Message):
         "delivery_warehouse_ids",
         "transfer_between_delivery_warehouses",
         "external_id",
+        "time_zone",
         "context",
     ]
     NAME_FIELD_NUMBER: _ClassVar[int]
@@ -132,6 +137,7 @@ class DeliveryMethodCreateRequest(_message.Message):
     DELIVERY_WAREHOUSE_IDS_FIELD_NUMBER: _ClassVar[int]
     TRANSFER_BETWEEN_DELIVERY_WAREHOUSES_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
+    TIME_ZONE_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     type_picking_transfer: str
@@ -148,6 +154,7 @@ class DeliveryMethodCreateRequest(_message.Message):
     delivery_warehouse_ids: _containers.RepeatedScalarFieldContainer[int]
     transfer_between_delivery_warehouses: _wrappers_pb2.BoolValue
     external_id: str
+    time_zone: str
     context: _base_pb2.Context
     def __init__(
         self,
@@ -166,6 +173,7 @@ class DeliveryMethodCreateRequest(_message.Message):
         delivery_warehouse_ids: _Optional[_Iterable[int]] = ...,
         transfer_between_delivery_warehouses: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         external_id: _Optional[str] = ...,
+        time_zone: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
