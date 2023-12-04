@@ -9,23 +9,20 @@ from google.protobuf import message as _message
 from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
-from omni.pro.protos.v1.rules import holidays_pb2 as _holidays_pb2
 from omni.pro.protos.v1.rules import schedule_work_line_pb2 as _schedule_work_line_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class ScheduleWork(_message.Message):
-    __slots__ = ["id", "name", "holiday_template", "schedule_work_lines", "active", "external_id", "object_audit"]
+    __slots__ = ["id", "name", "schedule_work_lines", "active", "external_id", "object_audit"]
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
-    HOLIDAY_TEMPLATE_FIELD_NUMBER: _ClassVar[int]
     SCHEDULE_WORK_LINES_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
-    holiday_template: _holidays_pb2.Holidays
     schedule_work_lines: _containers.RepeatedCompositeFieldContainer[_schedule_work_line_pb2.ScheduleWorkLine]
     active: _wrappers_pb2.BoolValue
     external_id: str
@@ -34,7 +31,6 @@ class ScheduleWork(_message.Message):
         self,
         id: _Optional[str] = ...,
         name: _Optional[str] = ...,
-        holiday_template: _Optional[_Union[_holidays_pb2.Holidays, _Mapping]] = ...,
         schedule_work_lines: _Optional[_Iterable[_Union[_schedule_work_line_pb2.ScheduleWorkLine, _Mapping]]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         external_id: _Optional[str] = ...,
@@ -42,21 +38,18 @@ class ScheduleWork(_message.Message):
     ) -> None: ...
 
 class ScheduleWorkCreateRequest(_message.Message):
-    __slots__ = ["name", "holiday_template_id", "schedule_work_line_ids", "external_id", "context"]
+    __slots__ = ["name", "schedule_work_line_ids", "external_id", "context"]
     NAME_FIELD_NUMBER: _ClassVar[int]
-    HOLIDAY_TEMPLATE_ID_FIELD_NUMBER: _ClassVar[int]
     SCHEDULE_WORK_LINE_IDS_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
-    holiday_template_id: str
     schedule_work_line_ids: _containers.RepeatedScalarFieldContainer[str]
     external_id: str
     context: _base_pb2.Context
     def __init__(
         self,
         name: _Optional[str] = ...,
-        holiday_template_id: _Optional[str] = ...,
         schedule_work_line_ids: _Optional[_Iterable[str]] = ...,
         external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,

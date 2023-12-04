@@ -9,14 +9,16 @@ from google.protobuf import message as _message
 from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
+from omni.pro.protos.v1.rules import holidays_pb2 as _holidays_pb2
 from omni.pro.protos.v1.rules import schedule_work_pb2 as _schedule_work_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class DeliverySchedule(_message.Message):
-    __slots__ = ["id", "name", "schedule_work", "active", "external_id", "holidays", "object_audit"]
+    __slots__ = ["id", "name", "holiday_template", "schedule_work", "active", "external_id", "holidays", "object_audit"]
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
+    HOLIDAY_TEMPLATE_FIELD_NUMBER: _ClassVar[int]
     SCHEDULE_WORK_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
@@ -24,6 +26,7 @@ class DeliverySchedule(_message.Message):
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
+    holiday_template: _holidays_pb2.Holidays
     schedule_work: _schedule_work_pb2.ScheduleWork
     active: _wrappers_pb2.BoolValue
     external_id: str
@@ -33,6 +36,7 @@ class DeliverySchedule(_message.Message):
         self,
         id: _Optional[str] = ...,
         name: _Optional[str] = ...,
+        holiday_template: _Optional[_Union[_holidays_pb2.Holidays, _Mapping]] = ...,
         schedule_work: _Optional[_Union[_schedule_work_pb2.ScheduleWork, _Mapping]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         external_id: _Optional[str] = ...,
@@ -41,14 +45,16 @@ class DeliverySchedule(_message.Message):
     ) -> None: ...
 
 class DeliveryScheduleCreateRequest(_message.Message):
-    __slots__ = ["name", "schedule_work_id", "external_id", "holidays", "context"]
+    __slots__ = ["name", "schedule_work_id", "holiday_template_id", "external_id", "holidays", "context"]
     NAME_FIELD_NUMBER: _ClassVar[int]
     SCHEDULE_WORK_ID_FIELD_NUMBER: _ClassVar[int]
+    HOLIDAY_TEMPLATE_ID_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     HOLIDAYS_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     schedule_work_id: str
+    holiday_template_id: str
     external_id: str
     holidays: _containers.RepeatedScalarFieldContainer[str]
     context: _base_pb2.Context
@@ -56,6 +62,7 @@ class DeliveryScheduleCreateRequest(_message.Message):
         self,
         name: _Optional[str] = ...,
         schedule_work_id: _Optional[str] = ...,
+        holiday_template_id: _Optional[str] = ...,
         external_id: _Optional[str] = ...,
         holidays: _Optional[_Iterable[str]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
