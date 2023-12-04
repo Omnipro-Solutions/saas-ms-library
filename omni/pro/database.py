@@ -4,6 +4,7 @@ import operator
 import time
 
 import fakeredis
+from pymongo import UpdateOne
 import mongoengine as mongo
 import redis
 from bson import ObjectId
@@ -153,6 +154,28 @@ class DatabaseManager(object):
             document_class.objects(**filters).update_one(**update)
             document = document_class.objects(**filters).first()
         return document
+
+    def batch_upsert(self, document_isntance, data):
+        """
+        Batch upserts a list of records into the database.
+        Actualiza por lotes una lista de registros en la base de datos.
+
+        Args:
+            document_isntance(mongoengine.Document): The MongoEngine model to upsert into.
+            data (list): A list of dictionaries containing the records to upsert.
+        """
+
+        bulk_operations = [
+            UpdateOne(
+                {"external_id": obj["external_id"]},
+                {"$set": obj | {"tenant": data["context"]["tenant"], "updated_by": data["context"]["user"]}},
+                upsert=True,
+            )
+            for obj in data["models"]
+        ]
+
+        result = document_isntance.bulk_write(bulk_operations)
+        return result
 
 
 class MongoConnection(object):
@@ -486,6 +509,41 @@ class PostgresDatabaseManager(SessionManager):
             if success:
                 return True
         return False
+
+    def batch_upsert(self, model, session, data: list):
+        """
+        Batch upserts a list of records into the database.
+        Actualiza por lotes una lista de registros en la base de datos.
+
+        Args:
+        model (Base): The SQLAlchemy model to upsert into.
+                      El modelo SQLAlchemy para actualizar.
+        session (Session): An instance of the database session.
+                           Una instancia de la sesión de base de datos.
+        data (list): A list of dictionaries containing the records to upsert.
+                     Una lista de diccionarios que contienen los registros para actualizar.
+
+        Returns:
+        (list): A list of records that were upserted.
+                Una lista de registros que fueron actualizados.
+        """
+        try:
+            for registro in data["models"]:
+                registro | {"tenant": data["context"]["tenant"], "updated_by": data["context"]["user"]}
+                obj = session.query(model).filter_by(external_id=registro["external_id"]).first()
+                if obj:
+                    for key, value in registro.items():
+                        setattr(obj, key, value)
+                else:
+                    obj = model(**registro)
+                    session.add(obj)
+
+            session.commit()
+        except Exception as e:
+            session.rollback()
+            raise
+        finally:
+            session.close()
 
 
 class RedisConnection:
