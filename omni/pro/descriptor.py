@@ -1,4 +1,5 @@
 from mongoengine.fields import EmbeddedDocumentField, ReferenceField
+from mongoengine import DynamicEmbeddedDocument
 from omni.pro.util import to_camel_case
 from sqlalchemy import Enum, inspect
 from sqlalchemy.orm.relationships import RelationshipProperty
@@ -74,6 +75,17 @@ class Descriptor(object):
 
             fields.append(field_info)
 
+        if model._dynamic:
+            return [
+                {
+                    "name": prefix_name,
+                    "code": prefix_code,
+                    "type": "DynamicField",
+                    "required": False,
+                    "relation": {},
+                }
+            ] + fields
+
         if prefix_name == "" and prefix_code == "":  # This is a top-level call
             return {
                 "name": model.__name__,
@@ -81,6 +93,7 @@ class Descriptor(object):
                 "code": model._meta.get("collection") or model.__name__.lower(),
                 "fields": fields,
             }
+
         else:  # This is a recursive call
             return fields
 
