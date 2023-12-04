@@ -6,6 +6,7 @@ from abc import ABC, abstractmethod
 class FilesType(Enum):
     CSV = "csv"
     XLSX = "xlsx"
+    JSON = "json"
 
     @classmethod
     def valid_value(cls, value: str) -> bool:
@@ -84,6 +85,47 @@ class CSVDocumentStrategy(DocumentStrategy):
             raise ValueError("Csv headers do not match the expected model headers")
 
 
+class JSONDocumentStrategy(DocumentStrategy):
+    """
+    Strategy for handling JSON files.
+    """
+
+    def __init__(self, file_library, **kwargs):
+        """
+        Initializes the JSONDocumentStrategy.
+        :param file_library: Library to be used for reading files.
+        """
+        self.file_library = file_library
+
+    def open_file(self, file_path):
+        """
+        Opens and reads a JSON file using the specified file library.
+        :param file_path: Path of the JSON file to be opened.
+        :return: DataFrame object of the opened file.
+        """
+        return self.file_library.read_json(file_path)
+
+    def get_data(self, file_path):
+        """
+        Opens and reads a JSON file using the specified file library.
+        :param file_path: Path of the JSON file to be opened.
+        :return: List of dictionaries of the opened file.
+        """
+        json_file = self.open_file(file_path)
+        return json_file.to_dict(orient="records")
+
+    def validate(self, expected, file_path):
+        """
+        Validates the headers of the JSON file.
+        :param expected: List of expected headers.
+        :param file_path: Path of the JSON file to be validated.
+        """
+        json_file = self.open_file(file_path)
+        actual_headers = json_file.columns.tolist()
+        if set(expected) != set(actual_headers):
+            raise ValueError("JSON headers do not match the expected model headers")
+
+
 class ExcelDocumentStrategy(DocumentStrategy):
     """
     Strategy for handling Excel documents.
@@ -119,7 +161,11 @@ class FileProcessor:
         Initializes the FileProcessor with allowed file extensions.
         :param allowed_extensions: List of allowed file extensions.
         """
-        self.document_strategies = {FilesType.CSV: CSVDocumentStrategy, FilesType.XLSX: ExcelDocumentStrategy}
+        self.document_strategies = {
+            FilesType.CSV: CSVDocumentStrategy,
+            FilesType.XLSX: ExcelDocumentStrategy,
+            FilesType.JSON: JSONDocumentStrategy,
+        }
         self.allowed_extensions = allowed_extensions
 
     def allowed_extension(self, extension):

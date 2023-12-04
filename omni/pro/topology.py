@@ -5,6 +5,7 @@ import pathlib
 import networkx as nx
 import peewee
 from mongoengine.document import Document
+from omni.pro.models.base import BaseAuditEmbeddedDocument
 from omni.pro.logger import configure_logger
 from omni.pro.models.base import BaseDocument, BaseModel
 from peewee import ForeignKeyField
@@ -61,6 +62,7 @@ class Topology(object):
                 if inspect.isclass(obj) and (
                     (issubclass(obj, BaseModel) and obj != BaseModel)
                     or (issubclass(obj, Document) and obj != BaseDocument)
+                    or (issubclass(obj, BaseAuditEmbeddedDocument) and obj != BaseAuditEmbeddedDocument)
                 ):
                     model_classes.append(obj)
 
