@@ -34,6 +34,7 @@ class StockMoveLine(_message.Message):
         "qty_done",
         "product_uom_qty",
         "product_uom",
+        "qty_reserved",
         "active",
         "external_id",
         "object_audit",
@@ -51,6 +52,7 @@ class StockMoveLine(_message.Message):
     QTY_DONE_FIELD_NUMBER: _ClassVar[int]
     PRODUCT_UOM_QTY_FIELD_NUMBER: _ClassVar[int]
     PRODUCT_UOM_FIELD_NUMBER: _ClassVar[int]
+    QTY_RESERVED_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
@@ -67,6 +69,7 @@ class StockMoveLine(_message.Message):
     qty_done: float
     product_uom_qty: float
     product_uom: _uom_pb2.Uom
+    qty_reserved: float
     active: _wrappers_pb2.BoolValue
     external_id: str
     object_audit: _base_pb2.ObjectAudit
@@ -85,6 +88,7 @@ class StockMoveLine(_message.Message):
         qty_done: _Optional[float] = ...,
         product_uom_qty: _Optional[float] = ...,
         product_uom: _Optional[_Union[_uom_pb2.Uom, _Mapping]] = ...,
+        qty_reserved: _Optional[float] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
@@ -104,6 +108,7 @@ class StockMoveLineCreateRequest(_message.Message):
         "qty_done",
         "product_uom_qty",
         "product_uom_id",
+        "qty_reserved",
         "external_id",
         "context",
     ]
@@ -119,6 +124,7 @@ class StockMoveLineCreateRequest(_message.Message):
     QTY_DONE_FIELD_NUMBER: _ClassVar[int]
     PRODUCT_UOM_QTY_FIELD_NUMBER: _ClassVar[int]
     PRODUCT_UOM_ID_FIELD_NUMBER: _ClassVar[int]
+    QTY_RESERVED_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     stock_move_id: int
@@ -133,6 +139,7 @@ class StockMoveLineCreateRequest(_message.Message):
     qty_done: float
     product_uom_qty: float
     product_uom_id: str
+    qty_reserved: float
     external_id: str
     context: _base_pb2.Context
     def __init__(
@@ -149,6 +156,7 @@ class StockMoveLineCreateRequest(_message.Message):
         qty_done: _Optional[float] = ...,
         product_uom_qty: _Optional[float] = ...,
         product_uom_id: _Optional[str] = ...,
+        qty_reserved: _Optional[float] = ...,
         external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
