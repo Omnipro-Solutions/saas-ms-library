@@ -13,9 +13,15 @@ from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
 from omni.pro.protos.v1.stock import attachment_pb2 as _attachment_pb2
 from omni.pro.protos.v1.stock import carrier_pb2 as _carrier_pb2
+from omni.pro.protos.v1.stock import client_pb2 as _client_pb2
+from omni.pro.protos.v1.stock import delivery_method_pb2 as _delivery_method_pb2
 from omni.pro.protos.v1.stock import location_pb2 as _location_pb2
+from omni.pro.protos.v1.stock import order_pb2 as _order_pb2
+from omni.pro.protos.v1.stock import payment_method_pb2 as _payment_method_pb2
 from omni.pro.protos.v1.stock import picking_type_pb2 as _picking_type_pb2
 from omni.pro.protos.v1.stock import procurement_group_pb2 as _procurement_group_pb2
+from omni.pro.protos.v1.stock import sale_pb2 as _sale_pb2
+from omni.pro.protos.v1.stock import user_pb2 as _user_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
@@ -42,6 +48,16 @@ class Picking(_message.Message):
         "shipping_weight",
         "state",
         "dependency",
+        "note",
+        "carrier_tracking_url",
+        "date_validated",
+        "sale_date_order",
+        "client",
+        "delivery_method",
+        "order",
+        "payment_method",
+        "sale",
+        "user",
         "active",
         "external_id",
         "object_audit",
@@ -67,6 +83,16 @@ class Picking(_message.Message):
     SHIPPING_WEIGHT_FIELD_NUMBER: _ClassVar[int]
     STATE_FIELD_NUMBER: _ClassVar[int]
     DEPENDENCY_FIELD_NUMBER: _ClassVar[int]
+    NOTE_FIELD_NUMBER: _ClassVar[int]
+    CARRIER_TRACKING_URL_FIELD_NUMBER: _ClassVar[int]
+    DATE_VALIDATED_FIELD_NUMBER: _ClassVar[int]
+    SALE_DATE_ORDER_FIELD_NUMBER: _ClassVar[int]
+    CLIENT_FIELD_NUMBER: _ClassVar[int]
+    DELIVERY_METHOD_FIELD_NUMBER: _ClassVar[int]
+    ORDER_FIELD_NUMBER: _ClassVar[int]
+    PAYMENT_METHOD_FIELD_NUMBER: _ClassVar[int]
+    SALE_FIELD_NUMBER: _ClassVar[int]
+    USER_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
@@ -91,6 +117,16 @@ class Picking(_message.Message):
     shipping_weight: float
     state: str
     dependency: _base_pb2.ObjectResponse
+    note: str
+    carrier_tracking_url: str
+    date_validated: _timestamp_pb2.Timestamp
+    sale_date_order: _timestamp_pb2.Timestamp
+    client: _client_pb2.Client
+    delivery_method: _delivery_method_pb2.DeliveryMethod
+    order: _order_pb2.Order
+    payment_method: _payment_method_pb2.PaymentMethod
+    sale: _sale_pb2.Sale
+    user: _user_pb2.User
     active: _wrappers_pb2.BoolValue
     external_id: str
     object_audit: _base_pb2.ObjectAudit
@@ -117,6 +153,16 @@ class Picking(_message.Message):
         shipping_weight: _Optional[float] = ...,
         state: _Optional[str] = ...,
         dependency: _Optional[_Union[_base_pb2.ObjectResponse, _Mapping]] = ...,
+        note: _Optional[str] = ...,
+        carrier_tracking_url: _Optional[str] = ...,
+        date_validated: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
+        sale_date_order: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
+        client: _Optional[_Union[_client_pb2.Client, _Mapping]] = ...,
+        delivery_method: _Optional[_Union[_delivery_method_pb2.DeliveryMethod, _Mapping]] = ...,
+        order: _Optional[_Union[_order_pb2.Order, _Mapping]] = ...,
+        payment_method: _Optional[_Union[_payment_method_pb2.PaymentMethod, _Mapping]] = ...,
+        sale: _Optional[_Union[_sale_pb2.Sale, _Mapping]] = ...,
+        user: _Optional[_Union[_user_pb2.User, _Mapping]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
@@ -144,6 +190,16 @@ class PickingCreateRequest(_message.Message):
         "shipping_weight",
         "state",
         "dependency_id",
+        "note",
+        "carrier_tracking_url",
+        "date_validated",
+        "sale_date_order",
+        "client_id",
+        "delivery_method_id",
+        "order_id",
+        "payment_method_id",
+        "sale_id",
+        "user_id",
         "external_id",
         "context",
     ]
@@ -167,6 +223,16 @@ class PickingCreateRequest(_message.Message):
     SHIPPING_WEIGHT_FIELD_NUMBER: _ClassVar[int]
     STATE_FIELD_NUMBER: _ClassVar[int]
     DEPENDENCY_ID_FIELD_NUMBER: _ClassVar[int]
+    NOTE_FIELD_NUMBER: _ClassVar[int]
+    CARRIER_TRACKING_URL_FIELD_NUMBER: _ClassVar[int]
+    DATE_VALIDATED_FIELD_NUMBER: _ClassVar[int]
+    SALE_DATE_ORDER_FIELD_NUMBER: _ClassVar[int]
+    CLIENT_ID_FIELD_NUMBER: _ClassVar[int]
+    DELIVERY_METHOD_ID_FIELD_NUMBER: _ClassVar[int]
+    ORDER_ID_FIELD_NUMBER: _ClassVar[int]
+    PAYMENT_METHOD_ID_FIELD_NUMBER: _ClassVar[int]
+    SALE_ID_FIELD_NUMBER: _ClassVar[int]
+    USER_ID_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
@@ -189,6 +255,16 @@ class PickingCreateRequest(_message.Message):
     shipping_weight: float
     state: str
     dependency_id: int
+    note: str
+    carrier_tracking_url: str
+    date_validated: _timestamp_pb2.Timestamp
+    sale_date_order: _timestamp_pb2.Timestamp
+    client_id: str
+    delivery_method_id: str
+    order_id: int
+    payment_method_id: str
+    sale_id: int
+    user_id: str
     external_id: str
     context: _base_pb2.Context
     def __init__(
@@ -213,6 +289,16 @@ class PickingCreateRequest(_message.Message):
         shipping_weight: _Optional[float] = ...,
         state: _Optional[str] = ...,
         dependency_id: _Optional[int] = ...,
+        note: _Optional[str] = ...,
+        carrier_tracking_url: _Optional[str] = ...,
+        date_validated: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
+        sale_date_order: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
+        client_id: _Optional[str] = ...,
+        delivery_method_id: _Optional[str] = ...,
+        order_id: _Optional[int] = ...,
+        payment_method_id: _Optional[str] = ...,
+        sale_id: _Optional[int] = ...,
+        user_id: _Optional[str] = ...,
         external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
