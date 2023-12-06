@@ -220,3 +220,25 @@ class ImportExportDeleteResponse(_message.Message):
         response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
         import_export: _Optional[_Union[ImportExport, _Mapping]] = ...,
     ) -> None: ...
+
+class ConfirmUploadRequest(_message.Message):
+    __slots__ = ["id", "context"]
+    ID_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    id: str
+    context: _base_pb2.Context
+    def __init__(
+        self, id: _Optional[str] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
+    ) -> None: ...
+
+class ConfirmUploadResponse(_message.Message):
+    __slots__ = ["response_standard", "import_export"]
+    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
+    IMPORT_EXPORT_FIELD_NUMBER: _ClassVar[int]
+    response_standard: _base_pb2.ResponseStandard
+    import_export: ImportExport
+    def __init__(
+        self,
+        response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
+        import_export: _Optional[_Union[ImportExport, _Mapping]] = ...,
+    ) -> None: ...
