@@ -35,9 +35,9 @@ class QueryExportResponse(_message.Message):
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
     RESULT_FIELD_NUMBER: _ClassVar[int]
     response_standard: _base_pb2.ResponseStandard
-    result: _containers.RepeatedCompositeFieldContainer[_struct_pb2.Struct]
+    result: _containers.RepeatedCompositeFieldContainer[_struct_pb2.ListValue]
     def __init__(
         self,
         response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
-        result: _Optional[_Iterable[_Union[_struct_pb2.Struct, _Mapping]]] = ...,
+        result: _Optional[_Iterable[_Union[_struct_pb2.ListValue, _Mapping]]] = ...,
     ) -> None: ...
