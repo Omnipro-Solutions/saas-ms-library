@@ -13,23 +13,20 @@ from omni.pro.protos.common import base_pb2 as _base_pb2
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class QueryExportRequest(_message.Message):
-    __slots__ = ["model", "query", "fields", "db_type", "context"]
-    MODEL_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["model_path", "query", "fields", "context"]
+    MODEL_PATH_FIELD_NUMBER: _ClassVar[int]
     QUERY_FIELD_NUMBER: _ClassVar[int]
     FIELDS_FIELD_NUMBER: _ClassVar[int]
-    DB_TYPE_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    model: str
+    model_path: str
     query: str
-    fields: str
-    db_type: str
+    fields: _containers.RepeatedScalarFieldContainer[str]
     context: _base_pb2.Context
     def __init__(
         self,
-        model: _Optional[str] = ...,
+        model_path: _Optional[str] = ...,
         query: _Optional[str] = ...,
-        fields: _Optional[str] = ...,
-        db_type: _Optional[str] = ...,
+        fields: _Optional[_Iterable[str]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
