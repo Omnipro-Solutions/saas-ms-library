@@ -6,6 +6,8 @@ import secrets
 import string
 import time
 import unicodedata
+import re
+from datetime import datetime
 from functools import reduce, wraps
 
 from omni.pro.exceptions import AlreadyExistError, NotFoundError
@@ -418,3 +420,108 @@ def objects_to_integer(data, fields):
         else:
             transformed_data[new_key] = value
     return transformed_data
+
+
+def datetime_to_string(date):
+    """
+    Converts a datetime object to its ISO 8601 string representation. If the object
+    is not a datetime, it returns the object as is.
+
+    Parameters:
+    date (object): The object to convert. This can be any object, but the function specifically
+                looks for objects of type datetime.datetime.
+
+    Returns:
+    str or object: The ISO 8601 string representation of the datetime object if 'o' is a
+                   datetime instance. Otherwise, returns the original object.
+
+    Process:
+    1. Check if the object 'o' is an instance of datetime.datetime.
+    2. If it is, convert it to a string using the isoformat() method, which conforms to the
+       ISO 8601 standard.
+    3. If it is not a datetime object, return the object as is.
+
+    Notes:
+    - This function is typically used in serialization processes where datetime objects need to be
+      converted to a string format that can be easily serialized, like in JSON.
+    - ISO 8601 format is a widely accepted standard for representing dates and times as strings,
+      which makes it a good choice for interoperability.
+    """
+    if isinstance(date, datetime):
+        return date.isoformat()
+    return date
+
+
+def _is_valid_select_query(query):
+    """
+    Validates that the 'query' string is a valid and safe SQL SELECT statement.
+
+    This function performs a basic check to ensure that the provided query is a SELECT statement
+    and does not contain potentially dangerous keywords that could be used in SQL injection attacks,
+    such as INSERT, UPDATE, DELETE, etc.
+
+    Parameters:
+    query (str): The SQL query string to be validated.
+
+    Returns:
+    bool: True if the query is a safe SELECT statement, False otherwise.
+
+    Process:
+    1. Cleans the query by removing SQL comments at the beginning.
+    2. Checks that the query starts with the SELECT keyword.
+    3. Ensures that the query does not contain forbidden keywords that could alter or damage
+    the database, such as INSERT, UPDATE, DELETE, etc.
+
+    Notes:
+    - This function does not fully guarantee security against SQL injections. It should be used
+    as one of several security measures.
+    - The function is case-sensitive and relies on the correct formatting of SQL queries.
+    """
+    query = re.sub(r"^\s*(--.*\n)*\s*", "", query.strip(), flags=re.MULTILINE)
+
+    if re.match(r"^\s*SELECT\s", query, re.IGNORECASE):
+        forbidden_keywords = ["INSERT", "UPDATE", "DELETE", "DROP", "ALTER", "EXEC", "CREATE", "TRUNCATE"]
+        if any(forbidden_word in query.upper() for forbidden_word in forbidden_keywords):
+            return False
+        return True
+
+    return False
+
+
+def _serialize_query_result(result):
+    """
+    Serializes the result of a SQL query into a list of dictionaries, where each dictionary
+    represents a row in the result set. Additionally, converts datetime objects to strings.
+
+    Parameters:
+    result (sqlalchemy.engine.result.ResultProxy): The result proxy object returned by a SQL query
+    execution using SQLAlchemy. It contains the result set of the query.
+
+    Returns:
+    list: A list of dictionaries, where each dictionary corresponds to a row in the result set.
+    Each key in the dictionary is a column name, and its value is the corresponding data for that column.
+
+    Process:
+    1. Extract column names from the cursor's description attribute.
+    2. Fetch all rows from the result set.
+    3. For each row, create a dictionary where the keys are column names and the values are row data.
+    4. If any value in a row is a datetime object, convert it to a string representation.
+
+    Notes:
+    - The function assumes that the result object has a 'cursor' attribute with a 'description' attribute,
+      which is typical in SQLAlchemy or similar database abstraction layers.
+    - Datetime objects are converted to strings for uniformity, especially useful when serializing
+      the data to formats like JSON.
+    - This function is tailored for SQLAlchemy but can be adapted for other database connectors
+      that follow a similar pattern.
+    """
+    columns = [column[0] for column in result.cursor.description]
+
+    fetched_results = result.fetchall()
+    rows = [dict(zip(columns, row)) for row in fetched_results]
+    if rows:
+        for row in rows:
+            for key, value in row.items():
+                if isinstance(value, datetime):
+                    row[key] = datetime_to_string(value)
+    return rows
