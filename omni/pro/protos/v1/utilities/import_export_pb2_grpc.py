@@ -33,6 +33,11 @@ class ImportExportServiceStub(object):
             request_serializer=v1_dot_utilities_dot_import__export__pb2.ImportExportDeleteRequest.SerializeToString,
             response_deserializer=v1_dot_utilities_dot_import__export__pb2.ImportExportDeleteResponse.FromString,
         )
+        self.ConfirmUpload = channel.unary_unary(
+            "/pro.omni.oms.api.v1.utilities.import_export.ImportExportService/ConfirmUpload",
+            request_serializer=v1_dot_utilities_dot_import__export__pb2.ConfirmUploadRequest.SerializeToString,
+            response_deserializer=v1_dot_utilities_dot_import__export__pb2.ConfirmUploadResponse.FromString,
+        )
 
 
 class ImportExportServiceServicer(object):
@@ -62,6 +67,12 @@ class ImportExportServiceServicer(object):
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
+    def ConfirmUpload(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
 
 def add_ImportExportServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -84,6 +95,11 @@ def add_ImportExportServiceServicer_to_server(servicer, server):
             servicer.ImportExportDelete,
             request_deserializer=v1_dot_utilities_dot_import__export__pb2.ImportExportDeleteRequest.FromString,
             response_serializer=v1_dot_utilities_dot_import__export__pb2.ImportExportDeleteResponse.SerializeToString,
+        ),
+        "ConfirmUpload": grpc.unary_unary_rpc_method_handler(
+            servicer.ConfirmUpload,
+            request_deserializer=v1_dot_utilities_dot_import__export__pb2.ConfirmUploadRequest.FromString,
+            response_serializer=v1_dot_utilities_dot_import__export__pb2.ConfirmUploadResponse.SerializeToString,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -202,6 +218,35 @@ class ImportExportService(object):
             "/pro.omni.oms.api.v1.utilities.import_export.ImportExportService/ImportExportDelete",
             v1_dot_utilities_dot_import__export__pb2.ImportExportDeleteRequest.SerializeToString,
             v1_dot_utilities_dot_import__export__pb2.ImportExportDeleteResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
+
+    @staticmethod
+    def ConfirmUpload(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            "/pro.omni.oms.api.v1.utilities.import_export.ImportExportService/ConfirmUpload",
+            v1_dot_utilities_dot_import__export__pb2.ConfirmUploadRequest.SerializeToString,
+            v1_dot_utilities_dot_import__export__pb2.ConfirmUploadResponse.FromString,
             options,
             channel_credentials,
             insecure,
