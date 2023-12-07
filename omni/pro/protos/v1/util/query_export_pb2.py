@@ -16,7 +16,7 @@ from google.protobuf import struct_pb2 as google_dot_protobuf_dot_struct__pb2
 from omni.pro.protos.common import base_pb2 as common_dot_base__pb2
 
 DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
-    b'\n\x1av1/util/query_export.proto\x12%pro.omni.oms.api.v1.util.query_export\x1a\x11\x63ommon/base.proto\x1a\x1cgoogle/protobuf/struct.proto"\x8b\x01\n\x12QueryExportRequest\x12\r\n\x05model\x18\x01 \x01(\t\x12\r\n\x05query\x18\x02 \x01(\t\x12\x0e\n\x06\x66ields\x18\x03 \x01(\t\x12\x0f\n\x07\x64\x62_type\x18\x04 \x01(\t\x12\x36\n\x07\x63ontext\x18\x05 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\x89\x01\n\x13QueryExportResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard\x12\'\n\x06result\x18\x02 \x03(\x0b\x32\x17.google.protobuf.Struct2\x9d\x01\n\x12QueryExportService\x12\x86\x01\n\x0bQueryExport\x12\x39.pro.omni.oms.api.v1.util.query_export.QueryExportRequest\x1a:.pro.omni.oms.api.v1.util.query_export.QueryExportResponse"\x00\x62\x06proto3'
+    b'\n\x1av1/util/query_export.proto\x12%pro.omni.oms.api.v1.util.query_export\x1a\x11\x63ommon/base.proto\x1a\x1cgoogle/protobuf/struct.proto"\x7f\n\x12QueryExportRequest\x12\x12\n\nmodel_path\x18\x01 \x01(\t\x12\r\n\x05query\x18\x02 \x01(\t\x12\x0e\n\x06\x66ields\x18\x03 \x03(\t\x12\x36\n\x07\x63ontext\x18\x04 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\x8c\x01\n\x13QueryExportResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard\x12*\n\x06result\x18\x02 \x03(\x0b\x32\x1a.google.protobuf.ListValue2\x9d\x01\n\x12QueryExportService\x12\x86\x01\n\x0bQueryExport\x12\x39.pro.omni.oms.api.v1.util.query_export.QueryExportRequest\x1a:.pro.omni.oms.api.v1.util.query_export.QueryExportResponse"\x00\x62\x06proto3'
 )
 
 _globals = globals()
@@ -24,10 +24,10 @@ _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, "v1.util.query_export_pb2", _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
     DESCRIPTOR._options = None
-    _globals["_QUERYEXPORTREQUEST"]._serialized_start = 119
-    _globals["_QUERYEXPORTREQUEST"]._serialized_end = 258
-    _globals["_QUERYEXPORTRESPONSE"]._serialized_start = 261
-    _globals["_QUERYEXPORTRESPONSE"]._serialized_end = 398
-    _globals["_QUERYEXPORTSERVICE"]._serialized_start = 401
-    _globals["_QUERYEXPORTSERVICE"]._serialized_end = 558
+    _globals["_QUERYEXPORTREQUEST"]._serialized_start = 118
+    _globals["_QUERYEXPORTREQUEST"]._serialized_end = 245
+    _globals["_QUERYEXPORTRESPONSE"]._serialized_start = 248
+    _globals["_QUERYEXPORTRESPONSE"]._serialized_end = 388
+    _globals["_QUERYEXPORTSERVICE"]._serialized_start = 391
+    _globals["_QUERYEXPORTSERVICE"]._serialized_end = 548
 # @@protoc_insertion_point(module_scope)
