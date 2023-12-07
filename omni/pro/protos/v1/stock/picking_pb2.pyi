@@ -11,6 +11,7 @@ from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
+from omni.pro.protos.v1.stock import address_pb2 as _address_pb2
 from omni.pro.protos.v1.stock import attachment_pb2 as _attachment_pb2
 from omni.pro.protos.v1.stock import carrier_pb2 as _carrier_pb2
 from omni.pro.protos.v1.stock import client_pb2 as _client_pb2
@@ -58,6 +59,7 @@ class Picking(_message.Message):
         "payment_method",
         "sale",
         "user",
+        "shipping_address",
         "active",
         "external_id",
         "object_audit",
@@ -93,6 +95,7 @@ class Picking(_message.Message):
     PAYMENT_METHOD_FIELD_NUMBER: _ClassVar[int]
     SALE_FIELD_NUMBER: _ClassVar[int]
     USER_FIELD_NUMBER: _ClassVar[int]
+    SHIPPING_ADDRESS_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
@@ -127,6 +130,7 @@ class Picking(_message.Message):
     payment_method: _payment_method_pb2.PaymentMethod
     sale: _sale_pb2.Sale
     user: _user_pb2.User
+    shipping_address: _address_pb2.Address
     active: _wrappers_pb2.BoolValue
     external_id: str
     object_audit: _base_pb2.ObjectAudit
@@ -163,6 +167,7 @@ class Picking(_message.Message):
         payment_method: _Optional[_Union[_payment_method_pb2.PaymentMethod, _Mapping]] = ...,
         sale: _Optional[_Union[_sale_pb2.Sale, _Mapping]] = ...,
         user: _Optional[_Union[_user_pb2.User, _Mapping]] = ...,
+        shipping_address: _Optional[_Union[_address_pb2.Address, _Mapping]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
@@ -200,6 +205,7 @@ class PickingCreateRequest(_message.Message):
         "payment_method_id",
         "sale_id",
         "user_id",
+        "shipping_address_code",
         "external_id",
         "context",
     ]
@@ -233,6 +239,7 @@ class PickingCreateRequest(_message.Message):
     PAYMENT_METHOD_ID_FIELD_NUMBER: _ClassVar[int]
     SALE_ID_FIELD_NUMBER: _ClassVar[int]
     USER_ID_FIELD_NUMBER: _ClassVar[int]
+    SHIPPING_ADDRESS_CODE_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
@@ -265,6 +272,7 @@ class PickingCreateRequest(_message.Message):
     payment_method_id: str
     sale_id: int
     user_id: str
+    shipping_address_code: str
     external_id: str
     context: _base_pb2.Context
     def __init__(
@@ -299,6 +307,7 @@ class PickingCreateRequest(_message.Message):
         payment_method_id: _Optional[str] = ...,
         sale_id: _Optional[int] = ...,
         user_id: _Optional[str] = ...,
+        shipping_address_code: _Optional[str] = ...,
         external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...

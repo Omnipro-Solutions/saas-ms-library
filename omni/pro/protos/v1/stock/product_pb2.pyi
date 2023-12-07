@@ -13,10 +13,23 @@ from omni.pro.protos.common import base_pb2 as _base_pb2
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Product(_message.Message):
-    __slots__ = ["id", "product_doc_id", "template_doc_id", "name", "code", "active", "external_id", "object_audit"]
+    __slots__ = [
+        "id",
+        "product_doc_id",
+        "template_doc_id",
+        "sku",
+        "category",
+        "name",
+        "code",
+        "active",
+        "external_id",
+        "object_audit",
+    ]
     ID_FIELD_NUMBER: _ClassVar[int]
     PRODUCT_DOC_ID_FIELD_NUMBER: _ClassVar[int]
     TEMPLATE_DOC_ID_FIELD_NUMBER: _ClassVar[int]
+    SKU_FIELD_NUMBER: _ClassVar[int]
+    CATEGORY_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
@@ -25,6 +38,8 @@ class Product(_message.Message):
     id: int
     product_doc_id: str
     template_doc_id: str
+    sku: str
+    category: str
     name: str
     code: str
     active: _wrappers_pb2.BoolValue
@@ -35,6 +50,8 @@ class Product(_message.Message):
         id: _Optional[int] = ...,
         product_doc_id: _Optional[str] = ...,
         template_doc_id: _Optional[str] = ...,
+        sku: _Optional[str] = ...,
+        category: _Optional[str] = ...,
         name: _Optional[str] = ...,
         code: _Optional[str] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
