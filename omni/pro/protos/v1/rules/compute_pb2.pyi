@@ -6,6 +6,8 @@ from typing import Union as _Union
 
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
+from google.protobuf import struct_pb2 as _struct_pb2
+from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
@@ -20,7 +22,9 @@ class Compute(_message.Message):
         "data_response_internal",
         "data_response_external",
         "time",
+        "date_created",
         "active",
+        "external_id",
         "object_audit",
     ]
     ID_FIELD_NUMBER: _ClassVar[int]
@@ -29,49 +33,70 @@ class Compute(_message.Message):
     DATA_RESPONSE_INTERNAL_FIELD_NUMBER: _ClassVar[int]
     DATA_RESPONSE_EXTERNAL_FIELD_NUMBER: _ClassVar[int]
     TIME_FIELD_NUMBER: _ClassVar[int]
+    DATE_CREATED_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
-    data_request: str
-    data_process: str
-    data_response_internal: str
-    data_response_external: str
+    data_request: _struct_pb2.Struct
+    data_process: _struct_pb2.Struct
+    data_response_internal: _struct_pb2.Struct
+    data_response_external: _struct_pb2.Struct
     time: float
+    date_created: _timestamp_pb2.Timestamp
     active: _wrappers_pb2.BoolValue
+    external_id: str
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
         id: _Optional[str] = ...,
-        data_request: _Optional[str] = ...,
-        data_process: _Optional[str] = ...,
-        data_response_internal: _Optional[str] = ...,
-        data_response_external: _Optional[str] = ...,
+        data_request: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
+        data_process: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
+        data_response_internal: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
+        data_response_external: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         time: _Optional[float] = ...,
+        date_created: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
 class ComputeCreateRequest(_message.Message):
-    __slots__ = ["data_request", "data_process", "data_response_internal", "data_response_external", "time", "context"]
+    __slots__ = [
+        "data_request",
+        "data_process",
+        "data_response_internal",
+        "data_response_external",
+        "time",
+        "date_created",
+        "external_id",
+        "context",
+    ]
     DATA_REQUEST_FIELD_NUMBER: _ClassVar[int]
     DATA_PROCESS_FIELD_NUMBER: _ClassVar[int]
     DATA_RESPONSE_INTERNAL_FIELD_NUMBER: _ClassVar[int]
     DATA_RESPONSE_EXTERNAL_FIELD_NUMBER: _ClassVar[int]
     TIME_FIELD_NUMBER: _ClassVar[int]
+    DATE_CREATED_FIELD_NUMBER: _ClassVar[int]
+    EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    data_request: str
-    data_process: str
-    data_response_internal: str
-    data_response_external: str
+    data_request: _struct_pb2.Struct
+    data_process: _struct_pb2.Struct
+    data_response_internal: _struct_pb2.Struct
+    data_response_external: _struct_pb2.Struct
     time: float
+    date_created: _timestamp_pb2.Timestamp
+    external_id: str
     context: _base_pb2.Context
     def __init__(
         self,
-        data_request: _Optional[str] = ...,
-        data_process: _Optional[str] = ...,
-        data_response_internal: _Optional[str] = ...,
-        data_response_external: _Optional[str] = ...,
+        data_request: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
+        data_process: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
+        data_response_internal: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
+        data_response_external: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         time: _Optional[float] = ...,
+        date_created: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
+        external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
