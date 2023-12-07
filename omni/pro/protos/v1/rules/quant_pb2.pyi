@@ -9,72 +9,85 @@ from google.protobuf import message as _message
 from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
-from omni.pro.protos.v1.rules import holidays_pb2 as _holidays_pb2
-from omni.pro.protos.v1.rules import schedule_work_pb2 as _schedule_work_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
-class DeliverySchedule(_message.Message):
-    __slots__ = ["id", "name", "holiday_template", "schedule_work", "active", "external_id", "object_audit"]
+class Quant(_message.Message):
+    __slots__ = [
+        "id",
+        "product_doc_id",
+        "location_sql_id",
+        "quant_sql_id",
+        "available_quantity",
+        "active",
+        "external_id",
+        "object_audit",
+    ]
     ID_FIELD_NUMBER: _ClassVar[int]
-    NAME_FIELD_NUMBER: _ClassVar[int]
-    HOLIDAY_TEMPLATE_FIELD_NUMBER: _ClassVar[int]
-    SCHEDULE_WORK_FIELD_NUMBER: _ClassVar[int]
+    PRODUCT_DOC_ID_FIELD_NUMBER: _ClassVar[int]
+    LOCATION_SQL_ID_FIELD_NUMBER: _ClassVar[int]
+    QUANT_SQL_ID_FIELD_NUMBER: _ClassVar[int]
+    AVAILABLE_QUANTITY_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
-    name: str
-    holiday_template: _holidays_pb2.Holidays
-    schedule_work: _schedule_work_pb2.ScheduleWork
+    product_doc_id: str
+    location_sql_id: int
+    quant_sql_id: int
+    available_quantity: float
     active: _wrappers_pb2.BoolValue
     external_id: str
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
         id: _Optional[str] = ...,
-        name: _Optional[str] = ...,
-        holiday_template: _Optional[_Union[_holidays_pb2.Holidays, _Mapping]] = ...,
-        schedule_work: _Optional[_Union[_schedule_work_pb2.ScheduleWork, _Mapping]] = ...,
+        product_doc_id: _Optional[str] = ...,
+        location_sql_id: _Optional[int] = ...,
+        quant_sql_id: _Optional[int] = ...,
+        available_quantity: _Optional[float] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
-class DeliveryScheduleCreateRequest(_message.Message):
-    __slots__ = ["name", "schedule_work_id", "holiday_template_id", "external_id", "context"]
-    NAME_FIELD_NUMBER: _ClassVar[int]
-    SCHEDULE_WORK_ID_FIELD_NUMBER: _ClassVar[int]
-    HOLIDAY_TEMPLATE_ID_FIELD_NUMBER: _ClassVar[int]
+class QuantCreateRequest(_message.Message):
+    __slots__ = ["product_doc_id", "location_sql_id", "quant_sql_id", "available_quantity", "external_id", "context"]
+    PRODUCT_DOC_ID_FIELD_NUMBER: _ClassVar[int]
+    LOCATION_SQL_ID_FIELD_NUMBER: _ClassVar[int]
+    QUANT_SQL_ID_FIELD_NUMBER: _ClassVar[int]
+    AVAILABLE_QUANTITY_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    name: str
-    schedule_work_id: str
-    holiday_template_id: str
+    product_doc_id: str
+    location_sql_id: int
+    quant_sql_id: int
+    available_quantity: float
     external_id: str
     context: _base_pb2.Context
     def __init__(
         self,
-        name: _Optional[str] = ...,
-        schedule_work_id: _Optional[str] = ...,
-        holiday_template_id: _Optional[str] = ...,
+        product_doc_id: _Optional[str] = ...,
+        location_sql_id: _Optional[int] = ...,
+        quant_sql_id: _Optional[int] = ...,
+        available_quantity: _Optional[float] = ...,
         external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
-class DeliveryScheduleCreateResponse(_message.Message):
-    __slots__ = ["delivery_schedule", "response_standard"]
-    DELIVERY_SCHEDULE_FIELD_NUMBER: _ClassVar[int]
+class QuantCreateResponse(_message.Message):
+    __slots__ = ["quant", "response_standard"]
+    QUANT_FIELD_NUMBER: _ClassVar[int]
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
-    delivery_schedule: DeliverySchedule
+    quant: Quant
     response_standard: _base_pb2.ResponseStandard
     def __init__(
         self,
-        delivery_schedule: _Optional[_Union[DeliverySchedule, _Mapping]] = ...,
+        quant: _Optional[_Union[Quant, _Mapping]] = ...,
         response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
     ) -> None: ...
 
-class DeliveryScheduleReadRequest(_message.Message):
+class QuantReadRequest(_message.Message):
     __slots__ = ["group_by", "sort_by", "fields", "filter", "paginated", "id", "context"]
     GROUP_BY_FIELD_NUMBER: _ClassVar[int]
     SORT_BY_FIELD_NUMBER: _ClassVar[int]
@@ -101,56 +114,56 @@ class DeliveryScheduleReadRequest(_message.Message):
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
-class DeliveryScheduleReadResponse(_message.Message):
-    __slots__ = ["delivery_schedules", "meta_data", "response_standard"]
-    DELIVERY_SCHEDULES_FIELD_NUMBER: _ClassVar[int]
+class QuantReadResponse(_message.Message):
+    __slots__ = ["quants", "meta_data", "response_standard"]
+    QUANTS_FIELD_NUMBER: _ClassVar[int]
     META_DATA_FIELD_NUMBER: _ClassVar[int]
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
-    delivery_schedules: _containers.RepeatedCompositeFieldContainer[DeliverySchedule]
+    quants: _containers.RepeatedCompositeFieldContainer[Quant]
     meta_data: _base_pb2.MetaData
     response_standard: _base_pb2.ResponseStandard
     def __init__(
         self,
-        delivery_schedules: _Optional[_Iterable[_Union[DeliverySchedule, _Mapping]]] = ...,
+        quants: _Optional[_Iterable[_Union[Quant, _Mapping]]] = ...,
         meta_data: _Optional[_Union[_base_pb2.MetaData, _Mapping]] = ...,
         response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
     ) -> None: ...
 
-class DeliveryScheduleUpdateRequest(_message.Message):
-    __slots__ = ["delivery_schedule", "context"]
-    DELIVERY_SCHEDULE_FIELD_NUMBER: _ClassVar[int]
+class QuantUpdateRequest(_message.Message):
+    __slots__ = ["quant", "context"]
+    QUANT_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    delivery_schedule: DeliverySchedule
+    quant: Quant
     context: _base_pb2.Context
     def __init__(
         self,
-        delivery_schedule: _Optional[_Union[DeliverySchedule, _Mapping]] = ...,
+        quant: _Optional[_Union[Quant, _Mapping]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
-class DeliveryScheduleUpdateResponse(_message.Message):
-    __slots__ = ["delivery_schedule", "response_standard"]
-    DELIVERY_SCHEDULE_FIELD_NUMBER: _ClassVar[int]
+class QuantUpdateResponse(_message.Message):
+    __slots__ = ["quant", "response_standard"]
+    QUANT_FIELD_NUMBER: _ClassVar[int]
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
-    delivery_schedule: DeliverySchedule
+    quant: Quant
     response_standard: _base_pb2.ResponseStandard
     def __init__(
         self,
-        delivery_schedule: _Optional[_Union[DeliverySchedule, _Mapping]] = ...,
+        quant: _Optional[_Union[Quant, _Mapping]] = ...,
         response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
     ) -> None: ...
 
-class DeliveryScheduleDeleteRequest(_message.Message):
-    __slots__ = ["id", "context"]
-    ID_FIELD_NUMBER: _ClassVar[int]
+class QuantDeleteRequest(_message.Message):
+    __slots__ = ["quant_sql_id", "context"]
+    QUANT_SQL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    id: str
+    quant_sql_id: int
     context: _base_pb2.Context
     def __init__(
-        self, id: _Optional[str] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
+        self, quant_sql_id: _Optional[int] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
     ) -> None: ...
 
-class DeliveryScheduleDeleteResponse(_message.Message):
+class QuantDeleteResponse(_message.Message):
     __slots__ = ["response_standard"]
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
     response_standard: _base_pb2.ResponseStandard
