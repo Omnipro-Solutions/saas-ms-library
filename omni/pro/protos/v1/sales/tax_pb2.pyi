@@ -13,16 +13,38 @@ from omni.pro.protos.common import base_pb2 as _base_pb2
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Tax(_message.Message):
-    __slots__ = ["id", "code", "name", "active", "external_id", "object_audit"]
+    __slots__ = [
+        "id",
+        "code",
+        "name",
+        "description",
+        "amount_type",
+        "type_tax_use",
+        "amount",
+        "tax_scope",
+        "active",
+        "external_id",
+        "object_audit",
+    ]
     ID_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
+    DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
+    AMOUNT_TYPE_FIELD_NUMBER: _ClassVar[int]
+    TYPE_TAX_USE_FIELD_NUMBER: _ClassVar[int]
+    AMOUNT_FIELD_NUMBER: _ClassVar[int]
+    TAX_SCOPE_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: int
     code: str
     name: str
+    description: str
+    amount_type: str
+    type_tax_use: str
+    amount: float
+    tax_scope: str
     active: _wrappers_pb2.BoolValue
     external_id: str
     object_audit: _base_pb2.ObjectAudit
@@ -31,25 +53,55 @@ class Tax(_message.Message):
         id: _Optional[int] = ...,
         code: _Optional[str] = ...,
         name: _Optional[str] = ...,
+        description: _Optional[str] = ...,
+        amount_type: _Optional[str] = ...,
+        type_tax_use: _Optional[str] = ...,
+        amount: _Optional[float] = ...,
+        tax_scope: _Optional[str] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
 class TaxCreateRequest(_message.Message):
-    __slots__ = ["code", "name", "external_id", "context"]
+    __slots__ = [
+        "code",
+        "name",
+        "description",
+        "amount_type",
+        "type_tax_use",
+        "amount",
+        "tax_scope",
+        "external_id",
+        "context",
+    ]
     CODE_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
+    DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
+    AMOUNT_TYPE_FIELD_NUMBER: _ClassVar[int]
+    TYPE_TAX_USE_FIELD_NUMBER: _ClassVar[int]
+    AMOUNT_FIELD_NUMBER: _ClassVar[int]
+    TAX_SCOPE_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     code: str
     name: str
+    description: str
+    amount_type: str
+    type_tax_use: str
+    amount: float
+    tax_scope: str
     external_id: str
     context: _base_pb2.Context
     def __init__(
         self,
         code: _Optional[str] = ...,
         name: _Optional[str] = ...,
+        description: _Optional[str] = ...,
+        amount_type: _Optional[str] = ...,
+        type_tax_use: _Optional[str] = ...,
+        amount: _Optional[float] = ...,
+        tax_scope: _Optional[str] = ...,
         external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
