@@ -35,6 +35,15 @@ class DocumentStrategy(ABC):
         pass
 
     @abstractmethod
+    def add_data(self, file_path, data):
+        """
+        Adds data to the file.
+        :param file_path: Path of the file to be opened.
+        :param data: Data to be added to the file.
+        """
+        pass
+
+    @abstractmethod
     def validate(self, expected, file_path):
         """
         Validates the file against the expected criteria.
@@ -72,6 +81,16 @@ class CSVDocumentStrategy(DocumentStrategy):
         """
         csv_file = self.open_file(file_path)
         return csv_file.to_dict(orient="records")
+
+    def add_data(self, file_path, data):
+        """
+        Adds data to the CSV file.
+        :param file_path: Path of the CSV file to be opened.
+        :param data: Data to be added to the CSV file.
+        """
+
+        csv_data = self.file_library.DataFrame(data)
+        csv_data.to_csv(file_path, index=False)
 
     def validate(self, expected, file_path):
         """
@@ -113,6 +132,15 @@ class JSONDocumentStrategy(DocumentStrategy):
         """
         json_file = self.open_file(file_path)
         return json_file.to_dict(orient="records")
+
+    def add_data(self, file_path, data):
+        """
+        Adds data to the JSON file.
+        :param file_path: Path of the JSON file to be opened.
+        :param data: Data to be added to the JSON file.
+        """
+        json_data = self.file_library.DataFrame(data)
+        json_data.to_json(file_path, orient="records", lines=True)
 
     def validate(self, expected, file_path):
         """
