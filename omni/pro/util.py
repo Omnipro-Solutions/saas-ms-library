@@ -10,6 +10,12 @@ from functools import reduce, wraps
 
 from omni.pro.exceptions import AlreadyExistError, NotFoundError
 from omni.pro.stack import ExitStackDocument
+from datetime import datetime
+from functools import reduce, wraps
+
+from bson import ObjectId
+from google.protobuf.timestamp_pb2 import Timestamp
+
 
 logger = logging.getLogger(__name__)
 
@@ -418,3 +424,50 @@ def objects_to_integer(data, fields):
         else:
             transformed_data[new_key] = value
     return transformed_data
+
+
+def convert_to_serializable(value):
+    """
+    Converts various data types to formats suitable for serialization.
+
+    This function aims to handle a variety of data types for serialization purposes,
+    such as converting ObjectId to string and datetime to Timestamp. It's designed to be
+    extendable for additional data types.
+
+    Parameters
+    ----------
+    value : any
+        The data to be converted. Can be of any type.
+
+    Returns
+    -------
+    any
+        The data in a format suitable for serialization. The specific return type depends
+        on the input type. For example, ObjectId is converted to string, datetime to Timestamp.
+
+    Notes
+    -----
+    - The function currently handles dicts, lists, ObjectId, and datetime types.
+    - More data types can be added as elif blocks within the function.
+    - For unrecognized types, the original value is returned.
+
+    Examples
+    --------
+    >>> convert_to_serializable({"id": ObjectId("507f1f77bcf86cd799439011"), "date": datetime(2020, 1, 1)})
+    {'id': '507f1f77bcf86cd799439011', 'date': Timestamp(seconds=1577836800, nanos=0)}
+    >>> convert_to_serializable([ObjectId("507f1f77bcf86cd799439011"), datetime(2020, 1, 1)])
+    ['507f1f77bcf86cd799439011', Timestamp(seconds=1577836800, nanos=0)]
+    """
+    if isinstance(value, dict):
+        return {k: convert_to_serializable(v) for k, v in value.items()}
+    elif isinstance(value, list):
+        return [convert_to_serializable(v) for v in value]
+    elif isinstance(value, ObjectId):
+        return str(value)
+    elif isinstance(value, datetime):
+        return Timestamp().FromDatetime(value)
+    # Add more elif statements here for other specific data types
+    # Example:
+    # elif isinstance(value, CustomType):
+    #     return custom_conversion_function(value)
+    return value

@@ -52,7 +52,7 @@ def handle_error(service_model: str, service_method: str, logger, error: Excepti
         ),
         Exception: (
             f"{service_model} {service_method} exception",
-            lambda _: "{service_model} {service_method} Exception",
+            lambda _: f"{service_model} {service_method} Exception",
         ),
         AttributeError: (
             f"{service_model} attribute error",
@@ -76,6 +76,10 @@ def handle_error(service_model: str, service_method: str, logger, error: Excepti
         ),
         PickingBusinessLogicError: (
             f"{service_model} picking business logic error",
+            lambda error: str(error),
+        ),
+        InfoValidationError: (
+            f"{service_model} order info validation error",
             lambda error: str(error),
         ),
     }
@@ -125,3 +129,9 @@ class AlreadyExistError(Exception):
         self.messages = [message] if isinstance(message, (str, bytes)) else message
         self.kwargs = kwargs
         super().__init__(message)
+
+
+class InfoValidationError(Exception):
+    def __init__(self, message):
+        self.message = message
+        super().__init__(self.message)
