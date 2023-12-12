@@ -93,19 +93,29 @@ class Sale(_message.Message):
     ) -> None: ...
 
 class SaleIntegration(_message.Message):
-    __slots__ = ["order_details", "oms_rules", "client_details", "payment", "order_items", "shipping"]
+    __slots__ = [
+        "order_details",
+        "oms_rules",
+        "client_details",
+        "payment",
+        "order_items",
+        "shipping",
+        "additional_info",
+    ]
     ORDER_DETAILS_FIELD_NUMBER: _ClassVar[int]
     OMS_RULES_FIELD_NUMBER: _ClassVar[int]
     CLIENT_DETAILS_FIELD_NUMBER: _ClassVar[int]
     PAYMENT_FIELD_NUMBER: _ClassVar[int]
     ORDER_ITEMS_FIELD_NUMBER: _ClassVar[int]
     SHIPPING_FIELD_NUMBER: _ClassVar[int]
+    ADDITIONAL_INFO_FIELD_NUMBER: _ClassVar[int]
     order_details: _struct_pb2.Struct
     oms_rules: _struct_pb2.Struct
     client_details: _struct_pb2.Struct
     payment: _struct_pb2.Struct
     order_items: _containers.RepeatedCompositeFieldContainer[_struct_pb2.Struct]
     shipping: _struct_pb2.Struct
+    additional_info: _struct_pb2.Struct
     def __init__(
         self,
         order_details: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
@@ -114,6 +124,7 @@ class SaleIntegration(_message.Message):
         payment: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         order_items: _Optional[_Iterable[_Union[_struct_pb2.Struct, _Mapping]]] = ...,
         shipping: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
+        additional_info: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
     ) -> None: ...
 
 class SaleCreateRequest(_message.Message):
@@ -289,10 +300,10 @@ class SaleCreateIntegrationResponse(_message.Message):
     __slots__ = ["sale", "response_standard"]
     SALE_FIELD_NUMBER: _ClassVar[int]
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
-    sale: Sale
+    sale: _struct_pb2.Struct
     response_standard: _base_pb2.ResponseStandard
     def __init__(
         self,
-        sale: _Optional[_Union[Sale, _Mapping]] = ...,
+        sale: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
     ) -> None: ...
