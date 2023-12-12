@@ -12,21 +12,29 @@ from omni.pro.protos.common import base_pb2 as _base_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
-class ScheduleWork(_message.Message):
-    __slots__ = ["id", "name", "day", "opening_time", "closing_time", "active", "external_id", "object_audit"]
-    ID_FIELD_NUMBER: _ClassVar[int]
-    NAME_FIELD_NUMBER: _ClassVar[int]
+class ScheduleWorkLines(_message.Message):
+    __slots__ = ["day", "opening_time", "closing_time"]
     DAY_FIELD_NUMBER: _ClassVar[int]
     OPENING_TIME_FIELD_NUMBER: _ClassVar[int]
     CLOSING_TIME_FIELD_NUMBER: _ClassVar[int]
+    day: str
+    opening_time: str
+    closing_time: str
+    def __init__(
+        self, day: _Optional[str] = ..., opening_time: _Optional[str] = ..., closing_time: _Optional[str] = ...
+    ) -> None: ...
+
+class ScheduleWork(_message.Message):
+    __slots__ = ["id", "name", "schedule_work_lines", "active", "external_id", "object_audit"]
+    ID_FIELD_NUMBER: _ClassVar[int]
+    NAME_FIELD_NUMBER: _ClassVar[int]
+    SCHEDULE_WORK_LINES_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
-    day: str
-    opening_time: str
-    closing_time: str
+    schedule_work_lines: _containers.RepeatedCompositeFieldContainer[ScheduleWorkLines]
     active: _wrappers_pb2.BoolValue
     external_id: str
     object_audit: _base_pb2.ObjectAudit
@@ -34,34 +42,26 @@ class ScheduleWork(_message.Message):
         self,
         id: _Optional[str] = ...,
         name: _Optional[str] = ...,
-        day: _Optional[str] = ...,
-        opening_time: _Optional[str] = ...,
-        closing_time: _Optional[str] = ...,
+        schedule_work_lines: _Optional[_Iterable[_Union[ScheduleWorkLines, _Mapping]]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
 class ScheduleWorkCreateRequest(_message.Message):
-    __slots__ = ["name", "day", "opening_time", "closing_time", "external_id", "context"]
+    __slots__ = ["name", "schedule_work_lines", "external_id", "context"]
     NAME_FIELD_NUMBER: _ClassVar[int]
-    DAY_FIELD_NUMBER: _ClassVar[int]
-    OPENING_TIME_FIELD_NUMBER: _ClassVar[int]
-    CLOSING_TIME_FIELD_NUMBER: _ClassVar[int]
+    SCHEDULE_WORK_LINES_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
-    day: str
-    opening_time: str
-    closing_time: str
+    schedule_work_lines: _containers.RepeatedCompositeFieldContainer[ScheduleWorkLines]
     external_id: str
     context: _base_pb2.Context
     def __init__(
         self,
         name: _Optional[str] = ...,
-        day: _Optional[str] = ...,
-        opening_time: _Optional[str] = ...,
-        closing_time: _Optional[str] = ...,
+        schedule_work_lines: _Optional[_Iterable[_Union[ScheduleWorkLines, _Mapping]]] = ...,
         external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
