@@ -18,7 +18,6 @@ DESCRIPTOR: _descriptor.FileDescriptor
 class ImportExport(_message.Message):
     __slots__ = [
         "id",
-        "micro",
         "type_operation",
         "model",
         "name_file",
@@ -34,7 +33,6 @@ class ImportExport(_message.Message):
         "object_audit",
     ]
     ID_FIELD_NUMBER: _ClassVar[int]
-    MICRO_FIELD_NUMBER: _ClassVar[int]
     TYPE_OPERATION_FIELD_NUMBER: _ClassVar[int]
     MODEL_FIELD_NUMBER: _ClassVar[int]
     NAME_FILE_FIELD_NUMBER: _ClassVar[int]
@@ -49,7 +47,6 @@ class ImportExport(_message.Message):
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
-    micro: str
     type_operation: str
     model: _model_pb2.Model
     name_file: str
@@ -66,7 +63,6 @@ class ImportExport(_message.Message):
     def __init__(
         self,
         id: _Optional[str] = ...,
-        micro: _Optional[str] = ...,
         type_operation: _Optional[str] = ...,
         model: _Optional[_Union[_model_pb2.Model, _Mapping]] = ...,
         name_file: _Optional[str] = ...,
@@ -84,38 +80,42 @@ class ImportExport(_message.Message):
 
 class ImportExportCreateRequest(_message.Message):
     __slots__ = [
-        "micro",
         "type_operation",
         "model_id",
         "name_file",
         "type_file",
+        "date_init",
+        "date_finish",
         "required_fields",
         "skip_error",
         "context",
     ]
-    MICRO_FIELD_NUMBER: _ClassVar[int]
     TYPE_OPERATION_FIELD_NUMBER: _ClassVar[int]
     MODEL_ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FILE_FIELD_NUMBER: _ClassVar[int]
     TYPE_FILE_FIELD_NUMBER: _ClassVar[int]
+    DATE_INIT_FIELD_NUMBER: _ClassVar[int]
+    DATE_FINISH_FIELD_NUMBER: _ClassVar[int]
     REQUIRED_FIELDS_FIELD_NUMBER: _ClassVar[int]
     SKIP_ERROR_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    micro: str
     type_operation: str
     model_id: str
     name_file: str
     type_file: str
+    date_init: _timestamp_pb2.Timestamp
+    date_finish: _timestamp_pb2.Timestamp
     required_fields: _containers.RepeatedScalarFieldContainer[str]
     skip_error: _wrappers_pb2.BoolValue
     context: _base_pb2.Context
     def __init__(
         self,
-        micro: _Optional[str] = ...,
         type_operation: _Optional[str] = ...,
         model_id: _Optional[str] = ...,
         name_file: _Optional[str] = ...,
         type_file: _Optional[str] = ...,
+        date_init: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
+        date_finish: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
         required_fields: _Optional[_Iterable[str]] = ...,
         skip_error: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
