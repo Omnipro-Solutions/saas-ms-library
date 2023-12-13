@@ -6,6 +6,7 @@ from typing import Union as _Union
 
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
+from google.protobuf import struct_pb2 as _struct_pb2
 from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
 from omni.pro.protos.v1.clients import address_pb2 as _address_pb2
@@ -186,3 +187,33 @@ class ClientDeleteResponse(_message.Message):
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
     response_standard: _base_pb2.ResponseStandard
     def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
+
+class ClientSyncByHashRequest(_message.Message):
+    __slots__ = ["info_client", "shipping_address", "billing_address", "context"]
+    INFO_CLIENT_FIELD_NUMBER: _ClassVar[int]
+    SHIPPING_ADDRESS_FIELD_NUMBER: _ClassVar[int]
+    BILLING_ADDRESS_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    info_client: _struct_pb2.Struct
+    shipping_address: _struct_pb2.Struct
+    billing_address: _struct_pb2.Struct
+    context: _base_pb2.Context
+    def __init__(
+        self,
+        info_client: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
+        shipping_address: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
+        billing_address: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
+        context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
+    ) -> None: ...
+
+class ClientSyncByHashResponse(_message.Message):
+    __slots__ = ["data_client", "response_standard"]
+    DATA_CLIENT_FIELD_NUMBER: _ClassVar[int]
+    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
+    data_client: _struct_pb2.Struct
+    response_standard: _base_pb2.ResponseStandard
+    def __init__(
+        self,
+        data_client: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
+        response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
+    ) -> None: ...
