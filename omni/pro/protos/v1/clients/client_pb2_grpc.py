@@ -33,6 +33,11 @@ class ClientsServiceStub(object):
             request_serializer=v1_dot_clients_dot_client__pb2.ClientDeleteRequest.SerializeToString,
             response_deserializer=v1_dot_clients_dot_client__pb2.ClientDeleteResponse.FromString,
         )
+        self.ClientSyncByHash = channel.unary_unary(
+            "/pro.omni.oms.api.v1.clients.client.ClientsService/ClientSyncByHash",
+            request_serializer=v1_dot_clients_dot_client__pb2.ClientSyncByHashRequest.SerializeToString,
+            response_deserializer=v1_dot_clients_dot_client__pb2.ClientSyncByHashResponse.FromString,
+        )
 
 
 class ClientsServiceServicer(object):
@@ -62,6 +67,12 @@ class ClientsServiceServicer(object):
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
+    def ClientSyncByHash(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
 
 def add_ClientsServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -84,6 +95,11 @@ def add_ClientsServiceServicer_to_server(servicer, server):
             servicer.ClientDelete,
             request_deserializer=v1_dot_clients_dot_client__pb2.ClientDeleteRequest.FromString,
             response_serializer=v1_dot_clients_dot_client__pb2.ClientDeleteResponse.SerializeToString,
+        ),
+        "ClientSyncByHash": grpc.unary_unary_rpc_method_handler(
+            servicer.ClientSyncByHash,
+            request_deserializer=v1_dot_clients_dot_client__pb2.ClientSyncByHashRequest.FromString,
+            response_serializer=v1_dot_clients_dot_client__pb2.ClientSyncByHashResponse.SerializeToString,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -202,6 +218,35 @@ class ClientsService(object):
             "/pro.omni.oms.api.v1.clients.client.ClientsService/ClientDelete",
             v1_dot_clients_dot_client__pb2.ClientDeleteRequest.SerializeToString,
             v1_dot_clients_dot_client__pb2.ClientDeleteResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
+
+    @staticmethod
+    def ClientSyncByHash(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            "/pro.omni.oms.api.v1.clients.client.ClientsService/ClientSyncByHash",
+            v1_dot_clients_dot_client__pb2.ClientSyncByHashRequest.SerializeToString,
+            v1_dot_clients_dot_client__pb2.ClientSyncByHashResponse.FromString,
             options,
             channel_credentials,
             insecure,
