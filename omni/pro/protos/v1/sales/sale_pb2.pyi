@@ -16,6 +16,7 @@ from omni.pro.protos.v1.sales import channel_pb2 as _channel_pb2
 from omni.pro.protos.v1.sales import client_pb2 as _client_pb2
 from omni.pro.protos.v1.sales import country_pb2 as _country_pb2
 from omni.pro.protos.v1.sales import currency_pb2 as _currency_pb2
+from omni.pro.protos.v1.sales import payment_method_pb2 as _payment_method_pb2
 from omni.pro.protos.v1.sales import state_pb2 as _state_pb2
 from omni.pro.protos.v1.sales import warehouse_pb2 as _warehouse_pb2
 
@@ -39,6 +40,7 @@ class Sale(_message.Message):
         "active",
         "external_id",
         "object_audit",
+        "payment_method",
     ]
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
@@ -56,6 +58,7 @@ class Sale(_message.Message):
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
+    PAYMENT_METHOD_FIELD_NUMBER: _ClassVar[int]
     id: int
     name: str
     date_order: _timestamp_pb2.Timestamp
@@ -72,6 +75,7 @@ class Sale(_message.Message):
     active: _wrappers_pb2.BoolValue
     external_id: str
     object_audit: _base_pb2.ObjectAudit
+    payment_method: _payment_method_pb2.PaymentMethod
     def __init__(
         self,
         id: _Optional[int] = ...,
@@ -90,6 +94,7 @@ class Sale(_message.Message):
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
+        payment_method: _Optional[_Union[_payment_method_pb2.PaymentMethod, _Mapping]] = ...,
     ) -> None: ...
 
 class SaleIntegration(_message.Message):
@@ -143,6 +148,7 @@ class SaleCreateRequest(_message.Message):
         "state_id",
         "external_id",
         "context",
+        "payment_method_id",
     ]
     NAME_FIELD_NUMBER: _ClassVar[int]
     DATE_ORDER_FIELD_NUMBER: _ClassVar[int]
@@ -158,6 +164,7 @@ class SaleCreateRequest(_message.Message):
     STATE_ID_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    PAYMENT_METHOD_ID_FIELD_NUMBER: _ClassVar[int]
     name: str
     date_order: _timestamp_pb2.Timestamp
     origin: str
@@ -172,6 +179,7 @@ class SaleCreateRequest(_message.Message):
     state_id: int
     external_id: str
     context: _base_pb2.Context
+    payment_method_id: int
     def __init__(
         self,
         name: _Optional[str] = ...,
@@ -188,6 +196,7 @@ class SaleCreateRequest(_message.Message):
         state_id: _Optional[int] = ...,
         external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
+        payment_method_id: _Optional[int] = ...,
     ) -> None: ...
 
 class SaleCreateResponse(_message.Message):
@@ -285,14 +294,41 @@ class SaleDeleteResponse(_message.Message):
     def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
 
 class SaleCreateIntegrationRequest(_message.Message):
-    __slots__ = ["sale_integration", "context"]
-    SALE_INTEGRATION_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = [
+        "order_details",
+        "oms_rules",
+        "client_details",
+        "payment",
+        "order_items",
+        "shipping",
+        "additional_info",
+        "context",
+    ]
+    ORDER_DETAILS_FIELD_NUMBER: _ClassVar[int]
+    OMS_RULES_FIELD_NUMBER: _ClassVar[int]
+    CLIENT_DETAILS_FIELD_NUMBER: _ClassVar[int]
+    PAYMENT_FIELD_NUMBER: _ClassVar[int]
+    ORDER_ITEMS_FIELD_NUMBER: _ClassVar[int]
+    SHIPPING_FIELD_NUMBER: _ClassVar[int]
+    ADDITIONAL_INFO_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    sale_integration: SaleIntegration
+    order_details: _struct_pb2.Struct
+    oms_rules: _struct_pb2.Struct
+    client_details: _struct_pb2.Struct
+    payment: _struct_pb2.Struct
+    order_items: _containers.RepeatedCompositeFieldContainer[_struct_pb2.Struct]
+    shipping: _struct_pb2.Struct
+    additional_info: _struct_pb2.Struct
     context: _base_pb2.Context
     def __init__(
         self,
-        sale_integration: _Optional[_Union[SaleIntegration, _Mapping]] = ...,
+        order_details: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
+        oms_rules: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
+        client_details: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
+        payment: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
+        order_items: _Optional[_Iterable[_Union[_struct_pb2.Struct, _Mapping]]] = ...,
+        shipping: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
+        additional_info: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 

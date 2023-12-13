@@ -12,7 +12,6 @@ from omni.pro.protos.common import base_pb2 as _base_pb2
 from omni.pro.protos.v1.sales import address_pb2 as _address_pb2
 from omni.pro.protos.v1.sales import carrier_pb2 as _carrier_pb2
 from omni.pro.protos.v1.sales import delivery_method_pb2 as _delivery_method_pb2
-from omni.pro.protos.v1.sales import payment_method_pb2 as _payment_method_pb2
 from omni.pro.protos.v1.sales import sale_pb2 as _sale_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
@@ -25,7 +24,6 @@ class Order(_message.Message):
         "ship_address",
         "delivery_method",
         "carrier",
-        "payment_method",
         "tax_total",
         "subtotal",
         "total",
@@ -39,7 +37,6 @@ class Order(_message.Message):
     SHIP_ADDRESS_FIELD_NUMBER: _ClassVar[int]
     DELIVERY_METHOD_FIELD_NUMBER: _ClassVar[int]
     CARRIER_FIELD_NUMBER: _ClassVar[int]
-    PAYMENT_METHOD_FIELD_NUMBER: _ClassVar[int]
     TAX_TOTAL_FIELD_NUMBER: _ClassVar[int]
     SUBTOTAL_FIELD_NUMBER: _ClassVar[int]
     TOTAL_FIELD_NUMBER: _ClassVar[int]
@@ -52,7 +49,6 @@ class Order(_message.Message):
     ship_address: _address_pb2.Address
     delivery_method: _delivery_method_pb2.DeliveryMethod
     carrier: _carrier_pb2.Carrier
-    payment_method: _payment_method_pb2.PaymentMethod
     tax_total: float
     subtotal: float
     total: float
@@ -67,7 +63,6 @@ class Order(_message.Message):
         ship_address: _Optional[_Union[_address_pb2.Address, _Mapping]] = ...,
         delivery_method: _Optional[_Union[_delivery_method_pb2.DeliveryMethod, _Mapping]] = ...,
         carrier: _Optional[_Union[_carrier_pb2.Carrier, _Mapping]] = ...,
-        payment_method: _Optional[_Union[_payment_method_pb2.PaymentMethod, _Mapping]] = ...,
         tax_total: _Optional[float] = ...,
         subtotal: _Optional[float] = ...,
         total: _Optional[float] = ...,
@@ -83,7 +78,6 @@ class OrderCreateRequest(_message.Message):
         "ship_address_code",
         "delivery_method_id",
         "carrier_id",
-        "payment_method_id",
         "tax_total",
         "subtotal",
         "total",
@@ -95,7 +89,6 @@ class OrderCreateRequest(_message.Message):
     SHIP_ADDRESS_CODE_FIELD_NUMBER: _ClassVar[int]
     DELIVERY_METHOD_ID_FIELD_NUMBER: _ClassVar[int]
     CARRIER_ID_FIELD_NUMBER: _ClassVar[int]
-    PAYMENT_METHOD_ID_FIELD_NUMBER: _ClassVar[int]
     TAX_TOTAL_FIELD_NUMBER: _ClassVar[int]
     SUBTOTAL_FIELD_NUMBER: _ClassVar[int]
     TOTAL_FIELD_NUMBER: _ClassVar[int]
@@ -106,7 +99,6 @@ class OrderCreateRequest(_message.Message):
     ship_address_code: str
     delivery_method_id: int
     carrier_id: int
-    payment_method_id: int
     tax_total: float
     subtotal: float
     total: float
@@ -119,7 +111,6 @@ class OrderCreateRequest(_message.Message):
         ship_address_code: _Optional[str] = ...,
         delivery_method_id: _Optional[int] = ...,
         carrier_id: _Optional[int] = ...,
-        payment_method_id: _Optional[int] = ...,
         tax_total: _Optional[float] = ...,
         subtotal: _Optional[float] = ...,
         total: _Optional[float] = ...,
