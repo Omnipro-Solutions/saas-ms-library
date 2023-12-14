@@ -6,16 +6,13 @@ import secrets
 import string
 import time
 import unicodedata
-from functools import reduce, wraps
-
-from omni.pro.exceptions import AlreadyExistError, NotFoundError
-from omni.pro.stack import ExitStackDocument
 from datetime import datetime
 from functools import reduce, wraps
 
 from bson import ObjectId
 from google.protobuf.timestamp_pb2 import Timestamp
-
+from omni.pro.exceptions import AlreadyExistError, NotFoundError
+from omni.pro.stack import ExitStackDocument
 
 logger = logging.getLogger(__name__)
 
@@ -230,6 +227,7 @@ def add_or_remove_document_relations(
     element_name,
     element_relation_name,
     multiple_params=False,
+    params_multiple: tuple = None,
 ):
     """
     The add_or_remove_document_relations function process and get registers to remove and add, to apply changes and return a list of result.
@@ -256,11 +254,14 @@ def add_or_remove_document_relations(
     set_new_relations_list = set(
         new_relations_list if multiple_params is False else [x["code"] for x in new_relations_list]
     )
-    remove_relations_list = list(relations_list - set_new_relations_list)
+
     if multiple_params:
         add_relations_list = [item for item in new_relations_list if item["code"] not in relations_list]
+        remove_relations_list = [item for item in exsitent_relations_list if item.code not in set_new_relations_list]
+        remove_relations_list = [{key: getattr(item, key) for key in params_multiple} for item in remove_relations_list]
     else:
         add_relations_list = list(set_new_relations_list - relations_list)
+        remove_relations_list = list(relations_list - set_new_relations_list)
     result_list = []
 
     result_list = remove_document_relations(
