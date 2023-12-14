@@ -79,7 +79,10 @@ class CSVDocumentStrategy(DocumentStrategy):
         :param file_path: Path of the CSV file to be opened.
         :return: List of dictionaries of the opened file.
         """
+        import numpy as np
+
         csv_file = self.open_file(file_path)
+        csv_file.replace({np.nan: None}, inplace=True)
         return csv_file.to_dict(orient="records")
 
     def add_data(self, file_path, data):
@@ -130,7 +133,10 @@ class JSONDocumentStrategy(DocumentStrategy):
         :param file_path: Path of the JSON file to be opened.
         :return: List of dictionaries of the opened file.
         """
+        import numpy as np
+
         json_file = self.open_file(file_path)
+        json_file.replace({np.nan: None}, inplace=True)
         return json_file.to_dict(orient="records")
 
     def add_data(self, file_path, data):

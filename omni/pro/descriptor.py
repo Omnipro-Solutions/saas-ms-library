@@ -65,7 +65,11 @@ class Descriptor(object):
             # If the field is an EmbeddedDocumentField or ReferenceField, recurse into its fields
             if isinstance(field, EmbeddedDocumentField) or isinstance(field, ReferenceField):
                 embedded_model = field.document_type_obj
-                embedded_fields = Descriptor.describe_mongo_model(embedded_model, current_name, current_code)
+                try:
+                    embedded_fields = Descriptor.describe_mongo_model(embedded_model, current_name, current_code)
+                except RecursionError as e:
+                    print(f"Model: {model.__name__} RecursionError: {e}")
+                    continue
                 fields.extend(embedded_fields)  # extend main fields list with the result of recursion
                 continue  # we don't add a separate field for the embedded/reference field itself
 
