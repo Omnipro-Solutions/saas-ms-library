@@ -1,4 +1,5 @@
 from datetime import datetime
+from dateutil import parser
 from sqlalchemy import text
 from importlib import import_module
 
@@ -30,45 +31,67 @@ class QueryExport(ImportExportBase):
         }
         self.db_type = "NO_SQL" if not hasattr(self.context, "pg_manager") else "SQL"
 
-    def get_data(self, model_path, fields, context):
+    def get_data(self, model_path, fields, date_init, date_finish, context):
         """
         Fetches data from the database (SQL or NoSQL) based on the provided model path, fields, and context.
         Parameters:
         model_path (str): The path to the model class.
         fields (list): A list of field names to be fetched.
+        date_init(datetime): The start date for the query.
+        date_finish(datetime): The end date for the query.
         context (dict): The context for the database operation.
         Returns: The fetched data.
         """
         model = self.get_model(model_path)
-        return self.db_types[self.db_type](model, model_path, fields, context)
+        return self.db_types[self.db_type](model, model_path, fields, date_init, date_finish, context)
 
-    def get_data_no_sql(self, model, model_path, fields, context):
+    def get_data_no_sql(self, model, model_path, fields, start_date, end_date, context):
         """
         Fetches data from a NoSQL database.
         Parameters:
         model: The model class for the NoSQL operation.
         model_path (str): The path to the model class.
         fields (list): A list of field names to be fetched.
+        date_init(datetime): The start date for the query.
+        date_finish(datetime): The end date for the query.
         context (dict): The context for the NoSQL database operation.
         Returns: Data retrieved from the NoSQL database.
         """
         exclude = {"_id" if key == "id" else key: False for key in set(model._fields.keys()) - set(fields)}
         db = model.db
-        cursor = db[model_path.split(".")[2].lower()].find({"tenant": context["tenant"]}, projection=exclude)
+        query_filter = {
+            "context.tenant": context["tenant"],
+            "audit.created_at": {
+                "$gte": parser.parse(
+                    datetime.strptime(start_date, "%Y-%m-%dT%H:%M:%S.%f+00:00").strftime("%Y-%m-%dT%H:%M:%S.%f+00:00")
+                ),
+                "$lte": parser.parse(
+                    datetime.strptime(end_date, "%Y-%m-%dT%H:%M:%S.%fZ").strftime("%Y-%m-%dT%H:%M:%S.%f+00:00")
+                ),
+            },
+        }
+        cursor = db[model_path.split(".")[2].lower()].find(
+            query_filter,
+            projection=exclude,
+        )
         result = list(cursor)
         return result
 
-    def get_data_sql(self, model, model_path, fields, context):
+    def get_data_sql(self, model, model_path, fields, start_date, end_date, context):
         """
         Fetches data from a SQL database.
         Parameters:
         model: The model class for the SQL operation.
         model_path (str): The path to the model class.
         fields (list): A list of field names to be fetched.
+        date_init(datetime): The start date for the query.
+        date_finish(datetime): The end date for the query.
         context (dict): The context for the SQL database operation.
         Returns: Data retrieved from the SQL database.
         """
-        sql_query = text(f"SELECT {','.join(fields)} FROM {model.__tablename__} WHERE tenant = '{context['tenant']}'")
+        sql_query = text(
+            f"SELECT {','.join(fields)} FROM {model.__tablename__} WHERE tenant = '{context['tenant']}' AND created_at BETWEEN '{start_date}' AND '{end_date}'"
+        )
         result = self.context.pg_manager.Session.execute(sql_query)
         return self._serialize_query_result(result)
 
