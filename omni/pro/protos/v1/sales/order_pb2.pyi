@@ -10,9 +10,9 @@ from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
 from omni.pro.protos.v1.sales import address_pb2 as _address_pb2
-from omni.pro.protos.v1.sales import carrier_pb2 as _carrier_pb2
 from omni.pro.protos.v1.sales import delivery_method_pb2 as _delivery_method_pb2
 from omni.pro.protos.v1.sales import sale_pb2 as _sale_pb2
+from omni.pro.protos.v1.sales import warehouse_pb2 as _warehouse_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
@@ -23,12 +23,14 @@ class Order(_message.Message):
         "sale",
         "ship_address",
         "delivery_method",
-        "carrier",
         "tax_total",
+        "discount_total",
         "subtotal",
         "total",
         "active",
         "external_id",
+        "warehouse",
+        "cid",
         "object_audit",
     ]
     ID_FIELD_NUMBER: _ClassVar[int]
@@ -36,24 +38,28 @@ class Order(_message.Message):
     SALE_FIELD_NUMBER: _ClassVar[int]
     SHIP_ADDRESS_FIELD_NUMBER: _ClassVar[int]
     DELIVERY_METHOD_FIELD_NUMBER: _ClassVar[int]
-    CARRIER_FIELD_NUMBER: _ClassVar[int]
     TAX_TOTAL_FIELD_NUMBER: _ClassVar[int]
+    DISCOUNT_TOTAL_FIELD_NUMBER: _ClassVar[int]
     SUBTOTAL_FIELD_NUMBER: _ClassVar[int]
     TOTAL_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
+    WAREHOUSE_FIELD_NUMBER: _ClassVar[int]
+    CID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: int
     name: str
     sale: _sale_pb2.Sale
     ship_address: _address_pb2.Address
     delivery_method: _delivery_method_pb2.DeliveryMethod
-    carrier: _carrier_pb2.Carrier
     tax_total: float
+    discount_total: float
     subtotal: float
     total: float
     active: _wrappers_pb2.BoolValue
     external_id: str
+    warehouse: _warehouse_pb2.Warehouse
+    cid: str
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
@@ -62,12 +68,14 @@ class Order(_message.Message):
         sale: _Optional[_Union[_sale_pb2.Sale, _Mapping]] = ...,
         ship_address: _Optional[_Union[_address_pb2.Address, _Mapping]] = ...,
         delivery_method: _Optional[_Union[_delivery_method_pb2.DeliveryMethod, _Mapping]] = ...,
-        carrier: _Optional[_Union[_carrier_pb2.Carrier, _Mapping]] = ...,
         tax_total: _Optional[float] = ...,
+        discount_total: _Optional[float] = ...,
         subtotal: _Optional[float] = ...,
         total: _Optional[float] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         external_id: _Optional[str] = ...,
+        warehouse: _Optional[_Union[_warehouse_pb2.Warehouse, _Mapping]] = ...,
+        cid: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
@@ -77,32 +85,38 @@ class OrderCreateRequest(_message.Message):
         "sale_id",
         "ship_address_code",
         "delivery_method_id",
-        "carrier_id",
         "tax_total",
+        "discount_total",
         "subtotal",
         "total",
         "external_id",
+        "warehouse_id",
+        "cid",
         "context",
     ]
     NAME_FIELD_NUMBER: _ClassVar[int]
     SALE_ID_FIELD_NUMBER: _ClassVar[int]
     SHIP_ADDRESS_CODE_FIELD_NUMBER: _ClassVar[int]
     DELIVERY_METHOD_ID_FIELD_NUMBER: _ClassVar[int]
-    CARRIER_ID_FIELD_NUMBER: _ClassVar[int]
     TAX_TOTAL_FIELD_NUMBER: _ClassVar[int]
+    DISCOUNT_TOTAL_FIELD_NUMBER: _ClassVar[int]
     SUBTOTAL_FIELD_NUMBER: _ClassVar[int]
     TOTAL_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
+    WAREHOUSE_ID_FIELD_NUMBER: _ClassVar[int]
+    CID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     sale_id: int
     ship_address_code: str
     delivery_method_id: int
-    carrier_id: int
     tax_total: float
+    discount_total: float
     subtotal: float
     total: float
     external_id: str
+    warehouse_id: int
+    cid: str
     context: _base_pb2.Context
     def __init__(
         self,
@@ -110,11 +124,13 @@ class OrderCreateRequest(_message.Message):
         sale_id: _Optional[int] = ...,
         ship_address_code: _Optional[str] = ...,
         delivery_method_id: _Optional[int] = ...,
-        carrier_id: _Optional[int] = ...,
         tax_total: _Optional[float] = ...,
+        discount_total: _Optional[float] = ...,
         subtotal: _Optional[float] = ...,
         total: _Optional[float] = ...,
         external_id: _Optional[str] = ...,
+        warehouse_id: _Optional[int] = ...,
+        cid: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
