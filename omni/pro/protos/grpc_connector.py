@@ -43,28 +43,22 @@ class OmniChannel(Channel):
     ):
         if not Config.DEBUG:
             credentials = credentials or grpc.ssl_channel_credentials()
-            if (
-                credentials is None
-                or credentials._credentials is _insecure_channel_credentials
-            ):
+            if credentials is None or credentials._credentials is _insecure_channel_credentials:
                 raise ValueError(
-                    "secure_channel cannot be called with insecure credentials."
-                    + " Call insecure_channel instead."
+                    "secure_channel cannot be called with insecure credentials." + " Call insecure_channel instead."
                 )
             credentials = credentials._credentials
-            options = options or [("grpc.ssl_target_name_override", "omni.pro")]
+            options = options + [("grpc.ssl_target_name_override", "omni.pro")] or [
+                ("grpc.ssl_target_name_override", "omni.pro")
+            ]
 
         # cloud_map = CloudMap(service_name=Config.SERVICE_NAME_BALANCER)
         # target = cloud_map.get_url_channel(service_id)
         target = self.get_target(service_id, tennat)
-        super().__init__(
-            target, () if options is None else options, credentials, compression
-        )
+        super().__init__(target, () if options is None else options, credentials, compression)
 
     def get_target(self, service_id, tennat):
-        redis = RedisManager(
-            host=Config.REDIS_HOST, port=Config.REDIS_PORT, db=Config.REDIS_DB
-        )
+        redis = RedisManager(host=Config.REDIS_HOST, port=Config.REDIS_PORT, db=Config.REDIS_DB)
         return redis.get_load_balancer_name(service_id, tennat)
 
 
@@ -90,6 +84,10 @@ class GRPClient(object):
         """
         with OmniChannel(
             self.service_id,
+            options=[
+                ("grpc.max_receive_message_length", 100 * 1024 * 1024),
+                ("grpc.max_send_message_length", 100 * 1024 * 1024),
+            ],
             *args,
             **kwargs,
             tennat=nested(event, "params.context.tenant"),
@@ -97,14 +95,10 @@ class GRPClient(object):
             stub = event.get("service_stub")
             stub_classname = event.get("stub_classname")
             path_module = "omni.pro.protos"
-            module_grpc = importlib.import_module(
-                f"{path_module}.{event.get('module_grpc')}"
-            )
+            module_grpc = importlib.import_module(f"{path_module}.{event.get('module_grpc')}")
             stub = getattr(module_grpc, stub_classname)(channel)
             request_class = event.get("request_class")
-            module_pb2 = importlib.import_module(
-                f"{path_module}.{event.get('module_pb2')}"
-            )
+            module_pb2 = importlib.import_module(f"{path_module}.{event.get('module_pb2')}")
             request = format_request(event.get("params"), request_class, module_pb2)
             # Instance the method rpc que recibe el request
             response = getattr(stub, event.get("rpc_method"))(request)
