@@ -45,6 +45,14 @@ class QueryExport(ImportExportBase):
         model = self.get_model(model_path)
         return self.db_types[self.db_type](model, model_path, fields, date_init, date_finish, context)
 
+    def parse_date(self, date):
+        result = None
+        try:
+            result = datetime.strptime(date, "%Y-%m-%dT%H:%M:%S.%fZ")
+        except ValueError:
+            result = datetime.strptime(date, "%Y-%m-%dT%H:%M:%SZ")
+        return parser.parse(result.strftime("%Y-%m-%dT%H:%M:%S.%f+00:00"))
+
     def get_data_no_sql(self, model, model_path, fields, start_date, end_date, context):
         """
         Fetches data from a NoSQL database.
@@ -62,12 +70,8 @@ class QueryExport(ImportExportBase):
         query_filter = {
             "context.tenant": context["tenant"],
             "audit.created_at": {
-                "$gte": parser.parse(
-                    datetime.strptime(start_date, "%Y-%m-%dT%H:%M:%S.%f+00:00").strftime("%Y-%m-%dT%H:%M:%S.%f+00:00")
-                ),
-                "$lte": parser.parse(
-                    datetime.strptime(end_date, "%Y-%m-%dT%H:%M:%S.%fZ").strftime("%Y-%m-%dT%H:%M:%S.%f+00:00")
-                ),
+                "$gte": self.parse_date(start_date),
+                "$lte": self.parse_date(end_date),
             },
         }
         cursor = db[model_path.split(".")[2].lower()].find(
