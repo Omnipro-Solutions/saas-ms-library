@@ -189,18 +189,18 @@ class ClientDeleteResponse(_message.Message):
     def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
 
 class ClientSyncByHashRequest(_message.Message):
-    __slots__ = ["info_client", "shipping_address", "billing_address", "context"]
-    INFO_CLIENT_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["info", "shipping_address", "billing_address", "context"]
+    INFO_FIELD_NUMBER: _ClassVar[int]
     SHIPPING_ADDRESS_FIELD_NUMBER: _ClassVar[int]
     BILLING_ADDRESS_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    info_client: _struct_pb2.Struct
+    info: _struct_pb2.Struct
     shipping_address: _struct_pb2.Struct
     billing_address: _struct_pb2.Struct
     context: _base_pb2.Context
     def __init__(
         self,
-        info_client: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
+        info: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         shipping_address: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         billing_address: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
