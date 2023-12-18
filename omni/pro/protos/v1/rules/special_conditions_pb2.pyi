@@ -6,107 +6,85 @@ from typing import Union as _Union
 
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
+from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
-from omni.pro.protos.v1.rules import delivery_schedule_pb2 as _delivery_schedule_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
-class Warehouse(_message.Message):
-    __slots__ = [
-        "id",
-        "name",
-        "code",
-        "warehouse_sql_id",
-        "locality_available",
-        "loc_stock_sql_id",
-        "external_id",
-        "schedule_template",
-        "object_audit",
-    ]
+class SpecialConditionsValues(_message.Message):
+    __slots__ = ["code", "family_doc_id", "group_code", "attribute_code"]
+    CODE_FIELD_NUMBER: _ClassVar[int]
+    FAMILY_DOC_ID_FIELD_NUMBER: _ClassVar[int]
+    GROUP_CODE_FIELD_NUMBER: _ClassVar[int]
+    ATTRIBUTE_CODE_FIELD_NUMBER: _ClassVar[int]
+    code: str
+    family_doc_id: str
+    group_code: str
+    attribute_code: str
+    def __init__(
+        self,
+        code: _Optional[str] = ...,
+        family_doc_id: _Optional[str] = ...,
+        group_code: _Optional[str] = ...,
+        attribute_code: _Optional[str] = ...,
+    ) -> None: ...
+
+class SpecialConditions(_message.Message):
+    __slots__ = ["id", "name", "special_conditions", "active", "external_id", "object_audit"]
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
-    CODE_FIELD_NUMBER: _ClassVar[int]
-    WAREHOUSE_SQL_ID_FIELD_NUMBER: _ClassVar[int]
-    LOCALITY_AVAILABLE_FIELD_NUMBER: _ClassVar[int]
-    LOC_STOCK_SQL_ID_FIELD_NUMBER: _ClassVar[int]
+    SPECIAL_CONDITIONS_FIELD_NUMBER: _ClassVar[int]
+    ACTIVE_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
-    SCHEDULE_TEMPLATE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
-    code: str
-    warehouse_sql_id: int
-    locality_available: str
-    loc_stock_sql_id: int
+    special_conditions: _containers.RepeatedCompositeFieldContainer[SpecialConditionsValues]
+    active: _wrappers_pb2.BoolValue
     external_id: str
-    schedule_template: _delivery_schedule_pb2.DeliverySchedule
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
         id: _Optional[str] = ...,
         name: _Optional[str] = ...,
-        code: _Optional[str] = ...,
-        warehouse_sql_id: _Optional[int] = ...,
-        locality_available: _Optional[str] = ...,
-        loc_stock_sql_id: _Optional[int] = ...,
+        special_conditions: _Optional[_Iterable[_Union[SpecialConditionsValues, _Mapping]]] = ...,
+        active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         external_id: _Optional[str] = ...,
-        schedule_template: _Optional[_Union[_delivery_schedule_pb2.DeliverySchedule, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
-class WarehouseCreateRequest(_message.Message):
-    __slots__ = [
-        "name",
-        "code",
-        "warehouse_sql_id",
-        "locality_available",
-        "loc_stock_sql_id",
-        "external_id",
-        "schedule_template_id",
-        "context",
-    ]
+class SpecialConditionsCreateRequest(_message.Message):
+    __slots__ = ["name", "special_conditions", "external_id", "context"]
     NAME_FIELD_NUMBER: _ClassVar[int]
-    CODE_FIELD_NUMBER: _ClassVar[int]
-    WAREHOUSE_SQL_ID_FIELD_NUMBER: _ClassVar[int]
-    LOCALITY_AVAILABLE_FIELD_NUMBER: _ClassVar[int]
-    LOC_STOCK_SQL_ID_FIELD_NUMBER: _ClassVar[int]
+    SPECIAL_CONDITIONS_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
-    SCHEDULE_TEMPLATE_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
-    code: str
-    warehouse_sql_id: int
-    locality_available: str
-    loc_stock_sql_id: int
+    special_conditions: _containers.RepeatedCompositeFieldContainer[SpecialConditionsValues]
     external_id: str
-    schedule_template_id: str
     context: _base_pb2.Context
     def __init__(
         self,
         name: _Optional[str] = ...,
-        code: _Optional[str] = ...,
-        warehouse_sql_id: _Optional[int] = ...,
-        locality_available: _Optional[str] = ...,
-        loc_stock_sql_id: _Optional[int] = ...,
+        special_conditions: _Optional[_Iterable[_Union[SpecialConditionsValues, _Mapping]]] = ...,
         external_id: _Optional[str] = ...,
-        schedule_template_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
-class WarehouseCreateResponse(_message.Message):
-    __slots__ = ["warehouse", "response_standard"]
-    WAREHOUSE_FIELD_NUMBER: _ClassVar[int]
+class SpecialConditionsCreateResponse(_message.Message):
+    __slots__ = ["special_conditions", "response_standard"]
+    SPECIAL_CONDITIONS_FIELD_NUMBER: _ClassVar[int]
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
-    warehouse: Warehouse
+    special_conditions: SpecialConditions
     response_standard: _base_pb2.ResponseStandard
     def __init__(
         self,
-        warehouse: _Optional[_Union[Warehouse, _Mapping]] = ...,
+        special_conditions: _Optional[_Union[SpecialConditions, _Mapping]] = ...,
         response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
     ) -> None: ...
 
-class WarehouseReadRequest(_message.Message):
+class SpecialConditionsReadRequest(_message.Message):
     __slots__ = ["group_by", "sort_by", "fields", "filter", "paginated", "id", "context"]
     GROUP_BY_FIELD_NUMBER: _ClassVar[int]
     SORT_BY_FIELD_NUMBER: _ClassVar[int]
@@ -133,61 +111,56 @@ class WarehouseReadRequest(_message.Message):
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
-class WarehouseReadResponse(_message.Message):
-    __slots__ = ["warehouses", "meta_data", "response_standard"]
-    WAREHOUSES_FIELD_NUMBER: _ClassVar[int]
+class SpecialConditionsReadResponse(_message.Message):
+    __slots__ = ["delivery_categories", "meta_data", "response_standard"]
+    DELIVERY_CATEGORIES_FIELD_NUMBER: _ClassVar[int]
     META_DATA_FIELD_NUMBER: _ClassVar[int]
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
-    warehouses: _containers.RepeatedCompositeFieldContainer[Warehouse]
+    delivery_categories: _containers.RepeatedCompositeFieldContainer[SpecialConditions]
     meta_data: _base_pb2.MetaData
     response_standard: _base_pb2.ResponseStandard
     def __init__(
         self,
-        warehouses: _Optional[_Iterable[_Union[Warehouse, _Mapping]]] = ...,
+        delivery_categories: _Optional[_Iterable[_Union[SpecialConditions, _Mapping]]] = ...,
         meta_data: _Optional[_Union[_base_pb2.MetaData, _Mapping]] = ...,
         response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
     ) -> None: ...
 
-class WarehouseUpdateRequest(_message.Message):
-    __slots__ = ["warehouse", "context"]
-    WAREHOUSE_FIELD_NUMBER: _ClassVar[int]
+class SpecialConditionsUpdateRequest(_message.Message):
+    __slots__ = ["delivery_category", "context"]
+    DELIVERY_CATEGORY_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    warehouse: Warehouse
+    delivery_category: SpecialConditions
     context: _base_pb2.Context
     def __init__(
         self,
-        warehouse: _Optional[_Union[Warehouse, _Mapping]] = ...,
+        delivery_category: _Optional[_Union[SpecialConditions, _Mapping]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
-class WarehouseUpdateResponse(_message.Message):
-    __slots__ = ["warehouse", "response_standard"]
-    WAREHOUSE_FIELD_NUMBER: _ClassVar[int]
+class SpecialConditionsUpdateResponse(_message.Message):
+    __slots__ = ["delivery_category", "response_standard"]
+    DELIVERY_CATEGORY_FIELD_NUMBER: _ClassVar[int]
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
-    warehouse: Warehouse
+    delivery_category: SpecialConditions
     response_standard: _base_pb2.ResponseStandard
     def __init__(
         self,
-        warehouse: _Optional[_Union[Warehouse, _Mapping]] = ...,
+        delivery_category: _Optional[_Union[SpecialConditions, _Mapping]] = ...,
         response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
     ) -> None: ...
 
-class WarehouseDeleteRequest(_message.Message):
-    __slots__ = ["id", "warehouse_sql_id", "context"]
+class SpecialConditionsDeleteRequest(_message.Message):
+    __slots__ = ["id", "context"]
     ID_FIELD_NUMBER: _ClassVar[int]
-    WAREHOUSE_SQL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     id: str
-    warehouse_sql_id: int
     context: _base_pb2.Context
     def __init__(
-        self,
-        id: _Optional[str] = ...,
-        warehouse_sql_id: _Optional[int] = ...,
-        context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
+        self, id: _Optional[str] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
     ) -> None: ...
 
-class WarehouseDeleteResponse(_message.Message):
+class SpecialConditionsDeleteResponse(_message.Message):
     __slots__ = ["response_standard"]
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
     response_standard: _base_pb2.ResponseStandard

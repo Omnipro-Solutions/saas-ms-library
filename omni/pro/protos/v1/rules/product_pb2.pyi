@@ -31,6 +31,7 @@ class Product(_message.Message):
         "active",
         "product_doc_id",
         "external_id",
+        "special_conditions",
         "object_audit",
     ]
     ID_FIELD_NUMBER: _ClassVar[int]
@@ -50,6 +51,7 @@ class Product(_message.Message):
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     PRODUCT_DOC_ID_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
+    SPECIAL_CONDITIONS_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
@@ -68,6 +70,7 @@ class Product(_message.Message):
     active: _wrappers_pb2.BoolValue
     product_doc_id: str
     external_id: str
+    special_conditions: _containers.RepeatedScalarFieldContainer[str]
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
@@ -88,6 +91,7 @@ class Product(_message.Message):
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         product_doc_id: _Optional[str] = ...,
         external_id: _Optional[str] = ...,
+        special_conditions: _Optional[_Iterable[str]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
@@ -108,6 +112,7 @@ class ProductCreateRequest(_message.Message):
         "volume_uom_code",
         "product_doc_id",
         "external_id",
+        "special_conditions",
         "context",
     ]
     NAME_FIELD_NUMBER: _ClassVar[int]
@@ -125,6 +130,7 @@ class ProductCreateRequest(_message.Message):
     VOLUME_UOM_CODE_FIELD_NUMBER: _ClassVar[int]
     PRODUCT_DOC_ID_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
+    SPECIAL_CONDITIONS_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     sku: str
@@ -141,6 +147,7 @@ class ProductCreateRequest(_message.Message):
     volume_uom_code: str
     product_doc_id: str
     external_id: str
+    special_conditions: _containers.RepeatedScalarFieldContainer[str]
     context: _base_pb2.Context
     def __init__(
         self,
@@ -159,6 +166,7 @@ class ProductCreateRequest(_message.Message):
         volume_uom_code: _Optional[str] = ...,
         product_doc_id: _Optional[str] = ...,
         external_id: _Optional[str] = ...,
+        special_conditions: _Optional[_Iterable[str]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
