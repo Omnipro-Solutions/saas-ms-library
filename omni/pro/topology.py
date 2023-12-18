@@ -1,21 +1,20 @@
 import importlib
 import inspect
-import pathlib
+import pkgutil
 
 import networkx as nx
 import peewee
 from mongoengine.document import Document
-from omni.pro.models.base import BaseAuditEmbeddedDocument
 from omni.pro.logger import configure_logger
-from omni.pro.models.base import BaseDocument, BaseModel
+from omni.pro.models.base import BaseAuditEmbeddedDocument, BaseDocument, BaseModel
 from peewee import ForeignKeyField
 
 logger = configure_logger(__name__)
 
 
 class Topology(object):
-    def __init__(self, path_models):
-        self.path_models = path_models
+    def __init__(self):
+        self.path_models = importlib.import_module("models")
 
     def sort_models_topologically(self, models: list) -> list:
         graph = nx.DiGraph()
@@ -55,7 +54,11 @@ class Topology(object):
         model_classes = []
         for module_name in module_name_list:
             # Importa el módulo
-            module = importlib.import_module(module_name)
+            module = None
+            try:
+                module = getattr(self.path_models, module_name)
+            except AttributeError:
+                module = importlib.import_module(f"models.{module_name}")
 
             # Encuentra todas las clases de modelos en el módulo
             for name, obj in inspect.getmembers(module):
@@ -64,14 +67,13 @@ class Topology(object):
                     or (issubclass(obj, Document) and obj != BaseDocument)
                     or (issubclass(obj, BaseAuditEmbeddedDocument) and obj != BaseAuditEmbeddedDocument)
                 ):
-                    model_classes.append(obj)
+                    if obj not in model_classes:
+                        model_classes.append(obj)
 
         return model_classes
 
-    def get_model_libs(self: pathlib.Path) -> list[str]:
-        return [
-            f"models.{path.stem}" for path in pathlib.Path(self.path_models).glob("**/*.py") if path.stem != "__init__"
-        ]
+    def get_model_libs(self: importlib) -> list[str]:
+        return [name for _, name, _ in pkgutil.iter_modules(self.path_models.__path__)]
 
     def get_models_from_libs(self) -> list[str]:
         model_libs = self.get_model_libs()

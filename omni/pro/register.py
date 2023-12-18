@@ -48,7 +48,7 @@ class RegisterModel(object):
         """
         redis_manager = redis.get_redis_manager()
         tenans = redis_manager.get_tenant_codes()
-        models_libs = Topology(self.models_path).get_models_from_libs()
+        models_libs = Topology().get_models_from_libs()
         for tenant in tenans:
             user = redis_manager.get_user_admin(tenant)
             context = {
