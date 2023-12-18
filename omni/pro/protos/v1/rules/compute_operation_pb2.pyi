@@ -28,13 +28,16 @@ class ComputeMethodData(_message.Message):
     ) -> None: ...
 
 class ComputeMethodRequest(_message.Message):
-    __slots__ = ["data", "context"]
+    __slots__ = ["version", "data", "context"]
+    VERSION_FIELD_NUMBER: _ClassVar[int]
     DATA_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    version: int
     data: _containers.RepeatedCompositeFieldContainer[ComputeMethodData]
     context: _base_pb2.Context
     def __init__(
         self,
+        version: _Optional[int] = ...,
         data: _Optional[_Iterable[_Union[ComputeMethodData, _Mapping]]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
