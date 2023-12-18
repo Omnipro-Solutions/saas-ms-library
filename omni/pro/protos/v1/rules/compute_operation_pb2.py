@@ -16,7 +16,7 @@ from google.protobuf import struct_pb2 as google_dot_protobuf_dot_struct__pb2
 from omni.pro.protos.common import base_pb2 as common_dot_base__pb2
 
 DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
-    b'\n v1/rules/compute_operation.proto\x12+pro.omni.oms.api.v1.rules.compute_operation\x1a\x11\x63ommon/base.proto\x1a\x1cgoogle/protobuf/struct.proto"\x9d\x01\n\x11\x43omputeMethodData\x12-\n\x0c\x63\x61rt_details\x18\x01 \x01(\x0b\x32\x17.google.protobuf.Struct\x12&\n\x05items\x18\x02 \x03(\x0b\x32\x17.google.protobuf.Struct\x12\x31\n\x10shipping_details\x18\x03 \x01(\x0b\x32\x17.google.protobuf.Struct"\x9c\x01\n\x14\x43omputeMethodRequest\x12L\n\x04\x64\x61ta\x18\x01 \x03(\x0b\x32>.pro.omni.oms.api.v1.rules.compute_operation.ComputeMethodData\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\x8e\x01\n\x15\x43omputeMethodResponse\x12*\n\x06result\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.ListValue\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\xae\x01\n"ComputeMethodStockAvailableRequest\x12(\n\x07methods\x18\x01 \x03(\x0b\x32\x17.google.protobuf.Struct\x12&\n\x05items\x18\x02 \x03(\x0b\x32\x17.google.protobuf.Struct\x12\x36\n\x07\x63ontext\x18\x03 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\x9c\x01\n#ComputeMethodStockAvailableResponse\x12*\n\x06result\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.ListValue\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard2\xf9\x02\n\x17\x43omputeOperationService\x12\x98\x01\n\rComputeMethod\x12\x41.pro.omni.oms.api.v1.rules.compute_operation.ComputeMethodRequest\x1a\x42.pro.omni.oms.api.v1.rules.compute_operation.ComputeMethodResponse"\x00\x12\xc2\x01\n\x1b\x43omputeMethodStockAvailable\x12O.pro.omni.oms.api.v1.rules.compute_operation.ComputeMethodStockAvailableRequest\x1aP.pro.omni.oms.api.v1.rules.compute_operation.ComputeMethodStockAvailableResponse"\x00\x62\x06proto3'
+    b'\n v1/rules/compute_operation.proto\x12+pro.omni.oms.api.v1.rules.compute_operation\x1a\x11\x63ommon/base.proto\x1a\x1cgoogle/protobuf/struct.proto"\x9d\x01\n\x11\x43omputeMethodData\x12-\n\x0c\x63\x61rt_details\x18\x01 \x01(\x0b\x32\x17.google.protobuf.Struct\x12&\n\x05items\x18\x02 \x03(\x0b\x32\x17.google.protobuf.Struct\x12\x31\n\x10shipping_details\x18\x03 \x01(\x0b\x32\x17.google.protobuf.Struct"\xad\x01\n\x14\x43omputeMethodRequest\x12\x0f\n\x07version\x18\x01 \x01(\x05\x12L\n\x04\x64\x61ta\x18\x02 \x03(\x0b\x32>.pro.omni.oms.api.v1.rules.compute_operation.ComputeMethodData\x12\x36\n\x07\x63ontext\x18\x03 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\x8e\x01\n\x15\x43omputeMethodResponse\x12*\n\x06result\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.ListValue\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\xae\x01\n"ComputeMethodStockAvailableRequest\x12(\n\x07methods\x18\x01 \x03(\x0b\x32\x17.google.protobuf.Struct\x12&\n\x05items\x18\x02 \x03(\x0b\x32\x17.google.protobuf.Struct\x12\x36\n\x07\x63ontext\x18\x03 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\x9c\x01\n#ComputeMethodStockAvailableResponse\x12*\n\x06result\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.ListValue\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard2\xf9\x02\n\x17\x43omputeOperationService\x12\x98\x01\n\rComputeMethod\x12\x41.pro.omni.oms.api.v1.rules.compute_operation.ComputeMethodRequest\x1a\x42.pro.omni.oms.api.v1.rules.compute_operation.ComputeMethodResponse"\x00\x12\xc2\x01\n\x1b\x43omputeMethodStockAvailable\x12O.pro.omni.oms.api.v1.rules.compute_operation.ComputeMethodStockAvailableRequest\x1aP.pro.omni.oms.api.v1.rules.compute_operation.ComputeMethodStockAvailableResponse"\x00\x62\x06proto3'
 )
 
 _globals = globals()
@@ -27,13 +27,13 @@ if _descriptor._USE_C_DESCRIPTORS == False:
     _globals["_COMPUTEMETHODDATA"]._serialized_start = 131
     _globals["_COMPUTEMETHODDATA"]._serialized_end = 288
     _globals["_COMPUTEMETHODREQUEST"]._serialized_start = 291
-    _globals["_COMPUTEMETHODREQUEST"]._serialized_end = 447
-    _globals["_COMPUTEMETHODRESPONSE"]._serialized_start = 450
-    _globals["_COMPUTEMETHODRESPONSE"]._serialized_end = 592
-    _globals["_COMPUTEMETHODSTOCKAVAILABLEREQUEST"]._serialized_start = 595
-    _globals["_COMPUTEMETHODSTOCKAVAILABLEREQUEST"]._serialized_end = 769
-    _globals["_COMPUTEMETHODSTOCKAVAILABLERESPONSE"]._serialized_start = 772
-    _globals["_COMPUTEMETHODSTOCKAVAILABLERESPONSE"]._serialized_end = 928
-    _globals["_COMPUTEOPERATIONSERVICE"]._serialized_start = 931
-    _globals["_COMPUTEOPERATIONSERVICE"]._serialized_end = 1308
+    _globals["_COMPUTEMETHODREQUEST"]._serialized_end = 464
+    _globals["_COMPUTEMETHODRESPONSE"]._serialized_start = 467
+    _globals["_COMPUTEMETHODRESPONSE"]._serialized_end = 609
+    _globals["_COMPUTEMETHODSTOCKAVAILABLEREQUEST"]._serialized_start = 612
+    _globals["_COMPUTEMETHODSTOCKAVAILABLEREQUEST"]._serialized_end = 786
+    _globals["_COMPUTEMETHODSTOCKAVAILABLERESPONSE"]._serialized_start = 789
+    _globals["_COMPUTEMETHODSTOCKAVAILABLERESPONSE"]._serialized_end = 945
+    _globals["_COMPUTEOPERATIONSERVICE"]._serialized_start = 948
+    _globals["_COMPUTEOPERATIONSERVICE"]._serialized_end = 1325
 # @@protoc_insertion_point(module_scope)
