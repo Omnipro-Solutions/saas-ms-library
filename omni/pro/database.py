@@ -529,7 +529,7 @@ class PostgresDatabaseManager(SessionManager):
         """
         try:
             for registro in data["models"]:
-                registro | {"tenant": data["context"]["tenant"], "updated_by": data["context"]["user"]}
+                registro = registro | {"tenant": data["context"]["tenant"], "updated_by": data["context"]["user"]}
                 obj = session.query(model).filter_by(external_id=registro["external_id"]).first()
                 if obj:
                     for key, value in registro.items():
