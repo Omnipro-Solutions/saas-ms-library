@@ -7,6 +7,7 @@ from mongoengine import Document
 from mongoengine import context_managers as ctx_mgr
 from mongoengine import fields
 from omni.pro.models.base import BaseDocument
+from omni.pro.topology import Topology
 
 
 class ExitStackDocument(ExitStack):
@@ -21,7 +22,7 @@ class ExitStackDocument(ExitStack):
 
     def __init__(self, document_classes: list = [], db_alias="", *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.document_classes = document_classes
+        self.document_classes = self.__reference_models_services()
         self.db_alias = db_alias
         self.model_classes = []
 
@@ -29,6 +30,9 @@ class ExitStackDocument(ExitStack):
         for document_class in self.document_classes:
             self.model_classes = self.enter_context(ctx_mgr.switch_db(document_class, self.db_alias))
         return super().__enter__()
+
+    def __reference_models_services(self):
+        return Topology().get_models_from_libs()
 
 
 class ExitStackDocumentMicro(ExitStackDocument):
