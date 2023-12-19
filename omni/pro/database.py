@@ -527,23 +527,19 @@ class PostgresDatabaseManager(SessionManager):
         (list): A list of records that were upserted.
                 Una lista de registros que fueron actualizados.
         """
-        try:
-            for registro in data["models"]:
-                registro = registro | {"tenant": data["context"]["tenant"], "updated_by": data["context"]["user"]}
-                obj = session.query(model).filter_by(external_id=registro["external_id"]).first()
-                if obj:
-                    for key, value in registro.items():
-                        setattr(obj, key, value)
-                else:
-                    obj = model(**registro)
-                    session.add(obj)
 
-            session.commit()
-        except Exception as e:
-            session.rollback()
-            raise
-        finally:
-            session.close()
+        for registro in data["models"]:
+            registro = registro | {"tenant": data["context"]["tenant"], "updated_by": data["context"]["user"]}
+            obj = session.query(model).filter_by(external_id=registro["external_id"]).first()
+            if obj:
+                for key, value in registro.items():
+                    setattr(obj, key, value)
+            else:
+                obj = model(**registro)
+                session.add(obj)
+
+        session.commit()
+        session.close()
 
 
 class RedisConnection:

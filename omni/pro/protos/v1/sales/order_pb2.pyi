@@ -6,6 +6,7 @@ from typing import Union as _Union
 
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
+from google.protobuf import struct_pb2 as _struct_pb2
 from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
@@ -32,6 +33,7 @@ class Order(_message.Message):
         "warehouse",
         "cid",
         "object_audit",
+        "order_lines",
     ]
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
@@ -47,6 +49,7 @@ class Order(_message.Message):
     WAREHOUSE_FIELD_NUMBER: _ClassVar[int]
     CID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
+    ORDER_LINES_FIELD_NUMBER: _ClassVar[int]
     id: int
     name: str
     sale: _sale_pb2.Sale
@@ -61,6 +64,7 @@ class Order(_message.Message):
     warehouse: _warehouse_pb2.Warehouse
     cid: str
     object_audit: _base_pb2.ObjectAudit
+    order_lines: _containers.RepeatedCompositeFieldContainer[_struct_pb2.Struct]
     def __init__(
         self,
         id: _Optional[int] = ...,
@@ -77,6 +81,7 @@ class Order(_message.Message):
         warehouse: _Optional[_Union[_warehouse_pb2.Warehouse, _Mapping]] = ...,
         cid: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
+        order_lines: _Optional[_Iterable[_Union[_struct_pb2.Struct, _Mapping]]] = ...,
     ) -> None: ...
 
 class OrderCreateRequest(_message.Message):

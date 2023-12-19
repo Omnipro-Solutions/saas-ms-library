@@ -1,8 +1,9 @@
 import traceback
 
 from marshmallow import ValidationError
-from omni.pro.logger import LoggerTraceback
 from sqlalchemy.exc import IntegrityError, OperationalError, ProgrammingError
+
+from omni.pro.logger import LoggerTraceback
 
 
 def handle_error(service_model: str, service_method: str, logger, error: Exception, message_response):
@@ -80,6 +81,10 @@ def handle_error(service_model: str, service_method: str, logger, error: Excepti
         ),
         InfoValidationError: (
             f"{service_model} order info validation error",
+            lambda error: str(error),
+        ),
+        AlreadyExistError: (
+            f"{service_model} already exist error",
             lambda error: str(error),
         ),
     }
