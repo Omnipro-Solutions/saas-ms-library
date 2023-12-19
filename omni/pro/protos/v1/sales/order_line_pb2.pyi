@@ -24,9 +24,10 @@ class OrderLine(_message.Message):
         "quantity",
         "uom",
         "price_unit",
-        "tax",
+        "taxes",
         "discount",
         "price_total",
+        "sub_total",
         "active",
         "external_id",
         "object_audit",
@@ -37,9 +38,10 @@ class OrderLine(_message.Message):
     QUANTITY_FIELD_NUMBER: _ClassVar[int]
     UOM_FIELD_NUMBER: _ClassVar[int]
     PRICE_UNIT_FIELD_NUMBER: _ClassVar[int]
-    TAX_FIELD_NUMBER: _ClassVar[int]
+    TAXES_FIELD_NUMBER: _ClassVar[int]
     DISCOUNT_FIELD_NUMBER: _ClassVar[int]
     PRICE_TOTAL_FIELD_NUMBER: _ClassVar[int]
+    SUB_TOTAL_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
@@ -49,9 +51,10 @@ class OrderLine(_message.Message):
     quantity: float
     uom: _uom_pb2.Uom
     price_unit: float
-    tax: _tax_pb2.Tax
+    taxes: _containers.RepeatedCompositeFieldContainer[_tax_pb2.Tax]
     discount: float
     price_total: float
+    sub_total: float
     active: _wrappers_pb2.BoolValue
     external_id: str
     object_audit: _base_pb2.ObjectAudit
@@ -63,9 +66,10 @@ class OrderLine(_message.Message):
         quantity: _Optional[float] = ...,
         uom: _Optional[_Union[_uom_pb2.Uom, _Mapping]] = ...,
         price_unit: _Optional[float] = ...,
-        tax: _Optional[_Union[_tax_pb2.Tax, _Mapping]] = ...,
+        taxes: _Optional[_Iterable[_Union[_tax_pb2.Tax, _Mapping]]] = ...,
         discount: _Optional[float] = ...,
         price_total: _Optional[float] = ...,
+        sub_total: _Optional[float] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
@@ -78,9 +82,10 @@ class OrderLineCreateRequest(_message.Message):
         "quantity",
         "uom_id",
         "price_unit",
-        "tax_id",
+        "taxes_id",
         "discount",
         "price_total",
+        "sub_total",
         "external_id",
         "context",
     ]
@@ -89,9 +94,10 @@ class OrderLineCreateRequest(_message.Message):
     QUANTITY_FIELD_NUMBER: _ClassVar[int]
     UOM_ID_FIELD_NUMBER: _ClassVar[int]
     PRICE_UNIT_FIELD_NUMBER: _ClassVar[int]
-    TAX_ID_FIELD_NUMBER: _ClassVar[int]
+    TAXES_ID_FIELD_NUMBER: _ClassVar[int]
     DISCOUNT_FIELD_NUMBER: _ClassVar[int]
     PRICE_TOTAL_FIELD_NUMBER: _ClassVar[int]
+    SUB_TOTAL_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     order_id: int
@@ -99,9 +105,10 @@ class OrderLineCreateRequest(_message.Message):
     quantity: float
     uom_id: str
     price_unit: float
-    tax_id: int
+    taxes_id: _containers.RepeatedScalarFieldContainer[int]
     discount: float
     price_total: float
+    sub_total: float
     external_id: str
     context: _base_pb2.Context
     def __init__(
@@ -111,9 +118,10 @@ class OrderLineCreateRequest(_message.Message):
         quantity: _Optional[float] = ...,
         uom_id: _Optional[str] = ...,
         price_unit: _Optional[float] = ...,
-        tax_id: _Optional[int] = ...,
+        taxes_id: _Optional[_Iterable[int]] = ...,
         discount: _Optional[float] = ...,
         price_total: _Optional[float] = ...,
+        sub_total: _Optional[float] = ...,
         external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
