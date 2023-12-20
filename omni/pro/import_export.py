@@ -162,7 +162,7 @@ class BatchUpsert(ImportExportBase):
         data (dict): The data to be upserted.
         Returns: The result of the NoSQL upsert operation.
         """
-        self.context.db_manager.batch_upsert(model, data)
+        return self.context.db_manager.batch_upsert(model, data)
 
     def upsert_data_sql(self, model, data):
         """
@@ -172,4 +172,4 @@ class BatchUpsert(ImportExportBase):
         data (dict): The data to be upserted.
         Returns: The result of the SQL upsert operation.
         """
-        self.context.pg_manager.batch_upsert(model, self.context.pg_manager.Session, data)
+        return self.context.pg_manager.batch_upsert(model, self.context.pg_manager.Session, data)
