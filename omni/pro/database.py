@@ -527,7 +527,7 @@ class PostgresDatabaseManager(SessionManager):
         (list): A list of records that were upserted.
                 Una lista de registros que fueron actualizados.
         """
-
+        upsert_list = []
         for registro in data["models"]:
             registro = registro | {"tenant": data["context"]["tenant"], "updated_by": data["context"]["user"]}
             obj = session.query(model).filter_by(external_id=registro["external_id"]).first()
@@ -536,10 +536,18 @@ class PostgresDatabaseManager(SessionManager):
                     setattr(obj, key, value)
             else:
                 obj = model(**registro)
-                session.add(obj)
 
+            upsert_list.append(obj)
+
+        session.bulk_save_objects(upsert_list, update_changed_only=True)
         session.commit()
+        batch_upsert_process = set(
+            session.query(model).filter(model.external_id.in_([result.external_id for result in upsert_list])).all()
+        )
+
         session.close()
+
+        return list(batch_upsert_process - set(upsert_list))
 
 
 class RedisConnection:
