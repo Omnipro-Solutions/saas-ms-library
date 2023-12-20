@@ -41,7 +41,7 @@ def handle_error(service_model: str, service_method: str, logger, error: Excepti
     error_handlers = {
         IntegrityError: (
             f"{service_model} {service_method} integrity error",
-            lambda error: f"pgerror: {error.orig.pgerror}",
+            lambda error: "pgerror: {0}".format(error.orig.pgerror.split("DETAIL:")[0]),
         ),
         ValidationError: (
             f"{service_model} {service_method} validation error",
