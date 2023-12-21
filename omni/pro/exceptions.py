@@ -6,7 +6,14 @@ from sqlalchemy.exc import IntegrityError, OperationalError, ProgrammingError
 from omni.pro.logger import LoggerTraceback
 
 
-def handle_error(service_model: str, service_method: str, logger, error: Exception, message_response):
+def handle_error(
+    service_model: str,
+    service_method: str,
+    logger,
+    error: Exception,
+    message_response,
+    response_function="bad_response",
+):
     """
     Handles and logs different types of errors, returning appropriate response messages based on the error type.
     Maneja y registra diferentes tipos de errores, devolviendo mensajes de respuesta apropiados según el tipo de error.
@@ -99,7 +106,7 @@ def handle_error(service_model: str, service_method: str, logger, error: Excepti
     if isinstance(error, OperationalError):
         return message_response.internal_response(message=message)
 
-    return message_response.bad_response(message=message)
+    return getattr(message_response, response_function)(message=message)
 
 
 class NotFoundError(Exception):
