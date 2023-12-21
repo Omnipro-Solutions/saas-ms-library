@@ -22,6 +22,7 @@ class Model(_message.Message):
         "code",
         "class_name",
         "hash_code",
+        "is_replic",
         "fields",
         "active",
         "external_id",
@@ -34,6 +35,7 @@ class Model(_message.Message):
     CODE_FIELD_NUMBER: _ClassVar[int]
     CLASS_NAME_FIELD_NUMBER: _ClassVar[int]
     HASH_CODE_FIELD_NUMBER: _ClassVar[int]
+    IS_REPLIC_FIELD_NUMBER: _ClassVar[int]
     FIELDS_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
@@ -45,6 +47,7 @@ class Model(_message.Message):
     code: str
     class_name: str
     hash_code: str
+    is_replic: _wrappers_pb2.BoolValue
     fields: _containers.RepeatedCompositeFieldContainer[Field]
     active: _wrappers_pb2.BoolValue
     external_id: str
@@ -58,6 +61,7 @@ class Model(_message.Message):
         code: _Optional[str] = ...,
         class_name: _Optional[str] = ...,
         hash_code: _Optional[str] = ...,
+        is_replic: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         fields: _Optional[_Iterable[_Union[Field, _Mapping]]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         external_id: _Optional[str] = ...,
@@ -109,6 +113,7 @@ class ModelCreateRequest(_message.Message):
         "class_name",
         "hash_code",
         "fields",
+        "is_replic",
         "external_id",
         "context",
     ]
@@ -119,6 +124,7 @@ class ModelCreateRequest(_message.Message):
     CLASS_NAME_FIELD_NUMBER: _ClassVar[int]
     HASH_CODE_FIELD_NUMBER: _ClassVar[int]
     FIELDS_FIELD_NUMBER: _ClassVar[int]
+    IS_REPLIC_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     microservice: str
@@ -128,6 +134,7 @@ class ModelCreateRequest(_message.Message):
     class_name: str
     hash_code: str
     fields: _containers.RepeatedCompositeFieldContainer[Field]
+    is_replic: _wrappers_pb2.BoolValue
     external_id: str
     context: _base_pb2.Context
     def __init__(
@@ -139,6 +146,7 @@ class ModelCreateRequest(_message.Message):
         class_name: _Optional[str] = ...,
         hash_code: _Optional[str] = ...,
         fields: _Optional[_Iterable[_Union[Field, _Mapping]]] = ...,
+        is_replic: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
