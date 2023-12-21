@@ -10,9 +10,11 @@ from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
 from omni.pro.protos.v1.rules import carrier_pb2 as _carrier_pb2
+from omni.pro.protos.v1.rules import delivery_category_pb2 as _delivery_category_pb2
 from omni.pro.protos.v1.rules import delivery_locality_pb2 as _delivery_locality_pb2
 from omni.pro.protos.v1.rules import delivery_method_pb2 as _delivery_method_pb2
 from omni.pro.protos.v1.rules import schedule_work_pb2 as _schedule_work_pb2
+from omni.pro.protos.v1.rules import special_conditions_pb2 as _special_conditions_pb2
 from omni.pro.protos.v1.rules import warehouse_pb2 as _warehouse_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
@@ -30,6 +32,8 @@ class DeliveryShipper(_message.Message):
         "locality_available",
         "internal_transfer",
         "warehouses",
+        "category_template_not_allowed",
+        "special_conditions",
         "active",
         "external_id",
         "object_audit",
@@ -45,6 +49,8 @@ class DeliveryShipper(_message.Message):
     LOCALITY_AVAILABLE_FIELD_NUMBER: _ClassVar[int]
     INTERNAL_TRANSFER_FIELD_NUMBER: _ClassVar[int]
     WAREHOUSES_FIELD_NUMBER: _ClassVar[int]
+    CATEGORY_TEMPLATE_NOT_ALLOWED_FIELD_NUMBER: _ClassVar[int]
+    SPECIAL_CONDITIONS_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
@@ -59,6 +65,8 @@ class DeliveryShipper(_message.Message):
     locality_available: _delivery_locality_pb2.DeliveryLocality
     internal_transfer: _wrappers_pb2.BoolValue
     warehouses: _containers.RepeatedCompositeFieldContainer[_warehouse_pb2.Warehouse]
+    category_template_not_allowed: _delivery_category_pb2.DeliveryCategory
+    special_conditions: _special_conditions_pb2.SpecialConditions
     active: _wrappers_pb2.BoolValue
     external_id: str
     object_audit: _base_pb2.ObjectAudit
@@ -75,6 +83,8 @@ class DeliveryShipper(_message.Message):
         locality_available: _Optional[_Union[_delivery_locality_pb2.DeliveryLocality, _Mapping]] = ...,
         internal_transfer: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         warehouses: _Optional[_Iterable[_Union[_warehouse_pb2.Warehouse, _Mapping]]] = ...,
+        category_template_not_allowed: _Optional[_Union[_delivery_category_pb2.DeliveryCategory, _Mapping]] = ...,
+        special_conditions: _Optional[_Union[_special_conditions_pb2.SpecialConditions, _Mapping]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
@@ -92,6 +102,8 @@ class DeliveryShipperCreateRequest(_message.Message):
         "locality_available_id",
         "internal_transfer",
         "warehouse_ids",
+        "category_template_not_allowed_id",
+        "special_conditions_id",
         "external_id",
         "context",
     ]
@@ -105,6 +117,8 @@ class DeliveryShipperCreateRequest(_message.Message):
     LOCALITY_AVAILABLE_ID_FIELD_NUMBER: _ClassVar[int]
     INTERNAL_TRANSFER_FIELD_NUMBER: _ClassVar[int]
     WAREHOUSE_IDS_FIELD_NUMBER: _ClassVar[int]
+    CATEGORY_TEMPLATE_NOT_ALLOWED_ID_FIELD_NUMBER: _ClassVar[int]
+    SPECIAL_CONDITIONS_ID_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
@@ -117,6 +131,8 @@ class DeliveryShipperCreateRequest(_message.Message):
     locality_available_id: str
     internal_transfer: _wrappers_pb2.BoolValue
     warehouse_ids: _containers.RepeatedScalarFieldContainer[int]
+    category_template_not_allowed_id: str
+    special_conditions_id: str
     external_id: str
     context: _base_pb2.Context
     def __init__(
@@ -131,6 +147,8 @@ class DeliveryShipperCreateRequest(_message.Message):
         locality_available_id: _Optional[str] = ...,
         internal_transfer: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         warehouse_ids: _Optional[_Iterable[int]] = ...,
+        category_template_not_allowed_id: _Optional[str] = ...,
+        special_conditions_id: _Optional[str] = ...,
         external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
