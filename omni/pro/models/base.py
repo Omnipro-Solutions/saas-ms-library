@@ -70,6 +70,8 @@ class Context(BaseEmbeddedDocument):
 
 
 class BaseDocument(Document):
+    __is_replic_table__ = False
+
     context = EmbeddedDocumentField(Context)
     audit = EmbeddedDocumentField(Audit)
     active = BooleanField(default=True)
@@ -140,6 +142,8 @@ class Base:
     It includes common attributes such as 'id', 'active', and timestamp fields.
     It also provides methods for converting the model to its proto representation.
     """
+
+    __is_replic_table__ = False
 
     @staticmethod
     def _camel_to_snake(name):

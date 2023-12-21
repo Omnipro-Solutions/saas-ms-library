@@ -23,6 +23,11 @@ class MessageCode(object):
     RESOURCE_DELETED = "RS004"
     RESOURCE_NOT_FOUND = "RS005"
     RESOURCE_ALREADY_EXISTS = "RS006"
+    IMPORT_SUCCESS = "IM001"
+    IMPORT_ERROR = "IM002"
+    EXPORT_SUCCESS = "EX001"
+    EXPORT_ERROR = "EX002"
+    IMPORT_EXPORT_PROCESSING = "IM003"
 
 
 class MessageResponse(object):
@@ -155,6 +160,51 @@ class MessageResponse(object):
             message=message,
             status_code=HTTPStatus.OK,
             message_code=MessageCode.RESOURCE_READ,
+            **kwargs,
+        )
+
+    def success_import_response(self, message: str, **kwargs):
+        return self.response(
+            success=True,
+            message=message,
+            status_code=HTTPStatus.OK,
+            message_code=MessageCode.IMPORT_SUCCESS,
+            **kwargs,
+        )
+
+    def success_export_response(self, message: str, **kwargs):
+        return self.response(
+            success=True,
+            message=message,
+            status_code=HTTPStatus.OK,
+            message_code=MessageCode.EXPORT_SUCCESS,
+            **kwargs,
+        )
+
+    def import_export_processing_response(self, message: str, **kwargs):
+        return self.response(
+            success=True,
+            message=message,
+            status_code=HTTPStatus.CREATED,
+            message_code=MessageCode.IMPORT_EXPORT_PROCESSING,
+            **kwargs,
+        )
+
+    def import_error_response(self, message: str, **kwargs):
+        return self.response(
+            success=False,
+            message=message,
+            status_code=HTTPStatus.BAD_REQUEST,
+            message_code=MessageCode.IMPORT_ERROR,
+            **kwargs,
+        )
+
+    def export_error_response(self, message: str, **kwargs):
+        return self.response(
+            success=False,
+            message=message,
+            status_code=HTTPStatus.BAD_REQUEST,
+            message_code=MessageCode.EXPORT_ERROR,
             **kwargs,
         )
 
