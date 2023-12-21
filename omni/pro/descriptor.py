@@ -138,6 +138,7 @@ class Descriptor(object):
             "class_name": f"{model.__module__}.{model.__name__}",
             "code": mapper.mapped_table.name,
             "fields": [],
+            "is_replic": model.__is_replic_table__,
         }
 
         for column in mapper.columns:
