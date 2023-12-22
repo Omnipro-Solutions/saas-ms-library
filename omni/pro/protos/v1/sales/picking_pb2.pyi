@@ -13,15 +13,17 @@ from omni.pro.protos.common import base_pb2 as _base_pb2
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Picking(_message.Message):
-    __slots__ = ["id", "name", "picking_sql_id", "active", "external_id", "object_audit"]
+    __slots__ = ["id", "name", "order_id", "picking_sql_id", "active", "external_id", "object_audit"]
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
+    ORDER_ID_FIELD_NUMBER: _ClassVar[int]
     PICKING_SQL_ID_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: int
     name: str
+    order_id: int
     picking_sql_id: int
     active: _wrappers_pb2.BoolValue
     external_id: str
@@ -30,6 +32,7 @@ class Picking(_message.Message):
         self,
         id: _Optional[int] = ...,
         name: _Optional[str] = ...,
+        order_id: _Optional[int] = ...,
         picking_sql_id: _Optional[int] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         external_id: _Optional[str] = ...,
@@ -37,18 +40,21 @@ class Picking(_message.Message):
     ) -> None: ...
 
 class PickingCreateRequest(_message.Message):
-    __slots__ = ["name", "picking_sql_id", "external_id", "context"]
+    __slots__ = ["name", "order_id", "picking_sql_id", "external_id", "context"]
     NAME_FIELD_NUMBER: _ClassVar[int]
+    ORDER_ID_FIELD_NUMBER: _ClassVar[int]
     PICKING_SQL_ID_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
+    order_id: int
     picking_sql_id: int
     external_id: str
     context: _base_pb2.Context
     def __init__(
         self,
         name: _Optional[str] = ...,
+        order_id: _Optional[int] = ...,
         picking_sql_id: _Optional[int] = ...,
         external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,

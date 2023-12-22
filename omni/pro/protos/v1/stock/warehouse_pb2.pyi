@@ -282,23 +282,23 @@ class WarehouseDeleteResponse(_message.Message):
     def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
 
 class OrderConfirmRequest(_message.Message):
-    __slots__ = ["order_id", "warehouse_id", "customer_id", "address_code", "order_lines", "context"]
-    ORDER_ID_FIELD_NUMBER: _ClassVar[int]
-    WAREHOUSE_ID_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["order", "warehouse", "customer_id", "address_code", "order_lines", "context"]
+    ORDER_FIELD_NUMBER: _ClassVar[int]
+    WAREHOUSE_FIELD_NUMBER: _ClassVar[int]
     CUSTOMER_ID_FIELD_NUMBER: _ClassVar[int]
     ADDRESS_CODE_FIELD_NUMBER: _ClassVar[int]
     ORDER_LINES_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    order_id: str
-    warehouse_id: int
+    order: _struct_pb2.Struct
+    warehouse: _struct_pb2.Struct
     customer_id: str
     address_code: str
     order_lines: _containers.RepeatedCompositeFieldContainer[OrderLine]
     context: _base_pb2.Context
     def __init__(
         self,
-        order_id: _Optional[str] = ...,
-        warehouse_id: _Optional[int] = ...,
+        order: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
+        warehouse: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         customer_id: _Optional[str] = ...,
         address_code: _Optional[str] = ...,
         order_lines: _Optional[_Iterable[_Union[OrderLine, _Mapping]]] = ...,

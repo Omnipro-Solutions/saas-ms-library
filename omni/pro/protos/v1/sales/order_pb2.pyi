@@ -12,6 +12,7 @@ from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
 from omni.pro.protos.v1.sales import address_pb2 as _address_pb2
 from omni.pro.protos.v1.sales import delivery_method_pb2 as _delivery_method_pb2
+from omni.pro.protos.v1.sales import picking_pb2 as _picking_pb2
 from omni.pro.protos.v1.sales import sale_pb2 as _sale_pb2
 from omni.pro.protos.v1.sales import warehouse_pb2 as _warehouse_pb2
 
@@ -32,6 +33,7 @@ class Order(_message.Message):
         "external_id",
         "warehouse",
         "cid",
+        "pickings",
         "object_audit",
         "order_lines",
     ]
@@ -48,6 +50,7 @@ class Order(_message.Message):
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     WAREHOUSE_FIELD_NUMBER: _ClassVar[int]
     CID_FIELD_NUMBER: _ClassVar[int]
+    PICKINGS_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     ORDER_LINES_FIELD_NUMBER: _ClassVar[int]
     id: int
@@ -63,6 +66,7 @@ class Order(_message.Message):
     external_id: str
     warehouse: _warehouse_pb2.Warehouse
     cid: str
+    pickings: _containers.RepeatedCompositeFieldContainer[_picking_pb2.Picking]
     object_audit: _base_pb2.ObjectAudit
     order_lines: _containers.RepeatedCompositeFieldContainer[_struct_pb2.Struct]
     def __init__(
@@ -80,6 +84,7 @@ class Order(_message.Message):
         external_id: _Optional[str] = ...,
         warehouse: _Optional[_Union[_warehouse_pb2.Warehouse, _Mapping]] = ...,
         cid: _Optional[str] = ...,
+        pickings: _Optional[_Iterable[_Union[_picking_pb2.Picking, _Mapping]]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
         order_lines: _Optional[_Iterable[_Union[_struct_pb2.Struct, _Mapping]]] = ...,
     ) -> None: ...
@@ -232,3 +237,27 @@ class OrderDeleteResponse(_message.Message):
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
     response_standard: _base_pb2.ResponseStandard
     def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
+
+class OrderConfirmRequest(_message.Message):
+    __slots__ = ["payload", "context"]
+    PAYLOAD_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    payload: _struct_pb2.Struct
+    context: _base_pb2.Context
+    def __init__(
+        self,
+        payload: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
+        context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
+    ) -> None: ...
+
+class OrderConfirmResponse(_message.Message):
+    __slots__ = ["confirm", "response_standard"]
+    CONFIRM_FIELD_NUMBER: _ClassVar[int]
+    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
+    confirm: _struct_pb2.Struct
+    response_standard: _base_pb2.ResponseStandard
+    def __init__(
+        self,
+        confirm: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
+        response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
+    ) -> None: ...
