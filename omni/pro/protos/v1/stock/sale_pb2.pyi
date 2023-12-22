@@ -12,19 +12,19 @@ from omni.pro.protos.common import base_pb2 as _base_pb2
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Sale(_message.Message):
-    __slots__ = ["id", "name", "sale_sql_id", "clien_id", "date_order", "active", "external_id", "object_audit"]
+    __slots__ = ["id", "name", "sale_sql_id", "client_doc_id", "date_order", "active", "external_id", "object_audit"]
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     SALE_SQL_ID_FIELD_NUMBER: _ClassVar[int]
-    CLIEN_ID_FIELD_NUMBER: _ClassVar[int]
+    CLIENT_DOC_ID_FIELD_NUMBER: _ClassVar[int]
     DATE_ORDER_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: int
     name: str
-    sale_sql_id: str
-    clien_id: str
+    sale_sql_id: int
+    client_doc_id: str
     date_order: _timestamp_pb2.Timestamp
     active: _wrappers_pb2.BoolValue
     external_id: str
@@ -33,8 +33,8 @@ class Sale(_message.Message):
         self,
         id: _Optional[int] = ...,
         name: _Optional[str] = ...,
-        sale_sql_id: _Optional[str] = ...,
-        clien_id: _Optional[str] = ...,
+        sale_sql_id: _Optional[int] = ...,
+        client_doc_id: _Optional[str] = ...,
         date_order: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         external_id: _Optional[str] = ...,
