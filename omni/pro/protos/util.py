@@ -1,3 +1,6 @@
+import datetime
+from datetime import datetime
+
 from google.protobuf import json_format, struct_pb2
 from pymongo.cursor import Cursor
 
@@ -57,3 +60,24 @@ def to_list_value(lst):
       A `ListValue`.
     """
     return struct_pb2.ListValue(values=[to_value(x) for x in lst])
+
+
+def format_datetime_to_iso(datetime_obj: datetime):
+    """
+    Convert a datetime object to ISO 8601 format ('YYYY-MM-DDTHH:MM:SSZ').
+
+    Args:
+        datetime_obj (datetime.datetime): The datetime object to be formatted.
+
+    Returns:
+        str:
+            A string representing the datetime in ISO 8601 format.
+
+    Example:
+        # Convert a datetime object to ISO 8601 format
+        dt = datetime.datetime(2023, 8, 22, 14, 30, 0)
+        formatted_datetime = format_datetime_to_iso(dt)
+        print(formatted_datetime)
+    """
+    formatted_datetime = datetime_obj.strftime("%Y-%m-%dT%H:%M:%SZ")
+    return formatted_datetime
