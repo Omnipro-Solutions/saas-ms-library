@@ -6,6 +6,7 @@ from typing import Union as _Union
 
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
+from google.protobuf import struct_pb2 as _struct_pb2
 from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
@@ -13,11 +14,11 @@ from omni.pro.protos.common import base_pb2 as _base_pb2
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class State(_message.Message):
-    __slots__ = ["id", "name", "code", "flow_id", "type", "description", "active", "external_id", "object_audit"]
+    __slots__ = ["id", "name", "code", "flow", "type", "description", "active", "external_id", "object_audit"]
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
-    FLOW_ID_FIELD_NUMBER: _ClassVar[int]
+    FLOW_FIELD_NUMBER: _ClassVar[int]
     TYPE_FIELD_NUMBER: _ClassVar[int]
     DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
@@ -26,7 +27,7 @@ class State(_message.Message):
     id: int
     name: str
     code: str
-    flow_id: int
+    flow: _struct_pb2.Struct
     type: str
     description: str
     active: _wrappers_pb2.BoolValue
@@ -37,7 +38,7 @@ class State(_message.Message):
         id: _Optional[int] = ...,
         name: _Optional[str] = ...,
         code: _Optional[str] = ...,
-        flow_id: _Optional[int] = ...,
+        flow: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         type: _Optional[str] = ...,
         description: _Optional[str] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
