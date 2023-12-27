@@ -9,9 +9,88 @@ from google.protobuf import message as _message
 from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
-from omni.pro.protos.v1.rules import warehouse_hierarchy_pb2 as _warehouse_hierarchy_pb2
+from omni.pro.protos.v1.rules import location_pb2 as _location_pb2
+from omni.pro.protos.v1.rules import warehouse_pb2 as _warehouse_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
+
+class WarehouseHierarchy(_message.Message):
+    __slots__ = [
+        "name",
+        "code",
+        "warehouse",
+        "location",
+        "quantity_security",
+        "sequence",
+        "sequence_order",
+        "gift_code",
+    ]
+    NAME_FIELD_NUMBER: _ClassVar[int]
+    CODE_FIELD_NUMBER: _ClassVar[int]
+    WAREHOUSE_FIELD_NUMBER: _ClassVar[int]
+    LOCATION_FIELD_NUMBER: _ClassVar[int]
+    QUANTITY_SECURITY_FIELD_NUMBER: _ClassVar[int]
+    SEQUENCE_FIELD_NUMBER: _ClassVar[int]
+    SEQUENCE_ORDER_FIELD_NUMBER: _ClassVar[int]
+    GIFT_CODE_FIELD_NUMBER: _ClassVar[int]
+    name: str
+    code: str
+    warehouse: _warehouse_pb2.Warehouse
+    location: _location_pb2.Location
+    quantity_security: float
+    sequence: int
+    sequence_order: _wrappers_pb2.BoolValue
+    gift_code: str
+    def __init__(
+        self,
+        name: _Optional[str] = ...,
+        code: _Optional[str] = ...,
+        warehouse: _Optional[_Union[_warehouse_pb2.Warehouse, _Mapping]] = ...,
+        location: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
+        quantity_security: _Optional[float] = ...,
+        sequence: _Optional[int] = ...,
+        sequence_order: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        gift_code: _Optional[str] = ...,
+    ) -> None: ...
+
+class WarehouseHierarchyCreate(_message.Message):
+    __slots__ = [
+        "name",
+        "code",
+        "warehouse_id",
+        "location_id",
+        "quantity_security",
+        "sequence",
+        "sequence_order",
+        "gift_code",
+    ]
+    NAME_FIELD_NUMBER: _ClassVar[int]
+    CODE_FIELD_NUMBER: _ClassVar[int]
+    WAREHOUSE_ID_FIELD_NUMBER: _ClassVar[int]
+    LOCATION_ID_FIELD_NUMBER: _ClassVar[int]
+    QUANTITY_SECURITY_FIELD_NUMBER: _ClassVar[int]
+    SEQUENCE_FIELD_NUMBER: _ClassVar[int]
+    SEQUENCE_ORDER_FIELD_NUMBER: _ClassVar[int]
+    GIFT_CODE_FIELD_NUMBER: _ClassVar[int]
+    name: str
+    code: str
+    warehouse_id: int
+    location_id: int
+    quantity_security: float
+    sequence: int
+    sequence_order: _wrappers_pb2.BoolValue
+    gift_code: str
+    def __init__(
+        self,
+        name: _Optional[str] = ...,
+        code: _Optional[str] = ...,
+        warehouse_id: _Optional[int] = ...,
+        location_id: _Optional[int] = ...,
+        quantity_security: _Optional[float] = ...,
+        sequence: _Optional[int] = ...,
+        sequence_order: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        gift_code: _Optional[str] = ...,
+    ) -> None: ...
 
 class DeliveryWarehouse(_message.Message):
     __slots__ = [
@@ -33,7 +112,7 @@ class DeliveryWarehouse(_message.Message):
     id: str
     name: str
     hierarchy_warehouse_sort_by: str
-    transfer_warehouses: _containers.RepeatedCompositeFieldContainer[_warehouse_hierarchy_pb2.WarehouseHierarchy]
+    transfer_warehouses: _containers.RepeatedCompositeFieldContainer[WarehouseHierarchy]
     active: _wrappers_pb2.BoolValue
     external_id: str
     object_audit: _base_pb2.ObjectAudit
@@ -42,29 +121,29 @@ class DeliveryWarehouse(_message.Message):
         id: _Optional[str] = ...,
         name: _Optional[str] = ...,
         hierarchy_warehouse_sort_by: _Optional[str] = ...,
-        transfer_warehouses: _Optional[_Iterable[_Union[_warehouse_hierarchy_pb2.WarehouseHierarchy, _Mapping]]] = ...,
+        transfer_warehouses: _Optional[_Iterable[_Union[WarehouseHierarchy, _Mapping]]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
 class DeliveryWarehouseCreateRequest(_message.Message):
-    __slots__ = ["name", "hierarchy_warehouse_sort_by", "transfer_warehouse_ids", "external_id", "context"]
+    __slots__ = ["name", "hierarchy_warehouse_sort_by", "transfer_warehouses", "external_id", "context"]
     NAME_FIELD_NUMBER: _ClassVar[int]
     HIERARCHY_WAREHOUSE_SORT_BY_FIELD_NUMBER: _ClassVar[int]
-    TRANSFER_WAREHOUSE_IDS_FIELD_NUMBER: _ClassVar[int]
+    TRANSFER_WAREHOUSES_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     hierarchy_warehouse_sort_by: str
-    transfer_warehouse_ids: _containers.RepeatedScalarFieldContainer[str]
+    transfer_warehouses: _containers.RepeatedCompositeFieldContainer[WarehouseHierarchyCreate]
     external_id: str
     context: _base_pb2.Context
     def __init__(
         self,
         name: _Optional[str] = ...,
         hierarchy_warehouse_sort_by: _Optional[str] = ...,
-        transfer_warehouse_ids: _Optional[_Iterable[str]] = ...,
+        transfer_warehouses: _Optional[_Iterable[_Union[WarehouseHierarchyCreate, _Mapping]]] = ...,
         external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
