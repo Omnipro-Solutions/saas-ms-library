@@ -63,8 +63,8 @@ class DeliveryTime(_message.Message):
     warehouses_from: _containers.RepeatedCompositeFieldContainer[_warehouse_pb2.Warehouse]
     locality_available: _delivery_locality_pb2.DeliveryLocality
     time_type: str
-    value_min: int
-    value_max: int
+    value_min: _wrappers_pb2.Int32Value
+    value_max: _wrappers_pb2.Int32Value
     inversely: _wrappers_pb2.BoolValue
     variable_factor: str
     operator_factor: str
@@ -83,8 +83,8 @@ class DeliveryTime(_message.Message):
         warehouses_from: _Optional[_Iterable[_Union[_warehouse_pb2.Warehouse, _Mapping]]] = ...,
         locality_available: _Optional[_Union[_delivery_locality_pb2.DeliveryLocality, _Mapping]] = ...,
         time_type: _Optional[str] = ...,
-        value_min: _Optional[int] = ...,
-        value_max: _Optional[int] = ...,
+        value_min: _Optional[_Union[_wrappers_pb2.Int32Value, _Mapping]] = ...,
+        value_max: _Optional[_Union[_wrappers_pb2.Int32Value, _Mapping]] = ...,
         inversely: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         variable_factor: _Optional[str] = ...,
         operator_factor: _Optional[str] = ...,
