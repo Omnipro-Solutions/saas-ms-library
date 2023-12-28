@@ -23,6 +23,11 @@ class ComputeOperationServiceStub(object):
             request_serializer=v1_dot_rules_dot_compute__operation__pb2.ComputeMethodStockAvailableRequest.SerializeToString,
             response_deserializer=v1_dot_rules_dot_compute__operation__pb2.ComputeMethodStockAvailableResponse.FromString,
         )
+        self.ComputeDeliveryCarrier = channel.unary_unary(
+            "/pro.omni.oms.api.v1.rules.compute_operation.ComputeOperationService/ComputeDeliveryCarrier",
+            request_serializer=v1_dot_rules_dot_compute__operation__pb2.ComputeDeliveryCarrierRequest.SerializeToString,
+            response_deserializer=v1_dot_rules_dot_compute__operation__pb2.ComputeDeliveryCarrierResponse.FromString,
+        )
 
 
 class ComputeOperationServiceServicer(object):
@@ -40,6 +45,12 @@ class ComputeOperationServiceServicer(object):
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
+    def ComputeDeliveryCarrier(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
 
 def add_ComputeOperationServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -52,6 +63,11 @@ def add_ComputeOperationServiceServicer_to_server(servicer, server):
             servicer.ComputeMethodStockAvailable,
             request_deserializer=v1_dot_rules_dot_compute__operation__pb2.ComputeMethodStockAvailableRequest.FromString,
             response_serializer=v1_dot_rules_dot_compute__operation__pb2.ComputeMethodStockAvailableResponse.SerializeToString,
+        ),
+        "ComputeDeliveryCarrier": grpc.unary_unary_rpc_method_handler(
+            servicer.ComputeDeliveryCarrier,
+            request_deserializer=v1_dot_rules_dot_compute__operation__pb2.ComputeDeliveryCarrierRequest.FromString,
+            response_serializer=v1_dot_rules_dot_compute__operation__pb2.ComputeDeliveryCarrierResponse.SerializeToString,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -112,6 +128,35 @@ class ComputeOperationService(object):
             "/pro.omni.oms.api.v1.rules.compute_operation.ComputeOperationService/ComputeMethodStockAvailable",
             v1_dot_rules_dot_compute__operation__pb2.ComputeMethodStockAvailableRequest.SerializeToString,
             v1_dot_rules_dot_compute__operation__pb2.ComputeMethodStockAvailableResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
+
+    @staticmethod
+    def ComputeDeliveryCarrier(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            "/pro.omni.oms.api.v1.rules.compute_operation.ComputeOperationService/ComputeDeliveryCarrier",
+            v1_dot_rules_dot_compute__operation__pb2.ComputeDeliveryCarrierRequest.SerializeToString,
+            v1_dot_rules_dot_compute__operation__pb2.ComputeDeliveryCarrierResponse.FromString,
             options,
             channel_credentials,
             insecure,
