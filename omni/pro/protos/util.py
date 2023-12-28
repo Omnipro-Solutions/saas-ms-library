@@ -1,4 +1,5 @@
 import datetime
+import importlib
 from datetime import datetime
 
 from google.protobuf import json_format, struct_pb2
@@ -81,3 +82,45 @@ def format_datetime_to_iso(datetime_obj: datetime):
     """
     formatted_datetime = datetime_obj.strftime("%Y-%m-%dT%H:%M:%SZ")
     return formatted_datetime
+
+
+def model_to_proto(model, fields, serialize_proto=None, **kwargs):
+    """
+    Converts a model instance to its corresponding protocol buffer (protobuf) representation.
+
+    This function takes an instance of a model and a list of field names, and uses a serialization
+    prototype (serialize_proto) to generate a corresponding protobuf object. The prototype is dynamically
+    imported based on the provided name.
+
+    Args:
+        model (BaseModel):
+            The model instance to be converted. This can be any object with accessible attributes.
+        fields (list of str):
+            A list of field names (strings) that will be copied from the model to the protobuf object.
+        serialize_proto (str):
+            The full name of the protobuf prototype to be used for serialization. This name is used
+            to dynamically import the corresponding protobuf class.
+        **kwargs:
+            Additional arguments that can be passed to handle specific cases or advanced configurations
+            in the serialization process.
+
+    Returns:
+        An instance of the protobuf prototype with the model fields assigned.
+
+    Example:
+        # Example of converting a model to a protobuf object
+        class MyModel:
+            name = "test"
+            age = 25
+
+        model_instance = MyModel()
+        proto_obj = model_to_proto(model_instance, ["name", "age"], "my_package.MyProto")
+        print(proto_obj)
+    """
+    proto_class_name = serialize_proto.split(".")[-1]
+    serialize_proto = getattr(
+        importlib.import_module("omni.pro.protos.{0}".format(serialize_proto.split(f".{proto_class_name}")[0])),
+        proto_class_name,
+    )
+    if model:
+        return serialize_proto(**{key: getattr(model, key) for key in fields})
