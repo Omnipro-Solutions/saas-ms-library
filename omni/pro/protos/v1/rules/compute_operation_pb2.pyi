@@ -107,25 +107,22 @@ class ComputeDeliveryCarrierRequest(_message.Message):
     __slots__ = ["data", "context"]
     DATA_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    data: _containers.RepeatedCompositeFieldContainer[ComputeDeliveryCarrierData]
+    data: ComputeDeliveryCarrierData
     context: _base_pb2.Context
     def __init__(
         self,
-        data: _Optional[_Iterable[_Union[ComputeDeliveryCarrierData, _Mapping]]] = ...,
+        data: _Optional[_Union[ComputeDeliveryCarrierData, _Mapping]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
 class ComputeDeliveryCarrierResponse(_message.Message):
-    __slots__ = ["carrier_sql_id", "exceptions", "response_standard"]
+    __slots__ = ["carrier_sql_id", "response_standard"]
     CARRIER_SQL_ID_FIELD_NUMBER: _ClassVar[int]
-    EXCEPTIONS_FIELD_NUMBER: _ClassVar[int]
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
     carrier_sql_id: int
-    exceptions: _containers.RepeatedCompositeFieldContainer[_struct_pb2.Struct]
     response_standard: _base_pb2.ResponseStandard
     def __init__(
         self,
         carrier_sql_id: _Optional[int] = ...,
-        exceptions: _Optional[_Iterable[_Union[_struct_pb2.Struct, _Mapping]]] = ...,
         response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
     ) -> None: ...
