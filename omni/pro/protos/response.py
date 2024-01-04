@@ -98,7 +98,7 @@ class MessageResponse(object):
         return self.response(
             success=total > 0,
             message=message,
-            status_code=HTTPStatus.OK,
+            status_code=HTTPStatus.OK if total > 0 else HTTPStatus.NO_CONTENT,
             message_code=MessageCode.RESOURCE_FETCHED,
             meta_data=base_pb2.MetaData(
                 limit=paginated.limit,
