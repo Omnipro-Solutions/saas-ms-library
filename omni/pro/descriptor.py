@@ -64,6 +64,8 @@ class Descriptor(object):
 
             if hasattr(field, "is_filterable"):
                 field_info["is_filterable"] = field.is_filterable
+            else:
+                field_info["is_filterable"] = True
 
             # If the field is an EmbeddedDocumentField or ReferenceField, recurse into its fields
             if isinstance(field, EmbeddedDocumentField) or isinstance(field, ReferenceField):
