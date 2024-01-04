@@ -62,6 +62,9 @@ class Descriptor(object):
             if hasattr(field, "max_length") and field.max_length:
                 field_info["size"] = field.max_length
 
+            if hasattr(field, "is_filterable"):
+                field_info["is_filterable"] = field.is_filterable
+
             # If the field is an EmbeddedDocumentField or ReferenceField, recurse into its fields
             if isinstance(field, EmbeddedDocumentField) or isinstance(field, ReferenceField):
                 embedded_model = field.document_type_obj
