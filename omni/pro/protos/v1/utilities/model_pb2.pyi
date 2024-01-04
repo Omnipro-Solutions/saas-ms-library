@@ -69,7 +69,19 @@ class Model(_message.Message):
     ) -> None: ...
 
 class Field(_message.Message):
-    __slots__ = ["name", "type", "description", "code", "size", "required", "relation", "widget", "view", "options"]
+    __slots__ = [
+        "name",
+        "type",
+        "description",
+        "code",
+        "size",
+        "required",
+        "relation",
+        "widget",
+        "view",
+        "is_filterable",
+        "options",
+    ]
     NAME_FIELD_NUMBER: _ClassVar[int]
     TYPE_FIELD_NUMBER: _ClassVar[int]
     DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
@@ -79,6 +91,7 @@ class Field(_message.Message):
     RELATION_FIELD_NUMBER: _ClassVar[int]
     WIDGET_FIELD_NUMBER: _ClassVar[int]
     VIEW_FIELD_NUMBER: _ClassVar[int]
+    IS_FILTERABLE_FIELD_NUMBER: _ClassVar[int]
     OPTIONS_FIELD_NUMBER: _ClassVar[int]
     name: str
     type: str
@@ -89,6 +102,7 @@ class Field(_message.Message):
     relation: _struct_pb2.Struct
     widget: str
     view: str
+    is_filterable: _wrappers_pb2.BoolValue
     options: _struct_pb2.ListValue
     def __init__(
         self,
@@ -101,6 +115,7 @@ class Field(_message.Message):
         relation: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         widget: _Optional[str] = ...,
         view: _Optional[str] = ...,
+        is_filterable: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         options: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
     ) -> None: ...
 
