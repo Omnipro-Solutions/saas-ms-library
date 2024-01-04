@@ -37,6 +37,10 @@ class Sale(_message.Message):
         "warehouse",
         "json_order",
         "state",
+        "subtotal",
+        "discount",
+        "tax",
+        "total",
         "active",
         "external_id",
         "object_audit",
@@ -57,6 +61,10 @@ class Sale(_message.Message):
     WAREHOUSE_FIELD_NUMBER: _ClassVar[int]
     JSON_ORDER_FIELD_NUMBER: _ClassVar[int]
     STATE_FIELD_NUMBER: _ClassVar[int]
+    SUBTOTAL_FIELD_NUMBER: _ClassVar[int]
+    DISCOUNT_FIELD_NUMBER: _ClassVar[int]
+    TAX_FIELD_NUMBER: _ClassVar[int]
+    TOTAL_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
@@ -76,6 +84,10 @@ class Sale(_message.Message):
     warehouse: _warehouse_pb2.Warehouse
     json_order: str
     state: _state_pb2.State
+    subtotal: float
+    discount: float
+    tax: float
+    total: float
     active: _wrappers_pb2.BoolValue
     external_id: str
     object_audit: _base_pb2.ObjectAudit
@@ -97,6 +109,10 @@ class Sale(_message.Message):
         warehouse: _Optional[_Union[_warehouse_pb2.Warehouse, _Mapping]] = ...,
         json_order: _Optional[str] = ...,
         state: _Optional[_Union[_state_pb2.State, _Mapping]] = ...,
+        subtotal: _Optional[float] = ...,
+        discount: _Optional[float] = ...,
+        tax: _Optional[float] = ...,
+        total: _Optional[float] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
@@ -154,6 +170,10 @@ class SaleCreateRequest(_message.Message):
         "warehouse_id",
         "json_order",
         "state_id",
+        "subtotal",
+        "discount",
+        "tax",
+        "total",
         "external_id",
         "context",
         "payment_method_id",
@@ -170,6 +190,10 @@ class SaleCreateRequest(_message.Message):
     WAREHOUSE_ID_FIELD_NUMBER: _ClassVar[int]
     JSON_ORDER_FIELD_NUMBER: _ClassVar[int]
     STATE_ID_FIELD_NUMBER: _ClassVar[int]
+    SUBTOTAL_FIELD_NUMBER: _ClassVar[int]
+    DISCOUNT_FIELD_NUMBER: _ClassVar[int]
+    TAX_FIELD_NUMBER: _ClassVar[int]
+    TOTAL_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     PAYMENT_METHOD_ID_FIELD_NUMBER: _ClassVar[int]
@@ -185,6 +209,10 @@ class SaleCreateRequest(_message.Message):
     warehouse_id: int
     json_order: str
     state_id: int
+    subtotal: float
+    discount: float
+    tax: float
+    total: float
     external_id: str
     context: _base_pb2.Context
     payment_method_id: int
@@ -202,6 +230,10 @@ class SaleCreateRequest(_message.Message):
         warehouse_id: _Optional[int] = ...,
         json_order: _Optional[str] = ...,
         state_id: _Optional[int] = ...,
+        subtotal: _Optional[float] = ...,
+        discount: _Optional[float] = ...,
+        tax: _Optional[float] = ...,
+        total: _Optional[float] = ...,
         external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
         payment_method_id: _Optional[int] = ...,
