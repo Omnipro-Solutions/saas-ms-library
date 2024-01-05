@@ -101,7 +101,6 @@ class Descriptor(object):
                 "class_name": f"{model.__module__}.{model.__name__}",
                 "code": model._meta.get("collection") or model.__name__.lower(),
                 "fields": fields,
-                "is_replic": model.__is_replic_table__,
             }
 
         else:  # This is a recursive call
