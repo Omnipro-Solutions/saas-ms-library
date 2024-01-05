@@ -823,6 +823,21 @@ class LoginRequest(_message.Message):
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
+class LogoutRequest(_message.Message):
+    __slots__ = ["access_token", "action", "context"]
+    ACCESS_TOKEN_FIELD_NUMBER: _ClassVar[int]
+    ACTION_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    access_token: str
+    action: str
+    context: _base_pb2.Context
+    def __init__(
+        self,
+        access_token: _Optional[str] = ...,
+        action: _Optional[str] = ...,
+        context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
+    ) -> None: ...
+
 class TokenRequest(_message.Message):
     __slots__ = ["client_id", "client_secret", "context"]
     CLIENT_ID_FIELD_NUMBER: _ClassVar[int]
@@ -876,6 +891,12 @@ class LoginResponse(_message.Message):
         authentication_result: _Optional[_Union[AuthenticationResult, _Mapping]] = ...,
         user: _Optional[_Union[User, _Mapping]] = ...,
     ) -> None: ...
+
+class LogoutResponse(_message.Message):
+    __slots__ = ["response_standard"]
+    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
+    response_standard: _base_pb2.ResponseStandard
+    def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
 
 class RefreshTokenRequest(_message.Message):
     __slots__ = ["context", "refresh_token"]
