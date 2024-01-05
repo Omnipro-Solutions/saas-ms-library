@@ -113,6 +113,11 @@ class UsersServiceStub(object):
             request_serializer=v1_dot_users_dot_user__pb2.LoginRequest.SerializeToString,
             response_deserializer=v1_dot_users_dot_user__pb2.LoginResponse.FromString,
         )
+        self.Logout = channel.unary_unary(
+            "/pro.omni.oms.api.v1.users.user.UsersService/Logout",
+            request_serializer=v1_dot_users_dot_user__pb2.LogoutRequest.SerializeToString,
+            response_deserializer=v1_dot_users_dot_user__pb2.LogoutResponse.FromString,
+        )
         self.Token = channel.unary_unary(
             "/pro.omni.oms.api.v1.users.user.UsersService/Token",
             request_serializer=v1_dot_users_dot_user__pb2.TokenRequest.SerializeToString,
@@ -268,6 +273,12 @@ class UsersServiceServicer(object):
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
+    def Logout(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
     def Token(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -406,6 +417,11 @@ def add_UsersServiceServicer_to_server(servicer, server):
             servicer.Login,
             request_deserializer=v1_dot_users_dot_user__pb2.LoginRequest.FromString,
             response_serializer=v1_dot_users_dot_user__pb2.LoginResponse.SerializeToString,
+        ),
+        "Logout": grpc.unary_unary_rpc_method_handler(
+            servicer.Logout,
+            request_deserializer=v1_dot_users_dot_user__pb2.LogoutRequest.FromString,
+            response_serializer=v1_dot_users_dot_user__pb2.LogoutResponse.SerializeToString,
         ),
         "Token": grpc.unary_unary_rpc_method_handler(
             servicer.Token,
@@ -1018,6 +1034,35 @@ class UsersService(object):
             "/pro.omni.oms.api.v1.users.user.UsersService/Login",
             v1_dot_users_dot_user__pb2.LoginRequest.SerializeToString,
             v1_dot_users_dot_user__pb2.LoginResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
+
+    @staticmethod
+    def Logout(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            "/pro.omni.oms.api.v1.users.user.UsersService/Logout",
+            v1_dot_users_dot_user__pb2.LogoutRequest.SerializeToString,
+            v1_dot_users_dot_user__pb2.LogoutResponse.FromString,
             options,
             channel_credentials,
             insecure,
