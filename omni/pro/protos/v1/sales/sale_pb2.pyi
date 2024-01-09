@@ -124,6 +124,7 @@ class Sale(_message.Message):
 class SaleIntegration(_message.Message):
     __slots__ = [
         "order_details",
+        "oms_info",
         "oms_rules",
         "client_details",
         "payment",
@@ -132,6 +133,7 @@ class SaleIntegration(_message.Message):
         "additional_info",
     ]
     ORDER_DETAILS_FIELD_NUMBER: _ClassVar[int]
+    OMS_INFO_FIELD_NUMBER: _ClassVar[int]
     OMS_RULES_FIELD_NUMBER: _ClassVar[int]
     CLIENT_DETAILS_FIELD_NUMBER: _ClassVar[int]
     PAYMENT_FIELD_NUMBER: _ClassVar[int]
@@ -139,6 +141,7 @@ class SaleIntegration(_message.Message):
     SHIPPING_FIELD_NUMBER: _ClassVar[int]
     ADDITIONAL_INFO_FIELD_NUMBER: _ClassVar[int]
     order_details: _struct_pb2.Struct
+    oms_info: _struct_pb2.Struct
     oms_rules: _struct_pb2.Struct
     client_details: _struct_pb2.Struct
     payment: _struct_pb2.Struct
@@ -148,6 +151,7 @@ class SaleIntegration(_message.Message):
     def __init__(
         self,
         order_details: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
+        oms_info: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         oms_rules: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         client_details: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         payment: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
@@ -336,6 +340,7 @@ class SaleDeleteResponse(_message.Message):
 class SaleCreateIntegrationRequest(_message.Message):
     __slots__ = [
         "order_details",
+        "oms_info",
         "oms_rules",
         "client_details",
         "payment",
@@ -345,6 +350,7 @@ class SaleCreateIntegrationRequest(_message.Message):
         "context",
     ]
     ORDER_DETAILS_FIELD_NUMBER: _ClassVar[int]
+    OMS_INFO_FIELD_NUMBER: _ClassVar[int]
     OMS_RULES_FIELD_NUMBER: _ClassVar[int]
     CLIENT_DETAILS_FIELD_NUMBER: _ClassVar[int]
     PAYMENT_FIELD_NUMBER: _ClassVar[int]
@@ -353,6 +359,7 @@ class SaleCreateIntegrationRequest(_message.Message):
     ADDITIONAL_INFO_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     order_details: _struct_pb2.Struct
+    oms_info: _struct_pb2.Struct
     oms_rules: _struct_pb2.Struct
     client_details: _struct_pb2.Struct
     payment: _struct_pb2.Struct
@@ -363,6 +370,7 @@ class SaleCreateIntegrationRequest(_message.Message):
     def __init__(
         self,
         order_details: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
+        oms_info: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         oms_rules: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         client_details: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         payment: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,

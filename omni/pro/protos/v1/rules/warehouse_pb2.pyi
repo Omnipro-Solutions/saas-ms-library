@@ -8,6 +8,7 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
+from omni.pro.protos.v1.rules import delivery_locality_pb2 as _delivery_locality_pb2
 from omni.pro.protos.v1.rules import delivery_schedule_pb2 as _delivery_schedule_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
@@ -37,7 +38,7 @@ class Warehouse(_message.Message):
     name: str
     code: str
     warehouse_sql_id: int
-    locality_available: str
+    locality_available: _delivery_locality_pb2.DeliveryLocality
     loc_stock_sql_id: int
     external_id: str
     schedule_template: _delivery_schedule_pb2.DeliverySchedule
@@ -48,7 +49,7 @@ class Warehouse(_message.Message):
         name: _Optional[str] = ...,
         code: _Optional[str] = ...,
         warehouse_sql_id: _Optional[int] = ...,
-        locality_available: _Optional[str] = ...,
+        locality_available: _Optional[_Union[_delivery_locality_pb2.DeliveryLocality, _Mapping]] = ...,
         loc_stock_sql_id: _Optional[int] = ...,
         external_id: _Optional[str] = ...,
         schedule_template: _Optional[_Union[_delivery_schedule_pb2.DeliverySchedule, _Mapping]] = ...,
@@ -60,7 +61,7 @@ class WarehouseCreateRequest(_message.Message):
         "name",
         "code",
         "warehouse_sql_id",
-        "locality_available",
+        "locality_available_id",
         "loc_stock_sql_id",
         "external_id",
         "schedule_template_id",
@@ -69,7 +70,7 @@ class WarehouseCreateRequest(_message.Message):
     NAME_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
     WAREHOUSE_SQL_ID_FIELD_NUMBER: _ClassVar[int]
-    LOCALITY_AVAILABLE_FIELD_NUMBER: _ClassVar[int]
+    LOCALITY_AVAILABLE_ID_FIELD_NUMBER: _ClassVar[int]
     LOC_STOCK_SQL_ID_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     SCHEDULE_TEMPLATE_ID_FIELD_NUMBER: _ClassVar[int]
@@ -77,7 +78,7 @@ class WarehouseCreateRequest(_message.Message):
     name: str
     code: str
     warehouse_sql_id: int
-    locality_available: str
+    locality_available_id: str
     loc_stock_sql_id: int
     external_id: str
     schedule_template_id: str
@@ -87,7 +88,7 @@ class WarehouseCreateRequest(_message.Message):
         name: _Optional[str] = ...,
         code: _Optional[str] = ...,
         warehouse_sql_id: _Optional[int] = ...,
-        locality_available: _Optional[str] = ...,
+        locality_available_id: _Optional[str] = ...,
         loc_stock_sql_id: _Optional[int] = ...,
         external_id: _Optional[str] = ...,
         schedule_template_id: _Optional[str] = ...,
