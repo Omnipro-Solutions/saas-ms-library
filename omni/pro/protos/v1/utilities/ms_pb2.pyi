@@ -80,7 +80,7 @@ class Microservice(_message.Message):
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
-class MicroserviCreateRequest(_message.Message):
+class MicroserviceCreateRequest(_message.Message):
     __slots__ = [
         "name",
         "code",
@@ -139,7 +139,7 @@ class MicroserviCreateRequest(_message.Message):
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
-class MicroserviCreateResponse(_message.Message):
+class MicroserviceCreateResponse(_message.Message):
     __slots__ = ["response_standard", "microservice"]
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
     MICROSERVICE_FIELD_NUMBER: _ClassVar[int]
