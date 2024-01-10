@@ -96,7 +96,7 @@ class MessageResponse(object):
             return self.not_found_response(message_not_found, **kwargs)
 
         return self.response(
-            success=total > 0,
+            success=True,
             message=message,
             status_code=HTTPStatus.OK,
             message_code=MessageCode.RESOURCE_FETCHED,
