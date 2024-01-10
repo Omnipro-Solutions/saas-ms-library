@@ -96,9 +96,9 @@ class MessageResponse(object):
             return self.not_found_response(message_not_found, **kwargs)
 
         return self.response(
-            success=total > 0,
+            success=True,
             message=message,
-            status_code=HTTPStatus.OK if total > 0 else HTTPStatus.NO_CONTENT,
+            status_code=HTTPStatus.OK,
             message_code=MessageCode.RESOURCE_FETCHED,
             meta_data=base_pb2.MetaData(
                 limit=paginated.limit,
