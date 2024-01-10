@@ -13,10 +13,10 @@ class MicroserviceServiceStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.MicroserviCreate = channel.unary_unary(
-            "/pro.omni.oms.api.v1.utilities.microservice.MicroserviceService/MicroserviCreate",
-            request_serializer=v1_dot_utilities_dot_ms__pb2.MicroserviCreateRequest.SerializeToString,
-            response_deserializer=v1_dot_utilities_dot_ms__pb2.MicroserviCreateResponse.FromString,
+        self.MicroserviceCreate = channel.unary_unary(
+            "/pro.omni.oms.api.v1.utilities.microservice.MicroserviceService/MicroserviceCreate",
+            request_serializer=v1_dot_utilities_dot_ms__pb2.MicroserviceCreateRequest.SerializeToString,
+            response_deserializer=v1_dot_utilities_dot_ms__pb2.MicroserviceCreateResponse.FromString,
         )
         self.MicroserviceRead = channel.unary_unary(
             "/pro.omni.oms.api.v1.utilities.microservice.MicroserviceService/MicroserviceRead",
@@ -38,7 +38,7 @@ class MicroserviceServiceStub(object):
 class MicroserviceServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
-    def MicroserviCreate(self, request, context):
+    def MicroserviceCreate(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -65,10 +65,10 @@ class MicroserviceServiceServicer(object):
 
 def add_MicroserviceServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-        "MicroserviCreate": grpc.unary_unary_rpc_method_handler(
-            servicer.MicroserviCreate,
-            request_deserializer=v1_dot_utilities_dot_ms__pb2.MicroserviCreateRequest.FromString,
-            response_serializer=v1_dot_utilities_dot_ms__pb2.MicroserviCreateResponse.SerializeToString,
+        "MicroserviceCreate": grpc.unary_unary_rpc_method_handler(
+            servicer.MicroserviceCreate,
+            request_deserializer=v1_dot_utilities_dot_ms__pb2.MicroserviceCreateRequest.FromString,
+            response_serializer=v1_dot_utilities_dot_ms__pb2.MicroserviceCreateResponse.SerializeToString,
         ),
         "MicroserviceRead": grpc.unary_unary_rpc_method_handler(
             servicer.MicroserviceRead,
@@ -97,7 +97,7 @@ class MicroserviceService(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def MicroserviCreate(
+    def MicroserviceCreate(
         request,
         target,
         options=(),
@@ -112,9 +112,9 @@ class MicroserviceService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            "/pro.omni.oms.api.v1.utilities.microservice.MicroserviceService/MicroserviCreate",
-            v1_dot_utilities_dot_ms__pb2.MicroserviCreateRequest.SerializeToString,
-            v1_dot_utilities_dot_ms__pb2.MicroserviCreateResponse.FromString,
+            "/pro.omni.oms.api.v1.utilities.microservice.MicroserviceService/MicroserviceCreate",
+            v1_dot_utilities_dot_ms__pb2.MicroserviceCreateRequest.SerializeToString,
+            v1_dot_utilities_dot_ms__pb2.MicroserviceCreateResponse.FromString,
             options,
             channel_credentials,
             insecure,
