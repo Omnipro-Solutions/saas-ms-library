@@ -25,6 +25,7 @@ class User(_message.Message):
         "timezone",
         "groups",
         "is_superuser",
+        "is_picker",
         "active",
         "mfa",
         "external_id",
@@ -43,6 +44,7 @@ class User(_message.Message):
     TIMEZONE_FIELD_NUMBER: _ClassVar[int]
     GROUPS_FIELD_NUMBER: _ClassVar[int]
     IS_SUPERUSER_FIELD_NUMBER: _ClassVar[int]
+    IS_PICKER_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     MFA_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
@@ -60,6 +62,7 @@ class User(_message.Message):
     timezone: _base_pb2.Object
     groups: _struct_pb2.ListValue
     is_superuser: _wrappers_pb2.BoolValue
+    is_picker: _wrappers_pb2.BoolValue
     active: _wrappers_pb2.BoolValue
     mfa: _wrappers_pb2.BoolValue
     external_id: str
@@ -79,6 +82,7 @@ class User(_message.Message):
         timezone: _Optional[_Union[_base_pb2.Object, _Mapping]] = ...,
         groups: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
         is_superuser: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        is_picker: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         mfa: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         external_id: _Optional[str] = ...,
@@ -191,6 +195,7 @@ class UserCreateRequest(_message.Message):
         "password_confirm",
         "groups_ids",
         "is_superuser",
+        "is_picker",
         "language",
         "timezone",
         "external_id",
@@ -205,6 +210,7 @@ class UserCreateRequest(_message.Message):
     PASSWORD_CONFIRM_FIELD_NUMBER: _ClassVar[int]
     GROUPS_IDS_FIELD_NUMBER: _ClassVar[int]
     IS_SUPERUSER_FIELD_NUMBER: _ClassVar[int]
+    IS_PICKER_FIELD_NUMBER: _ClassVar[int]
     LANGUAGE_FIELD_NUMBER: _ClassVar[int]
     TIMEZONE_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
@@ -218,6 +224,7 @@ class UserCreateRequest(_message.Message):
     password_confirm: str
     groups_ids: _struct_pb2.ListValue
     is_superuser: _wrappers_pb2.BoolValue
+    is_picker: _wrappers_pb2.BoolValue
     language: _base_pb2.Object
     timezone: _base_pb2.Object
     external_id: str
@@ -233,6 +240,7 @@ class UserCreateRequest(_message.Message):
         password_confirm: _Optional[str] = ...,
         groups_ids: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
         is_superuser: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        is_picker: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         language: _Optional[_Union[_base_pb2.Object, _Mapping]] = ...,
         timezone: _Optional[_Union[_base_pb2.Object, _Mapping]] = ...,
         external_id: _Optional[str] = ...,
