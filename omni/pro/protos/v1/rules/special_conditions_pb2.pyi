@@ -151,13 +151,18 @@ class SpecialConditionsUpdateResponse(_message.Message):
     ) -> None: ...
 
 class SpecialConditionsDeleteRequest(_message.Message):
-    __slots__ = ["id", "context"]
-    ID_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["group_code", "attribute_code", "context"]
+    GROUP_CODE_FIELD_NUMBER: _ClassVar[int]
+    ATTRIBUTE_CODE_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    id: str
+    group_code: str
+    attribute_code: str
     context: _base_pb2.Context
     def __init__(
-        self, id: _Optional[str] = ..., context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...
+        self,
+        group_code: _Optional[str] = ...,
+        attribute_code: _Optional[str] = ...,
+        context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
 class SpecialConditionsDeleteResponse(_message.Message):
