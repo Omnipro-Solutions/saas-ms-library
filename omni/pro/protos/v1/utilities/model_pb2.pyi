@@ -75,6 +75,8 @@ class Field(_message.Message):
         "description",
         "code",
         "size",
+        "is_importable",
+        "is_exportable",
         "required",
         "relation",
         "widget",
@@ -87,6 +89,8 @@ class Field(_message.Message):
     DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
     SIZE_FIELD_NUMBER: _ClassVar[int]
+    IS_IMPORTABLE_FIELD_NUMBER: _ClassVar[int]
+    IS_EXPORTABLE_FIELD_NUMBER: _ClassVar[int]
     REQUIRED_FIELD_NUMBER: _ClassVar[int]
     RELATION_FIELD_NUMBER: _ClassVar[int]
     WIDGET_FIELD_NUMBER: _ClassVar[int]
@@ -98,6 +102,8 @@ class Field(_message.Message):
     description: str
     code: str
     size: int
+    is_importable: _wrappers_pb2.BoolValue
+    is_exportable: _wrappers_pb2.BoolValue
     required: _wrappers_pb2.BoolValue
     relation: _struct_pb2.Struct
     widget: str
@@ -111,6 +117,8 @@ class Field(_message.Message):
         description: _Optional[str] = ...,
         code: _Optional[str] = ...,
         size: _Optional[int] = ...,
+        is_importable: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        is_exportable: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         required: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         relation: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         widget: _Optional[str] = ...,
