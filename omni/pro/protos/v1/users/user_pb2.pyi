@@ -28,6 +28,7 @@ class User(_message.Message):
         "is_picker",
         "active",
         "mfa",
+        "picker_id",
         "external_id",
         "type",
         "password",
@@ -47,6 +48,7 @@ class User(_message.Message):
     IS_PICKER_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     MFA_FIELD_NUMBER: _ClassVar[int]
+    PICKER_ID_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     TYPE_FIELD_NUMBER: _ClassVar[int]
     PASSWORD_FIELD_NUMBER: _ClassVar[int]
@@ -65,6 +67,7 @@ class User(_message.Message):
     is_picker: _wrappers_pb2.BoolValue
     active: _wrappers_pb2.BoolValue
     mfa: _wrappers_pb2.BoolValue
+    picker_id: str
     external_id: str
     type: str
     password: str
@@ -85,6 +88,7 @@ class User(_message.Message):
         is_picker: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         mfa: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        picker_id: _Optional[str] = ...,
         external_id: _Optional[str] = ...,
         type: _Optional[str] = ...,
         password: _Optional[str] = ...,
