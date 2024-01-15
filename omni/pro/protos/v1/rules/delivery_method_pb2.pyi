@@ -65,7 +65,7 @@ class DeliveryMethod(_message.Message):
     delivery_warehouses: _containers.RepeatedCompositeFieldContainer[_warehouse_pb2.Warehouse]
     type_picking_transfer: str
     validate_warehouse_code: str
-    quantity_security: float
+    quantity_security: _wrappers_pb2.FloatValue
     code: str
     type_delivery: str
     delivery_location: _location_pb2.Location
@@ -86,7 +86,7 @@ class DeliveryMethod(_message.Message):
         delivery_warehouses: _Optional[_Iterable[_Union[_warehouse_pb2.Warehouse, _Mapping]]] = ...,
         type_picking_transfer: _Optional[str] = ...,
         validate_warehouse_code: _Optional[str] = ...,
-        quantity_security: _Optional[float] = ...,
+        quantity_security: _Optional[_Union[_wrappers_pb2.FloatValue, _Mapping]] = ...,
         code: _Optional[str] = ...,
         type_delivery: _Optional[str] = ...,
         delivery_location: _Optional[_Union[_location_pb2.Location, _Mapping]] = ...,
