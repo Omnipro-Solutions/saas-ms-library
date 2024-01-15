@@ -129,6 +129,10 @@ class MicroServiceValidator(Context, Schema):
     data = fields.List(fields.String())
 
 
+class MicroServiceValidatorData(MicroServiceValidator):
+    data = fields.List(fields.Dict())
+
+
 class MicroServicePathValidator(MicroServiceValidator):
     def __init__(self, base_app, micro_data, *args, **kwargs):
         super().__init__(*args, **kwargs)

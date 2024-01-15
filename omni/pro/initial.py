@@ -9,6 +9,7 @@ from omni.pro.logger import LoggerTraceback, configure_logger
 from omni.pro.microservice import MicroService, MicroServiceDocument
 from omni.pro.protos.grpc_connector import Event, GRPClient
 from omni.pro.protos.v1.users import user_pb2
+from omni.pro.protos.v1.utilities.ms_pb2 import Microservice as MicroserviceProto
 from omni.pro.stack import ExitStackDocument
 from omni.pro.validators import MicroServicePathValidator
 
@@ -120,11 +121,9 @@ class Manifest(object):
         manifest = literal_eval(data)
         return manifest
 
-    def validate_manifest(self, context: dict, manifest: dict = {}):
+    def validate_manifest(self, context: dict, manifest: dict = {}, micro_data: [dict] = []):
         manifest = manifest or self.get_manifest()
-        data_validated = MicroServicePathValidator(self.base_app, manifest.get("data") or []).load(
-            manifest | {"context": context}
-        )
+        data_validated = MicroServicePathValidator(self.base_app, micro_data).load(manifest | {"context": context})
         return data_validated
 
     def load_manifest(self):
@@ -141,7 +140,8 @@ class Manifest(object):
             }
             rpc_func = ManifestRPCFunction(context)
             try:
-                manifest_data = self.validate_manifest(context=context, manifest=manifest)
+                micro = rpc_func.get_micro(manifest.get("code"))
+                manifest_data = self.validate_manifest(context=context, manifest=manifest, micro_data=list(micro.data))
                 rpc_func.load_manifest(manifest_data)
             except Exception as e:
                 LoggerTraceback.error("Load manifest exception", e, logger)
@@ -173,6 +173,16 @@ class ManifestRPCFunction(object):
         response, success = GRPClient(service_id=self.service_id).call_rpc_fuction(self.event)
         logger.info(f"Load manifest {response.microservice.code} - status: {success}")
         return response
+
+    def get_micro(self, code: str) -> MicroserviceProto:
+        self.event.update(
+            rpc_method="MicroserviceRead",
+            request_class="MicroserviceReadRequest",
+            params={"filter": {"filter": f"[('code','=','{code}')]"}} | {"context": self.context},
+        )
+        response, _s = GRPClient(service_id=self.service_id).call_rpc_fuction(self.event)
+        micro: MicroserviceProto = response.microservices[0] if response.microservices else MicroserviceProto()
+        return micro
 
 
 class UserChannel(object):
