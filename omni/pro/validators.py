@@ -120,15 +120,16 @@ class ObjectIdField(fields.Field):
 class MicroServiceValidator(Context, Schema):
     name = fields.String(required=True)
     code = fields.String(required=True)
-    tenant_code = fields.String(required=True)
+    sumary = fields.String(required=True)
     description = fields.String(required=True)
     version = fields.String(required=True)
     author = fields.String(required=True)
-    summary = fields.String(required=True)
     category = fields.String(required=True)
     depends = fields.List(fields.String())
     data = fields.List(fields.String())
 
+
+class MicroServicePathValidator(MicroServiceValidator):
     def __init__(self, base_app, micro_data, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.base_app = base_app

@@ -1,4 +1,5 @@
 import csv
+from ast import literal_eval
 from pathlib import Path
 
 from omni.pro import redis, util
@@ -9,7 +10,7 @@ from omni.pro.microservice import MicroService, MicroServiceDocument
 from omni.pro.protos.grpc_connector import Event, GRPClient
 from omni.pro.protos.v1.users import user_pb2
 from omni.pro.stack import ExitStackDocument
-from omni.pro.validators import MicroServiceValidator
+from omni.pro.validators import MicroServicePathValidator
 
 logger = configure_logger(name=__name__)
 
@@ -18,7 +19,6 @@ class LoadData(object):
     def __init__(self, base_app: Path):
         # self.redis_manager = redis.get_redis_manager()
         self.base_app = base_app
-        self.manifest = self._get_manifest_ms()
         # self.context = self._get_context()
         self.microserivce = None
 
@@ -60,36 +60,6 @@ class LoadData(object):
                 context.get("tenant"), "$.user_admin", {"id": response.user.id, "username": response.user.username}
             )
         return response, success
-
-    def _get_manifest_ms(self):
-        file_name = self.base_app / "__manifest__.py"
-        if not file_name.exists():
-            logger.warning(f"Manifest file not found {file_name}")
-            return {}
-        with open(file_name, "r") as f:
-            data = f.read()
-        return eval(data)
-
-    def load_manifest(self, context: dict, db_alias: str):
-        with ExitStackDocument(MicroServiceDocument.reference_list(), db_alias=db_alias):
-            tenant = context.get("tenant")
-            filters = {"code": self.manifest.get("code"), "tenant_code": tenant}
-            micro: MicroServiceDocument = self.db_manager.get_document(
-                db_name=None, tenant=tenant, document_class=MicroServiceDocument, **filters
-            )
-            self.manifest["tenant_code"] = tenant
-            data_validated = MicroServiceValidator(self.base_app, micro.data if micro else []).load(
-                self.manifest | {"context": context}
-            )
-            if not micro:
-                micro = self.db_manager.create_document(
-                    db_name=None, document_class=MicroServiceDocument, **data_validated
-                )
-            else:
-                micro.data = data_validated.get("data")
-                micro.save()
-            self.microservice = micro
-            return micro
 
     def load_data_dict(self, name_file):
         try:
@@ -134,6 +104,75 @@ class LoadData(object):
                 self.db_manager.update(micro, **attr_data)
                 if load:
                     logger.info(f"Load data {micro.code} - {tenant} - {file.get('path')}")
+
+
+class Manifest(object):
+    def __init__(self, base_app: Path):
+        self.base_app = base_app
+
+    def get_manifest(self):
+        file_name = self.base_app / "__manifest__.py"
+        if not file_name.exists():
+            logger.warning(f"Manifest file not found {file_name}")
+            return {}
+        with open(file_name, "r") as f:
+            data = f.read()
+        manifest = literal_eval(data)
+        return manifest
+
+    def validate_manifest(self, context: dict, manifest: dict = {}):
+        manifest = manifest or self.get_manifest()
+        data_validated = MicroServicePathValidator(self.base_app, manifest.get("data") or []).load(
+            manifest | {"context": context}
+        )
+        return data_validated
+
+    def load_manifest(self):
+        manifest = self.get_manifest()
+        if not manifest:
+            return
+        redis_manager = redis.get_redis_manager()
+        tenans = redis_manager.get_tenant_codes()
+        for tenant in tenans:
+            user = redis_manager.get_user_admin(tenant)
+            context = {
+                "tenant": tenant,
+                "user": user.get("id") or "admin",
+            }
+            rpc_func = ManifestRPCFunction(context)
+            try:
+                manifest_data = self.validate_manifest(context=context, manifest=manifest)
+                rpc_func.load_manifest(manifest_data)
+            except Exception as e:
+                LoggerTraceback.error("Load manifest exception", e, logger)
+
+
+class ManifestRPCFunction(object):
+    def __init__(self, context: dict) -> None:
+        self.context = context
+        self.service_id = MicroService.SAAS_MS_UTILITIES.value
+        self.microservice_module_grpc = "v1.utilities.ms_pb2_grpc"
+        self.microservice_stub_classname = "MicroserviceServiceStub"
+        self.microservice_module_pb2 = "v1.utilities.ms_pb2"
+
+        self.event = Event(
+            module_grpc=self.microservice_module_grpc,
+            stub_classname=self.microservice_stub_classname,
+            rpc_method="",
+            module_pb2=self.microservice_module_pb2,
+            request_class="",
+            params={},
+        )
+
+    def load_manifest(self, params):
+        self.event.update(
+            rpc_method="MicroserviceCreate",
+            request_class="MicroserviceCreateRequest",
+            params=params | {"context": self.context},
+        )
+        response, success = GRPClient(service_id=self.service_id).call_rpc_fuction(self.event)
+        logger.info(f"Load manifest {response.microservice.code} - status: {success}")
+        return response
 
 
 class UserChannel(object):
