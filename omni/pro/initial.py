@@ -2,6 +2,7 @@ import csv
 from ast import literal_eval
 from pathlib import Path
 
+from google.protobuf import json_format
 from omni.pro import redis, util
 from omni.pro.config import Config
 from omni.pro.database import DatabaseManager
@@ -121,9 +122,13 @@ class Manifest(object):
         manifest = literal_eval(data)
         return manifest
 
-    def validate_manifest(self, context: dict, manifest: dict = {}, micro_data: [dict] = []):
+    def validate_manifest(
+        self, context: dict, manifest: dict = {}, micro_data: [dict] = [], micro_settings: [dict] = []
+    ):
         manifest = manifest or self.get_manifest()
-        data_validated = MicroServicePathValidator(self.base_app, micro_data).load(manifest | {"context": context})
+        data_validated = MicroServicePathValidator(self.base_app).load(
+            manifest | {"context": context}, micro_data=micro_data, micro_settings=micro_settings
+        )
         return data_validated
 
     def load_manifest(self):
@@ -141,7 +146,12 @@ class Manifest(object):
             rpc_func = ManifestRPCFunction(context)
             try:
                 micro = rpc_func.get_micro(manifest.get("code"))
-                manifest_data = self.validate_manifest(context=context, manifest=manifest, micro_data=list(micro.data))
+                manifest_data = self.validate_manifest(
+                    context=context,
+                    manifest=manifest,
+                    micro_data=json_format.MessageToDict(micro.data),
+                    micro_settings=json_format.MessageToDict(micro.settings),
+                )
                 rpc_func.load_manifest(manifest_data)
             except Exception as e:
                 LoggerTraceback.error("Load manifest exception", e, logger)
