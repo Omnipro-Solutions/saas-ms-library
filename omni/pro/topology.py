@@ -3,11 +3,10 @@ import inspect
 import pkgutil
 
 import networkx as nx
-import peewee
 from mongoengine.document import Document
 from omni.pro.logger import configure_logger
 from omni.pro.models.base import BaseAuditEmbeddedDocument, BaseDocument, BaseModel
-from peewee import ForeignKeyField
+
 
 logger = configure_logger(__name__)
 
@@ -17,6 +16,8 @@ class Topology(object):
         self.path_models = importlib.import_module("models")
 
     def sort_models_topologically(self, models: list) -> list:
+        from peewee import ForeignKeyField
+
         graph = nx.DiGraph()
 
         # Agrega todos los modelos como nodos en el gráfico.
