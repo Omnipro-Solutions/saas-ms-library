@@ -21,7 +21,6 @@ INSTALL_REQUIRES = [
     "marshmallow==3.19.0",
     "hiredis==2.2.3",
     "redis==4.6.0",
-    "peewee==3.16.2",
     "fakeredis[json]==2.17.0",
     "SQLAlchemy==2.0.19",
     "networkx==3.1",
