@@ -57,7 +57,7 @@ class Microservice(_message.Message):
     depends: _containers.RepeatedScalarFieldContainer[str]
     data: _struct_pb2.ListValue
     load_data: _wrappers_pb2.BoolValue
-    settings: _struct_pb2.Struct
+    settings: _struct_pb2.ListValue
     active: _wrappers_pb2.BoolValue
     external_id: str
     object_audit: _base_pb2.ObjectAudit
@@ -74,7 +74,7 @@ class Microservice(_message.Message):
         depends: _Optional[_Iterable[str]] = ...,
         data: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
         load_data: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
-        settings: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
+        settings: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
@@ -119,7 +119,7 @@ class MicroserviceCreateRequest(_message.Message):
     depends: _containers.RepeatedScalarFieldContainer[str]
     data: _struct_pb2.ListValue
     load_data: _wrappers_pb2.BoolValue
-    settings: _struct_pb2.Struct
+    settings: _struct_pb2.ListValue
     external_id: str
     context: _base_pb2.Context
     def __init__(
@@ -134,7 +134,7 @@ class MicroserviceCreateRequest(_message.Message):
         depends: _Optional[_Iterable[str]] = ...,
         data: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
         load_data: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
-        settings: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
+        settings: _Optional[_Union[_struct_pb2.ListValue, _Mapping]] = ...,
         external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
