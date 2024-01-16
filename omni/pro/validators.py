@@ -127,6 +127,7 @@ class MicroServiceValidator(Context, Schema):
     category = fields.String(required=True)
     depends = fields.List(fields.String())
     data = fields.List(fields.String())
+    settings = fields.List(fields.Dict(), required=False)
 
 
 class MicroServiceValidatorData(MicroServiceValidator):
@@ -134,10 +135,9 @@ class MicroServiceValidatorData(MicroServiceValidator):
 
 
 class MicroServicePathValidator(MicroServiceValidator):
-    def __init__(self, base_app, micro_data, *args, **kwargs):
+    def __init__(self, base_app, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.base_app = base_app
-        self.micro_data = micro_data
 
     @validates_schema
     def validate_data(self, data, *args, **kwargs):
@@ -155,11 +155,19 @@ class MicroServicePathValidator(MicroServiceValidator):
         return [item for item, count in Counter(data).items() if count > 1]
 
     def load(self, data, *args, **kwargs):
+        micro_settings = kwargs.pop("micro_settings", [])
+        micro_data = kwargs.pop("micro_data", [])
         data = super().load(data, *args, **kwargs)
         list_dict = []
         for path in data.get("data", []):
-            md = next((x for x in self.micro_data if x.get("path") == path), None)
+            md = next((x for x in micro_data if x.get("path") == path), None)
             if not md:
                 list_dict.append({"path": path, "load": False})
-        data["data"] = self.micro_data + list_dict
+        data["data"] = micro_data + list_dict
+
+        list_dict = []
+        for setting in data.get("settings", []):
+            if setting.get("code") not in [x.get("code") for x in micro_settings]:
+                list_dict.append(setting)
+        data["settings"] = micro_settings + list_dict
         return data
