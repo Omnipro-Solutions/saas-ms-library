@@ -11,6 +11,8 @@ from functools import reduce, wraps
 
 from bson import ObjectId
 from google.protobuf.timestamp_pb2 import Timestamp
+from unidecode import unidecode
+
 from omni.pro.exceptions import AlreadyExistError, NotFoundError
 from omni.pro.stack import ExitStackDocument
 
@@ -472,3 +474,29 @@ def convert_to_serializable(value):
     # elif isinstance(value, CustomType):
     #     return custom_conversion_function(value)
     return value
+
+
+def process_string_to_unicode(str_value):
+    processed_name = str_value.replace(" ", "").lower()
+    processed_name = unidecode(processed_name)
+    return processed_name
+
+
+def make_hash(array_data: []) -> str:
+    hasher = hashlib.sha256()
+    hasher.update("".join(array_data).encode())
+    hash_search = hasher.hexdigest()
+    return hash_search
+
+
+def sort_list_of_dictionaries(lst: []) -> list:
+    """
+    Sorts a list of dictionaries based on their values.
+
+    Args:
+        lst (list): The list of dictionaries to be sorted.
+
+    Returns:
+        list: The sorted list of dictionaries.
+    """
+    return sorted(lst, key=lambda x: list(x.values()))
