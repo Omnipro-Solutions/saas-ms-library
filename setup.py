@@ -1,4 +1,5 @@
 from pathlib import Path
+
 from setuptools import find_packages, setup
 
 # The directory containing this file
@@ -24,6 +25,7 @@ INSTALL_REQUIRES = [
     "fakeredis[json]==2.17.0",
     "SQLAlchemy==2.0.19",
     "networkx==3.1",
+    "unidecode==1.3.8",
 ]
 # with open(HERE / "requirements.txt") as f:
 #     INSTALL_REQUIRES = f.read().splitlines()
