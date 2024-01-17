@@ -33,6 +33,11 @@ class Order(_message.Message):
         "external_id",
         "warehouse",
         "cid",
+        "shipping_amount_subtotal",
+        "shipping_amount_discount",
+        "shipping_amount_tax",
+        "shipping_amount_total",
+        "shipping_amount_discount_description",
         "pickings",
         "object_audit",
         "order_lines",
@@ -50,6 +55,11 @@ class Order(_message.Message):
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     WAREHOUSE_FIELD_NUMBER: _ClassVar[int]
     CID_FIELD_NUMBER: _ClassVar[int]
+    SHIPPING_AMOUNT_SUBTOTAL_FIELD_NUMBER: _ClassVar[int]
+    SHIPPING_AMOUNT_DISCOUNT_FIELD_NUMBER: _ClassVar[int]
+    SHIPPING_AMOUNT_TAX_FIELD_NUMBER: _ClassVar[int]
+    SHIPPING_AMOUNT_TOTAL_FIELD_NUMBER: _ClassVar[int]
+    SHIPPING_AMOUNT_DISCOUNT_DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
     PICKINGS_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     ORDER_LINES_FIELD_NUMBER: _ClassVar[int]
@@ -66,6 +76,11 @@ class Order(_message.Message):
     external_id: str
     warehouse: _warehouse_pb2.Warehouse
     cid: str
+    shipping_amount_subtotal: float
+    shipping_amount_discount: float
+    shipping_amount_tax: float
+    shipping_amount_total: float
+    shipping_amount_discount_description: str
     pickings: _containers.RepeatedCompositeFieldContainer[_picking_pb2.Picking]
     object_audit: _base_pb2.ObjectAudit
     order_lines: _containers.RepeatedCompositeFieldContainer[_struct_pb2.Struct]
@@ -84,6 +99,11 @@ class Order(_message.Message):
         external_id: _Optional[str] = ...,
         warehouse: _Optional[_Union[_warehouse_pb2.Warehouse, _Mapping]] = ...,
         cid: _Optional[str] = ...,
+        shipping_amount_subtotal: _Optional[float] = ...,
+        shipping_amount_discount: _Optional[float] = ...,
+        shipping_amount_tax: _Optional[float] = ...,
+        shipping_amount_total: _Optional[float] = ...,
+        shipping_amount_discount_description: _Optional[str] = ...,
         pickings: _Optional[_Iterable[_Union[_picking_pb2.Picking, _Mapping]]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
         order_lines: _Optional[_Iterable[_Union[_struct_pb2.Struct, _Mapping]]] = ...,
@@ -102,6 +122,11 @@ class OrderCreateRequest(_message.Message):
         "external_id",
         "warehouse_id",
         "cid",
+        "shipping_amount_subtotal",
+        "shipping_amount_discount",
+        "shipping_amount_tax",
+        "shipping_amount_total",
+        "shipping_amount_discount_description",
         "context",
     ]
     NAME_FIELD_NUMBER: _ClassVar[int]
@@ -115,6 +140,11 @@ class OrderCreateRequest(_message.Message):
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     WAREHOUSE_ID_FIELD_NUMBER: _ClassVar[int]
     CID_FIELD_NUMBER: _ClassVar[int]
+    SHIPPING_AMOUNT_SUBTOTAL_FIELD_NUMBER: _ClassVar[int]
+    SHIPPING_AMOUNT_DISCOUNT_FIELD_NUMBER: _ClassVar[int]
+    SHIPPING_AMOUNT_TAX_FIELD_NUMBER: _ClassVar[int]
+    SHIPPING_AMOUNT_TOTAL_FIELD_NUMBER: _ClassVar[int]
+    SHIPPING_AMOUNT_DISCOUNT_DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     sale_id: int
@@ -127,6 +157,11 @@ class OrderCreateRequest(_message.Message):
     external_id: str
     warehouse_id: int
     cid: str
+    shipping_amount_subtotal: float
+    shipping_amount_discount: float
+    shipping_amount_tax: float
+    shipping_amount_total: float
+    shipping_amount_discount_description: str
     context: _base_pb2.Context
     def __init__(
         self,
@@ -141,6 +176,11 @@ class OrderCreateRequest(_message.Message):
         external_id: _Optional[str] = ...,
         warehouse_id: _Optional[int] = ...,
         cid: _Optional[str] = ...,
+        shipping_amount_subtotal: _Optional[float] = ...,
+        shipping_amount_discount: _Optional[float] = ...,
+        shipping_amount_tax: _Optional[float] = ...,
+        shipping_amount_total: _Optional[float] = ...,
+        shipping_amount_discount_description: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 

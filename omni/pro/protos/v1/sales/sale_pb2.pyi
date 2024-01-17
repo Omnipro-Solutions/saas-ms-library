@@ -16,7 +16,7 @@ from omni.pro.protos.v1.sales import channel_pb2 as _channel_pb2
 from omni.pro.protos.v1.sales import client_pb2 as _client_pb2
 from omni.pro.protos.v1.sales import country_pb2 as _country_pb2
 from omni.pro.protos.v1.sales import currency_pb2 as _currency_pb2
-from omni.pro.protos.v1.sales import payment_method_pb2 as _payment_method_pb2
+from omni.pro.protos.v1.sales import flow_pb2 as _flow_pb2
 from omni.pro.protos.v1.sales import state_pb2 as _state_pb2
 from omni.pro.protos.v1.sales import warehouse_pb2 as _warehouse_pb2
 
@@ -29,6 +29,7 @@ class Sale(_message.Message):
         "date_order",
         "origin",
         "channel",
+        "flow",
         "currency",
         "confirm_date",
         "client",
@@ -43,8 +44,14 @@ class Sale(_message.Message):
         "total",
         "active",
         "external_id",
+        "shipping_amount_subtotal",
+        "shipping_amount_discount",
+        "shipping_amount_tax",
+        "shipping_amount_total",
+        "shipping_method_code",
+        "shipping_amount_discount_description",
         "object_audit",
-        "payment_method",
+        "payment_methods",
         "orders",
         "pickings",
     ]
@@ -53,6 +60,7 @@ class Sale(_message.Message):
     DATE_ORDER_FIELD_NUMBER: _ClassVar[int]
     ORIGIN_FIELD_NUMBER: _ClassVar[int]
     CHANNEL_FIELD_NUMBER: _ClassVar[int]
+    FLOW_FIELD_NUMBER: _ClassVar[int]
     CURRENCY_FIELD_NUMBER: _ClassVar[int]
     CONFIRM_DATE_FIELD_NUMBER: _ClassVar[int]
     CLIENT_FIELD_NUMBER: _ClassVar[int]
@@ -67,8 +75,14 @@ class Sale(_message.Message):
     TOTAL_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
+    SHIPPING_AMOUNT_SUBTOTAL_FIELD_NUMBER: _ClassVar[int]
+    SHIPPING_AMOUNT_DISCOUNT_FIELD_NUMBER: _ClassVar[int]
+    SHIPPING_AMOUNT_TAX_FIELD_NUMBER: _ClassVar[int]
+    SHIPPING_AMOUNT_TOTAL_FIELD_NUMBER: _ClassVar[int]
+    SHIPPING_METHOD_CODE_FIELD_NUMBER: _ClassVar[int]
+    SHIPPING_AMOUNT_DISCOUNT_DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
-    PAYMENT_METHOD_FIELD_NUMBER: _ClassVar[int]
+    PAYMENT_METHODS_FIELD_NUMBER: _ClassVar[int]
     ORDERS_FIELD_NUMBER: _ClassVar[int]
     PICKINGS_FIELD_NUMBER: _ClassVar[int]
     id: int
@@ -76,6 +90,7 @@ class Sale(_message.Message):
     date_order: _timestamp_pb2.Timestamp
     origin: str
     channel: _channel_pb2.Channel
+    flow: _flow_pb2.Flow
     currency: _currency_pb2.Currency
     confirm_date: _timestamp_pb2.Timestamp
     client: _client_pb2.Client
@@ -90,8 +105,14 @@ class Sale(_message.Message):
     total: float
     active: _wrappers_pb2.BoolValue
     external_id: str
+    shipping_amount_subtotal: float
+    shipping_amount_discount: float
+    shipping_amount_tax: float
+    shipping_amount_total: float
+    shipping_method_code: str
+    shipping_amount_discount_description: str
     object_audit: _base_pb2.ObjectAudit
-    payment_method: _payment_method_pb2.PaymentMethod
+    payment_methods: _containers.RepeatedCompositeFieldContainer[_struct_pb2.Struct]
     orders: _containers.RepeatedCompositeFieldContainer[_struct_pb2.Struct]
     pickings: _containers.RepeatedCompositeFieldContainer[_struct_pb2.Struct]
     def __init__(
@@ -101,6 +122,7 @@ class Sale(_message.Message):
         date_order: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
         origin: _Optional[str] = ...,
         channel: _Optional[_Union[_channel_pb2.Channel, _Mapping]] = ...,
+        flow: _Optional[_Union[_flow_pb2.Flow, _Mapping]] = ...,
         currency: _Optional[_Union[_currency_pb2.Currency, _Mapping]] = ...,
         confirm_date: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
         client: _Optional[_Union[_client_pb2.Client, _Mapping]] = ...,
@@ -115,8 +137,14 @@ class Sale(_message.Message):
         total: _Optional[float] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         external_id: _Optional[str] = ...,
+        shipping_amount_subtotal: _Optional[float] = ...,
+        shipping_amount_discount: _Optional[float] = ...,
+        shipping_amount_tax: _Optional[float] = ...,
+        shipping_amount_total: _Optional[float] = ...,
+        shipping_method_code: _Optional[str] = ...,
+        shipping_amount_discount_description: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
-        payment_method: _Optional[_Union[_payment_method_pb2.PaymentMethod, _Mapping]] = ...,
+        payment_methods: _Optional[_Iterable[_Union[_struct_pb2.Struct, _Mapping]]] = ...,
         orders: _Optional[_Iterable[_Union[_struct_pb2.Struct, _Mapping]]] = ...,
         pickings: _Optional[_Iterable[_Union[_struct_pb2.Struct, _Mapping]]] = ...,
     ) -> None: ...
@@ -166,6 +194,7 @@ class SaleCreateRequest(_message.Message):
         "date_order",
         "origin",
         "channel_id",
+        "flow_id",
         "currency_id",
         "confirm_date",
         "client_id",
@@ -178,14 +207,21 @@ class SaleCreateRequest(_message.Message):
         "discount",
         "tax",
         "total",
+        "sale_payment_method_association_ids",
+        "shipping_amount_subtotal",
+        "shipping_amount_discount",
+        "shipping_amount_tax",
+        "shipping_amount_total",
+        "shipping_method_code",
+        "shipping_amount_discount_description",
         "external_id",
         "context",
-        "payment_method_id",
     ]
     NAME_FIELD_NUMBER: _ClassVar[int]
     DATE_ORDER_FIELD_NUMBER: _ClassVar[int]
     ORIGIN_FIELD_NUMBER: _ClassVar[int]
     CHANNEL_ID_FIELD_NUMBER: _ClassVar[int]
+    FLOW_ID_FIELD_NUMBER: _ClassVar[int]
     CURRENCY_ID_FIELD_NUMBER: _ClassVar[int]
     CONFIRM_DATE_FIELD_NUMBER: _ClassVar[int]
     CLIENT_ID_FIELD_NUMBER: _ClassVar[int]
@@ -198,13 +234,20 @@ class SaleCreateRequest(_message.Message):
     DISCOUNT_FIELD_NUMBER: _ClassVar[int]
     TAX_FIELD_NUMBER: _ClassVar[int]
     TOTAL_FIELD_NUMBER: _ClassVar[int]
+    SALE_PAYMENT_METHOD_ASSOCIATION_IDS_FIELD_NUMBER: _ClassVar[int]
+    SHIPPING_AMOUNT_SUBTOTAL_FIELD_NUMBER: _ClassVar[int]
+    SHIPPING_AMOUNT_DISCOUNT_FIELD_NUMBER: _ClassVar[int]
+    SHIPPING_AMOUNT_TAX_FIELD_NUMBER: _ClassVar[int]
+    SHIPPING_AMOUNT_TOTAL_FIELD_NUMBER: _ClassVar[int]
+    SHIPPING_METHOD_CODE_FIELD_NUMBER: _ClassVar[int]
+    SHIPPING_AMOUNT_DISCOUNT_DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    PAYMENT_METHOD_ID_FIELD_NUMBER: _ClassVar[int]
     name: str
     date_order: _timestamp_pb2.Timestamp
     origin: str
     channel_id: int
+    flow_id: int
     currency_id: str
     confirm_date: _timestamp_pb2.Timestamp
     client_id: str
@@ -217,15 +260,22 @@ class SaleCreateRequest(_message.Message):
     discount: float
     tax: float
     total: float
+    sale_payment_method_association_ids: _containers.RepeatedScalarFieldContainer[int]
+    shipping_amount_subtotal: float
+    shipping_amount_discount: float
+    shipping_amount_tax: float
+    shipping_amount_total: float
+    shipping_method_code: str
+    shipping_amount_discount_description: str
     external_id: str
     context: _base_pb2.Context
-    payment_method_id: int
     def __init__(
         self,
         name: _Optional[str] = ...,
         date_order: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
         origin: _Optional[str] = ...,
         channel_id: _Optional[int] = ...,
+        flow_id: _Optional[int] = ...,
         currency_id: _Optional[str] = ...,
         confirm_date: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
         client_id: _Optional[str] = ...,
@@ -238,9 +288,15 @@ class SaleCreateRequest(_message.Message):
         discount: _Optional[float] = ...,
         tax: _Optional[float] = ...,
         total: _Optional[float] = ...,
+        sale_payment_method_association_ids: _Optional[_Iterable[int]] = ...,
+        shipping_amount_subtotal: _Optional[float] = ...,
+        shipping_amount_discount: _Optional[float] = ...,
+        shipping_amount_tax: _Optional[float] = ...,
+        shipping_amount_total: _Optional[float] = ...,
+        shipping_method_code: _Optional[str] = ...,
+        shipping_amount_discount_description: _Optional[str] = ...,
         external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
-        payment_method_id: _Optional[int] = ...,
     ) -> None: ...
 
 class SaleCreateResponse(_message.Message):
@@ -341,41 +397,37 @@ class SaleCreateIntegrationRequest(_message.Message):
     __slots__ = [
         "order_details",
         "oms_info",
-        "oms_rules",
         "client_details",
-        "payment",
+        "payment_details",
         "order_items",
-        "shipping",
+        "shipping_details",
         "additional_info",
         "context",
     ]
     ORDER_DETAILS_FIELD_NUMBER: _ClassVar[int]
     OMS_INFO_FIELD_NUMBER: _ClassVar[int]
-    OMS_RULES_FIELD_NUMBER: _ClassVar[int]
     CLIENT_DETAILS_FIELD_NUMBER: _ClassVar[int]
-    PAYMENT_FIELD_NUMBER: _ClassVar[int]
+    PAYMENT_DETAILS_FIELD_NUMBER: _ClassVar[int]
     ORDER_ITEMS_FIELD_NUMBER: _ClassVar[int]
-    SHIPPING_FIELD_NUMBER: _ClassVar[int]
+    SHIPPING_DETAILS_FIELD_NUMBER: _ClassVar[int]
     ADDITIONAL_INFO_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     order_details: _struct_pb2.Struct
     oms_info: _struct_pb2.Struct
-    oms_rules: _struct_pb2.Struct
     client_details: _struct_pb2.Struct
-    payment: _struct_pb2.Struct
+    payment_details: _struct_pb2.Struct
     order_items: _containers.RepeatedCompositeFieldContainer[_struct_pb2.Struct]
-    shipping: _struct_pb2.Struct
+    shipping_details: _struct_pb2.Struct
     additional_info: _struct_pb2.Struct
     context: _base_pb2.Context
     def __init__(
         self,
         order_details: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         oms_info: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
-        oms_rules: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         client_details: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
-        payment: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
+        payment_details: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         order_items: _Optional[_Iterable[_Union[_struct_pb2.Struct, _Mapping]]] = ...,
-        shipping: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
+        shipping_details: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         additional_info: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...

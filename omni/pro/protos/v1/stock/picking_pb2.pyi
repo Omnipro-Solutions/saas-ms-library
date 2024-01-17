@@ -51,6 +51,7 @@ class Picking(_message.Message):
         "dependency",
         "note",
         "carrier_tracking_url",
+        "info_receives",
         "date_validated",
         "sale_date_order",
         "client",
@@ -87,6 +88,7 @@ class Picking(_message.Message):
     DEPENDENCY_FIELD_NUMBER: _ClassVar[int]
     NOTE_FIELD_NUMBER: _ClassVar[int]
     CARRIER_TRACKING_URL_FIELD_NUMBER: _ClassVar[int]
+    INFO_RECEIVES_FIELD_NUMBER: _ClassVar[int]
     DATE_VALIDATED_FIELD_NUMBER: _ClassVar[int]
     SALE_DATE_ORDER_FIELD_NUMBER: _ClassVar[int]
     CLIENT_FIELD_NUMBER: _ClassVar[int]
@@ -122,6 +124,7 @@ class Picking(_message.Message):
     dependency: _base_pb2.ObjectResponse
     note: str
     carrier_tracking_url: str
+    info_receives: _struct_pb2.Struct
     date_validated: _timestamp_pb2.Timestamp
     sale_date_order: _timestamp_pb2.Timestamp
     client: _client_pb2.Client
@@ -159,6 +162,7 @@ class Picking(_message.Message):
         dependency: _Optional[_Union[_base_pb2.ObjectResponse, _Mapping]] = ...,
         note: _Optional[str] = ...,
         carrier_tracking_url: _Optional[str] = ...,
+        info_receives: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         date_validated: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
         sale_date_order: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
         client: _Optional[_Union[_client_pb2.Client, _Mapping]] = ...,
@@ -207,6 +211,7 @@ class PickingCreateRequest(_message.Message):
         "user_id",
         "shipping_address_code",
         "warehouse_id",
+        "info_receives",
         "external_id",
         "context",
     ]
@@ -242,6 +247,7 @@ class PickingCreateRequest(_message.Message):
     USER_ID_FIELD_NUMBER: _ClassVar[int]
     SHIPPING_ADDRESS_CODE_FIELD_NUMBER: _ClassVar[int]
     WAREHOUSE_ID_FIELD_NUMBER: _ClassVar[int]
+    INFO_RECEIVES_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
@@ -276,6 +282,7 @@ class PickingCreateRequest(_message.Message):
     user_id: str
     shipping_address_code: str
     warehouse_id: int
+    info_receives: _struct_pb2.Struct
     external_id: str
     context: _base_pb2.Context
     def __init__(
@@ -312,6 +319,7 @@ class PickingCreateRequest(_message.Message):
         user_id: _Optional[str] = ...,
         shipping_address_code: _Optional[str] = ...,
         warehouse_id: _Optional[int] = ...,
+        info_receives: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
