@@ -477,12 +477,38 @@ def convert_to_serializable(value):
 
 
 def process_string_to_unicode(str_value):
+    """
+    Procesa una cadena de texto eliminando espacios y convirtiéndola a minúsculas con normalización Unicode.
+
+    Args:
+        str_value (str): La cadena de texto de entrada que se va a procesar.
+
+    Returns:
+        str: La cadena de texto procesada sin espacios y en minúsculas.
+
+    Ejemplo:
+        >>> process_string_to_unicode("Hola Mundo con tildes: ÁéÍóÚ")
+        'holamundocontildes:áéíóú'
+    """
     processed_name = str_value.replace(" ", "").lower()
     processed_name = unidecode(processed_name)
     return processed_name
 
 
 def make_hash(array_data: []) -> str:
+    """
+    Genera un hash SHA-256 a partir de los datos contenidos en una lista.
+
+    Args:
+        array_data (list): La lista de datos que se utilizarán para generar el hash.
+
+    Returns:
+        str: El hash generado como una cadena de texto hexadecimal.
+
+    Ejemplo:
+        >>> make_hash(["dato1", "dato2", "dato3"])
+        '2d5f13c5a7b0a84b3d4ad6a5427f7c8ef2fc7231606d79f70e647b13b2859e1b'
+    """
     hasher = hashlib.sha256()
     hasher.update("".join(array_data).encode())
     hash_search = hasher.hexdigest()
