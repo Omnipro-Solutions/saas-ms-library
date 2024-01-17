@@ -20,6 +20,7 @@ class Client(_message.Message):
         "type_document",
         "document",
         "mobile",
+        "phone",
         "email",
         "country",
         "addresses",
@@ -32,6 +33,7 @@ class Client(_message.Message):
     TYPE_DOCUMENT_FIELD_NUMBER: _ClassVar[int]
     DOCUMENT_FIELD_NUMBER: _ClassVar[int]
     MOBILE_FIELD_NUMBER: _ClassVar[int]
+    PHONE_FIELD_NUMBER: _ClassVar[int]
     EMAIL_FIELD_NUMBER: _ClassVar[int]
     COUNTRY_FIELD_NUMBER: _ClassVar[int]
     ADDRESSES_FIELD_NUMBER: _ClassVar[int]
@@ -43,6 +45,7 @@ class Client(_message.Message):
     type_document: _base_pb2.Object
     document: str
     mobile: str
+    phone: str
     email: str
     country: _base_pb2.Object
     addresses: _containers.RepeatedCompositeFieldContainer[_address_pb2.Address]
@@ -56,6 +59,7 @@ class Client(_message.Message):
         type_document: _Optional[_Union[_base_pb2.Object, _Mapping]] = ...,
         document: _Optional[str] = ...,
         mobile: _Optional[str] = ...,
+        phone: _Optional[str] = ...,
         email: _Optional[str] = ...,
         country: _Optional[_Union[_base_pb2.Object, _Mapping]] = ...,
         addresses: _Optional[_Iterable[_Union[_address_pb2.Address, _Mapping]]] = ...,
@@ -65,11 +69,12 @@ class Client(_message.Message):
     ) -> None: ...
 
 class ClientCreateRequest(_message.Message):
-    __slots__ = ["name", "type_document", "document", "mobile", "email", "country", "external_id", "context"]
+    __slots__ = ["name", "type_document", "document", "mobile", "phone", "email", "country", "external_id", "context"]
     NAME_FIELD_NUMBER: _ClassVar[int]
     TYPE_DOCUMENT_FIELD_NUMBER: _ClassVar[int]
     DOCUMENT_FIELD_NUMBER: _ClassVar[int]
     MOBILE_FIELD_NUMBER: _ClassVar[int]
+    PHONE_FIELD_NUMBER: _ClassVar[int]
     EMAIL_FIELD_NUMBER: _ClassVar[int]
     COUNTRY_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
@@ -78,6 +83,7 @@ class ClientCreateRequest(_message.Message):
     type_document: _base_pb2.Object
     document: str
     mobile: str
+    phone: str
     email: str
     country: _base_pb2.Object
     external_id: str
@@ -88,6 +94,7 @@ class ClientCreateRequest(_message.Message):
         type_document: _Optional[_Union[_base_pb2.Object, _Mapping]] = ...,
         document: _Optional[str] = ...,
         mobile: _Optional[str] = ...,
+        phone: _Optional[str] = ...,
         email: _Optional[str] = ...,
         country: _Optional[_Union[_base_pb2.Object, _Mapping]] = ...,
         external_id: _Optional[str] = ...,

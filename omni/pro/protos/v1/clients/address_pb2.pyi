@@ -18,6 +18,8 @@ class Address(_message.Message):
         "type_address",
         "street",
         "street2",
+        "mobile",
+        "phone",
         "lat",
         "lng",
         "zip_code",
@@ -32,6 +34,8 @@ class Address(_message.Message):
     TYPE_ADDRESS_FIELD_NUMBER: _ClassVar[int]
     STREET_FIELD_NUMBER: _ClassVar[int]
     STREET2_FIELD_NUMBER: _ClassVar[int]
+    MOBILE_FIELD_NUMBER: _ClassVar[int]
+    PHONE_FIELD_NUMBER: _ClassVar[int]
     LAT_FIELD_NUMBER: _ClassVar[int]
     LNG_FIELD_NUMBER: _ClassVar[int]
     ZIP_CODE_FIELD_NUMBER: _ClassVar[int]
@@ -45,6 +49,8 @@ class Address(_message.Message):
     type_address: str
     street: str
     street2: str
+    mobile: str
+    phone: str
     lat: str
     lng: str
     zip_code: str
@@ -60,6 +66,8 @@ class Address(_message.Message):
         type_address: _Optional[str] = ...,
         street: _Optional[str] = ...,
         street2: _Optional[str] = ...,
+        mobile: _Optional[str] = ...,
+        phone: _Optional[str] = ...,
         lat: _Optional[str] = ...,
         lng: _Optional[str] = ...,
         zip_code: _Optional[str] = ...,
@@ -78,6 +86,8 @@ class AddressCreateRequest(_message.Message):
         "type_address",
         "street",
         "street2",
+        "mobile",
+        "phone",
         "lat",
         "lng",
         "zip_code",
@@ -92,6 +102,8 @@ class AddressCreateRequest(_message.Message):
     TYPE_ADDRESS_FIELD_NUMBER: _ClassVar[int]
     STREET_FIELD_NUMBER: _ClassVar[int]
     STREET2_FIELD_NUMBER: _ClassVar[int]
+    MOBILE_FIELD_NUMBER: _ClassVar[int]
+    PHONE_FIELD_NUMBER: _ClassVar[int]
     LAT_FIELD_NUMBER: _ClassVar[int]
     LNG_FIELD_NUMBER: _ClassVar[int]
     ZIP_CODE_FIELD_NUMBER: _ClassVar[int]
@@ -105,6 +117,8 @@ class AddressCreateRequest(_message.Message):
     type_address: str
     street: str
     street2: str
+    mobile: str
+    phone: str
     lat: str
     lng: str
     zip_code: str
@@ -120,6 +134,8 @@ class AddressCreateRequest(_message.Message):
         type_address: _Optional[str] = ...,
         street: _Optional[str] = ...,
         street2: _Optional[str] = ...,
+        mobile: _Optional[str] = ...,
+        phone: _Optional[str] = ...,
         lat: _Optional[str] = ...,
         lng: _Optional[str] = ...,
         zip_code: _Optional[str] = ...,
