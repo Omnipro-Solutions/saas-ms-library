@@ -6,7 +6,6 @@ from bson.errors import InvalidId
 from bson.objectid import ObjectId
 from marshmallow import Schema, ValidationError, fields, missing, validates_schema
 from marshmallow.exceptions import ValidationError
-from omni.pro.util import generate_hash
 
 
 class ContextSchema(Schema):
@@ -168,17 +167,14 @@ class MicroServicePathValidator(MicroServiceValidator):
 
         list_dict = []
         for setting in data.get("settings", []):
-            setting.pop("value", None)
             setting = dict(sorted(setting.items()))
-            has_file = generate_hash(setting)
             setting_db = next((x for x in micro_settings if x.get("code") == setting.get("code")), None)
             if not setting_db:
                 list_dict.append(setting)
             else:
-                setting_db.pop("value", None)
-                if generate_hash(setting_db) != has_file:
-                    # settings_db is the object into micro_settings
-                    setting_db.update(setting)
+                # settings_db is the object into micro_settings
+                setting["value"] = setting_db.get("value")
+                setting_db.update(setting)
 
         data["settings"] = micro_settings + list_dict
         return data
