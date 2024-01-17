@@ -14,6 +14,9 @@ class RegisterModel(object):
         self.models_path = models_path
         self.microservice = microservice
 
+    def get_rpc_model_func_class(self):
+        return ModelRPCFucntion
+
     def register_mongo_model(self):
         """
         Register MongoDB models.
@@ -55,7 +58,7 @@ class RegisterModel(object):
                 "tenant": tenant,
                 "user": user.get("id") or "admin",
             }
-            rpc_func = ModelRPCFucntion(context)
+            rpc_func: ModelRPCFucntion = self.get_rpc_model_func_class()(context)
             for model in models_libs:
                 desc = getattr(Descriptor, method)(model)
                 desc = {"persistence_type": persistence_type, "microservice": self.microservice} | desc

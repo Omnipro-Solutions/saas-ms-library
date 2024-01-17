@@ -112,6 +112,9 @@ class Manifest(object):
     def __init__(self, base_app: Path):
         self.base_app = base_app
 
+    def get_rpc_manifest_func_class(self):
+        return ManifestRPCFunction
+
     def get_manifest(self):
         file_name = self.base_app / "__manifest__.py"
         if not file_name.exists():
@@ -143,7 +146,7 @@ class Manifest(object):
                 "tenant": tenant,
                 "user": user.get("id") or "admin",
             }
-            rpc_func = ManifestRPCFunction(context)
+            rpc_func: ManifestRPCFunction = self.get_rpc_manifest_func_class()(context)
             try:
                 micro = rpc_func.get_micro(manifest.get("code"))
                 manifest_data = self.validate_manifest(
