@@ -206,6 +206,7 @@ class PickingCreateRequest(_message.Message):
         "sale_id",
         "user_id",
         "shipping_address_code",
+        "warehouse_id",
         "external_id",
         "context",
     ]
@@ -240,6 +241,7 @@ class PickingCreateRequest(_message.Message):
     SALE_ID_FIELD_NUMBER: _ClassVar[int]
     USER_ID_FIELD_NUMBER: _ClassVar[int]
     SHIPPING_ADDRESS_CODE_FIELD_NUMBER: _ClassVar[int]
+    WAREHOUSE_ID_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
@@ -273,6 +275,7 @@ class PickingCreateRequest(_message.Message):
     sale_id: int
     user_id: str
     shipping_address_code: str
+    warehouse_id: int
     external_id: str
     context: _base_pb2.Context
     def __init__(
@@ -308,6 +311,7 @@ class PickingCreateRequest(_message.Message):
         sale_id: _Optional[int] = ...,
         user_id: _Optional[str] = ...,
         shipping_address_code: _Optional[str] = ...,
+        warehouse_id: _Optional[int] = ...,
         external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
