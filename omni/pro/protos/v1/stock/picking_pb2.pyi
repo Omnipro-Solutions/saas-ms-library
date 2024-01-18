@@ -62,6 +62,7 @@ class Picking(_message.Message):
         "user",
         "shipping_address",
         "active",
+        "warehouse",
         "external_id",
         "object_audit",
     ]
@@ -99,6 +100,7 @@ class Picking(_message.Message):
     USER_FIELD_NUMBER: _ClassVar[int]
     SHIPPING_ADDRESS_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
+    WAREHOUSE_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: int
@@ -135,6 +137,7 @@ class Picking(_message.Message):
     user: _user_pb2.User
     shipping_address: _address_pb2.Address
     active: _wrappers_pb2.BoolValue
+    warehouse: _base_pb2.ObjectResponse
     external_id: str
     object_audit: _base_pb2.ObjectAudit
     def __init__(
@@ -173,6 +176,7 @@ class Picking(_message.Message):
         user: _Optional[_Union[_user_pb2.User, _Mapping]] = ...,
         shipping_address: _Optional[_Union[_address_pb2.Address, _Mapping]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        warehouse: _Optional[_Union[_base_pb2.ObjectResponse, _Mapping]] = ...,
         external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
