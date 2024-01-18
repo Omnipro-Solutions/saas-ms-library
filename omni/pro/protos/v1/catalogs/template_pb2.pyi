@@ -305,7 +305,7 @@ class ProductDeleteResponse(_message.Message):
     def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
 
 class ProductAll(_message.Message):
-    __slots__ = ["id", "code", "name", "type", "img_url", "product_template_id", "product_id"]
+    __slots__ = ["id", "code", "name", "type", "img_url", "product_template_id", "product_id", "sku", "uom"]
     ID_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
@@ -313,6 +313,8 @@ class ProductAll(_message.Message):
     IMG_URL_FIELD_NUMBER: _ClassVar[int]
     PRODUCT_TEMPLATE_ID_FIELD_NUMBER: _ClassVar[int]
     PRODUCT_ID_FIELD_NUMBER: _ClassVar[int]
+    SKU_FIELD_NUMBER: _ClassVar[int]
+    UOM_FIELD_NUMBER: _ClassVar[int]
     id: str
     code: str
     name: str
@@ -320,6 +322,8 @@ class ProductAll(_message.Message):
     img_url: str
     product_template_id: str
     product_id: str
+    sku: str
+    uom: str
     def __init__(
         self,
         id: _Optional[str] = ...,
@@ -329,6 +333,8 @@ class ProductAll(_message.Message):
         img_url: _Optional[str] = ...,
         product_template_id: _Optional[str] = ...,
         product_id: _Optional[str] = ...,
+        sku: _Optional[str] = ...,
+        uom: _Optional[str] = ...,
     ) -> None: ...
 
 class ProductAllReadRequest(_message.Message):

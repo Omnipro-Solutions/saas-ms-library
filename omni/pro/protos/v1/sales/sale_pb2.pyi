@@ -152,39 +152,31 @@ class Sale(_message.Message):
 class SaleIntegration(_message.Message):
     __slots__ = [
         "order_details",
-        "oms_info",
-        "oms_rules",
         "client_details",
-        "payment",
+        "payment_details",
         "order_items",
-        "shipping",
+        "shipping_details",
         "additional_info",
     ]
     ORDER_DETAILS_FIELD_NUMBER: _ClassVar[int]
-    OMS_INFO_FIELD_NUMBER: _ClassVar[int]
-    OMS_RULES_FIELD_NUMBER: _ClassVar[int]
     CLIENT_DETAILS_FIELD_NUMBER: _ClassVar[int]
-    PAYMENT_FIELD_NUMBER: _ClassVar[int]
+    PAYMENT_DETAILS_FIELD_NUMBER: _ClassVar[int]
     ORDER_ITEMS_FIELD_NUMBER: _ClassVar[int]
-    SHIPPING_FIELD_NUMBER: _ClassVar[int]
+    SHIPPING_DETAILS_FIELD_NUMBER: _ClassVar[int]
     ADDITIONAL_INFO_FIELD_NUMBER: _ClassVar[int]
     order_details: _struct_pb2.Struct
-    oms_info: _struct_pb2.Struct
-    oms_rules: _struct_pb2.Struct
     client_details: _struct_pb2.Struct
-    payment: _struct_pb2.Struct
+    payment_details: _struct_pb2.Struct
     order_items: _containers.RepeatedCompositeFieldContainer[_struct_pb2.Struct]
-    shipping: _struct_pb2.Struct
+    shipping_details: _struct_pb2.Struct
     additional_info: _struct_pb2.Struct
     def __init__(
         self,
         order_details: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
-        oms_info: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
-        oms_rules: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         client_details: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
-        payment: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
+        payment_details: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         order_items: _Optional[_Iterable[_Union[_struct_pb2.Struct, _Mapping]]] = ...,
-        shipping: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
+        shipping_details: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         additional_info: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
     ) -> None: ...
 
@@ -396,7 +388,6 @@ class SaleDeleteResponse(_message.Message):
 class SaleCreateIntegrationRequest(_message.Message):
     __slots__ = [
         "order_details",
-        "oms_info",
         "client_details",
         "payment_details",
         "order_items",
@@ -405,7 +396,6 @@ class SaleCreateIntegrationRequest(_message.Message):
         "context",
     ]
     ORDER_DETAILS_FIELD_NUMBER: _ClassVar[int]
-    OMS_INFO_FIELD_NUMBER: _ClassVar[int]
     CLIENT_DETAILS_FIELD_NUMBER: _ClassVar[int]
     PAYMENT_DETAILS_FIELD_NUMBER: _ClassVar[int]
     ORDER_ITEMS_FIELD_NUMBER: _ClassVar[int]
@@ -413,7 +403,6 @@ class SaleCreateIntegrationRequest(_message.Message):
     ADDITIONAL_INFO_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     order_details: _struct_pb2.Struct
-    oms_info: _struct_pb2.Struct
     client_details: _struct_pb2.Struct
     payment_details: _struct_pb2.Struct
     order_items: _containers.RepeatedCompositeFieldContainer[_struct_pb2.Struct]
@@ -423,7 +412,6 @@ class SaleCreateIntegrationRequest(_message.Message):
     def __init__(
         self,
         order_details: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
-        oms_info: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         client_details: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         payment_details: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         order_items: _Optional[_Iterable[_Union[_struct_pb2.Struct, _Mapping]]] = ...,
