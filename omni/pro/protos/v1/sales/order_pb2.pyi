@@ -38,6 +38,7 @@ class Order(_message.Message):
         "shipping_amount_tax",
         "shipping_amount_total",
         "shipping_amount_discount_description",
+        "type_delivery",
         "pickings",
         "object_audit",
         "order_lines",
@@ -60,6 +61,7 @@ class Order(_message.Message):
     SHIPPING_AMOUNT_TAX_FIELD_NUMBER: _ClassVar[int]
     SHIPPING_AMOUNT_TOTAL_FIELD_NUMBER: _ClassVar[int]
     SHIPPING_AMOUNT_DISCOUNT_DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
+    TYPE_DELIVERY_FIELD_NUMBER: _ClassVar[int]
     PICKINGS_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     ORDER_LINES_FIELD_NUMBER: _ClassVar[int]
@@ -81,6 +83,7 @@ class Order(_message.Message):
     shipping_amount_tax: float
     shipping_amount_total: float
     shipping_amount_discount_description: str
+    type_delivery: str
     pickings: _containers.RepeatedCompositeFieldContainer[_picking_pb2.Picking]
     object_audit: _base_pb2.ObjectAudit
     order_lines: _containers.RepeatedCompositeFieldContainer[_struct_pb2.Struct]
@@ -104,6 +107,7 @@ class Order(_message.Message):
         shipping_amount_tax: _Optional[float] = ...,
         shipping_amount_total: _Optional[float] = ...,
         shipping_amount_discount_description: _Optional[str] = ...,
+        type_delivery: _Optional[str] = ...,
         pickings: _Optional[_Iterable[_Union[_picking_pb2.Picking, _Mapping]]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
         order_lines: _Optional[_Iterable[_Union[_struct_pb2.Struct, _Mapping]]] = ...,
@@ -127,6 +131,7 @@ class OrderCreateRequest(_message.Message):
         "shipping_amount_tax",
         "shipping_amount_total",
         "shipping_amount_discount_description",
+        "type_delivery",
         "context",
     ]
     NAME_FIELD_NUMBER: _ClassVar[int]
@@ -145,6 +150,7 @@ class OrderCreateRequest(_message.Message):
     SHIPPING_AMOUNT_TAX_FIELD_NUMBER: _ClassVar[int]
     SHIPPING_AMOUNT_TOTAL_FIELD_NUMBER: _ClassVar[int]
     SHIPPING_AMOUNT_DISCOUNT_DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
+    TYPE_DELIVERY_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     sale_id: int
@@ -162,6 +168,7 @@ class OrderCreateRequest(_message.Message):
     shipping_amount_tax: float
     shipping_amount_total: float
     shipping_amount_discount_description: str
+    type_delivery: str
     context: _base_pb2.Context
     def __init__(
         self,
@@ -181,6 +188,7 @@ class OrderCreateRequest(_message.Message):
         shipping_amount_tax: _Optional[float] = ...,
         shipping_amount_total: _Optional[float] = ...,
         shipping_amount_discount_description: _Optional[str] = ...,
+        type_delivery: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 

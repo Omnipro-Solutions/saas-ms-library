@@ -305,12 +305,12 @@ class ProductDeleteResponse(_message.Message):
     def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
 
 class ProductAll(_message.Message):
-    __slots__ = ["id", "code", "name", "type", "img_url", "product_template_id", "product_id", "sku", "uom"]
+    __slots__ = ["id", "code", "name", "type", "image", "product_template_id", "product_id", "sku", "uom"]
     ID_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     TYPE_FIELD_NUMBER: _ClassVar[int]
-    IMG_URL_FIELD_NUMBER: _ClassVar[int]
+    IMAGE_FIELD_NUMBER: _ClassVar[int]
     PRODUCT_TEMPLATE_ID_FIELD_NUMBER: _ClassVar[int]
     PRODUCT_ID_FIELD_NUMBER: _ClassVar[int]
     SKU_FIELD_NUMBER: _ClassVar[int]
@@ -319,7 +319,7 @@ class ProductAll(_message.Message):
     code: str
     name: str
     type: str
-    img_url: str
+    image: _struct_pb2.Struct
     product_template_id: str
     product_id: str
     sku: str
@@ -330,7 +330,7 @@ class ProductAll(_message.Message):
         code: _Optional[str] = ...,
         name: _Optional[str] = ...,
         type: _Optional[str] = ...,
-        img_url: _Optional[str] = ...,
+        image: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         product_template_id: _Optional[str] = ...,
         product_id: _Optional[str] = ...,
         sku: _Optional[str] = ...,
