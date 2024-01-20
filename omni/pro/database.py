@@ -557,7 +557,9 @@ class RedisConnection:
         self.db = db
 
     def __enter__(self) -> redis.StrictRedis:
-        self.redis_client = redis.StrictRedis(host=self.host, port=self.port, db=self.db, decode_responses=True)
+        self.redis_client = redis.StrictRedis(
+            host=self.host, port=self.port, db=self.db, decode_responses=True, ssl=Config.REDIS_SSL
+        )
         return self.redis_client
 
     def __exit__(self, exc_type, exc_value, traceback) -> None:
