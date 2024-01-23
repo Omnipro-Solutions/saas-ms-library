@@ -20,9 +20,9 @@ class ExitStackDocument(ExitStack):
             # All documents are swiched to their respective aliases.
     """
 
-    def __init__(self, document_classes: list = [], db_alias="", *args, **kwargs):
+    def __init__(self, document_classes: list = [], db_alias="", use_doc_classes=False, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.document_classes = self.__reference_models_services()
+        self.document_classes = document_classes if use_doc_classes else self.__reference_models_services()
         self.db_alias = db_alias
         self.model_classes = []
 
