@@ -1,13 +1,18 @@
 import csv
+import importlib
 from ast import literal_eval
+from datetime import datetime
 from pathlib import Path
+from typing import Union
 
 from google.protobuf import json_format
+from mongoengine import Document
 from omni.pro import redis, util
 from omni.pro.config import Config
-from omni.pro.database import DatabaseManager
+from omni.pro.database import DatabaseManager, PersistenceTypeEnum, PostgresDatabaseManager
 from omni.pro.logger import LoggerTraceback, configure_logger
 from omni.pro.microservice import MicroService
+from omni.pro.models.base import Audit, Base
 from omni.pro.protos.grpc_connector import Event, GRPClient
 from omni.pro.protos.v1.users import user_pb2
 from omni.pro.protos.v1.utilities.ms_pb2 import Microservice as MicroserviceProto
@@ -18,11 +23,10 @@ logger = configure_logger(name=__name__)
 
 
 class LoadData(object):
-    def __init__(self, base_app: Path):
-        # self.redis_manager = redis.get_redis_manager()
+    def __init__(self, base_app: Path, microservice: str, persistence_type: PersistenceTypeEnum):
         self.base_app = base_app
-        # self.context = self._get_context()
-        # self.microserivce = None
+        self.persistence_type = persistence_type
+        self.microserivce = microservice
 
     def get_rpc_manifest_func_class(self):
         return ManifestRPCFunction
@@ -36,15 +40,16 @@ class LoadData(object):
                 "tenant": tenant,
                 "user": user.get("id") or "admin",
             }
-            db_params = redis_manager.get_mongodb_config(Config.SERVICE_ID, tenant)
-            db_alias = f"{tenant}_{db_params.get('name')}"
             micro: MicroserviceProto = self.get_rpc_manifest_func_class()(context).get_micro(
-                MicroService.SAAS_MS_UTILITIES.value
+                code=self.microserivce,
             )
             if micro:
-                db_params["db"] = db_params.pop("name")
-                db_manager = DatabaseManager(**db_params)
-                self.load_data_micro(db_manager, json_format.MessageToDict(micro), context, db_alias)
+                db_params = redis_manager.get_mongodb_config(Config.SERVICE_ID, tenant)
+                db_alias = f"{tenant}_{db_params.get('name')}"
+                # db_params["db"] = db_params.pop("name")
+                # db_manager = DatabaseManager(**db_params)
+                db_pg_params = redis_manager.get_postgres_config(Config.SERVICE_ID, tenant)
+                self.load_data_micro(db_pg_params, json_format.MessageToDict(micro), context, db_alias)
 
     def create_user_admin(self, context, rc):
         values = self.load_data_dict(Path(__file__).parent / "data" / "models.user.csv")
@@ -56,10 +61,10 @@ class LoadData(object):
             )
         return response, success
 
-    def load_data_dict(self, name_file):
+    def load_data_dict(self, name_file, mode="r", encoding="utf-8-sig", delimiter=";"):
         try:
-            with open(name_file, mode="r", encoding="utf-8-sig") as csv_file:
-                reader = csv.DictReader(csv_file, delimiter=";")
+            with open(name_file, mode=mode, encoding=encoding) as csv_file:
+                reader = csv.DictReader(csv_file, delimiter=delimiter)
                 for row in reader:
                     yield row
                 return reader
@@ -68,41 +73,70 @@ class LoadData(object):
         except Exception as e:
             LoggerTraceback.error("An unexpected error has occurred", e, logger)
 
-    def load_data_micro(self, db_manager: DatabaseManager, micro: dict, context: dict, db_alias):
+    def csv_to_class(
+        self,
+        csv_path: str,
+        class_document: Union[Base, Document],
+        mode="r",
+        encoding="utf-8-sig",
+        delimiter: str = ";",
+        **kwargs,
+    ) -> list[Document]:
+        """
+        Reads a CSV file and converts each row to a document.
+        """
+        docs_to_insert = [
+            class_document(**dict(row) | kwargs)
+            for row in self.load_data_dict(csv_path, mode=mode, encoding=encoding, delimiter=delimiter)
+        ]
+        return docs_to_insert
+
+    def load_data_micro(self, db_pg_params: dict, micro: dict, context: dict, db_alias):
         tenant = context.get("tenant")
         for idx, file in enumerate(micro.get("data") or []):
             if file.get("load"):
                 continue
-            name_file = self.base_app / file.get("path")
-            reader = self.load_data_dict(name_file)
+            file_path = self.base_app / file.get("path")
             models, file_py, model_str = file.get("path").split("/")[1].split(".")[:-1]
             model_str = util.to_camel_case(model_str)
-            ruta_modulo = self.base_app / models / f"{file_py}.py"
-            if not ruta_modulo.exists():
-                logger.error(f"File not found {ruta_modulo}")
-                continue
-            modulo = util.load_file_module(ruta_modulo, model_str)
+            modulo = importlib.import_module(f"{models}.{file_py}")
             if not hasattr(modulo, model_str):
-                logger.error(f"Class not found {model_str} in {ruta_modulo}")
+                logger.error(f"Class not found {model_str} in {modulo}")
                 continue
-            load = False
-            with ExitStackDocument(
-                (doc_class := getattr(modulo, model_str)).reference_list(),
-                db_alias=db_alias,
-                use_doc_classes=True,
-            ):
-                for row in reader:
-                    row = row | {"context": context}
-                    db_manager.create_document(db_name=None, document_class=doc_class, **row)
-                    if not load:
-                        load = True
-                attr_data = [{f"set__data__{idx}__load": load}]
-                # self.db_manager.update(micro, **attr_data)
-                self.get_rpc_manifest_func_class()(context).update_micro(
-                    {"microservice": {"id": micro.get("id"), "settings": micro.get("settings"), "data": attr_data}}
-                )
-                if load:
-                    logger.info(f"Load data {micro.get('code')} - {tenant} - {file.get('path')}")
+            attr_data = [{f"set__data__{idx}__load": True}]
+            logger.info(f"Load data {micro.get('code')} - {tenant} - {file.get('path')}")
+            if self.persistence_type == PersistenceTypeEnum.NO_SQL:
+                self.load_data_document(context, file_path, db_alias, modulo, model_str)
+            elif self.persistence_type == PersistenceTypeEnum.SQL:
+                self.load_data_model(db_pg_params, context, file_path, modulo, model_str)
+            self.get_rpc_manifest_func_class()(context).update_micro(
+                {"microservice": {"id": micro.get("id"), "settings": micro.get("settings"), "data": attr_data}}
+            )
+
+    def load_data_document(self, context, file_path, db_alias, modulo, model_str):
+        with ExitStackDocument(
+            (doc_class := getattr(modulo, model_str)).reference_list(),
+            db_alias=db_alias,
+            use_doc_classes=True,
+        ):
+            audit = Audit(created_by=context.get("user"))
+            audit.updated_by = context.get("user")
+            audit.updated_at = datetime.utcnow()
+            docs_to_insert = self.csv_to_class(file_path, doc_class, context=context, audit=audit)
+            doc_class.objects.insert(docs_to_insert, load_bulk=False)
+
+    def load_data_model(self, db_pg_params: dict, context: dict, file_path: str, modulo, model_str: str):
+        with PostgresDatabaseManager(**db_pg_params) as session:
+            audit = dict(
+                created_by=context.get("user"),
+                updated_by=context.get("user"),
+                created_at=datetime.now(),
+                updated_at=datetime.now(),
+                tenant=context.get("tenant"),
+            )
+            model_class = getattr(modulo, model_str)
+            models_to_insert = self.csv_to_class(file_path, model_class, **audit)
+            session.bulk_save_objects(models_to_insert)
 
 
 class Manifest(object):
