@@ -190,7 +190,7 @@ class MongoConnection(object):
     """
 
     def __init__(self, host, port, db, username, password, complement):
-        self.host = f"mongodb://{host}:{port}/?{'&'.join([f'{k}={v}' for (k, v) in complement.items()])}"
+        self.host = f"mongodb://{username}:{password}@{host}:{port}"
         self.port = port
         self.username = username
         self.password = password
@@ -207,6 +207,8 @@ class MongoConnection(object):
             username=self.username,
             password=self.password,
             host=self.host,
+            authentication_source="admin",
+            ssl=True,
         )
         return self.connection
 
