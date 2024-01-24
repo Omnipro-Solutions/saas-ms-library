@@ -5,7 +5,7 @@ from grpc._channel import Channel
 from grpc.experimental import _insecure_channel_credentials
 from omni.pro.cloudmap import CloudMap
 from omni.pro.config import Config
-from omni.pro.database import RedisManager
+from omni.pro.database.redis import RedisManager
 from omni.pro.logger import configure_logger
 from omni.pro.protos.util import format_request
 from omni.pro.util import nested
