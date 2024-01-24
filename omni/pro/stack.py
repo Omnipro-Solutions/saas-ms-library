@@ -28,8 +28,16 @@ class ExitStackDocument(ExitStack):
 
     def __enter__(self):
         for document_class in self.document_classes:
+            self.__create_collection(document_class)
             self.model_classes = self.enter_context(ctx_mgr.switch_db(document_class, self.db_alias))
         return super().__enter__()
+
+    def __create_collection(self, document_class):
+        document_class._meta["db_alias"] = self.db_alias
+        db = document_class.db
+        collection_name = document_class._get_collection_name()
+        if collection_name not in db.list_collection_names():
+            db.create_collection(collection_name)
 
     def __reference_models_services(self):
         return Topology().get_models_from_libs()
