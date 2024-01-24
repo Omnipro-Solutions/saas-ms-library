@@ -1,6 +1,6 @@
 from omni.pro.cloudmap import CloudMap
-from omni.pro.database import RedisManager
 from omni.pro.config import Config
+from omni.pro.database.redis import RedisManager
 
 
 def get_redis_manager() -> RedisManager:

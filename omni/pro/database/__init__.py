@@ -2,7 +2,6 @@ from enum import Enum
 
 from .mongo import DatabaseManager, DBUtil, MongoConnection, PolishNotationToMongoDB
 from .postgres import PolishNotationToSQLAlchemy, PostgresDatabaseManager, QueryBuilder, SessionManager
-from .redis import FakeRedisServer, RedisConnection, RedisManager
 
 
 class PersistenceTypeEnum(Enum):

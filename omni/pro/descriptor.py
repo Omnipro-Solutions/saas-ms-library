@@ -1,5 +1,6 @@
 from mongoengine import DynamicEmbeddedDocument
 from mongoengine.fields import EmbeddedDocumentField, ReferenceField
+from omni.pro.models.base import BaseModel
 from omni.pro.util import to_camel_case
 from sqlalchemy import Enum, inspect
 from sqlalchemy.orm.relationships import RelationshipProperty
@@ -58,15 +59,13 @@ class Descriptor(object):
                 "type": Descriptor.get_equivalent_field(field.__class__.__name__),
                 "class_type": field.__class__.__name__,
                 "required": field.required,
+                "is_filterable": field.is_filterable if hasattr(field, "is_filterable") else True,
+                "is_exportable": field.is_exportable if hasattr(field, "is_exportable") else True,
+                "is_importable": field.is_importable if hasattr(field, "is_importable") else True,
                 "relation": {},
             }
             if hasattr(field, "max_length") and field.max_length:
                 field_info["size"] = field.max_length
-
-            if hasattr(field, "is_filterable"):
-                field_info["is_filterable"] = field.is_filterable
-            else:
-                field_info["is_filterable"] = True
 
             # If the field is an EmbeddedDocumentField or ReferenceField, recurse into its fields
             if isinstance(field, EmbeddedDocumentField) or isinstance(field, ReferenceField):
@@ -149,12 +148,19 @@ class Descriptor(object):
         }
 
         for column in mapper.columns:
+            Descriptor.set_extra_attribute(column, "is_filterable")
+            Descriptor.set_extra_attribute(column, "is_exportable")
+            Descriptor.set_extra_attribute(column, "is_importable")
+
             column_info = {
                 "name": to_camel_case(column.name),
                 "code": column.name,
                 "type": Descriptor.get_equivalent_field(column.type.__class__.__name__),
                 "class_type": column.type.__class__.__name__,
                 "required": not column.nullable,
+                "is_filterable": column.is_filterable,
+                "is_exportable": column.is_exportable,
+                "is_importable": column.is_importable,
             }
             if hasattr(column.type, "length") and column.type.length:
                 column_info["size"] = column.type.length
@@ -346,3 +352,10 @@ class Descriptor(object):
             "UUID": "uuid",
         }
         return field_names[field]
+
+    @staticmethod
+    def set_extra_attribute(column, attribute, default=True):
+        if not hasattr(column, attribute):
+            if column.name in BaseModel.__annotations__.keys():
+                default = getattr(getattr(BaseModel, column.name).column, attribute)
+            setattr(column, attribute, default)
