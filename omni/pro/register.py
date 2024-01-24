@@ -1,5 +1,6 @@
 from google.protobuf import json_format
 from omni.pro import redis
+from omni.pro.database import PersistenceTypeEnum
 from omni.pro.descriptor import Descriptor
 from omni.pro.logger import configure_logger
 from omni.pro.protos.grpc_function import ModelRPCFucntion
@@ -23,7 +24,7 @@ class RegisterModel(object):
 
         Registrar modelos MongoDB.
         """
-        self._register("describe_mongo_model", "NO_SQL")
+        self._register("describe_mongo_model", PersistenceTypeEnum.NO_SQL)
 
     def register_sqlalchemy_model(self):
         """
@@ -31,9 +32,9 @@ class RegisterModel(object):
 
         Registrar modelos SQLAlchemy.
         """
-        self._register("describe_sqlalchemy_model", "SQL")
+        self._register("describe_sqlalchemy_model", PersistenceTypeEnum.SQL)
 
-    def _register(self, method: str, persistence_type: str):
+    def _register(self, method: str, persistence_type: PersistenceTypeEnum):
         """
         Generic method to register models based on persistence type and descriptor method.
 
@@ -45,7 +46,7 @@ class RegisterModel(object):
             Method name from Descriptor class to describe the model.
             Nombre del método de la clase Descriptor para describir el modelo.
 
-        persistence_type : str
+        persistence_type : PersistenceTypeEnum
             Type of the persistence either "NO_SQL" or "SQL".
             Tipo de persistencia ya sea "NO_SQL" o "SQL".
         """
@@ -61,7 +62,7 @@ class RegisterModel(object):
             rpc_func: ModelRPCFucntion = self.get_rpc_model_func_class()(context)
             for model in models_libs:
                 desc = getattr(Descriptor, method)(model)
-                desc = {"persistence_type": persistence_type, "microservice": self.microservice} | desc
+                desc = {"persistence_type": str(persistence_type), "microservice": self.microservice} | desc
                 hash_code = generate_hash(desc)
                 params = {
                     "filter": {
