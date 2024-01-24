@@ -116,7 +116,15 @@ class RedisManager(object):
 
     def get_tenant_codes(self, pattern="*") -> list:
         with self.get_connection() as rc:
-            return rc.keys(pattern=pattern)
+            if Config.REDIS_SSL is False:
+                return rc.keys(pattern=pattern)
+
+            cursor = "0"
+            keys = []
+            while cursor != 0:
+                cursor, next_keys = rc.scan(cursor=cursor, match=pattern)
+                keys.extend(next_keys)
+            return keys
 
     def get_user_admin(self, tenant):
         tenant_obj = self.get_json(tenant)
