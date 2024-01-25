@@ -188,6 +188,8 @@ class Descriptor(object):
                     "class_type": Descriptor.get_equivalent_field("RelationshipProperty"),
                     "required": not relation.uselist,  # True para many-to-one, False para many-to-many
                     "relation": {"name": relation.entity.class_.__name__},
+                    "is_exportable": False,
+                    "is_importable": False,
                 }
                 description["fields"].append(relation_info)
 
