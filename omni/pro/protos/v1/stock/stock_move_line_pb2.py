@@ -30,6 +30,7 @@ _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, "v1.stock.stock_move_line_pb2", _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
+
     DESCRIPTOR._options = None
     _globals["_STOCKMOVELINE"]._serialized_start = 312
     _globals["_STOCKMOVELINE"]._serialized_end = 1007

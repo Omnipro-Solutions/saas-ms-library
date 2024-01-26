@@ -23,6 +23,7 @@ _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, "v1.rules.redistribution_order_pb2", _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
+
     DESCRIPTOR._options = None
     _globals["_REDISTRIBUTIONORDER"]._serialized_start = 137
     _globals["_REDISTRIBUTIONORDER"]._serialized_end = 287
