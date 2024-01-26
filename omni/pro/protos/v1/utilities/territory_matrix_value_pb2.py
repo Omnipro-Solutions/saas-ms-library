@@ -24,6 +24,7 @@ _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, "v1.utilities.territory_matrix_value_pb2", _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
+
     DESCRIPTOR._options = None
     _globals["_TERRITORYMATRIXVALUE"]._serialized_start = 181
     _globals["_TERRITORYMATRIXVALUE"]._serialized_end = 443

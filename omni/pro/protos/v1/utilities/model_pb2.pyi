@@ -72,6 +72,7 @@ class Field(_message.Message):
     __slots__ = [
         "name",
         "type",
+        "class_type",
         "description",
         "code",
         "size",
@@ -86,6 +87,7 @@ class Field(_message.Message):
     ]
     NAME_FIELD_NUMBER: _ClassVar[int]
     TYPE_FIELD_NUMBER: _ClassVar[int]
+    CLASS_TYPE_FIELD_NUMBER: _ClassVar[int]
     DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
     SIZE_FIELD_NUMBER: _ClassVar[int]
@@ -99,6 +101,7 @@ class Field(_message.Message):
     OPTIONS_FIELD_NUMBER: _ClassVar[int]
     name: str
     type: str
+    class_type: str
     description: str
     code: str
     size: int
@@ -114,6 +117,7 @@ class Field(_message.Message):
         self,
         name: _Optional[str] = ...,
         type: _Optional[str] = ...,
+        class_type: _Optional[str] = ...,
         description: _Optional[str] = ...,
         code: _Optional[str] = ...,
         size: _Optional[int] = ...,
