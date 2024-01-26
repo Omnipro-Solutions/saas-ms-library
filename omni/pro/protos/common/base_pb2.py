@@ -22,6 +22,7 @@ _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, "common.base_pb2", _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
+
     DESCRIPTOR._options = None
     _globals["_OBJECT"]._serialized_start = 84
     _globals["_OBJECT"]._serialized_end = 125

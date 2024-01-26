@@ -25,6 +25,7 @@ _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, "v1.rules.delivery_locality_pb2", _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
+
     DESCRIPTOR._options = None
     _globals["_DELIVERYLOCALITY"]._serialized_start = 187
     _globals["_DELIVERYLOCALITY"]._serialized_end = 554

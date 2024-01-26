@@ -25,6 +25,7 @@ _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, "v1.sales.transition_pb2", _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
+
     DESCRIPTOR._options = None
     _globals["_TRANSITION"]._serialized_start = 162
     _globals["_TRANSITION"]._serialized_end = 550

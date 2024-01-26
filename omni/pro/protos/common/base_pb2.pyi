@@ -33,6 +33,7 @@ class SortBy(_message.Message):
         __slots__ = []
         ASC: _ClassVar[SortBy.SortType]
         DESC: _ClassVar[SortBy.SortType]
+
     ASC: SortBy.SortType
     DESC: SortBy.SortType
     NAME_FIELD_FIELD_NUMBER: _ClassVar[int]
@@ -72,6 +73,7 @@ class LinkPage(_message.Message):
         PREV: _ClassVar[LinkPage.LinkType]
         LAST: _ClassVar[LinkPage.LinkType]
         FIRST: _ClassVar[LinkPage.LinkType]
+
     NEXT: LinkPage.LinkType
     PREV: LinkPage.LinkType
     LAST: LinkPage.LinkType
