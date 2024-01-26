@@ -50,6 +50,7 @@ class Sale(_message.Message):
         "shipping_amount_total",
         "shipping_method_code",
         "shipping_amount_discount_description",
+        "ecommerce_id",
         "object_audit",
         "payment_methods",
         "orders",
@@ -81,6 +82,7 @@ class Sale(_message.Message):
     SHIPPING_AMOUNT_TOTAL_FIELD_NUMBER: _ClassVar[int]
     SHIPPING_METHOD_CODE_FIELD_NUMBER: _ClassVar[int]
     SHIPPING_AMOUNT_DISCOUNT_DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
+    ECOMMERCE_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     PAYMENT_METHODS_FIELD_NUMBER: _ClassVar[int]
     ORDERS_FIELD_NUMBER: _ClassVar[int]
@@ -111,6 +113,7 @@ class Sale(_message.Message):
     shipping_amount_total: float
     shipping_method_code: str
     shipping_amount_discount_description: str
+    ecommerce_id: int
     object_audit: _base_pb2.ObjectAudit
     payment_methods: _containers.RepeatedCompositeFieldContainer[_struct_pb2.Struct]
     orders: _containers.RepeatedCompositeFieldContainer[_struct_pb2.Struct]
@@ -143,6 +146,7 @@ class Sale(_message.Message):
         shipping_amount_total: _Optional[float] = ...,
         shipping_method_code: _Optional[str] = ...,
         shipping_amount_discount_description: _Optional[str] = ...,
+        ecommerce_id: _Optional[int] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
         payment_methods: _Optional[_Iterable[_Union[_struct_pb2.Struct, _Mapping]]] = ...,
         orders: _Optional[_Iterable[_Union[_struct_pb2.Struct, _Mapping]]] = ...,
@@ -206,6 +210,7 @@ class SaleCreateRequest(_message.Message):
         "shipping_amount_total",
         "shipping_method_code",
         "shipping_amount_discount_description",
+        "ecommerce_id",
         "external_id",
         "context",
     ]
@@ -233,6 +238,7 @@ class SaleCreateRequest(_message.Message):
     SHIPPING_AMOUNT_TOTAL_FIELD_NUMBER: _ClassVar[int]
     SHIPPING_METHOD_CODE_FIELD_NUMBER: _ClassVar[int]
     SHIPPING_AMOUNT_DISCOUNT_DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
+    ECOMMERCE_ID_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
@@ -259,6 +265,7 @@ class SaleCreateRequest(_message.Message):
     shipping_amount_total: float
     shipping_method_code: str
     shipping_amount_discount_description: str
+    ecommerce_id: int
     external_id: str
     context: _base_pb2.Context
     def __init__(
@@ -287,6 +294,7 @@ class SaleCreateRequest(_message.Message):
         shipping_amount_total: _Optional[float] = ...,
         shipping_method_code: _Optional[str] = ...,
         shipping_amount_discount_description: _Optional[str] = ...,
+        ecommerce_id: _Optional[int] = ...,
         external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...

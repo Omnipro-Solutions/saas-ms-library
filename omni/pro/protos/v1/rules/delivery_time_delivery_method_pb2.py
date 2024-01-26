@@ -22,6 +22,7 @@ _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, "v1.rules.delivery_time_delivery_method_pb2", _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
+
     DESCRIPTOR._options = None
     _globals["_DELIVERYTIMEDELIVERYMETHOD"]._serialized_start = 125
     _globals["_DELIVERYTIMEDELIVERYMETHOD"]._serialized_end = 321
