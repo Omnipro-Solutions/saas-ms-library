@@ -4,6 +4,8 @@ import operator
 from omni.pro.protos.common import base_pb2
 from sqlalchemy import and_, asc, create_engine, desc, not_, or_
 from sqlalchemy.orm import aliased, scoped_session, sessionmaker
+from sqlalchemy.sql import cast, operators
+from sqlalchemy.sql.sqltypes import Enum, String
 
 
 class SessionManager:
@@ -200,14 +202,14 @@ class PostgresDatabaseManager(SessionManager):
         if filter.ListFields():
             # Uso de la clase
             expression = ast.literal_eval(filter.filter)  # Tu expresión en notación polaca inversa
-            converter = PolishNotationToSQLAlchemy(model, expression)
-            filter_condition, aliases = converter.convert()
+            # converter = PolishNotationToSQLAlchemy(model, expression)
+            # filter_condition, aliases = converter.convert()
 
             # Aplicar el filtro a la consulta
-            for alias in aliases.values():
-                query = query.join(alias)
+            # for alias in aliases.values():
+            #     query = query.join(alias)
 
-            query = query.filter(filter_condition)
+            query = self.parse_expression(expression, query, model)
 
         if id:
             query = query.filter(model.id == id)
@@ -325,6 +327,81 @@ class PostgresDatabaseManager(SessionManager):
         session.close()
 
         return list(batch_upsert_process - set(upsert_list))
+
+    def get_sqlalchemy_operator(self, op):
+        """
+        Devuelve el operador de SQLAlchemy correspondiente al operador en string.
+
+        :param op: El operador en formato de string.
+        :return: Operador de SQLAlchemy.
+        """
+        operator_mapping = {
+            "=": operators.eq,
+            "!=": operators.ne,
+            "<": operators.lt,
+            "<=": operators.le,
+            ">": operators.gt,
+            ">=": operators.ge,
+            "like": operators.like_op,
+            "ilike": operators.ilike_op,
+            "in": operators.in_op,
+            "not in": operators.notin_op,
+            # Agrega más operadores según sea necesario
+        }
+        return operator_mapping.get(op)
+
+    def resolve_field_and_joins(self, base_model, field_path):
+        """
+        Resuelve el campo y construye los joins necesarios.
+
+        :param base_model: El modelo base de SQLAlchemy.
+        :param field_path: El camino al campo, que puede incluir '__' para relaciones.
+        :return: El atributo del modelo SQLAlchemy correspondiente y una lista de joins.
+        """
+        fields = field_path.split("__")
+        model = base_model
+        joins = []
+        for field in fields[:-1]:
+            relationship_property = getattr(model, field)
+            model = relationship_property.property.mapper.class_
+            joins.append(relationship_property)
+        return getattr(model, fields[-1]), joins
+
+    def parse_expression(self, expression, query, base_model):
+        stack = []
+        joins = []
+        for item in reversed(expression):
+            if isinstance(item, tuple):
+                field_path, op, value = item
+                field, join_path = self.resolve_field_and_joins(base_model, field_path)
+
+                joins.extend(join_path)
+
+                operator_func = self.get_sqlalchemy_operator(op)
+
+                if not operator_func:
+                    raise ValueError(f"Operador desconocido: {op}")
+
+                # Casting a texto si es necesario
+                if isinstance(field.type, Enum) and op in ["like", "ilike"]:
+                    field = cast(field, String)
+
+                clause = operator_func(field, value)
+                stack.append(clause)
+            elif item in ["and", "or"]:
+                right = stack.pop()
+                left = stack.pop()
+                if item == "and":
+                    stack.append(and_(left, right))
+                else:
+                    stack.append(or_(left, right))
+
+        if len(stack) != 1:
+            raise ValueError("Expresión inválida")
+
+        for join in joins:
+            query = query.join(join)
+        return query.filter(stack[0])
 
 
 class PolishNotationToSQLAlchemy:
