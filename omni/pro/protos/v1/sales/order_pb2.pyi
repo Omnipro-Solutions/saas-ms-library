@@ -11,6 +11,7 @@ from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
 from omni.pro.protos.v1.sales import address_pb2 as _address_pb2
+from omni.pro.protos.v1.sales import carrier_pb2 as _carrier_pb2
 from omni.pro.protos.v1.sales import delivery_method_pb2 as _delivery_method_pb2
 from omni.pro.protos.v1.sales import picking_pb2 as _picking_pb2
 from omni.pro.protos.v1.sales import sale_pb2 as _sale_pb2
@@ -25,6 +26,7 @@ class Order(_message.Message):
         "sale",
         "ship_address",
         "delivery_method",
+        "carriers",
         "tax_total",
         "discount_total",
         "subtotal",
@@ -48,6 +50,7 @@ class Order(_message.Message):
     SALE_FIELD_NUMBER: _ClassVar[int]
     SHIP_ADDRESS_FIELD_NUMBER: _ClassVar[int]
     DELIVERY_METHOD_FIELD_NUMBER: _ClassVar[int]
+    CARRIERS_FIELD_NUMBER: _ClassVar[int]
     TAX_TOTAL_FIELD_NUMBER: _ClassVar[int]
     DISCOUNT_TOTAL_FIELD_NUMBER: _ClassVar[int]
     SUBTOTAL_FIELD_NUMBER: _ClassVar[int]
@@ -70,6 +73,7 @@ class Order(_message.Message):
     sale: _sale_pb2.Sale
     ship_address: _address_pb2.Address
     delivery_method: _delivery_method_pb2.DeliveryMethod
+    carriers: _containers.RepeatedCompositeFieldContainer[_carrier_pb2.Carrier]
     tax_total: float
     discount_total: float
     subtotal: float
@@ -94,6 +98,7 @@ class Order(_message.Message):
         sale: _Optional[_Union[_sale_pb2.Sale, _Mapping]] = ...,
         ship_address: _Optional[_Union[_address_pb2.Address, _Mapping]] = ...,
         delivery_method: _Optional[_Union[_delivery_method_pb2.DeliveryMethod, _Mapping]] = ...,
+        carriers: _Optional[_Iterable[_Union[_carrier_pb2.Carrier, _Mapping]]] = ...,
         tax_total: _Optional[float] = ...,
         discount_total: _Optional[float] = ...,
         subtotal: _Optional[float] = ...,
@@ -119,6 +124,7 @@ class OrderCreateRequest(_message.Message):
         "sale_id",
         "ship_address_code",
         "delivery_method_id",
+        "carrier_ids",
         "tax_total",
         "discount_total",
         "subtotal",
@@ -138,6 +144,7 @@ class OrderCreateRequest(_message.Message):
     SALE_ID_FIELD_NUMBER: _ClassVar[int]
     SHIP_ADDRESS_CODE_FIELD_NUMBER: _ClassVar[int]
     DELIVERY_METHOD_ID_FIELD_NUMBER: _ClassVar[int]
+    CARRIER_IDS_FIELD_NUMBER: _ClassVar[int]
     TAX_TOTAL_FIELD_NUMBER: _ClassVar[int]
     DISCOUNT_TOTAL_FIELD_NUMBER: _ClassVar[int]
     SUBTOTAL_FIELD_NUMBER: _ClassVar[int]
@@ -156,6 +163,7 @@ class OrderCreateRequest(_message.Message):
     sale_id: int
     ship_address_code: str
     delivery_method_id: int
+    carrier_ids: _containers.RepeatedScalarFieldContainer[int]
     tax_total: float
     discount_total: float
     subtotal: float
@@ -176,6 +184,7 @@ class OrderCreateRequest(_message.Message):
         sale_id: _Optional[int] = ...,
         ship_address_code: _Optional[str] = ...,
         delivery_method_id: _Optional[int] = ...,
+        carrier_ids: _Optional[_Iterable[int]] = ...,
         tax_total: _Optional[float] = ...,
         discount_total: _Optional[float] = ...,
         subtotal: _Optional[float] = ...,

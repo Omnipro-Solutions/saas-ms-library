@@ -1,16 +1,16 @@
 import re
-
 from datetime import datetime
 
 from google.protobuf.timestamp_pb2 import Timestamp
 from mongoengine import BooleanField, DateTimeField, Document, EmbeddedDocument, EmbeddedDocumentField, StringField
+from omni.pro.database.sqlalchemy import mapped_column
 from omni.pro.protos.common.base_pb2 import Context as ContextProto
 from omni.pro.protos.common.base_pb2 import Object as ObjectProto
 from omni.pro.protos.common.base_pb2 import ObjectAudit as AuditProto
-from sqlalchemy import Boolean, DateTime, ForeignKey, String
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Boolean, DateTime, String
 from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy.orm import DeclarativeBase, Mapped, declarative_mixin, declared_attr, mapped_column, relationship
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import DeclarativeBase, Mapped, declarative_mixin, declared_attr, relationship
 
 
 class BaseEmbeddedDocument(EmbeddedDocument):
@@ -169,18 +169,18 @@ class Base:
         """
         return cls._camel_to_snake(cls.__name__)
 
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True, is_importable=False)
     active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
     external_id: Mapped[str] = mapped_column(String(50), unique=True, nullable=True)
-    tenant: Mapped[str] = mapped_column(String(30), nullable=False)
-    created_by: Mapped[str] = mapped_column(String(50), default=set_created_by, nullable=False)
-    updated_by: Mapped[str] = mapped_column(String(50), nullable=False)
-    deleted_by: Mapped[str] = mapped_column(String(50), nullable=True)
-    created_at: Mapped[datetime] = mapped_column(DateTime(), default=datetime.now, nullable=False)
+    tenant: Mapped[str] = mapped_column(String(30), nullable=False, is_importable=False)
+    created_by: Mapped[str] = mapped_column(String(50), default=set_created_by, nullable=False, is_importable=False)
+    updated_by: Mapped[str] = mapped_column(String(50), nullable=False, is_importable=False)
+    deleted_by: Mapped[str] = mapped_column(String(50), nullable=True, is_importable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime(), default=datetime.now, nullable=False, is_importable=False)
     updated_at: Mapped[datetime] = mapped_column(
-        DateTime(), default=datetime.now, onupdate=datetime.now, nullable=False
+        DateTime(), default=datetime.now, onupdate=datetime.now, nullable=False, is_importable=False
     )
-    deleted_at: Mapped[datetime] = mapped_column(DateTime(), nullable=True)
+    deleted_at: Mapped[datetime] = mapped_column(DateTime(), nullable=True, is_importable=False)
 
     def create(self, session):
         """
