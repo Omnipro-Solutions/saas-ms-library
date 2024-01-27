@@ -24,8 +24,17 @@ class AlembicCheckMigration:
         self.template_alembic = self.get_database_template_alembic(Config.SERVICE_ID)
 
     @staticmethod
+    @contextlib.contextmanager
     def set_environment_variable(key, value):
+        old_value = os.getenv(key)
         os.environ[key] = value
+        try:
+            yield
+        finally:
+            if old_value is not None:
+                os.environ[key] = old_value
+            else:
+                del os.environ[key]
 
     def get_database_template_alembic(self, service_id):
         return self.redis_manager.get_json(f"SETTINGS", f"migrations.{service_id}.dbs")
@@ -166,7 +175,5 @@ class AlembicCheckMigration:
             logger.error(f"Failed to migrate template alembic: {e}")
 
     def push(self):
-        self.set_environment_variable("REPO_URL",
-                                      self.redis_manager.get_json(f"SETTINGS", f"repos.{Config.SERVICE_ID}.url"))
-        self.set_environment_variable("REPO_TOKEN",
-                                      self.redis_manager.get_json(f"SETTINGS", f"repos.{Config.SERVICE_ID}.token"))
+        print(f"REPO_URL={self.redis_manager.get_json(f'SETTINGS', f'repos.{Config.SERVICE_ID}.url')}")
+        print(f"RUN=1")
