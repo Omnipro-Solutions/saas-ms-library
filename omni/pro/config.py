@@ -23,9 +23,9 @@ class Config(object):
     USER_MS_PORT = os.environ.get("USER_MS_PORT") or 50052
     USER_MS_HOST = os.environ.get("USER_MS_HOST") or "localhost"
     SERVICE_NAME_BALANCER = os.environ.get("SERVICE_NAME_BALANCER")
-    SAAS_MS_USER = os.environ.get("SAAS_MS_USER")
-    SAAS_MS_CATALOG = os.environ.get("SAAS_MS_CATALOG")
-    SAAS_MS_UTILITIES = os.environ.get("SAAS_MS_UTILITIES")
-    SAAS_MS_STOCK = os.environ.get("SAAS_MS_STOCK")
-    SAAS_MS_CLIENT = os.environ.get("SAAS_MS_CLIENT")
+    SAAS_MS_USER = os.environ.get("SAAS_MS_USER") or "saa-ms-user"
+    SAAS_MS_CATALOG = os.environ.get("SAAS_MS_CATALOG") or "saa-ms-catalog"
+    SAAS_MS_UTILITIES = os.environ.get("SAAS_MS_UTILITIES") or "saa-ms-utilities"
+    SAAS_MS_STOCK = os.environ.get("SAAS_MS_STOCK") or "saa-ms-stock"
+    SAAS_MS_CLIENT = os.environ.get("SAAS_MS_CLIENT") or "saa-ms-client"
     TENANT_POSTGRESQL_URL = os.environ.get("TENANT_POSTGRESQL_URL")
