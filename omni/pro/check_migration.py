@@ -3,6 +3,7 @@ import ast
 import subprocess
 import psycopg2
 import datetime
+import contextlib
 from pathlib import Path
 
 from psycopg2 import OperationalError
@@ -13,13 +14,30 @@ from omni.pro.logger import configure_logger
 logger = configure_logger(name=__name__)
 
 
-class AlembicCheckMigrations:
+class AlembicCheckMigration:
 
     def __init__(self, app_path):
+        self.app_path = app_path
         self.alembic_version_files = self.get_alembic_version_files_id()
         self.redis_manager = redis.get_redis_manager()
         self.tenants = self.redis_manager.get_tenant_codes()
-        self.app_path = app_path
+        self.template_alembic = self.get_database_template_alembic(Config.SERVICE_ID)
+
+    @staticmethod
+    @contextlib.contextmanager
+    def set_environment_variable(key, value):
+        old_value = os.getenv(key)
+        os.environ[key] = value
+        try:
+            yield
+        finally:
+            if old_value is not None:
+                os.environ[key] = old_value
+            else:
+                del os.environ[key]
+
+    def get_database_template_alembic(self, service_id):
+        return self.redis_manager.get_json(f"SETTINGS", f"migrations.{service_id}.dbs")
 
     def get_postgres_config(self, service_id, tenant_code):
         postres_config = self.redis_manager.get_postgres_config(Config.SERVICE_ID, tenant_code)
@@ -79,7 +97,7 @@ class AlembicCheckMigrations:
     def validate_changes_in_revision(self, name):
         alembic_files = self.get_alembic_version_files_id()
         file_id = list(set(alembic_files) - set(self.alembic_version_files))[0]
-        file_path = Path(__file__).parent / "alembic" / "versions" / f"{file_id}_{name}.py"
+        file_path = Path(self.app_path).parent / "alembic" / "versions" / f"{file_id}_{name}.py"
 
         with open(file_path, "r") as file:
             file_content = file.read()
@@ -106,7 +124,7 @@ class AlembicCheckMigrations:
     def validate(self):
         logger.info("Start validate")
         validations = []
-        for tenant in self.tenants or []:
+        for tenant in self.tenants:
             logger.info(f"Migrate tenant: {tenant}")
             host, port, user, password, name = self.get_postgres_config(Config.SERVICE_ID, tenant)
             alembic_version = self.get_alembic_version(host, port, user, password, name)
@@ -117,7 +135,7 @@ class AlembicCheckMigrations:
         logger.info("Start revision")
         logger.info(f"Revision database saas-ms-sale-alembic")
         host, port, user, password, name = self.get_postgres_config(Config.SERVICE_ID, self.tenants[0])
-        name = "saas-ms-sale-alembic"
+        name = self.template_alembic
         sql_connect = f"postgresql://{user}:{password}@{host}:{port}/{name}"
         os.environ["TENANT_URL"] = sql_connect
         name_file = f"automatic_revision_{datetime.datetime.now().strftime('%Y_%m_%d_%H_%M_%S')}"
@@ -126,14 +144,38 @@ class AlembicCheckMigrations:
             ["alembic", "revision", "--autogenerate", "-m", name_file])
         return self.validate_changes_in_revision(name_file)
 
+    def run_alembic_migration(self, sql_connect):
+        with self.set_environment_variable("TENANT_URL", sql_connect):
+            result = subprocess.run(["alembic", "upgrade", "head"], capture_output=True, text=True)
+            if result.returncode != 0:
+                logger.error(f"Migration failed: {result.stderr}")
+                raise RuntimeError(f"Migration failed: {result.stderr}")
+            else:
+                logger.info("Migration completed successfully.")
+
     def migrate(self):
         logger.info("Start migrations")
-        for tenant in self.tenants or []:
+        for tenant in self.tenants:
             logger.info(f"Migrate tenant: {tenant}")
-            host, port, user, password, name = self.get_postgres_config(Config.SERVICE_ID, tenant)
-            sql_connect = f"postgresql://{user}:{password}@{host}:{port}/{name}"
-            os.environ["TENANT_URL"] = sql_connect
-            subprocess.run(["alembic", "upgrade", "head"])
+            try:
+                host, port, user, password, name = self.get_postgres_config(Config.SERVICE_ID, tenant)
+                if not all([host, port, user, password, name]):
+                    raise ValueError(f"Invalid database config for tenant: {tenant}")
+                sql_connect = f"postgresql://{user}:{password}@{host}:{port}/{name}"
+                self.run_alembic_migration(sql_connect)
+            except Exception as e:
+                logger.error(f"Failed to migrate tenant {tenant}: {e}")
+                # Decide if you want to continue with the next tenant or re-raise the exception
+
+        # Migrate template alembic after tenants
+        try:
+            sql_connect = f"postgresql://{user}:{password}@{host}:{port}/{self.template_alembic}"
+            self.run_alembic_migration(sql_connect)
+        except Exception as e:
+            logger.error(f"Failed to migrate template alembic: {e}")
 
     def push(self):
-        pass
+        self.set_environment_variable("REPO_URL",
+                                      self.redis_manager.get_json(f"SETTINGS", f"repos.{Config.SERVICE_ID}.url"))
+        self.set_environment_variable("REPO_TOKEN",
+                                      self.redis_manager.get_json(f"SETTINGS", f"repos.{Config.SERVICE_ID}.token"))
