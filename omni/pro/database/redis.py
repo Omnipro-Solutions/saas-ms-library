@@ -114,16 +114,33 @@ class RedisManager(object):
             "name": nested(config, "dbs.postgres.name"),
         }
 
+    @staticmethod
+    def remove_key_settings(keys):
+        return [keys for key in keys if key != "SETTINGS"]
+
     def get_tenant_codes(self, pattern="*") -> list:
         with self.get_connection() as rc:
             if Config.REDIS_SSL is False:
-                return rc.keys(pattern=pattern)
+                return self.remove_key_settings(rc.keys(pattern=pattern))
 
             cursor = "0"
             keys = []
             while cursor != 0:
                 cursor, next_keys = rc.scan(cursor=cursor, match=pattern)
                 keys.extend(next_keys)
+            return self.remove_key_settings(keys)
+
+    def get_settings_key(self):
+        pattern = "SETTINGS"
+        with self.get_connection() as rc:
+            if Config.REDIS_SSL is False:
+                return [key for key in rc.keys(pattern=pattern) if key == "SETTINGS"]
+
+            cursor = "0"
+            keys = []
+            while cursor != 0:
+                cursor, next_keys = rc.scan(cursor=cursor, match=pattern)
+                keys.extend([key for key in next_keys if key == "SETTINGS"])
             return keys
 
     def get_user_admin(self, tenant):
