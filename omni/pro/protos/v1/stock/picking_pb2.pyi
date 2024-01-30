@@ -63,6 +63,8 @@ class Picking(_message.Message):
         "shipping_address",
         "active",
         "warehouse",
+        "stock_moves",
+        "stock_move_lines",
         "external_id",
         "object_audit",
     ]
@@ -101,6 +103,8 @@ class Picking(_message.Message):
     SHIPPING_ADDRESS_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     WAREHOUSE_FIELD_NUMBER: _ClassVar[int]
+    STOCK_MOVES_FIELD_NUMBER: _ClassVar[int]
+    STOCK_MOVE_LINES_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: int
@@ -138,6 +142,8 @@ class Picking(_message.Message):
     shipping_address: _address_pb2.Address
     active: _wrappers_pb2.BoolValue
     warehouse: _base_pb2.ObjectResponse
+    stock_moves: _containers.RepeatedCompositeFieldContainer[_struct_pb2.Struct]
+    stock_move_lines: _containers.RepeatedCompositeFieldContainer[_struct_pb2.Struct]
     external_id: str
     object_audit: _base_pb2.ObjectAudit
     def __init__(
@@ -177,6 +183,8 @@ class Picking(_message.Message):
         shipping_address: _Optional[_Union[_address_pb2.Address, _Mapping]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         warehouse: _Optional[_Union[_base_pb2.ObjectResponse, _Mapping]] = ...,
+        stock_moves: _Optional[_Iterable[_Union[_struct_pb2.Struct, _Mapping]]] = ...,
+        stock_move_lines: _Optional[_Iterable[_Union[_struct_pb2.Struct, _Mapping]]] = ...,
         external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...

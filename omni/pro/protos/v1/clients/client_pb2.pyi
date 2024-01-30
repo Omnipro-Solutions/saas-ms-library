@@ -18,7 +18,7 @@ class Client(_message.Message):
     __slots__ = [
         "id",
         "name",
-        "type_document",
+        "document_type",
         "document",
         "mobile",
         "phone",
@@ -31,7 +31,7 @@ class Client(_message.Message):
     ]
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
-    TYPE_DOCUMENT_FIELD_NUMBER: _ClassVar[int]
+    DOCUMENT_TYPE_FIELD_NUMBER: _ClassVar[int]
     DOCUMENT_FIELD_NUMBER: _ClassVar[int]
     MOBILE_FIELD_NUMBER: _ClassVar[int]
     PHONE_FIELD_NUMBER: _ClassVar[int]
@@ -43,7 +43,7 @@ class Client(_message.Message):
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
-    type_document: _type_document_pb2.TypeDocument
+    document_type: _type_document_pb2.TypeDocument
     document: str
     mobile: str
     phone: str
@@ -57,7 +57,7 @@ class Client(_message.Message):
         self,
         id: _Optional[str] = ...,
         name: _Optional[str] = ...,
-        type_document: _Optional[_Union[_type_document_pb2.TypeDocument, _Mapping]] = ...,
+        document_type: _Optional[_Union[_type_document_pb2.TypeDocument, _Mapping]] = ...,
         document: _Optional[str] = ...,
         mobile: _Optional[str] = ...,
         phone: _Optional[str] = ...,
@@ -72,7 +72,7 @@ class Client(_message.Message):
 class ClientCreateRequest(_message.Message):
     __slots__ = [
         "name",
-        "type_document_id",
+        "document_type_id",
         "document",
         "mobile",
         "phone",
@@ -82,7 +82,7 @@ class ClientCreateRequest(_message.Message):
         "context",
     ]
     NAME_FIELD_NUMBER: _ClassVar[int]
-    TYPE_DOCUMENT_ID_FIELD_NUMBER: _ClassVar[int]
+    DOCUMENT_TYPE_ID_FIELD_NUMBER: _ClassVar[int]
     DOCUMENT_FIELD_NUMBER: _ClassVar[int]
     MOBILE_FIELD_NUMBER: _ClassVar[int]
     PHONE_FIELD_NUMBER: _ClassVar[int]
@@ -91,7 +91,7 @@ class ClientCreateRequest(_message.Message):
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
-    type_document_id: str
+    document_type_id: str
     document: str
     mobile: str
     phone: str
@@ -102,7 +102,7 @@ class ClientCreateRequest(_message.Message):
     def __init__(
         self,
         name: _Optional[str] = ...,
-        type_document_id: _Optional[str] = ...,
+        document_type_id: _Optional[str] = ...,
         document: _Optional[str] = ...,
         mobile: _Optional[str] = ...,
         phone: _Optional[str] = ...,
