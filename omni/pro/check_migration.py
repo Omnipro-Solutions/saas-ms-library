@@ -65,7 +65,7 @@ class AlembicCheckMigration:
             """)
             if not cursor.fetchone()[0]:
                 logger.warning("La tabla 'public.alembic_version' no existe en la base de datos.")
-                return None
+                return False
 
             # Recupera el número de versión
             cursor.execute("SELECT version_num FROM public.alembic_version LIMIT 1")
