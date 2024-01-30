@@ -82,7 +82,6 @@ class AlembicCheckMigration:
 
     def get_alembic_version_files_id(self):
         path_alembic = Path(self.app_path).parent / "alembic" / "versions"
-        path_alembic.mkdir(parents=True, exist_ok=True)
         if not any(path_alembic.iterdir()):
             return []
         alembic_version_files = [file.name.split("_")[0] for file in path_alembic.iterdir()]
