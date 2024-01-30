@@ -1,43 +1,76 @@
-import os
 import ast
-import subprocess
-import psycopg2
-import datetime
-import contextlib
+import inspect as inspect_ast
+import os
+from datetime import datetime
 from pathlib import Path
 
-from psycopg2 import OperationalError
+from alembic import command
+from alembic.config import Config as AlembicConfig
+from alembic.script import Script, ScriptDirectory
 from omni.pro import redis
 from omni.pro.config import Config
 from omni.pro.logger import configure_logger
+from sqlalchemy import Column, String, create_engine
+from sqlalchemy import inspect as inspect_sqlalchemy
+from sqlalchemy.orm import DeclarativeBase, sessionmaker
 
 logger = configure_logger(name=__name__)
 
 
-class AlembicCheckMigration:
+class Base(DeclarativeBase):
+    pass
 
-    def __init__(self, app_path):
-        self.app_path = app_path
-        self.alembic_version_files = self.get_alembic_version_files_id()
+
+class AlembicVersionModel(Base):
+    __tablename__ = "alembic_version"
+
+    version_num = Column(String(32), primary_key=True)
+
+
+class AlembicMigrateCheck(object):
+    def __init__(self, path: Path, postgres_url: str = None) -> None:
         self.redis_manager = redis.get_redis_manager()
         self.tenants = self.redis_manager.get_tenant_codes()
-        self.template_alembic = self.get_database_template_alembic(Config.SERVICE_ID)
+        self.alembic_config = AlembicConfig(path / "alembic.ini")
+        self.alembic_config.set_main_option("script_location", str(path / "alembic"))
+        self.versions_path = path / "alembic" / "versions"
+        self.postgres_url = postgres_url
+        self.changes = False
 
-    @staticmethod
-    @contextlib.contextmanager
-    def set_environment_variable(key, value):
-        old_value = os.getenv(key)
-        os.environ[key] = value
-        try:
-            yield
-        finally:
-            if old_value is not None:
-                os.environ[key] = old_value
-            else:
-                del os.environ[key]
+    def main(self):
+        logger.info("Start validate")
+        last_version = None
+        validations = []
+        for idx, tenant in enumerate(self.tenants):
+            logger.info(f"Migrate tenant: {tenant}")
+            try:
+                host, port, user, password, name = self.get_postgres_config(Config.SERVICE_ID, tenant)
+                if not all([host, port, user, password, name]):
+                    raise ValueError(f"Invalid database config for tenant: {tenant}")
+                sql_connect = f"postgresql://{user}:{password}@{host}:{port}/{name}"
+                self.postgres_url = sql_connect
+                if idx == 0:
+                    last_version = self.apply()
+                else:
+                    self.upgrade_head(last_version)
+            except Exception as e:
+                logger.error(f"Failed to migrate tenant {tenant}: {e}")
 
-    def get_database_template_alembic(self, service_id):
-        return self.redis_manager.get_json(f"SETTINGS", f"migrations.{service_id}.dbs")
+        if self.changes:
+            print(f"REPO_URL={self.redis_manager.get_json(f'SETTINGS', f'repos.{Config.SERVICE_ID}.url')}")
+            print(f"RUN=1")
+
+    @property
+    def postgres_url(self) -> str:
+        return self._postgres_url
+
+    @postgres_url.setter
+    def postgres_url(self, postgres_url) -> None:
+        self._postgres_url = postgres_url
+        if postgres_url:
+            self.alembic_config.set_main_option("sqlalchemy.url", postgres_url)
+            self.engine = create_engine(postgres_url)
+            self.Session = sessionmaker(bind=self.engine)
 
     def get_postgres_config(self, service_id, tenant_code):
         postres_config = self.redis_manager.get_postgres_config(Config.SERVICE_ID, tenant_code)
@@ -46,135 +79,55 @@ class AlembicCheckMigration:
             return host, port, user, password, name
         logger.error(f"Postgres config not found for tenant: {tenant_code}")
 
-    def get_alembic_version(self, host, port, user, password, dbname):
-        try:
-            conn = psycopg2.connect(host=host, port=port, user=user, password=password, dbname=dbname)
-        except OperationalError as e:
-            logger.error(f"Error de conexión a la base de datos: {e}")
-            raise e
+    def check(self) -> bool:
+        # Comprobar si la tabla alembic_version existe
+        inspector = inspect_sqlalchemy(self.engine)
+        if not inspector.has_table(AlembicVersionModel.__tablename__):
+            AlembicVersionModel.metadata.create_all(self.engine)
+            return False
+        return True
 
-        try:
-            cursor = conn.cursor()
+    def get_current_version(self) -> str:
+        with self.Session() as session:
+            latest_version = session.query(AlembicVersionModel).order_by(AlembicVersionModel.version_num.desc()).first()
+            return latest_version.version_num if latest_version else None
 
-            # Verifica si la tabla existe
-            cursor.execute("""
-                SELECT EXISTS (
-                    SELECT FROM pg_tables
-                    WHERE schemaname = 'public' AND tablename  = 'alembic_version'
-                );
-            """)
-            if not cursor.fetchone()[0]:
-                logger.warning("La tabla 'public.alembic_version' no existe en la base de datos.")
-                return False
+    def apply_revision(self, message="auto-generated revision") -> Script:
+        # Usa la librería alembic para aplicar la revisión
+        # dar formato al mensaje concatenando la fecha y hora en formato ISO
+        message = f"{message} {datetime.now().isoformat()}"
+        new_revision = command.revision(self.alembic_config, autogenerate=True, message=message)
+        return new_revision
 
-            # Recupera el número de versión
-            cursor.execute("SELECT version_num FROM public.alembic_version LIMIT 1")
-            version = cursor.fetchone()
-        except (Exception, psycopg2.DatabaseError) as e:
-            cursor.close()
-            conn.close()
-            logger.error(f"Error al ejecutar la consulta: {e}")
-            raise e
+    def no_changes_detected(self, script: Script) -> bool:
+        code = inspect_ast.getsource(script.module.upgrade)
+        tree = ast.parse(code)
+        clean_code = ast.unparse(tree)
+
+        lines = clean_code.split("\n")
+        l = [line for line in lines if line.strip() not in ["", "def upgrade():", "def upgrade() -> None:", "pass"]]
+        return not l
+
+    def upgrade_head(self, revision=None) -> None:
+        # Usa la librería alembic para hacer las migraciones
+        command.upgrade(self.alembic_config, revision or "head")
+
+    def apply(self):
+        # Uso del AlembicMigrateCheck
+        self.check()
+        current_version = self.get_current_version()
+        script_directory = ScriptDirectory.from_config(self.alembic_config)
+        # is last_version es None es la primera ves que se crea la tabla alembic_version
+        if current_version is None and list(script_directory.walk_revisions()):
+            self.upgrade_head()
+            current_version = self.get_current_version()
+        script = self.apply_revision()
+        if self.no_changes_detected(script):
+            self.last_version = current_version
+            Path(script.path).unlink()
         else:
-            cursor.close()
-            conn.close()
-            return version[0] if version else None
+            self.last_version = script.revision
+            self.changes = True
 
-    def get_alembic_version_files_id(self):
-        path_alembic = Path(self.app_path).parent / "alembic" / "versions"
-        if not any(path_alembic.iterdir()):
-            return []
-        alembic_version_files = [file.name.split("_")[0] for file in path_alembic.iterdir()]
-        return alembic_version_files
-
-    def version_alembic_in_files(self, version):
-        if not version and len(self.alembic_version_files):
-            return True
-        if version in self.alembic_version_files:
-            return True
-        return False
-
-    def validate_changes_in_revision(self, name):
-        alembic_files = self.get_alembic_version_files_id()
-        file_id = list(set(alembic_files) - set(self.alembic_version_files))
-        if len(file_id):
-            file_path = Path(self.app_path).parent / "alembic" / "versions" / f"{file_id}_{name}.py"
-
-            with open(file_path, "r") as file:
-                file_content = file.read()
-
-            tree = ast.parse(file_content)
-            methods_with_pass = 0
-
-            for node in ast.walk(tree):
-                if isinstance(node, ast.FunctionDef) and node.name in ["upgrade", "downgrade"]:
-                    if len(node.body) == 1 and isinstance(node.body[0], ast.Pass):
-                        methods_with_pass += 1
-
-            if methods_with_pass == 2:
-                try:
-                    file_path.unlink()
-                    return False
-                except FileNotFoundError:
-                    print("El archivo no se encontró y no pudo ser eliminado.")
-                except Exception as e:
-                    print(f"Ocurrió un error al intentar eliminar el archivo: {e}")
-
-            return True
-
-    def validate(self):
-        logger.info("Start validate")
-        validations = []
-        for tenant in self.tenants:
-            logger.info(f"Migrate tenant: {tenant}")
-            host, port, user, password, name = self.get_postgres_config(Config.SERVICE_ID, tenant)
-            alembic_version = self.get_alembic_version(host, port, user, password, name)
-            validations.append(self.version_alembic_in_files(alembic_version))
-        return all(validations)
-
-    def revision(self):
-        logger.info("Start revision")
-        logger.info(f"Revision database saas-ms-sale-alembic")
-        host, port, user, password, name = self.get_postgres_config(Config.SERVICE_ID, self.tenants[0])
-        name = self.template_alembic
-        sql_connect = f"postgresql://{user}:{password}@{host}:{port}/{name}"
-        os.environ["TENANT_URL"] = sql_connect
-        name_file = f"automatic_revision_{datetime.datetime.now().strftime('%Y_%m_%d_%H_%M_%S')}"
-
-        subprocess.run(
-            ["alembic", "revision", "--autogenerate", "-m", name_file])
-        return self.validate_changes_in_revision(name_file)
-
-    def run_alembic_migration(self, sql_connect):
-        with self.set_environment_variable("TENANT_URL", sql_connect):
-            result = subprocess.run(["alembic", "upgrade", "head"], capture_output=True, text=True)
-            if result.returncode != 0:
-                logger.error(f"Migration failed: {result.stderr}")
-                raise RuntimeError(f"Migration failed: {result.stderr}")
-            else:
-                logger.info("Migration completed successfully.")
-
-    def migrate(self):
-        logger.info("Start migrations")
-        for tenant in self.tenants:
-            logger.info(f"Migrate tenant: {tenant}")
-            try:
-                host, port, user, password, name = self.get_postgres_config(Config.SERVICE_ID, tenant)
-                if not all([host, port, user, password, name]):
-                    raise ValueError(f"Invalid database config for tenant: {tenant}")
-                sql_connect = f"postgresql://{user}:{password}@{host}:{port}/{name}"
-                self.run_alembic_migration(sql_connect)
-            except Exception as e:
-                logger.error(f"Failed to migrate tenant {tenant}: {e}")
-                # Decide if you want to continue with the next tenant or re-raise the exception
-
-        # Migrate template alembic after tenants
-        try:
-            sql_connect = f"postgresql://{user}:{password}@{host}:{port}/{self.template_alembic}"
-            self.run_alembic_migration(sql_connect)
-        except Exception as e:
-            logger.error(f"Failed to migrate template alembic: {e}")
-
-    def push(self):
-        print(f"REPO_URL={self.redis_manager.get_json(f'SETTINGS', f'repos.{Config.SERVICE_ID}.url')}")
-        print(f"RUN=1")
+        self.upgrade_head(self.last_version)
+        return self.last_version
