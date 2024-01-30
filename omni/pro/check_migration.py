@@ -43,18 +43,18 @@ class AlembicMigrateCheck(object):
         validations = []
         for idx, tenant in enumerate(self.tenants):
             logger.info(f"Migrate tenant: {tenant}")
-            try:
-                host, port, user, password, name = self.get_postgres_config(Config.SERVICE_ID, tenant)
-                if not all([host, port, user, password, name]):
-                    raise ValueError(f"Invalid database config for tenant: {tenant}")
-                sql_connect = f"postgresql://{user}:{password}@{host}:{port}/{name}"
-                self.postgres_url = sql_connect
-                if idx == 0:
-                    last_version = self.apply()
-                else:
-                    self.upgrade_head(last_version)
-            except Exception as e:
-                logger.error(f"Failed to migrate tenant {tenant}: {e}")
+            # try:
+            host, port, user, password, name = self.get_postgres_config(Config.SERVICE_ID, tenant)
+            if not all([host, port, user, password, name]):
+                raise ValueError(f"Invalid database config for tenant: {tenant}")
+            sql_connect = f"postgresql://{user}:{password}@{host}:{port}/{name}"
+            self.postgres_url = sql_connect
+            if idx == 0:
+                last_version = self.apply()
+            else:
+                self.upgrade_head(last_version)
+            # except Exception as e:
+            #     logger.error(f"Failed to migrate tenant {tenant}: {e}")
 
         if self.changes:
             print(f"REPO_URL={self.redis_manager.get_json(f'SETTINGS', f'repos.{Config.SERVICE_ID}.url')}")
