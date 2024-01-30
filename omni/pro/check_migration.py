@@ -96,30 +96,31 @@ class AlembicCheckMigration:
 
     def validate_changes_in_revision(self, name):
         alembic_files = self.get_alembic_version_files_id()
-        file_id = list(set(alembic_files) - set(self.alembic_version_files))[0]
-        file_path = Path(self.app_path).parent / "alembic" / "versions" / f"{file_id}_{name}.py"
+        file_id = list(set(alembic_files) - set(self.alembic_version_files))
+        if len(file_id):
+            file_path = Path(self.app_path).parent / "alembic" / "versions" / f"{file_id}_{name}.py"
 
-        with open(file_path, "r") as file:
-            file_content = file.read()
+            with open(file_path, "r") as file:
+                file_content = file.read()
 
-        tree = ast.parse(file_content)
-        methods_with_pass = 0
+            tree = ast.parse(file_content)
+            methods_with_pass = 0
 
-        for node in ast.walk(tree):
-            if isinstance(node, ast.FunctionDef) and node.name in ["upgrade", "downgrade"]:
-                if len(node.body) == 1 and isinstance(node.body[0], ast.Pass):
-                    methods_with_pass += 1
+            for node in ast.walk(tree):
+                if isinstance(node, ast.FunctionDef) and node.name in ["upgrade", "downgrade"]:
+                    if len(node.body) == 1 and isinstance(node.body[0], ast.Pass):
+                        methods_with_pass += 1
 
-        if methods_with_pass == 2:
-            try:
-                file_path.unlink()
-                return False
-            except FileNotFoundError:
-                print("El archivo no se encontró y no pudo ser eliminado.")
-            except Exception as e:
-                print(f"Ocurrió un error al intentar eliminar el archivo: {e}")
+            if methods_with_pass == 2:
+                try:
+                    file_path.unlink()
+                    return False
+                except FileNotFoundError:
+                    print("El archivo no se encontró y no pudo ser eliminado.")
+                except Exception as e:
+                    print(f"Ocurrió un error al intentar eliminar el archivo: {e}")
 
-        return True
+            return True
 
     def validate(self):
         logger.info("Start validate")
