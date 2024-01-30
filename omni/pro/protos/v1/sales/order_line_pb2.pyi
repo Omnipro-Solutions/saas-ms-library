@@ -28,6 +28,7 @@ class OrderLine(_message.Message):
         "discount",
         "price_total",
         "sub_total",
+        "ecommerce_item_id",
         "active",
         "external_id",
         "object_audit",
@@ -42,6 +43,7 @@ class OrderLine(_message.Message):
     DISCOUNT_FIELD_NUMBER: _ClassVar[int]
     PRICE_TOTAL_FIELD_NUMBER: _ClassVar[int]
     SUB_TOTAL_FIELD_NUMBER: _ClassVar[int]
+    ECOMMERCE_ITEM_ID_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
@@ -55,6 +57,7 @@ class OrderLine(_message.Message):
     discount: float
     price_total: float
     sub_total: float
+    ecommerce_item_id: str
     active: _wrappers_pb2.BoolValue
     external_id: str
     object_audit: _base_pb2.ObjectAudit
@@ -70,6 +73,7 @@ class OrderLine(_message.Message):
         discount: _Optional[float] = ...,
         price_total: _Optional[float] = ...,
         sub_total: _Optional[float] = ...,
+        ecommerce_item_id: _Optional[str] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
@@ -86,6 +90,7 @@ class OrderLineCreateRequest(_message.Message):
         "discount",
         "price_total",
         "sub_total",
+        "ecommerce_item_id",
         "external_id",
         "context",
     ]
@@ -98,6 +103,7 @@ class OrderLineCreateRequest(_message.Message):
     DISCOUNT_FIELD_NUMBER: _ClassVar[int]
     PRICE_TOTAL_FIELD_NUMBER: _ClassVar[int]
     SUB_TOTAL_FIELD_NUMBER: _ClassVar[int]
+    ECOMMERCE_ITEM_ID_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     order_id: int
@@ -109,6 +115,7 @@ class OrderLineCreateRequest(_message.Message):
     discount: float
     price_total: float
     sub_total: float
+    ecommerce_item_id: str
     external_id: str
     context: _base_pb2.Context
     def __init__(
@@ -122,6 +129,7 @@ class OrderLineCreateRequest(_message.Message):
         discount: _Optional[float] = ...,
         price_total: _Optional[float] = ...,
         sub_total: _Optional[float] = ...,
+        ecommerce_item_id: _Optional[str] = ...,
         external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
