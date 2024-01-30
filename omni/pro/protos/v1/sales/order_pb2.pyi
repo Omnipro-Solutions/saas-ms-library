@@ -41,6 +41,8 @@ class Order(_message.Message):
         "shipping_amount_total",
         "shipping_amount_discount_description",
         "type_delivery",
+        "confirmed",
+        "sale_stock_operation",
         "pickings",
         "object_audit",
         "order_lines",
@@ -65,6 +67,8 @@ class Order(_message.Message):
     SHIPPING_AMOUNT_TOTAL_FIELD_NUMBER: _ClassVar[int]
     SHIPPING_AMOUNT_DISCOUNT_DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
     TYPE_DELIVERY_FIELD_NUMBER: _ClassVar[int]
+    CONFIRMED_FIELD_NUMBER: _ClassVar[int]
+    SALE_STOCK_OPERATION_FIELD_NUMBER: _ClassVar[int]
     PICKINGS_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
     ORDER_LINES_FIELD_NUMBER: _ClassVar[int]
@@ -88,6 +92,8 @@ class Order(_message.Message):
     shipping_amount_total: float
     shipping_amount_discount_description: str
     type_delivery: str
+    confirmed: bool
+    sale_stock_operation: _containers.RepeatedCompositeFieldContainer[_struct_pb2.Struct]
     pickings: _containers.RepeatedCompositeFieldContainer[_picking_pb2.Picking]
     object_audit: _base_pb2.ObjectAudit
     order_lines: _containers.RepeatedCompositeFieldContainer[_struct_pb2.Struct]
@@ -113,6 +119,8 @@ class Order(_message.Message):
         shipping_amount_total: _Optional[float] = ...,
         shipping_amount_discount_description: _Optional[str] = ...,
         type_delivery: _Optional[str] = ...,
+        confirmed: bool = ...,
+        sale_stock_operation: _Optional[_Iterable[_Union[_struct_pb2.Struct, _Mapping]]] = ...,
         pickings: _Optional[_Iterable[_Union[_picking_pb2.Picking, _Mapping]]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
         order_lines: _Optional[_Iterable[_Union[_struct_pb2.Struct, _Mapping]]] = ...,
@@ -138,6 +146,8 @@ class OrderCreateRequest(_message.Message):
         "shipping_amount_total",
         "shipping_amount_discount_description",
         "type_delivery",
+        "confirmed",
+        "sale_stock_operation",
         "context",
     ]
     NAME_FIELD_NUMBER: _ClassVar[int]
@@ -158,6 +168,8 @@ class OrderCreateRequest(_message.Message):
     SHIPPING_AMOUNT_TOTAL_FIELD_NUMBER: _ClassVar[int]
     SHIPPING_AMOUNT_DISCOUNT_DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
     TYPE_DELIVERY_FIELD_NUMBER: _ClassVar[int]
+    CONFIRMED_FIELD_NUMBER: _ClassVar[int]
+    SALE_STOCK_OPERATION_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     name: str
     sale_id: int
@@ -177,6 +189,8 @@ class OrderCreateRequest(_message.Message):
     shipping_amount_total: float
     shipping_amount_discount_description: str
     type_delivery: str
+    confirmed: bool
+    sale_stock_operation: _containers.RepeatedCompositeFieldContainer[_struct_pb2.Struct]
     context: _base_pb2.Context
     def __init__(
         self,
@@ -198,6 +212,8 @@ class OrderCreateRequest(_message.Message):
         shipping_amount_total: _Optional[float] = ...,
         shipping_amount_discount_description: _Optional[str] = ...,
         type_delivery: _Optional[str] = ...,
+        confirmed: bool = ...,
+        sale_stock_operation: _Optional[_Iterable[_Union[_struct_pb2.Struct, _Mapping]]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
@@ -316,5 +332,29 @@ class OrderConfirmResponse(_message.Message):
     def __init__(
         self,
         confirm: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
+        response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
+    ) -> None: ...
+
+class SaleStockOperationRequest(_message.Message):
+    __slots__ = ["payload", "context"]
+    PAYLOAD_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    payload: _struct_pb2.Struct
+    context: _base_pb2.Context
+    def __init__(
+        self,
+        payload: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
+        context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
+    ) -> None: ...
+
+class SaleStockOperationResponse(_message.Message):
+    __slots__ = ["data", "response_standard"]
+    DATA_FIELD_NUMBER: _ClassVar[int]
+    RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
+    data: _containers.RepeatedCompositeFieldContainer[_struct_pb2.Struct]
+    response_standard: _base_pb2.ResponseStandard
+    def __init__(
+        self,
+        data: _Optional[_Iterable[_Union[_struct_pb2.Struct, _Mapping]]] = ...,
         response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
     ) -> None: ...
