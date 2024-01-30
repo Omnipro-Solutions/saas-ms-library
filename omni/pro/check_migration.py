@@ -88,7 +88,7 @@ class AlembicCheckMigration:
         return alembic_version_files
 
     def version_alembic_in_files(self, version):
-        if not version and self.alembic_version_files:
+        if not version and len(self.alembic_version_files):
             return True
         if version in self.alembic_version_files:
             return True
