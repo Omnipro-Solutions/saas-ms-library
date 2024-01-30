@@ -13,38 +13,47 @@ from omni.pro.protos.common import base_pb2 as _base_pb2
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class TypeDocument(_message.Message):
-    __slots__ = ["id", "code", "code_name", "active", "object_audit"]
-    ID_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["name", "code", "is_vat", "document_type_doc_id", "active", "object_audit"]
+    NAME_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
-    CODE_NAME_FIELD_NUMBER: _ClassVar[int]
+    IS_VAT_FIELD_NUMBER: _ClassVar[int]
+    DOCUMENT_TYPE_DOC_ID_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     OBJECT_AUDIT_FIELD_NUMBER: _ClassVar[int]
-    id: str
+    name: str
     code: str
-    code_name: str
+    is_vat: _wrappers_pb2.BoolValue
+    document_type_doc_id: str
     active: _wrappers_pb2.BoolValue
     object_audit: _base_pb2.ObjectAudit
     def __init__(
         self,
-        id: _Optional[str] = ...,
+        name: _Optional[str] = ...,
         code: _Optional[str] = ...,
-        code_name: _Optional[str] = ...,
+        is_vat: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
+        document_type_doc_id: _Optional[str] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
     ) -> None: ...
 
 class TypeDocumentCreateRequest(_message.Message):
-    __slots__ = ["code", "code_name", "context"]
+    __slots__ = ["code", "name", "document_type_doc_id", "is_vat", "context"]
     CODE_FIELD_NUMBER: _ClassVar[int]
-    CODE_NAME_FIELD_NUMBER: _ClassVar[int]
+    NAME_FIELD_NUMBER: _ClassVar[int]
+    DOCUMENT_TYPE_DOC_ID_FIELD_NUMBER: _ClassVar[int]
+    IS_VAT_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     code: str
-    code_name: str
+    name: str
+    document_type_doc_id: str
+    is_vat: _wrappers_pb2.BoolValue
     context: _base_pb2.Context
     def __init__(
         self,
         code: _Optional[str] = ...,
-        code_name: _Optional[str] = ...,
+        name: _Optional[str] = ...,
+        document_type_doc_id: _Optional[str] = ...,
+        is_vat: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
