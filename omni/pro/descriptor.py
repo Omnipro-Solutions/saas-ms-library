@@ -8,7 +8,7 @@ from sqlalchemy.orm.relationships import RelationshipProperty
 
 class Descriptor(object):
     @staticmethod
-    def describe_mongo_model(model, prefix_name="", prefix_code=""):
+    def describe_mongo_model(model, prefix_name="", prefix_code="", depth=0, max_depth=2):
         """
         Describe the structure of a MongoDB model using its fields.
 
@@ -69,14 +69,17 @@ class Descriptor(object):
 
             # If the field is an EmbeddedDocumentField or ReferenceField, recurse into its fields
             if isinstance(field, EmbeddedDocumentField) or isinstance(field, ReferenceField):
-                embedded_model = field.document_type_obj
-                try:
-                    embedded_fields = Descriptor.describe_mongo_model(embedded_model, current_name, current_code)
-                except RecursionError as e:
-                    print(f"Model: {model.__name__} RecursionError: {e}")
-                    continue
-                fields.extend(embedded_fields)  # extend main fields list with the result of recursion
-                continue  # we don't add a separate field for the embedded/reference field itself
+                if depth < max_depth:
+                    embedded_model = field.document_type_obj
+                    try:
+                        embedded_fields = Descriptor.describe_mongo_model(
+                            embedded_model, current_name, current_code, depth=depth + 1, max_depth=max_depth
+                        )
+                    except RecursionError as e:
+                        print(f"Model: {model.__name__} RecursionError: {e}")
+                        continue
+                    fields.extend(embedded_fields)  # extend main fields list with the result of recursion
+                    continue  # we don't add a separate field for the embedded/reference field itself
 
             # if the field is an Enum, add options values
             if hasattr(field, "choices") and field.choices:
