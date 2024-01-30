@@ -124,7 +124,7 @@ class AlembicMigrateCheck(object):
         script = self.apply_revision()
         if self.no_changes_detected(script):
             self.last_version = current_version
-            # Path(script.path).unlink()
+            Path(script.path).unlink()
         else:
             self.last_version = script.revision
             self.changes = True
