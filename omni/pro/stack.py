@@ -20,9 +20,9 @@ class ExitStackDocument(ExitStack):
             # All documents are swiched to their respective aliases.
     """
 
-    def __init__(self, document_classes: list = [], db_alias="", use_doc_classes=False, *args, **kwargs):
+    def __init__(self, document_classes: list = [], db_alias="", *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.document_classes = document_classes if use_doc_classes else self.__reference_models_services()
+        self.document_classes = document_classes
         self.db_alias = db_alias
         self.model_classes = []
 
@@ -39,9 +39,6 @@ class ExitStackDocument(ExitStack):
         if collection_name not in db.list_collection_names():
             db.create_collection(collection_name)
 
-    def __reference_models_services(self):
-        return Topology().get_models_from_libs()
-
 
 class ExitStackDocumentMicro(ExitStackDocument):
     """
@@ -57,42 +54,9 @@ class ExitStackDocumentMicro(ExitStackDocument):
         super().__init__(document_classes=[], db_alias=db_alias, *args, **kwargs)
 
     def __enter__(self):
-        self.document_classes = self.get_document_classes()
+        self.document_classes = self.__reference_models_services()
         return super().__enter__()
 
-    def get_document_classes(self):
-        # El nombre de tu paquete (la carpeta que contiene los módulos)
-        package_name = "models"
-
-        # Busca todos los módulos en el paquete
-        package = importlib.import_module(package_name)
-        modules = [name for _, name, _ in pkgutil.iter_modules(package.__path__)]
-
-        document_classes = []
-        # Importa cada módulo y busca las clases de tipo Document
-        for module_name in modules:
-            module = importlib.import_module(f"{package_name}.{module_name}")
-
-            for name, obj in inspect.getmembers(module):
-                if (
-                    inspect.isclass(obj)
-                    and issubclass(obj, Document)
-                    and obj != Document
-                    and obj != BaseDocument
-                    and obj not in document_classes
-                ):
-                    document_classes.append(obj)
-                    for field in self.get_reference_fields_and_classes(obj):
-                        if field not in document_classes:
-                            document_classes.append(field)
-
-        return document_classes
-
-    def get_reference_fields_and_classes(self, doc):
-        ref_fields = []
-        for name, field in doc._fields.items():
-            if isinstance(field, fields.ReferenceField):
-                ref_fields.append(field.document_type)
-            elif isinstance(field, fields.ListField) and isinstance(field.field, fields.ReferenceField):
-                ref_fields.append(field.field.document_type)
-        return ref_fields
+    @staticmethod
+    def __reference_models_services():
+        return Topology().get_models_from_libs()
