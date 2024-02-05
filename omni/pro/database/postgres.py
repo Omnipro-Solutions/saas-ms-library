@@ -326,7 +326,7 @@ class PostgresDatabaseManager(SessionManager):
 
         session.close()
 
-        return list(batch_upsert_process - set(external_ids))
+        return [obj for obj in upsert_list if obj.external_id not in batch_upsert_process]
 
     def get_sqlalchemy_operator(self, op):
         """
