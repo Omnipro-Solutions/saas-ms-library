@@ -320,13 +320,13 @@ class PostgresDatabaseManager(SessionManager):
 
         session.bulk_save_objects(upsert_list, update_changed_only=True)
         session.commit()
-        batch_upsert_process = set(
-            session.query(model).filter(model.external_id.in_([result.external_id for result in upsert_list])).all()
-        )
+        external_ids = [result.external_id for result in upsert_list]
+        batch_upsert_process = session.query(model.external_id).filter(model.external_id.in_(external_ids)).all()
+        batch_upsert_process = [id[0] for id in batch_upsert_process]
 
         session.close()
 
-        return list(batch_upsert_process - set(upsert_list))
+        return list(batch_upsert_process - set(external_ids))
 
     def get_sqlalchemy_operator(self, op):
         """
