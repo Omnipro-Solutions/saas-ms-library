@@ -214,12 +214,12 @@ class ConfirmAppointmentRequest(_message.Message):
     AID_FIELD_NUMBER: _ClassVar[int]
     CID_FIELD_NUMBER: _ClassVar[int]
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    aid: str
+    aid: _containers.RepeatedScalarFieldContainer[str]
     cid: str
     context: _base_pb2.Context
     def __init__(
         self,
-        aid: _Optional[str] = ...,
+        aid: _Optional[_Iterable[str]] = ...,
         cid: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
