@@ -26,6 +26,7 @@ INSTALL_REQUIRES = [
     "SQLAlchemy==2.0.19",
     "networkx==3.1",
     "unidecode==1.3.8",
+    "kafka-python==2.0.2",
 ]
 # with open(HERE / "requirements.txt") as f:
 #     INSTALL_REQUIRES = f.read().splitlines()
