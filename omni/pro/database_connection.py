@@ -1,25 +1,12 @@
 import mongoengine as mongo
+from omni.pro.logger import configure_logger
 from omni.pro import redis
 from omni.pro.config import Config
-from omni.pro.logger import configure_logger
 
 logger = configure_logger(name=__name__)
 
 
-def register_logger_connection(tenant, manager: redis.RedisManager):
-    conn = manager.get_mongodb_config(Config.LOGGER_ID, tenant)
-    mongo.register_connection(
-        alias=f"{tenant}_{conn['name']}",
-        name=conn["name"],
-        host=conn["host"],
-        port=int(conn["port"]),
-        username=conn["user"],
-        password=conn["password"],
-        **conn["complement"],
-    )
-
-
-def ms_register_connection(logger_oms=True):
+def ms_register_connection():
     manager = redis.get_redis_manager()
     tenants = manager.get_tenant_codes()
     # Registrar todas las conexiones
@@ -41,9 +28,6 @@ def ms_register_connection(logger_oms=True):
             password=conn["password"],
             **conn["complement"],
         )
-
-        if logger_oms:
-            register_logger_connection(tenant, manager)
 
         if idx == 0:
             mongo.register_connection(

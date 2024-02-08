@@ -29,4 +29,3 @@ class Config(object):
     SAAS_MS_STOCK = os.environ.get("SAAS_MS_STOCK") or "saa-ms-stock"
     SAAS_MS_CLIENT = os.environ.get("SAAS_MS_CLIENT") or "saa-ms-client"
     TENANT_POSTGRESQL_URL = os.environ.get("TENANT_POSTGRESQL_URL")
-    LOGGER_ID = "saas-loggers-oms"
