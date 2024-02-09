@@ -99,13 +99,15 @@ class Descriptor(object):
             ] + fields
 
         if prefix_name == "" and prefix_code == "":  # This is a top-level call
-            return {
+            description = {
                 "name": model.__name__,
                 "class_name": f"{model.__module__}.{model.__name__}",
                 "code": model._meta.get("collection") or model.__name__.lower(),
-                "is_replic": model.__is_replic_table__,
                 "fields": fields,
             }
+            if hasattr(model, "__is_replic_table__"):
+                description["is_replic"] = model.__is_replic_table__
+            return description
 
         else:  # This is a recursive call
             return fields
