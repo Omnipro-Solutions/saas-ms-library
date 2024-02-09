@@ -234,6 +234,7 @@ class Descriptor(object):
             "name": model.__name__,
             "class_name": f"{model.__module__}.{model.__name__}",
             "code": model._meta.get("collection") or model.__name__.lower(),
+            "is_replic": model.__is_replic_table__,
             "fields": [],
         }
         for field_name, field in model._fields.items():
