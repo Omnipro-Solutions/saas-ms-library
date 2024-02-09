@@ -76,7 +76,6 @@ class Descriptor(object):
                             embedded_model, current_name, current_code, depth=depth + 1, max_depth=max_depth
                         )
                     except RecursionError as e:
-                        print(f"Model: {model.__name__} RecursionError: {e}")
                         continue
                     fields.extend(embedded_fields)  # extend main fields list with the result of recursion
                     continue  # we don't add a separate field for the embedded/reference field itself
@@ -104,6 +103,7 @@ class Descriptor(object):
                 "name": model.__name__,
                 "class_name": f"{model.__module__}.{model.__name__}",
                 "code": model._meta.get("collection") or model.__name__.lower(),
+                "is_replic": model.__is_replic_table__,
                 "fields": fields,
             }
 
@@ -234,6 +234,7 @@ class Descriptor(object):
             "name": model.__name__,
             "class_name": f"{model.__module__}.{model.__name__}",
             "code": model._meta.get("collection") or model.__name__.lower(),
+            "is_replic": model.__is_replic_table__,
             "fields": [],
         }
         for field_name, field in model._fields.items():
