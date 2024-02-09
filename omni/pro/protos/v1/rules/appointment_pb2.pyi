@@ -209,32 +209,28 @@ class SearchAppointmentResponse(_message.Message):
         response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
     ) -> None: ...
 
-class ConfirmAppointmentRequest(_message.Message):
-    __slots__ = ["aid", "cid", "context"]
-    AID_FIELD_NUMBER: _ClassVar[int]
+class AppointmentConfirmData(_message.Message):
+    __slots__ = ["aids", "cid"]
+    AIDS_FIELD_NUMBER: _ClassVar[int]
     CID_FIELD_NUMBER: _ClassVar[int]
-    CONTEXT_FIELD_NUMBER: _ClassVar[int]
-    aid: str
+    aids: _containers.RepeatedScalarFieldContainer[str]
     cid: str
+    def __init__(self, aids: _Optional[_Iterable[str]] = ..., cid: _Optional[str] = ...) -> None: ...
+
+class ConfirmAppointmentRequest(_message.Message):
+    __slots__ = ["data", "context"]
+    DATA_FIELD_NUMBER: _ClassVar[int]
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    data: _containers.RepeatedCompositeFieldContainer[AppointmentConfirmData]
     context: _base_pb2.Context
     def __init__(
         self,
-        aid: _Optional[str] = ...,
-        cid: _Optional[str] = ...,
+        data: _Optional[_Iterable[_Union[AppointmentConfirmData, _Mapping]]] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...
 
 class ConfirmAppointmentResponse(_message.Message):
-    __slots__ = ["success", "message", "response_standard"]
-    SUCCESS_FIELD_NUMBER: _ClassVar[int]
-    MESSAGE_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ["response_standard"]
     RESPONSE_STANDARD_FIELD_NUMBER: _ClassVar[int]
-    success: bool
-    message: str
     response_standard: _base_pb2.ResponseStandard
-    def __init__(
-        self,
-        success: bool = ...,
-        message: _Optional[str] = ...,
-        response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...,
-    ) -> None: ...
+    def __init__(self, response_standard: _Optional[_Union[_base_pb2.ResponseStandard, _Mapping]] = ...) -> None: ...
