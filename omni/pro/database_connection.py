@@ -19,7 +19,7 @@ def register_logger_connection(tenant, manager: redis.RedisManager):
     )
 
 
-def ms_register_connection(logger_oms=True):
+def ms_register_connection(logger_oms=False):
     manager = redis.get_redis_manager()
     tenants = manager.get_tenant_codes()
     # Registrar todas las conexiones
