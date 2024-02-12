@@ -42,7 +42,7 @@ class State(_message.Message):
     flow: _struct_pb2.Struct
     type: str
     description: str
-    is_initial_state: bool
+    is_initial_state: _wrappers_pb2.BoolValue
     active: _wrappers_pb2.BoolValue
     external_id: str
     object_audit: _base_pb2.ObjectAudit
@@ -54,7 +54,7 @@ class State(_message.Message):
         flow: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         type: _Optional[str] = ...,
         description: _Optional[str] = ...,
-        is_initial_state: bool = ...,
+        is_initial_state: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,

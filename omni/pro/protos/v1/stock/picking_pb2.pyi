@@ -141,7 +141,7 @@ class Picking(_message.Message):
     user: _user_pb2.User
     shipping_address: _address_pb2.Address
     active: _wrappers_pb2.BoolValue
-    warehouse: _base_pb2.ObjectResponse
+    warehouse: _struct_pb2.Struct
     stock_moves: _containers.RepeatedCompositeFieldContainer[_struct_pb2.Struct]
     stock_move_lines: _containers.RepeatedCompositeFieldContainer[_struct_pb2.Struct]
     external_id: str
@@ -182,7 +182,7 @@ class Picking(_message.Message):
         user: _Optional[_Union[_user_pb2.User, _Mapping]] = ...,
         shipping_address: _Optional[_Union[_address_pb2.Address, _Mapping]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
-        warehouse: _Optional[_Union[_base_pb2.ObjectResponse, _Mapping]] = ...,
+        warehouse: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...,
         stock_moves: _Optional[_Iterable[_Union[_struct_pb2.Struct, _Mapping]]] = ...,
         stock_move_lines: _Optional[_Iterable[_Union[_struct_pb2.Struct, _Mapping]]] = ...,
         external_id: _Optional[str] = ...,
