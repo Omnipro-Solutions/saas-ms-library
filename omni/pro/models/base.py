@@ -38,12 +38,12 @@ class BaseObjectEmbeddedDocument(BaseEmbeddedDocument):
 
 
 class Audit(BaseEmbeddedDocument):
-    created_at = DateTimeField(default=datetime.utcnow)
-    created_by = StringField()
-    updated_at = DateTimeField()
-    updated_by = StringField()
-    deleted_at = DateTimeField()
-    deleted_by = StringField()
+    created_at = DateTimeField(default=datetime.utcnow, is_importable=False)
+    created_by = StringField(is_importable=False)
+    updated_at = DateTimeField(is_importable=False)
+    updated_by = StringField(is_importable=False)
+    deleted_at = DateTimeField(is_importable=False)
+    deleted_by = StringField(is_importable=False)
 
     def to_proto(self) -> AuditProto:
         create_at_ts = Timestamp()
@@ -59,8 +59,8 @@ class Audit(BaseEmbeddedDocument):
 
 
 class Context(BaseEmbeddedDocument):
-    tenant = StringField()
-    user = StringField()
+    tenant = StringField(is_importable=False)
+    user = StringField(is_importable=False)
 
     def to_proto(self) -> ContextProto:
         return ContextProto(

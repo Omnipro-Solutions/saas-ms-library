@@ -1,5 +1,5 @@
 from mongoengine import DynamicEmbeddedDocument
-from mongoengine.fields import EmbeddedDocumentField, ReferenceField
+from mongoengine.fields import EmbeddedDocumentField, ObjectIdField, ReferenceField
 from omni.pro.models.base import BaseModel
 from omni.pro.util import to_camel_case
 from sqlalchemy import Enum, inspect
@@ -8,7 +8,7 @@ from sqlalchemy.orm.relationships import RelationshipProperty
 
 class Descriptor(object):
     @staticmethod
-    def describe_mongo_model(model, prefix_name="", prefix_code="", depth=0, max_depth=2):
+    def describe_mongo_model(model, prefix_name="", prefix_code="", depth=0, max_depth=2, is_reference=False):
         """
         Describe the structure of a MongoDB model using its fields.
 
@@ -53,15 +53,31 @@ class Descriptor(object):
             current_name = (prefix_name + " " + to_camel_case(field_name)).strip()
             current_code = (prefix_code + "." + field_name).strip(".")
 
+            default_is_filterable = not is_reference if not isinstance(field, ObjectIdField) else True
+            default_is_exportable = not is_reference if not isinstance(field, ObjectIdField) else True
+            default_is_importable = not is_reference if not isinstance(field, ObjectIdField) else True
+
             field_info = {
                 "name": current_name,
                 "code": current_code,
                 "type": Descriptor.get_equivalent_field(field.__class__.__name__),
                 "class_type": field.__class__.__name__,
                 "required": field.required,
-                "is_filterable": field.is_filterable if hasattr(field, "is_filterable") else True,
-                "is_exportable": field.is_exportable if hasattr(field, "is_exportable") else True,
-                "is_importable": field.is_importable if hasattr(field, "is_importable") else True,
+                "is_filterable": (
+                    field.is_filterable
+                    if hasattr(field, "is_filterable") and not is_reference
+                    else default_is_filterable
+                ),
+                "is_exportable": (
+                    field.is_exportable
+                    if hasattr(field, "is_exportable") and not is_reference
+                    else default_is_exportable
+                ),
+                "is_importable": (
+                    field.is_importable
+                    if hasattr(field, "is_importable") and not is_reference
+                    else default_is_importable
+                ),
                 "relation": {},
             }
             if hasattr(field, "max_length") and field.max_length:
@@ -73,7 +89,12 @@ class Descriptor(object):
                     embedded_model = field.document_type_obj
                     try:
                         embedded_fields = Descriptor.describe_mongo_model(
-                            embedded_model, current_name, current_code, depth=depth + 1, max_depth=max_depth
+                            embedded_model,
+                            current_name,
+                            current_code,
+                            depth=depth + 1,
+                            max_depth=max_depth,
+                            is_reference=True if isinstance(field, ReferenceField) else False,
                         )
                     except RecursionError as e:
                         continue
