@@ -1,6 +1,5 @@
 import ast
 import inspect as inspect_ast
-import os
 from datetime import datetime
 from pathlib import Path
 
@@ -112,22 +111,35 @@ class AlembicMigrateCheck(object):
         # Usa la librería alembic para hacer las migraciones
         command.upgrade(self.alembic_config, revision or "head")
 
-    def apply(self):
-        # Uso del AlembicMigrateCheck
-        self.check()
-        current_version = self.get_current_version()
+    def is_database_up_to_date(self):
+        # Esta función verifica si la base de datos está actualizada
         script_directory = ScriptDirectory.from_config(self.alembic_config)
-        # is last_version es None es la primera ves que se crea la tabla alembic_version
-        if current_version is None and list(script_directory.walk_revisions()):
-            self.upgrade_head()
-            current_version = self.get_current_version()
-        script = self.apply_revision()
-        if self.no_changes_detected(script):
-            self.last_version = current_version
-            Path(script.path).unlink()
-        else:
-            self.last_version = script.revision
-            self.changes = True
+        head_revision = script_directory.get_current_head()
+        current_version = self.get_current_version()
 
-        self.upgrade_head(self.last_version)
-        return self.last_version
+        return current_version == head_revision
+
+    def apply(self):
+        try:
+            self.check()  # Asegúrate de que la base de datos esté preparada para migraciones
+            current_version = self.get_current_version()
+
+            if not self.is_database_up_to_date():
+                self.upgrade_head("head")  # Actualiza la base de datos si no está al día
+
+            script_directory = ScriptDirectory.from_config(self.alembic_config)
+            if current_version is None and list(script_directory.walk_revisions()):
+                self.upgrade_head()
+                current_version = self.get_current_version()
+
+            script = self.apply_revision()
+            if self.no_changes_detected(script):
+                self.last_version = current_version
+                Path(script.path).unlink()  # Elimina la revisión si no hay cambios
+            else:
+                self.last_version = script.revision
+                self.changes = True
+                self.upgrade_head(self.last_version)  # Aplica la nueva migración
+            return self.last_version
+        except Exception as e:
+            logger.error(f"Error aplicando migraciones: {e}")
