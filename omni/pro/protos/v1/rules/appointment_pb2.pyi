@@ -10,34 +10,11 @@ from google.protobuf import struct_pb2 as _struct_pb2
 from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from omni.pro.protos.common import base_pb2 as _base_pb2
+from omni.pro.protos.v1.rules import appointment_line_pb2 as _appointment_line_pb2
 from omni.pro.protos.v1.rules import delivery_method_pb2 as _delivery_method_pb2
 from omni.pro.protos.v1.rules import warehouse_pb2 as _warehouse_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
-
-class AppointmentLines(_message.Message):
-    __slots__ = ["hour_start", "hour_end", "order_numbers", "appointment_available", "cids", "id"]
-    HOUR_START_FIELD_NUMBER: _ClassVar[int]
-    HOUR_END_FIELD_NUMBER: _ClassVar[int]
-    ORDER_NUMBERS_FIELD_NUMBER: _ClassVar[int]
-    APPOINTMENT_AVAILABLE_FIELD_NUMBER: _ClassVar[int]
-    CIDS_FIELD_NUMBER: _ClassVar[int]
-    ID_FIELD_NUMBER: _ClassVar[int]
-    hour_start: str
-    hour_end: str
-    order_numbers: int
-    appointment_available: int
-    cids: _containers.RepeatedScalarFieldContainer[str]
-    id: str
-    def __init__(
-        self,
-        hour_start: _Optional[str] = ...,
-        hour_end: _Optional[str] = ...,
-        order_numbers: _Optional[int] = ...,
-        appointment_available: _Optional[int] = ...,
-        cids: _Optional[_Iterable[str]] = ...,
-        id: _Optional[str] = ...,
-    ) -> None: ...
 
 class Appointment(_message.Message):
     __slots__ = ["id", "warehouse", "method", "date", "lines", "active", "external_id", "object_audit"]
@@ -53,7 +30,7 @@ class Appointment(_message.Message):
     warehouse: _warehouse_pb2.Warehouse
     method: _delivery_method_pb2.DeliveryMethod
     date: str
-    lines: _containers.RepeatedCompositeFieldContainer[AppointmentLines]
+    lines: _containers.RepeatedCompositeFieldContainer[_appointment_line_pb2.AppointmentLine]
     active: _wrappers_pb2.BoolValue
     external_id: str
     object_audit: _base_pb2.ObjectAudit
@@ -63,7 +40,7 @@ class Appointment(_message.Message):
         warehouse: _Optional[_Union[_warehouse_pb2.Warehouse, _Mapping]] = ...,
         method: _Optional[_Union[_delivery_method_pb2.DeliveryMethod, _Mapping]] = ...,
         date: _Optional[str] = ...,
-        lines: _Optional[_Iterable[_Union[AppointmentLines, _Mapping]]] = ...,
+        lines: _Optional[_Iterable[_Union[_appointment_line_pb2.AppointmentLine, _Mapping]]] = ...,
         active: _Optional[_Union[_wrappers_pb2.BoolValue, _Mapping]] = ...,
         external_id: _Optional[str] = ...,
         object_audit: _Optional[_Union[_base_pb2.ObjectAudit, _Mapping]] = ...,
@@ -80,7 +57,7 @@ class AppointmentCreateRequest(_message.Message):
     warehouse_id: int
     method_id: str
     date: str
-    lines: _containers.RepeatedCompositeFieldContainer[AppointmentLines]
+    lines: _containers.RepeatedScalarFieldContainer[str]
     external_id: str
     context: _base_pb2.Context
     def __init__(
@@ -88,7 +65,7 @@ class AppointmentCreateRequest(_message.Message):
         warehouse_id: _Optional[int] = ...,
         method_id: _Optional[str] = ...,
         date: _Optional[str] = ...,
-        lines: _Optional[_Iterable[_Union[AppointmentLines, _Mapping]]] = ...,
+        lines: _Optional[_Iterable[str]] = ...,
         external_id: _Optional[str] = ...,
         context: _Optional[_Union[_base_pb2.Context, _Mapping]] = ...,
     ) -> None: ...

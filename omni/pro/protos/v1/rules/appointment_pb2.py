@@ -15,11 +15,12 @@ _sym_db = _symbol_database.Default()
 from google.protobuf import struct_pb2 as google_dot_protobuf_dot_struct__pb2
 from google.protobuf import wrappers_pb2 as google_dot_protobuf_dot_wrappers__pb2
 from omni.pro.protos.common import base_pb2 as common_dot_base__pb2
+from omni.pro.protos.v1.rules import appointment_line_pb2 as v1_dot_rules_dot_appointment__line__pb2
 from omni.pro.protos.v1.rules import delivery_method_pb2 as v1_dot_rules_dot_delivery__method__pb2
 from omni.pro.protos.v1.rules import warehouse_pb2 as v1_dot_rules_dot_warehouse__pb2
 
 DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
-    b'\n\x1av1/rules/appointment.proto\x12%pro.omni.oms.api.v1.rules.appointment\x1a\x11\x63ommon/base.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x1ev1/rules/delivery_method.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x18v1/rules/warehouse.proto"\x88\x01\n\x10\x41ppointmentLines\x12\x12\n\nhour_start\x18\x01 \x01(\t\x12\x10\n\x08hour_end\x18\x02 \x01(\t\x12\x15\n\rorder_numbers\x18\x03 \x01(\x05\x12\x1d\n\x15\x61ppointment_available\x18\x04 \x01(\x05\x12\x0c\n\x04\x63ids\x18\x05 \x03(\t\x12\n\n\x02id\x18\x06 \x01(\t"\xff\x02\n\x0b\x41ppointment\x12\n\n\x02id\x18\x01 \x01(\t\x12\x41\n\twarehouse\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.v1.rules.warehouse.Warehouse\x12I\n\x06method\x18\x03 \x01(\x0b\x32\x39.pro.omni.oms.api.v1.rules.delivery_method.DeliveryMethod\x12\x0c\n\x04\x64\x61te\x18\x04 \x01(\t\x12\x46\n\x05lines\x18\x05 \x03(\x0b\x32\x37.pro.omni.oms.api.v1.rules.appointment.AppointmentLines\x12*\n\x06\x61\x63tive\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12\x13\n\x0b\x65xternal_id\x18\x07 \x01(\t\x12?\n\x0cobject_audit\x18\x08 \x01(\x0b\x32).pro.omni.oms.api.common.base.ObjectAudit"\xe6\x01\n\x18\x41ppointmentCreateRequest\x12\x14\n\x0cwarehouse_id\x18\x01 \x01(\x05\x12\x11\n\tmethod_id\x18\x02 \x01(\t\x12\x0c\n\x04\x64\x61te\x18\x03 \x01(\t\x12\x46\n\x05lines\x18\x04 \x03(\x0b\x32\x37.pro.omni.oms.api.v1.rules.appointment.AppointmentLines\x12\x13\n\x0b\x65xternal_id\x18\x05 \x01(\t\x12\x36\n\x07\x63ontext\x18\x06 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xaf\x01\n\x19\x41ppointmentCreateResponse\x12G\n\x0b\x61ppointment\x18\x01 \x01(\x0b\x32\x32.pro.omni.oms.api.v1.rules.appointment.Appointment\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\xf4\x02\n\x16\x41ppointmentReadRequest\x12\x37\n\x08group_by\x18\x01 \x03(\x0b\x32%.pro.omni.oms.api.common.base.GroupBy\x12\x35\n\x07sort_by\x18\x02 \x01(\x0b\x32$.pro.omni.oms.api.common.base.SortBy\x12\x34\n\x06\x66ields\x18\x03 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Fields\x12\x34\n\x06\x66ilter\x18\x04 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Filter\x12:\n\tpaginated\x18\x05 \x01(\x0b\x32\'.pro.omni.oms.api.common.base.Paginated\x12\n\n\x02id\x18\x06 \x01(\t\x12\x36\n\x07\x63ontext\x18\x07 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xe9\x01\n\x17\x41ppointmentReadResponse\x12H\n\x0c\x61ppointments\x18\x01 \x03(\x0b\x32\x32.pro.omni.oms.api.v1.rules.appointment.Appointment\x12\x39\n\tmeta_data\x18\x02 \x01(\x0b\x32&.pro.omni.oms.api.common.base.MetaData\x12I\n\x11response_standard\x18\x03 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\x9b\x01\n\x18\x41ppointmentUpdateRequest\x12G\n\x0b\x61ppointment\x18\x01 \x01(\x0b\x32\x32.pro.omni.oms.api.v1.rules.appointment.Appointment\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xaf\x01\n\x19\x41ppointmentUpdateResponse\x12G\n\x0b\x61ppointment\x18\x01 \x01(\x0b\x32\x32.pro.omni.oms.api.v1.rules.appointment.Appointment\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"^\n\x18\x41ppointmentDeleteRequest\x12\n\n\x02id\x18\x01 \x01(\t\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"f\n\x19\x41ppointmentDeleteResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"`\n\x18SearchAppointmentRequest\x12\x0c\n\x04\x63ids\x18\x01 \x03(\t\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\x8d\x01\n\x19SearchAppointmentResponse\x12%\n\x04\x64\x61ta\x18\x01 \x01(\x0b\x32\x17.google.protobuf.Struct\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"3\n\x16\x41ppointmentConfirmData\x12\x0c\n\x04\x61ids\x18\x01 \x03(\t\x12\x0b\n\x03\x63id\x18\x02 \x01(\t"\xa0\x01\n\x19\x43onfirmAppointmentRequest\x12K\n\x04\x64\x61ta\x18\x02 \x03(\x0b\x32=.pro.omni.oms.api.v1.rules.appointment.AppointmentConfirmData\x12\x36\n\x07\x63ontext\x18\x03 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"g\n\x1a\x43onfirmAppointmentResponse\x12I\n\x11response_standard\x18\x03 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard2\xb3\x07\n\x12\x41ppointmentService\x12\x98\x01\n\x11\x41ppointmentCreate\x12?.pro.omni.oms.api.v1.rules.appointment.AppointmentCreateRequest\x1a@.pro.omni.oms.api.v1.rules.appointment.AppointmentCreateResponse"\x00\x12\x92\x01\n\x0f\x41ppointmentRead\x12=.pro.omni.oms.api.v1.rules.appointment.AppointmentReadRequest\x1a>.pro.omni.oms.api.v1.rules.appointment.AppointmentReadResponse"\x00\x12\x98\x01\n\x11\x41ppointmentUpdate\x12?.pro.omni.oms.api.v1.rules.appointment.AppointmentUpdateRequest\x1a@.pro.omni.oms.api.v1.rules.appointment.AppointmentUpdateResponse"\x00\x12\x98\x01\n\x11\x41ppointmentDelete\x12?.pro.omni.oms.api.v1.rules.appointment.AppointmentDeleteRequest\x1a@.pro.omni.oms.api.v1.rules.appointment.AppointmentDeleteResponse"\x00\x12\x98\x01\n\x11SearchAppointment\x12?.pro.omni.oms.api.v1.rules.appointment.SearchAppointmentRequest\x1a@.pro.omni.oms.api.v1.rules.appointment.SearchAppointmentResponse"\x00\x12\x9b\x01\n\x12\x43onfirmAppointment\x12@.pro.omni.oms.api.v1.rules.appointment.ConfirmAppointmentRequest\x1a\x41.pro.omni.oms.api.v1.rules.appointment.ConfirmAppointmentResponse"\x00\x62\x06proto3'
+    b'\n\x1av1/rules/appointment.proto\x12%pro.omni.oms.api.v1.rules.appointment\x1a\x11\x63ommon/base.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x1ev1/rules/delivery_method.proto\x1a\x1fv1/rules/appointment_line.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x18v1/rules/warehouse.proto"\x83\x03\n\x0b\x41ppointment\x12\n\n\x02id\x18\x01 \x01(\t\x12\x41\n\twarehouse\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.v1.rules.warehouse.Warehouse\x12I\n\x06method\x18\x03 \x01(\x0b\x32\x39.pro.omni.oms.api.v1.rules.delivery_method.DeliveryMethod\x12\x0c\n\x04\x64\x61te\x18\x04 \x01(\t\x12J\n\x05lines\x18\x05 \x03(\x0b\x32;.pro.omni.oms.api.v1.rules.appointment_line.AppointmentLine\x12*\n\x06\x61\x63tive\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.BoolValue\x12\x13\n\x0b\x65xternal_id\x18\x07 \x01(\t\x12?\n\x0cobject_audit\x18\x08 \x01(\x0b\x32).pro.omni.oms.api.common.base.ObjectAudit"\xad\x01\n\x18\x41ppointmentCreateRequest\x12\x14\n\x0cwarehouse_id\x18\x01 \x01(\x05\x12\x11\n\tmethod_id\x18\x02 \x01(\t\x12\x0c\n\x04\x64\x61te\x18\x03 \x01(\t\x12\r\n\x05lines\x18\x04 \x03(\t\x12\x13\n\x0b\x65xternal_id\x18\x05 \x01(\t\x12\x36\n\x07\x63ontext\x18\x06 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xaf\x01\n\x19\x41ppointmentCreateResponse\x12G\n\x0b\x61ppointment\x18\x01 \x01(\x0b\x32\x32.pro.omni.oms.api.v1.rules.appointment.Appointment\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\xf4\x02\n\x16\x41ppointmentReadRequest\x12\x37\n\x08group_by\x18\x01 \x03(\x0b\x32%.pro.omni.oms.api.common.base.GroupBy\x12\x35\n\x07sort_by\x18\x02 \x01(\x0b\x32$.pro.omni.oms.api.common.base.SortBy\x12\x34\n\x06\x66ields\x18\x03 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Fields\x12\x34\n\x06\x66ilter\x18\x04 \x01(\x0b\x32$.pro.omni.oms.api.common.base.Filter\x12:\n\tpaginated\x18\x05 \x01(\x0b\x32\'.pro.omni.oms.api.common.base.Paginated\x12\n\n\x02id\x18\x06 \x01(\t\x12\x36\n\x07\x63ontext\x18\x07 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xe9\x01\n\x17\x41ppointmentReadResponse\x12H\n\x0c\x61ppointments\x18\x01 \x03(\x0b\x32\x32.pro.omni.oms.api.v1.rules.appointment.Appointment\x12\x39\n\tmeta_data\x18\x02 \x01(\x0b\x32&.pro.omni.oms.api.common.base.MetaData\x12I\n\x11response_standard\x18\x03 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"\x9b\x01\n\x18\x41ppointmentUpdateRequest\x12G\n\x0b\x61ppointment\x18\x01 \x01(\x0b\x32\x32.pro.omni.oms.api.v1.rules.appointment.Appointment\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\xaf\x01\n\x19\x41ppointmentUpdateResponse\x12G\n\x0b\x61ppointment\x18\x01 \x01(\x0b\x32\x32.pro.omni.oms.api.v1.rules.appointment.Appointment\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"^\n\x18\x41ppointmentDeleteRequest\x12\n\n\x02id\x18\x01 \x01(\t\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"f\n\x19\x41ppointmentDeleteResponse\x12I\n\x11response_standard\x18\x01 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"`\n\x18SearchAppointmentRequest\x12\x0c\n\x04\x63ids\x18\x01 \x03(\t\x12\x36\n\x07\x63ontext\x18\x02 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"\x8d\x01\n\x19SearchAppointmentResponse\x12%\n\x04\x64\x61ta\x18\x01 \x01(\x0b\x32\x17.google.protobuf.Struct\x12I\n\x11response_standard\x18\x02 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard"3\n\x16\x41ppointmentConfirmData\x12\x0c\n\x04\x61ids\x18\x01 \x03(\t\x12\x0b\n\x03\x63id\x18\x02 \x01(\t"\xa0\x01\n\x19\x43onfirmAppointmentRequest\x12K\n\x04\x64\x61ta\x18\x02 \x03(\x0b\x32=.pro.omni.oms.api.v1.rules.appointment.AppointmentConfirmData\x12\x36\n\x07\x63ontext\x18\x03 \x01(\x0b\x32%.pro.omni.oms.api.common.base.Context"g\n\x1a\x43onfirmAppointmentResponse\x12I\n\x11response_standard\x18\x03 \x01(\x0b\x32..pro.omni.oms.api.common.base.ResponseStandard2\xb3\x07\n\x12\x41ppointmentService\x12\x98\x01\n\x11\x41ppointmentCreate\x12?.pro.omni.oms.api.v1.rules.appointment.AppointmentCreateRequest\x1a@.pro.omni.oms.api.v1.rules.appointment.AppointmentCreateResponse"\x00\x12\x92\x01\n\x0f\x41ppointmentRead\x12=.pro.omni.oms.api.v1.rules.appointment.AppointmentReadRequest\x1a>.pro.omni.oms.api.v1.rules.appointment.AppointmentReadResponse"\x00\x12\x98\x01\n\x11\x41ppointmentUpdate\x12?.pro.omni.oms.api.v1.rules.appointment.AppointmentUpdateRequest\x1a@.pro.omni.oms.api.v1.rules.appointment.AppointmentUpdateResponse"\x00\x12\x98\x01\n\x11\x41ppointmentDelete\x12?.pro.omni.oms.api.v1.rules.appointment.AppointmentDeleteRequest\x1a@.pro.omni.oms.api.v1.rules.appointment.AppointmentDeleteResponse"\x00\x12\x98\x01\n\x11SearchAppointment\x12?.pro.omni.oms.api.v1.rules.appointment.SearchAppointmentRequest\x1a@.pro.omni.oms.api.v1.rules.appointment.SearchAppointmentResponse"\x00\x12\x9b\x01\n\x12\x43onfirmAppointment\x12@.pro.omni.oms.api.v1.rules.appointment.ConfirmAppointmentRequest\x1a\x41.pro.omni.oms.api.v1.rules.appointment.ConfirmAppointmentResponse"\x00\x62\x06proto3'
 )
 
 _globals = globals()
@@ -28,36 +29,34 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, "v1.rules.appointment_pb2", 
 if _descriptor._USE_C_DESCRIPTORS == False:
 
     DESCRIPTOR._options = None
-    _globals["_APPOINTMENTLINES"]._serialized_start = 209
-    _globals["_APPOINTMENTLINES"]._serialized_end = 345
-    _globals["_APPOINTMENT"]._serialized_start = 348
-    _globals["_APPOINTMENT"]._serialized_end = 731
-    _globals["_APPOINTMENTCREATEREQUEST"]._serialized_start = 734
-    _globals["_APPOINTMENTCREATEREQUEST"]._serialized_end = 964
-    _globals["_APPOINTMENTCREATERESPONSE"]._serialized_start = 967
-    _globals["_APPOINTMENTCREATERESPONSE"]._serialized_end = 1142
-    _globals["_APPOINTMENTREADREQUEST"]._serialized_start = 1145
-    _globals["_APPOINTMENTREADREQUEST"]._serialized_end = 1517
-    _globals["_APPOINTMENTREADRESPONSE"]._serialized_start = 1520
-    _globals["_APPOINTMENTREADRESPONSE"]._serialized_end = 1753
-    _globals["_APPOINTMENTUPDATEREQUEST"]._serialized_start = 1756
-    _globals["_APPOINTMENTUPDATEREQUEST"]._serialized_end = 1911
-    _globals["_APPOINTMENTUPDATERESPONSE"]._serialized_start = 1914
-    _globals["_APPOINTMENTUPDATERESPONSE"]._serialized_end = 2089
-    _globals["_APPOINTMENTDELETEREQUEST"]._serialized_start = 2091
-    _globals["_APPOINTMENTDELETEREQUEST"]._serialized_end = 2185
-    _globals["_APPOINTMENTDELETERESPONSE"]._serialized_start = 2187
-    _globals["_APPOINTMENTDELETERESPONSE"]._serialized_end = 2289
-    _globals["_SEARCHAPPOINTMENTREQUEST"]._serialized_start = 2291
-    _globals["_SEARCHAPPOINTMENTREQUEST"]._serialized_end = 2387
-    _globals["_SEARCHAPPOINTMENTRESPONSE"]._serialized_start = 2390
-    _globals["_SEARCHAPPOINTMENTRESPONSE"]._serialized_end = 2531
-    _globals["_APPOINTMENTCONFIRMDATA"]._serialized_start = 2533
-    _globals["_APPOINTMENTCONFIRMDATA"]._serialized_end = 2584
-    _globals["_CONFIRMAPPOINTMENTREQUEST"]._serialized_start = 2587
-    _globals["_CONFIRMAPPOINTMENTREQUEST"]._serialized_end = 2747
-    _globals["_CONFIRMAPPOINTMENTRESPONSE"]._serialized_start = 2749
-    _globals["_CONFIRMAPPOINTMENTRESPONSE"]._serialized_end = 2852
-    _globals["_APPOINTMENTSERVICE"]._serialized_start = 2855
-    _globals["_APPOINTMENTSERVICE"]._serialized_end = 3802
+    _globals["_APPOINTMENT"]._serialized_start = 242
+    _globals["_APPOINTMENT"]._serialized_end = 629
+    _globals["_APPOINTMENTCREATEREQUEST"]._serialized_start = 632
+    _globals["_APPOINTMENTCREATEREQUEST"]._serialized_end = 805
+    _globals["_APPOINTMENTCREATERESPONSE"]._serialized_start = 808
+    _globals["_APPOINTMENTCREATERESPONSE"]._serialized_end = 983
+    _globals["_APPOINTMENTREADREQUEST"]._serialized_start = 986
+    _globals["_APPOINTMENTREADREQUEST"]._serialized_end = 1358
+    _globals["_APPOINTMENTREADRESPONSE"]._serialized_start = 1361
+    _globals["_APPOINTMENTREADRESPONSE"]._serialized_end = 1594
+    _globals["_APPOINTMENTUPDATEREQUEST"]._serialized_start = 1597
+    _globals["_APPOINTMENTUPDATEREQUEST"]._serialized_end = 1752
+    _globals["_APPOINTMENTUPDATERESPONSE"]._serialized_start = 1755
+    _globals["_APPOINTMENTUPDATERESPONSE"]._serialized_end = 1930
+    _globals["_APPOINTMENTDELETEREQUEST"]._serialized_start = 1932
+    _globals["_APPOINTMENTDELETEREQUEST"]._serialized_end = 2026
+    _globals["_APPOINTMENTDELETERESPONSE"]._serialized_start = 2028
+    _globals["_APPOINTMENTDELETERESPONSE"]._serialized_end = 2130
+    _globals["_SEARCHAPPOINTMENTREQUEST"]._serialized_start = 2132
+    _globals["_SEARCHAPPOINTMENTREQUEST"]._serialized_end = 2228
+    _globals["_SEARCHAPPOINTMENTRESPONSE"]._serialized_start = 2231
+    _globals["_SEARCHAPPOINTMENTRESPONSE"]._serialized_end = 2372
+    _globals["_APPOINTMENTCONFIRMDATA"]._serialized_start = 2374
+    _globals["_APPOINTMENTCONFIRMDATA"]._serialized_end = 2425
+    _globals["_CONFIRMAPPOINTMENTREQUEST"]._serialized_start = 2428
+    _globals["_CONFIRMAPPOINTMENTREQUEST"]._serialized_end = 2588
+    _globals["_CONFIRMAPPOINTMENTRESPONSE"]._serialized_start = 2590
+    _globals["_CONFIRMAPPOINTMENTRESPONSE"]._serialized_end = 2693
+    _globals["_APPOINTMENTSERVICE"]._serialized_start = 2696
+    _globals["_APPOINTMENTSERVICE"]._serialized_end = 3643
 # @@protoc_insertion_point(module_scope)
