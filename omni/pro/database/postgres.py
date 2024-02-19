@@ -201,7 +201,8 @@ class PostgresDatabaseManager(SessionManager):
 
         if filter.ListFields():
             # Uso de la clase
-            expression = ast.literal_eval(filter.filter)  # Tu expresión en notación polaca inversa
+            str_filter = filter.filter.replace("true", "True").replace("false", "False").replace("__", ".")
+            expression = ast.literal_eval(str_filter)  # Tu expresión en notación polaca inversa
             # converter = PolishNotationToSQLAlchemy(model, expression)
             # filter_condition, aliases = converter.convert()
 
