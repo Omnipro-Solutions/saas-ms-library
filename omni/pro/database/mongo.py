@@ -361,6 +361,7 @@ class DatabaseManager(object):
         return document.get_or_sync(request_context, **{attribute_search: element})
 
     def read_response(
+        self,
         request,
         context,
         document_class,
@@ -391,7 +392,7 @@ class DatabaseManager(object):
                     None,
                     request.sort_by,
                 )
-                list_docs, total = context.db_manager.list_documents(
+                list_docs, total = self.list_documents(
                     context.db_name,
                     request.context.tenant,
                     document_class,
