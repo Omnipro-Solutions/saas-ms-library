@@ -1,7 +1,6 @@
-from mongoengine import DynamicEmbeddedDocument
 from mongoengine.fields import EmbeddedDocumentField, ObjectIdField, ReferenceField
 from omni.pro.models.base import BaseModel
-from omni.pro.util import to_camel_case
+from omni_pro_base.util import to_camel_case
 from sqlalchemy import Enum, inspect
 from sqlalchemy.orm.relationships import RelationshipProperty
 

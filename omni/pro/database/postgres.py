@@ -1,7 +1,7 @@
 import ast
 import operator
 
-from omni.pro.protos.common import base_pb2
+from omni_pro_grpc.common import base_pb2
 from sqlalchemy import and_, asc, create_engine, desc, not_, or_
 from sqlalchemy.orm import aliased, scoped_session, sessionmaker
 from sqlalchemy.sql import cast, operators

@@ -1,11 +1,11 @@
 # create a decorator to check if the user has permission to access the resource
 from enum import Enum, unique
 
-from omni.pro.logger import LoggerTraceback, configure_logger
-from omni.pro.microservice import MicroService
-from omni.pro.protos.grpc_connector import Event, GRPClient
-from omni.pro.protos.response import MessageResponse
-from omni.pro.protos.v1.users import user_pb2
+from omni.pro.response import MessageResponse
+from omni_pro_base.logger import LoggerTraceback, configure_logger
+from omni_pro_base.microservice import MicroService
+from omni_pro_grpc.grpc_connector import Event, GRPClient
+from omni_pro_grpc.v1.users import user_pb2
 
 logger = configure_logger(name=__name__)
 

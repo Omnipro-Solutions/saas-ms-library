@@ -4,13 +4,13 @@ from datetime import datetime
 from google.protobuf.timestamp_pb2 import Timestamp
 from mongoengine import BooleanField, DateTimeField, Document, EmbeddedDocument, EmbeddedDocumentField, StringField
 from omni.pro.database.sqlalchemy import mapped_column
-from omni.pro.protos.common.base_pb2 import Context as ContextProto
-from omni.pro.protos.common.base_pb2 import Object as ObjectProto
-from omni.pro.protos.common.base_pb2 import ObjectAudit as AuditProto
+from omni_pro_grpc.common.base_pb2 import Context as ContextProto
+from omni_pro_grpc.common.base_pb2 import Object as ObjectProto
+from omni_pro_grpc.common.base_pb2 import ObjectAudit as AuditProto
 from sqlalchemy import Boolean, DateTime, String
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import DeclarativeBase, Mapped, declarative_mixin, declared_attr, relationship
+from sqlalchemy.orm import Mapped, declared_attr
 
 
 class BaseEmbeddedDocument(EmbeddedDocument):

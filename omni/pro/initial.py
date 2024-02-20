@@ -7,17 +7,18 @@ from typing import Union
 
 from google.protobuf import json_format
 from mongoengine import Document
-from omni.pro import redis, util
+from omni.pro import util
 from omni.pro.config import Config
-from omni.pro.database import DatabaseManager, PersistenceTypeEnum, PostgresDatabaseManager
+from omni.pro.database import PersistenceTypeEnum, PostgresDatabaseManager
 from omni.pro.logger import LoggerTraceback, configure_logger
 from omni.pro.microservice import MicroService
 from omni.pro.models.base import Audit, Base
-from omni.pro.protos.grpc_connector import Event, GRPClient
-from omni.pro.protos.v1.users import user_pb2
-from omni.pro.protos.v1.utilities.ms_pb2 import Microservice as MicroserviceProto
+from omni.pro.redis import RedisManager
 from omni.pro.stack import ExitStackDocument
 from omni.pro.validators import MicroServicePathValidator
+from omni_pro_grpc.grpc_connector import Event, GRPClient
+from omni_pro_grpc.v1.users import user_pb2
+from omni_pro_grpc.v1.utilities.ms_pb2 import Microservice as MicroserviceProto
 
 logger = configure_logger(name=__name__)
 
@@ -32,7 +33,9 @@ class LoadData(object):
         return ManifestRPCFunction
 
     def load_data(self):
-        redis_manager = redis.get_redis_manager()
+        redis_manager = RedisManager(
+            host=Config.REDIS_HOST, port=Config.REDIS_PORT, db=Config.REDIS_DB, redis_ssl=Config.REDIS_SSL
+        )
         tenans = redis_manager.get_tenant_codes()
         for tenant in tenans:
             user = redis_manager.get_user_admin(tenant)
@@ -157,7 +160,7 @@ class Manifest(object):
         return manifest
 
     def validate_manifest(
-        self, context: dict, manifest: dict = {}, micro_data: [dict] = [], micro_settings: [dict] = []
+        self, context: dict, manifest: dict = {}, micro_data: list[dict] = [], micro_settings: list[dict] = []
     ):
         manifest = manifest or self.get_manifest()
         data_validated = MicroServicePathValidator(self.base_app).load(
@@ -169,7 +172,9 @@ class Manifest(object):
         manifest = self.get_manifest()
         if not manifest:
             return
-        redis_manager = redis.get_redis_manager()
+        redis_manager = RedisManager(
+            host=Config.REDIS_HOST, port=Config.REDIS_PORT, db=Config.REDIS_DB, redis_ssl=Config.REDIS_SSL
+        )
         tenans = redis_manager.get_tenant_codes()
         for tenant in tenans:
             user = redis_manager.get_user_admin(tenant)
