@@ -58,11 +58,10 @@ jobs:
           release_id: ${{ steps.create_release.outputs.id }}
           assets_path: dist/
 
-      - name: Publish package PYPI
-        uses: pypa/gh-action-pypi-publish@27b31702a0e7fc50959f5ad993c78deac1bdfc29
-        with:
-          user: __token__
-          password: ${{ secrets.PYPI_API_TOKEN }}
+      - name: Publish package to Custom PYPI
+        run: |
+          pip install twine
+          twine upload --repository-url https://pypi.omni.pro/root/omni-pro/ -u ${{ secrets.DEVPI_USER }} -p ${{ secrets.DEVPI_PASSWORD }} dist/*
 
 
 
