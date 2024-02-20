@@ -1,11 +1,12 @@
 from google.protobuf import json_format
-from omni.pro import redis
+from omni.pro.config import Config
 from omni.pro.database import PersistenceTypeEnum
 from omni.pro.descriptor import Descriptor
 from omni.pro.logger import configure_logger
-from omni.pro.protos.grpc_function import ModelRPCFucntion
+from omni.pro.redis import RedisManager
 from omni.pro.topology import Topology
 from omni.pro.util import generate_hash
+from omni_pro_grpc.grpc_function import ModelRPCFucntion
 
 logger = configure_logger(name=__name__)
 
@@ -50,7 +51,9 @@ class RegisterModel(object):
             Type of the persistence either "NO_SQL" or "SQL".
             Tipo de persistencia ya sea "NO_SQL" o "SQL".
         """
-        redis_manager = redis.get_redis_manager()
+        redis_manager = RedisManager(
+            host=Config.REDIS_HOST, port=Config.REDIS_PORT, db=Config.REDIS_DB, redis_ssl=Config.REDIS_SSL
+        )
         tenans = redis_manager.get_tenant_codes()
         models_libs = Topology().get_models_from_libs()
         for tenant in tenans:
