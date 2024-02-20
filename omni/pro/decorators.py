@@ -1,8 +1,8 @@
-from omni.pro import redis
 from omni.pro.aws import AWSCognitoClient, AWSS3Client
 from omni.pro.config import Config
 from omni.pro.database import DatabaseManager, PostgresDatabaseManager
 from omni.pro.logger import LoggerTraceback, configure_logger
+from omni.pro.redis import RedisManager
 from omni.pro.util import Resource
 
 logger = configure_logger(name=__name__)
@@ -12,7 +12,9 @@ def resources_decorator(resource_list: list) -> callable:
     def decorador_func(funcion: callable) -> callable:
         def inner(instance, request, context):
             try:
-                redis_manager = redis.get_redis_manager()
+                redis_manager = RedisManager(
+                    host=Config.REDIS_HOST, port=Config.REDIS_PORT, db=Config.REDIS_DB, redis_ssl=Config.REDIS_SSL
+                )
                 context.redis_manager = redis_manager
                 if Resource.AWS_COGNITO in resource_list:
                     cognito_params = redis_manager.get_aws_cognito_config(Config.SERVICE_ID, request.context.tenant)
