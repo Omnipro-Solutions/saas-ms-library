@@ -167,8 +167,7 @@ class DatabaseManager(object):
             )
             for obj in data["models"]
         ]
-
-        result = document_isntance.bulk_write(bulk_operations)
+        result = document_isntance._get_collection().bulk_write(bulk_operations, ordered=False)
         return result
 
     def add_or_remove_document_relations(
