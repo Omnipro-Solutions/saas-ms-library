@@ -25,9 +25,9 @@ class AirflowClientBase:
 
     def run_dag(self, dag_id: str, params: dict):
         with self.api_client as api_client:
-            api_instance = dag_run_api.DagRunApi(api_client)
+            api_instance = dag_run_api.DAGRunApi(api_client)
             try:
-                api_reponse = api_instance.create_dag_run(
+                api_reponse = api_instance.post_dag_run(
                     dag_id=dag_id,
                     dag_run=DAGRun(
                         conf=params,
