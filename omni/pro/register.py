@@ -7,6 +7,7 @@ from omni.pro.redis import RedisManager
 from omni.pro.topology import Topology
 from omni.pro.util import generate_hash
 from omni_pro_grpc.grpc_function import ModelRPCFucntion
+from omni.pro.airflow.call_register_models import RegisterModels
 
 logger = configure_logger(name=__name__)
 
@@ -62,39 +63,17 @@ class RegisterModel(object):
                 "tenant": tenant,
                 "user": user.get("id") or "admin",
             }
-            rpc_func: ModelRPCFucntion = self.get_rpc_model_func_class()(context)
+            register_model = RegisterModels(tenant)
             for model in models_libs:
                 desc = getattr(Descriptor, method)(model)
                 desc = {"persistence_type": str(persistence_type), "microservice": self.microservice} | desc
-                hash_code = generate_hash(desc)
-                params = {
-                    "filter": {
-                        "filter": f"['and', ('microservice','=','{self.microservice}'), ('class_name','=','{desc.get('class_name')}')]"
-                    }
-                }
-                response, success, event = rpc_func.read_model(params)
-                if not success:
-                    logger.warning(f"{event.get('rpc_method')}: {str(response.response_standard)}")
-                    continue
+                desc["hash_code"] = generate_hash(desc)
+                params = desc
+                request = {"grpc_params": params, "context": context, "microservice": self.microservice}
+                response = register_model.register_model(request)
 
-                model = response.models[0] if response.models else None
-                if model:
-                    model_dict = self.transform_model_desc(model)
-                    model_id = model_dict.pop("id")
-                    if generate_hash(model_dict) == hash_code:
-                        logger.info(f"Model {desc['class_name']} no changes")
-                        continue
-
-                    desc["hash_code"] = hash_code
-                    params = {"model": {"id": model_id} | desc}
-                    response, success, event = rpc_func.updated_model(params)
-                else:
-                    desc["hash_code"] = hash_code
-                    params = desc
-                    response, success, event = rpc_func.register_model(params)
-
-                getattr(logger, "warning" if not success else "info")(
-                    f"Model {desc['class_name']} method {event.get('rpc_method')} {str(response.response_standard)}"
+                getattr(logger, "warning" if not response else "info")(
+                    f"Model {desc['class_name']} {str(response['state'])} with id {str(response['dag_run_id'])}"
                 )
 
     def transform_model_desc(self, model):
