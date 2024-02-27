@@ -4,7 +4,6 @@ import mongoengine as mongo
 from bson import ObjectId
 from omni.pro.exceptions import AlreadyExistError, NotFoundError
 from omni.pro.response import MessageResponse
-from omni.pro.stack import ExitStackDocument
 from omni_pro_base.logger import LoggerTraceback, configure_logger
 from omni_pro_grpc.common import base_pb2
 from pymongo import UpdateOne
@@ -278,16 +277,13 @@ class DatabaseManager(object):
         The list of relations process.
         La lista de relaciones procesadas.
         """
-        with ExitStackDocument(document_classes=document.reference_list(), db_alias=context.db_name):
-            for element in list_elements:
-                register = self.get_register(
-                    attribute_search, context, document, element, request_context, multiple_params
-                )
-                if register not in list_registers:
-                    raise NotFoundError(message=f"{element_name} {element} not defined in {element_relation_name}")
-                list_registers.remove(register)
+        for element in list_elements:
+            register = self.get_register(attribute_search, context, document, element, request_context, multiple_params)
+            if register not in list_registers:
+                raise NotFoundError(message=f"{element_name} {element} not defined in {element_relation_name}")
+            list_registers.remove(register)
 
-            return list_registers
+        return list_registers
 
     def add_document_relations(
         self,
@@ -320,20 +316,15 @@ class DatabaseManager(object):
         The list of relations process.
         La lista de relaciones procesadas.
         """
-        with ExitStackDocument(document_classes=document.reference_list(), db_alias=context.db_name):
-            for element in list_elements:
-                register = self.get_register(
-                    attribute_search, context, document, element, request_context, multiple_params
-                )
-                if not register:
-                    raise NotFoundError(message=f"{element_name} {element} not found")
-                if register in list_registers:
-                    raise AlreadyExistError(
-                        message=f"{element_name} {element} already added in {element_relation_name}"
-                    )
-                list_registers.append(register)
+        for element in list_elements:
+            register = self.get_register(attribute_search, context, document, element, request_context, multiple_params)
+            if not register:
+                raise NotFoundError(message=f"{element_name} {element} not found")
+            if register in list_registers:
+                raise AlreadyExistError(message=f"{element_name} {element} already added in {element_relation_name}")
+            list_registers.append(register)
 
-            return list_registers
+        return list_registers
 
     def get_register(self, attribute_search, context, document, element, request_context, multiple_params):
         """
@@ -365,7 +356,6 @@ class DatabaseManager(object):
         request,
         context,
         document_class,
-        reference_list: list,
         message_response: MessageResponse,
         msg_success: str,
         msg_exception: str,
@@ -383,32 +373,31 @@ class DatabaseManager(object):
         :return: MessageResponse cls param
         """
         try:
-            with ExitStackDocument(document_classes=reference_list, db_alias=context.db_name):
-                data = DBUtil.db_prepared_statement(
-                    request.id,
-                    request.fields,
-                    request.filter,
-                    request.paginated,
-                    None,
-                    request.sort_by,
-                )
-                list_docs, total = self.list_documents(
-                    context.db_name,
-                    request.context.tenant,
-                    document_class,
-                    **data,
-                )
-                kwargs_return = {
-                    f"{entry_field_name}": [doc.to_proto() for doc in list_docs],
-                } | kwargs
-                return message_response.fetched_response(
-                    message=msg_success,
-                    total=total,
-                    count=len(list_docs),
-                    id=request.id,
-                    paginated=request.paginated,
-                    **kwargs_return,
-                )
+            data = DBUtil.db_prepared_statement(
+                request.id,
+                request.fields,
+                request.filter,
+                request.paginated,
+                None,
+                request.sort_by,
+            )
+            list_docs, total = self.list_documents(
+                context.db_name,
+                request.context.tenant,
+                document_class,
+                **data,
+            )
+            kwargs_return = {
+                f"{entry_field_name}": [doc.to_proto() for doc in list_docs],
+            } | kwargs
+            return message_response.fetched_response(
+                message=msg_success,
+                total=total,
+                count=len(list_docs),
+                id=request.id,
+                paginated=request.paginated,
+                **kwargs_return,
+            )
         except ValueError as e:
             LoggerTraceback.error("Input request data validation error", e, logger)
             return message_response.input_validator_response(message=str(e))
