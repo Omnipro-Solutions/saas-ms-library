@@ -52,11 +52,16 @@ class RegisterModel(object):
             Type of the persistence either "NO_SQL" or "SQL".
             Tipo de persistencia ya sea "NO_SQL" o "SQL".
         """
+        logger.info(f"Running Registering models with persistence type {persistence_type}")
+        logger.info(f"RedisManager: {Config.REDIS_HOST}:{Config.REDIS_PORT}/{Config.REDIS_DB}")
         redis_manager = RedisManager(
             host=Config.REDIS_HOST, port=Config.REDIS_PORT, db=Config.REDIS_DB, redis_ssl=Config.REDIS_SSL
         )
+        logger.info(f"Running redis_manager.get_tenant_codes()")
         tenans = redis_manager.get_tenant_codes()
+        logger.info(f"Running Topology().get_models_from_libs()")
         models_libs = Topology().get_models_from_libs()
+        logger.info(f"Running for loop")
         for tenant in tenans:
             user = redis_manager.get_user_admin(tenant)
             context = {
