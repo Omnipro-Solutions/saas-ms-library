@@ -1,5 +1,4 @@
 from contextlib import ExitStack
-
 from mongoengine import context_managers as ctx_mgr
 from omni.pro.topology import Topology
 
