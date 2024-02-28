@@ -29,8 +29,9 @@ def ms_register_connection(logger_oms=False):
         logger.info(f"Register connection for tenant {tenant}")
         conn = manager.get_mongodb_config(Config.SERVICE_ID, tenant)
         eval_conn = conn.copy()
-        if Config.DEBUG:
+        if Config.DEBUG or not eval_conn.get("complement"):
             del eval_conn["complement"]
+
         if not all(eval_conn.values()):
             continue
 
