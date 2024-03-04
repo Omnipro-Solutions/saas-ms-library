@@ -13,6 +13,7 @@ class StateEnum(Enum):
 class Logger(BaseDocument):
     state = EnumField(StateEnum)
     model_code = StringField()
+    source_id = StringField()
     data = DictField()
 
     meta = {
