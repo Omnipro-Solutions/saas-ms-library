@@ -1,5 +1,5 @@
-from enum import Enum, unique
 from abc import ABC, abstractmethod
+from enum import Enum, unique
 
 
 @unique
@@ -125,7 +125,7 @@ class JSONDocumentStrategy(DocumentStrategy):
         :param file_path: Path of the JSON file to be opened.
         :return: DataFrame object of the opened file.
         """
-        return self.file_library.read_json(file_path)
+        return self.file_library.read_json(file_path, lines=True)
 
     def get_data(self, file_path):
         """
