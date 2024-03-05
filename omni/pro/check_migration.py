@@ -6,9 +6,9 @@ from pathlib import Path
 from alembic import command
 from alembic.config import Config as AlembicConfig
 from alembic.script import Script, ScriptDirectory
-from omni.pro import redis
 from omni.pro.config import Config
 from omni.pro.logger import configure_logger
+from omni.pro.redis import RedisManager
 from sqlalchemy import Column, String, create_engine
 from sqlalchemy import inspect as inspect_sqlalchemy
 from sqlalchemy.orm import DeclarativeBase, sessionmaker
@@ -28,7 +28,9 @@ class AlembicVersionModel(Base):
 
 class AlembicMigrateCheck(object):
     def __init__(self, path: Path, postgres_url: str = None) -> None:
-        self.redis_manager = redis.get_redis_manager()
+        self.redis_manager = RedisManager(
+            host=Config.REDIS_HOST, port=Config.REDIS_PORT, db=Config.REDIS_DB, redis_ssl=Config.REDIS_SSL
+        )
         self.tenants = self.redis_manager.get_tenant_codes()
         self.alembic_config = AlembicConfig(path / "alembic.ini")
         self.alembic_config.set_main_option("script_location", str(path / "alembic"))
