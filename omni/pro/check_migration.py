@@ -2,6 +2,7 @@ import ast
 import inspect as inspect_ast
 from datetime import datetime
 from pathlib import Path
+from typing import Tuple, List
 
 from alembic import command
 from alembic.config import Config as AlembicConfig
@@ -98,17 +99,18 @@ class AlembicMigrateCheck(object):
             latest_version = session.query(AlembicVersionModel).order_by(AlembicVersionModel.version_num.desc()).first()
             return latest_version.version_num if latest_version else None
 
-    def apply_revision(self, message="auto-generated revision") -> Script:
+    def apply_revision(self, message="auto-generated revision") -> tuple[bool, Script | None | list[Script | None]] | \
+                                                                   tuple[bool, Exception]:
         # Formato del mensaje con fecha y hora en formato ISO
         message = f"{message} {datetime.now().isoformat()}"
         try:
             # Intenta crear la revisión de Alembic
             new_revision = command.revision(self.alembic_config, autogenerate=True, message=message)
-            return new_revision
+            return True, new_revision
         except Exception as e:
             # Registra el error específico si no se puede encontrar la tabla referenciada
-            logger.error(f"Failed to create revision due to a missing referenced table: {e}")
-            raise e
+            print(f"Failed to create revision due to a missing referenced table: {e}")
+            return False, e
 
     def no_changes_detected(self, script: Script) -> bool:
         code = inspect_ast.getsource(script.module.upgrade)
@@ -144,8 +146,10 @@ class AlembicMigrateCheck(object):
             if current_version is None and list(script_directory.walk_revisions()):
                 self.upgrade_head()
                 current_version = self.get_current_version()
-
-            script = self.apply_revision()
+            status, script = self.apply_revision()
+            if not status:
+                logger.exception(f"Error creating revision {script}")
+                return
             if self.no_changes_detected(script):
                 self.last_version = current_version
                 Path(script.path).unlink()  # Elimina la revisión si no hay cambios
@@ -155,7 +159,7 @@ class AlembicMigrateCheck(object):
                 self.upgrade_head(self.last_version)  # Aplica la nueva migración
             return self.last_version
         except Exception as e:
-            logger.error(f"Error aplicando migraciones: {e}")
+            logger.error(f"Error apply revision: {e}")
 
     def ensure_database_exists(self):
         db_name = self.postgres_url.split('/')[-1]
