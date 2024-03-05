@@ -99,11 +99,16 @@ class AlembicMigrateCheck(object):
             return latest_version.version_num if latest_version else None
 
     def apply_revision(self, message="auto-generated revision") -> Script:
-        # Usa la librería alembic para aplicar la revisión
-        # dar formato al mensaje concatenando la fecha y hora en formato ISO
+        # Formato del mensaje con fecha y hora en formato ISO
         message = f"{message} {datetime.now().isoformat()}"
-        new_revision = command.revision(self.alembic_config, autogenerate=True, message=message)
-        return new_revision
+        try:
+            # Intenta crear la revisión de Alembic
+            new_revision = command.revision(self.alembic_config, autogenerate=True, message=message)
+            return new_revision
+        except Exception as e:
+            # Registra el error específico si no se puede encontrar la tabla referenciada
+            logger.error(f"Failed to create revision due to a missing referenced table: {e}")
+            raise e
 
     def no_changes_detected(self, script: Script) -> bool:
         code = inspect_ast.getsource(script.module.upgrade)
