@@ -1,5 +1,4 @@
 from newrelic.api.function_trace import function_trace
-import newrelic.agent as agent
 from omni.pro.aws import AWSCognitoClient, AWSS3Client
 from omni.pro.config import Config
 from omni.pro.database import DatabaseManager, PostgresDatabaseManager
@@ -49,21 +48,3 @@ def resources_decorator(resource_list: list) -> callable:
         return inner
 
     return decorador_func
-
-
-def custom_decorator(f):
-    @function_trace(name=f.__name__)
-    def wrapped(*args, **kwargs):
-        result = f(*args, **kwargs)
-
-        agent.record_custom_event(
-            "Whebhook",
-            {
-                "transactionName": "NombreDeMiTransaccion",
-                "resultado": result,
-            },
-        )
-        logger.info(f"Whebhook: {result}")
-        return result
-
-    return wrapped
