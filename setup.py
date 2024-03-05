@@ -18,7 +18,7 @@ INSTALL_REQUIRES = [
     "mongoengine>=0.20.0,<=0.27.0",
     "marshmallow>=3.0.0,<4.0.0",
     "SQLAlchemy>=1.3.0,<3.0.0",
-    "sqlalchemy-utils==0.41.1"
+    "sqlalchemy-utils==0.41.1",
     "networkx>=2.0, <=4.0",
     "unidecode>=1.0,<=3.0",
     "omni-pro-base>=0.0.0,<=2.0.0",
