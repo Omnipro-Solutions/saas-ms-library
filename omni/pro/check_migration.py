@@ -148,7 +148,7 @@ class AlembicMigrateCheck(object):
                 current_version = self.get_current_version()
             status, script = self.apply_revision()
             if not status:
-                logger.exception(f"Error creating revision \n{script}")
+                logger.exception(f"Error creating revision: \n{script}")
                 return
             if self.no_changes_detected(script):
                 self.last_version = current_version
