@@ -111,7 +111,7 @@ class AlembicMigrateCheck(object):
             return True, new_revision
         except Exception as e:
             # Registra el error específico si no se puede encontrar la tabla referenciada
-            print(f"Failed to create revision: {e}")
+            logger.error(f"Failed to create revision: {e}")
             return False, e
 
     def no_changes_detected(self, script: Script) -> bool:
@@ -128,7 +128,7 @@ class AlembicMigrateCheck(object):
         try:
             command.upgrade(self.alembic_config, revision or "head")
         except Exception as e:
-            print(f"Failed to upgrade revision: {e}")
+            logger.error(f"Failed to upgrade revision: {e}")
             raise e
 
     def is_database_up_to_date(self):
