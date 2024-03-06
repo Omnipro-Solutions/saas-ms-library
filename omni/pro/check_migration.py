@@ -44,6 +44,7 @@ class AlembicMigrateCheck(object):
         logger.info("Starting validation process")
         last_version = None
         validations = []
+        check_all_migrations_applied = True
         for idx, tenant in enumerate(self.tenants):
             logger.info(f"Migrating tenant: {tenant}")
             try:
@@ -58,8 +59,9 @@ class AlembicMigrateCheck(object):
                     self.upgrade_head(last_version)
             except Exception as e:
                 logger.error(f"Failed to migrate tenant {tenant}: {e}")
+                check_all_migrations_applied = False
 
-        if self.changes:
+        if self.changes and check_all_migrations_applied:
             repo_url = self.redis_manager.get_json(f'SETTINGS', f'repos.{Config.SERVICE_ID}.url')
             logger.info(f"Repository URL: {repo_url}")
             logger.info("RUN=1")
@@ -109,7 +111,7 @@ class AlembicMigrateCheck(object):
             return True, new_revision
         except Exception as e:
             # Registra el error específico si no se puede encontrar la tabla referenciada
-            print(f"Failed to create revision due to a missing referenced table: {e}")
+            print(f"Failed to create revision: {e}")
             return False, e
 
     def no_changes_detected(self, script: Script) -> bool:
@@ -123,7 +125,11 @@ class AlembicMigrateCheck(object):
 
     def upgrade_head(self, revision=None) -> None:
         # Usa la librería alembic para hacer las migraciones
-        command.upgrade(self.alembic_config, revision or "head")
+        try:
+            command.upgrade(self.alembic_config, revision or "head")
+        except Exception as e:
+            print(f"Failed to upgrade revision: {e}")
+            raise e
 
     def is_database_up_to_date(self):
         # Esta función verifica si la base de datos está actualizada
