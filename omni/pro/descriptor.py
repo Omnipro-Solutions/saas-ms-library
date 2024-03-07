@@ -188,7 +188,7 @@ class Descriptor(object):
                 "is_filterable": column.is_filterable,
                 "is_exportable": column.is_exportable,
                 "is_importable": column.is_importable,
-                "field aliasing": column.field_aliasing,
+                "field_aliasing": column.field_aliasing,
             }
             if hasattr(column.type, "length") and column.type.length:
                 column_info["size"] = column.type.length
