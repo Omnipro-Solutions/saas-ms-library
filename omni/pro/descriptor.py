@@ -77,6 +77,7 @@ class Descriptor(object):
                     if hasattr(field, "is_importable") and not is_reference
                     else default_is_importable
                 ),
+                "field_aliasing": (field.field_aliasing if hasattr(field, "field_aliasing") else None),
                 "relation": {},
             }
             if hasattr(field, "max_length") and field.max_length:
@@ -176,6 +177,7 @@ class Descriptor(object):
             Descriptor.set_extra_attribute(column, "is_filterable")
             Descriptor.set_extra_attribute(column, "is_exportable")
             Descriptor.set_extra_attribute(column, "is_importable")
+            Descriptor.set_extra_attribute(column, "field_aliasing")
 
             column_info = {
                 "name": to_camel_case(column.name),
@@ -186,6 +188,7 @@ class Descriptor(object):
                 "is_filterable": column.is_filterable,
                 "is_exportable": column.is_exportable,
                 "is_importable": column.is_importable,
+                "field aliasing": column.field_aliasing,
             }
             if hasattr(column.type, "length") and column.type.length:
                 column_info["size"] = column.type.length
