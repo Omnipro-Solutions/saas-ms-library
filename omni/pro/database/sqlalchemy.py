@@ -17,10 +17,12 @@ def mapped_column(
     is_filterable: Optional[bool] = True,
     is_exportable: Optional[bool] = True,
     is_importable: Optional[bool] = True,
+    field_aliasing: Optional[str] = None,
     **kwargs
 ):
     mc = mapped_column_alchemy(*args, **kwargs)
     mc.column.is_filterable = is_filterable
     mc.column.is_exportable = is_exportable
     mc.column.is_importable = is_importable
+    mc.column.field_aliasing = field_aliasing
     return mc
