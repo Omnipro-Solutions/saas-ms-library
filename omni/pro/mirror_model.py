@@ -175,7 +175,7 @@ class MirrorModelNoSQL(MirrorModelBase):
         """
         return self.context.db_manager.update_document(None, model, **data)
 
-    def read_mirror_model(self, model, data):
+    def read_mirror_model(self, data):
         """
         Reads the mirror model without using SQL.
 
