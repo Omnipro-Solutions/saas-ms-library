@@ -83,6 +83,7 @@ class DatabaseManager(object):
         group_by: str = None,
         paginated: dict = None,
         sort_by: list = None,
+        str_filter: str = None,
     ) -> tuple[list, int]:
         """
         Parameters:
@@ -96,6 +97,11 @@ class DatabaseManager(object):
         list: A list of documents matching the specified criteria.
         """
         # Filter documents based on criteria provided
+        str_filter = str(str_filter).replace("true", "True").replace("false", "False")
+        filter_conditions = ast.literal_eval(str_filter) or []
+        if self._is_reference_in_filter(document_class=document_class, filter_conditions=filter_conditions):
+            query_set = self._list_documents(tenant, filter_conditions, None, document_class, paginated, sort_by)
+            return (total := list(query_set)), total
 
         if filter:
             query_set = document_class.objects(context__tenant=tenant).filter(__raw__=filter)
@@ -124,6 +130,116 @@ class DatabaseManager(object):
 
         # Return list of documents matching the specified criteria and total count of documents
         return list(query_set), query_set.count()
+
+    def _is_reference_in_filter(self, document_class, filter_conditions: list):
+        for condition in filter_conditions:
+            if isinstance(condition, tuple):
+                field, operator, value = condition
+                if "__" in field or "." in field:
+                    if any(
+                        map(
+                            lambda x: (
+                                isinstance(getattr(document_class, x), mongo.fields.ReferenceField)
+                                if hasattr(document_class, x)
+                                else {}
+                            ),
+                            field.replace("__", ".").split(".")[:-1],
+                        )
+                    ):
+                        return True
+        return False
+
+    def _list_documents(
+        self, tenant: str, filter_conditions: list, id: str, document_class, paginated: dict, sort: list = None
+    ) -> list:
+        # filter = ["or", ("active","=",True), "and", ("appointment__id", "=", "65e1e7c1379356701b5f6b59"), ("context.tenant.value","=","TEST")]
+        pipeline = self.parse_expression_to_pipeline(
+            document_class=document_class,
+            filter_conditions=filter_conditions,
+            id=id,
+            paginated=paginated,
+            sort=sort,
+        )
+        query_set = []
+        for item in document_class.objects(context__tenant=tenant).aggregate(pipeline):
+            inst = document_class._from_son(item)
+            inst.reload()
+            query_set.append(inst)
+        return query_set
+
+    def parse_expression_to_pipeline(
+        self, document_class, filter_conditions: list, id: str, sort: list = None, paginated: dict = None
+    ) -> list:
+        pipeline = []
+        # Agregar filtro por _id si está presente
+        if id:
+            pipeline.append({"$match": {"_id": ObjectId(id)}})
+
+        # Preparar para condiciones de filtro
+        else:
+            stack = []
+            for condition in reversed(filter_conditions):
+                if isinstance(condition, tuple):
+                    field, operator, value = condition
+                    parts = field.split("__") if "__" in field else field.split(".")
+
+                    # Construir referencia para campos de múltiples niveles
+                    ref_field = ""
+                    for i, part in enumerate(parts[:-1]):
+                        if i > 0:
+                            ref_field += "."
+                        ref_field += part
+
+                        # Determinar si el campo actual es un campo de referencia
+                        field_obj = getattr(document_class, parts[0], None)
+                        for sub_part in parts[1 : i + 1]:
+                            field_obj = (
+                                getattr(field_obj.document_type, sub_part, None)
+                                if field_obj and hasattr(field_obj, "document_type")
+                                else None
+                            )
+
+                        if field_obj and isinstance(field_obj, mongo.fields.ReferenceField):
+                            pipeline.append(
+                                {
+                                    "$lookup": {
+                                        "from": field_obj.document_type._meta["collection"],
+                                        "localField": f"{ref_field}.$id.oid",
+                                        "foreignField": "_id.oid",
+                                        "as": ref_field,
+                                    }
+                                }
+                            )
+                            pipeline.append({"$unwind": f"${ref_field}"})
+
+                    if parts[-1] == "id":
+                        value = ObjectId(value)
+                        parts[-1] = "_id"
+
+                    condition = {".".join(parts): value}
+                    stack.append(condition)
+                else:
+                    # Combinar condiciones usando el operador
+                    conditions = {f"${condition}": stack}
+                    stack = [conditions]
+
+            if stack:
+                pipeline.append({"$match": stack[0]})
+
+        # Añadir ordenamiento si está presente
+        if sort:
+            pipeline.append({"$sort": {item[1:]: 1 if item.startswith("+") else -1 for item in sort}})
+
+        # Añadir paginación si está presente
+        if paginated:
+            page = max(paginated.get("page", 1), 1)  # Asegurar que la página sea al menos 1
+            per_page = max(paginated.get("per_page", 10), 1)  # Asegurar que per_page sea positivo
+            skip_amount = (page - 1) * per_page
+            if skip_amount >= 0:  # Añadir skip solo si es no negativo
+                pipeline.append({"$skip": skip_amount})
+            pipeline.append({"$limit": per_page})
+
+        return pipeline
 
     def delete_documents(self, db_name, document_class, **kwargs):
         # with self.get_connection() as cnn:
@@ -575,7 +691,7 @@ class DBUtil(object):
             prepared_statement["sort_by"] = [cls.db_trans_sort(sort_by)]
         if fields:
             prepared_statement["fields"] = fields.name_field
-        return prepared_statement
+        return prepared_statement | {"str_filter": filter.filter}
 
     @classmethod
     def db_trans_sort(cls, sort_by: base_pb2.SortBy) -> str:
