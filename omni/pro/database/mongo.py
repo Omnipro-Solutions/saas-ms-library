@@ -102,7 +102,7 @@ class DatabaseManager(object):
         filter_conditions = ast.literal_eval(str_filter) or []
         if self._is_reference_in_filter(document_class=document_class, filter_conditions=filter_conditions):
             query_set = self._list_documents(tenant, filter_conditions, None, document_class, paginated, sort_by)
-            return (total := list(query_set)), total
+            return query_set, len(query_set)
 
         if filter:
             query_set = document_class.objects(context__tenant=tenant).filter(__raw__=filter)
