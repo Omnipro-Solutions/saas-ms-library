@@ -98,7 +98,7 @@ class DatabaseManager(object):
         """
         # Filter documents based on criteria provided
         str_filter = str(str_filter).replace("true", "True").replace("false", "False")
-        filter_conditions = ast.literal_eval(str_filter) or []
+        filter_conditions = ast.literal_eval(str_filter) if str_filter else []
         if self._is_reference_in_filter(document_class=document_class, filter_conditions=filter_conditions):
             query_set = self._list_documents(tenant, filter_conditions, None, document_class, paginated, sort_by)
             return query_set, len(query_set)
