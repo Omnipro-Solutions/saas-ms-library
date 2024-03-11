@@ -100,7 +100,7 @@ class MirrorModelSQL(MirrorModelBase):
             object: The newly created record.
 
         """
-        return self.context.pg_manager.create_new_record(self.model, self.context.pg_manager.Session, data)
+        return self.context.pg_manager.create_new_record(self.model, self.context.pg_manager.Session, **data)
 
     def update_mirror_model(self, data):
         """
@@ -148,7 +148,7 @@ class MirrorModelNoSQL(MirrorModelBase):
         self.context = context
         self.model = self.get_model(model_path)
 
-    def create_mirror_model(self, model, data):
+    def create_mirror_model(self, data):
         """
         Creates a mirror model without using SQL.
 
@@ -160,9 +160,9 @@ class MirrorModelNoSQL(MirrorModelBase):
             object: The created mirror model.
 
         """
-        return self.context.db_manager.create_document(None, model, **data)
+        return self.context.db_manager.create_document(None, self.model, **data)
 
-    def update_mirror_model(self, model, data):
+    def update_mirror_model(sel, data):
         """
         Update the mirror model without using SQL.
 
@@ -173,9 +173,9 @@ class MirrorModelNoSQL(MirrorModelBase):
         Returns:
             bool: True if the update was successful, False otherwise.
         """
-        return self.context.db_manager.update_document(None, model, **data)
+        return self.context.db_manager.update_document(None, self.model, **data)
 
-    def read_mirror_model(self, model, data):
+    def read_mirror_model(self, data):
         """
         Reads the mirror model without using SQL.
 
@@ -191,7 +191,7 @@ class MirrorModelNoSQL(MirrorModelBase):
             None, nested(data, "context.tenant"), self.model, data.get("filter")
         )
 
-    def delete_mirror_model(self, model, data):
+    def delete_mirror_model(self, data):
         """
         Deletes the mirror model without using SQL.
 
@@ -202,7 +202,7 @@ class MirrorModelNoSQL(MirrorModelBase):
         Returns:
             bool: True if the delete was successful, False otherwise.
         """
-        return self.context.db_manager.delete_document(None, model, **data)
+        return self.context.db_manager.delete_document(None, self.model, **data)
 
 
 def mirror_factory(context, model_path: str):
