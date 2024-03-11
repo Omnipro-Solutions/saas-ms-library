@@ -100,7 +100,10 @@ class MirrorModelSQL(MirrorModelBase):
             object: The newly created record.
 
         """
-        return self.context.pg_manager.create_new_record(self.model, self.context.pg_manager.Session, **data)
+        audit = {"tenant": nested(data, "context.tenant"), "updated_by": nested(data, "context.user")}
+        return self.context.pg_manager.create_new_record(
+            self.model, self.context.pg_manager.Session, **data["model_data"] | audit
+        )
 
     def update_mirror_model(self, data):
         """
@@ -113,7 +116,10 @@ class MirrorModelSQL(MirrorModelBase):
         Returns:
             bool: True if the update was successful, False otherwise.
         """
-        return self.context.pg_manager.update_record(self.model, self.context.pg_manager.Session, data.pop("id"), data)
+        audit = {"tenant": nested(data, "context.tenant"), "updated_by": nested(data, "context.user")}
+        return self.context.pg_manager.update_record(
+            self.model, self.context.pg_manager.Session, nested(data, "model_data.id"), **data["model_data"] | audit
+        )
 
     def read_mirror_model(self, data):
         """
@@ -160,9 +166,9 @@ class MirrorModelNoSQL(MirrorModelBase):
             object: The created mirror model.
 
         """
-        return self.context.db_manager.create_document(None, self.model, **data)
+        return self.context.db_manager.create_document(None, self.model, **data["model_data"] | data["context"])
 
-    def update_mirror_model(sel, data):
+    def update_mirror_model(self, data):
         """
         Update the mirror model without using SQL.
 
@@ -173,7 +179,7 @@ class MirrorModelNoSQL(MirrorModelBase):
         Returns:
             bool: True if the update was successful, False otherwise.
         """
-        return self.context.db_manager.update_document(None, self.model, **data)
+        return self.context.db_manager.update_document(None, self.model, **data["model_data"] | data["context"])
 
     def read_mirror_model(self, data):
         """
@@ -202,7 +208,7 @@ class MirrorModelNoSQL(MirrorModelBase):
         Returns:
             bool: True if the delete was successful, False otherwise.
         """
-        return self.context.db_manager.delete_document(None, self.model, **data)
+        return self.context.db_manager.delete_document(None, self.model, **data["model_data"])
 
 
 def mirror_factory(context, model_path: str):
