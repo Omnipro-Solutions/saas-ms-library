@@ -2,6 +2,7 @@ import logging
 
 import pkg_resources
 from omni_pro_base.util import *
+from google.protobuf import json_format, struct_pb2
 
 logger = logging.getLogger(__name__)
 
@@ -22,8 +23,8 @@ def libraries_versions_installed():
 
 
 def convert_model_alchemy_to_struct(model):
-    return json_format.ParseDict(convert_to_serializable(model), struct_pb2.Struct())
+    return json_format.ParseDict(convert_to_serializable(model.model_to_dict()), struct_pb2.Struct())
 
 
 def convert_model_mongo_to_struct(model):
-    return json_format.ParseDict(model.generate_dict(), struct_pb2.Struct())
+    return json_format.ParseDict(convert_to_serializable(model.generate_dict()), struct_pb2.Struct())
