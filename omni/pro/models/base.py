@@ -2,6 +2,7 @@ import re
 from datetime import datetime
 
 from google.protobuf.timestamp_pb2 import Timestamp
+from bson import ObjectId
 from mongoengine import BooleanField, DateTimeField, Document, EmbeddedDocument, EmbeddedDocumentField, StringField
 from omni.pro.database.sqlalchemy import mapped_column
 from omni_pro_grpc.common.base_pb2 import Context as ContextProto
@@ -86,6 +87,18 @@ class BaseDocument(Document):
     @property
     def db(cls):
         return cls._get_db()
+
+    def generate_dict(self):
+        result = self.to_mongo().to_dict()
+        response = result.copy()
+        for key, value in result.items():
+            if isinstance(value, ObjectId):
+                if key == "_id":
+                    response.pop(key)
+                    key = "id"
+                response[key] = str(value)
+
+        return response
 
     def save(self, *args, **kwargs):
         if not self.context:

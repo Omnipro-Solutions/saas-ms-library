@@ -1,7 +1,6 @@
 import ast
 
 import mongoengine as mongo
-from bson import ObjectId
 from omni.pro.exceptions import AlreadyExistError, NotFoundError
 from omni.pro.response import MessageResponse
 from omni_pro_base.logger import LoggerTraceback, configure_logger
@@ -33,18 +32,6 @@ class DatabaseManager(object):
         self.password = password
         self.complement = complement
         # self.get_connection().connect()
-
-    def generate_dict(self):
-        result = self.to_mongo().to_dict()
-        response = result.copy()
-        for key, value in result.items():
-            if isinstance(value, ObjectId):
-                if key == "_id":
-                    response.pop(key)
-                    key = "id"
-                response[key] = str(value)
-
-        return response
 
     def get_connection(self):
         return MongoConnection(

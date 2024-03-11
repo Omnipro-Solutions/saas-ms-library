@@ -19,3 +19,11 @@ def libraries_versions_installed():
         except pkg_resources.DistributionNotFound:
             versions[library.replace("-", "_")] = "Not installed"
     return versions
+
+
+def convert_model_alchemy_to_struct(model):
+    return json_format.ParseDict(convert_to_serializable(model), struct_pb2.Struct())
+
+
+def convert_model_mongo_to_struct(model):
+    return json_format.ParseDict(model.generate_dict(), struct_pb2.Struct())
