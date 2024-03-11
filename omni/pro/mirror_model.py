@@ -118,7 +118,7 @@ class MirrorModelSQL(MirrorModelBase):
         """
         audit = {"tenant": nested(data, "context.tenant"), "updated_by": nested(data, "context.user")}
         return self.context.pg_manager.update_record(
-            self.model, self.context.pg_manager.Session, nested(data, "model_data.id"), **data["model_data"] | audit
+            self.model, self.context.pg_manager.Session, nested(data, "model_data.id"), data["model_data"] | audit
         )
 
     def read_mirror_model(self, data):
@@ -135,12 +135,12 @@ class MirrorModelSQL(MirrorModelBase):
         return self.context.pg_manager.list_records(
             self.model,
             self.context.pg_manager.Session,
-            data.get("id"),
-            data.get("fields"),
-            data.get("filter"),
-            data.get("group_by"),
-            data.get("sort_by"),
-            data.get("paginated"),
+            data.id,
+            data.fields,
+            data.filter,
+            data.group_by,
+            data.sort_by,
+            data.paginated,
         )
 
 

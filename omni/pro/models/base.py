@@ -8,7 +8,7 @@ from omni.pro.database.sqlalchemy import mapped_column
 from omni_pro_grpc.common.base_pb2 import Context as ContextProto
 from omni_pro_grpc.common.base_pb2 import Object as ObjectProto
 from omni_pro_grpc.common.base_pb2 import ObjectAudit as AuditProto
-from sqlalchemy import Boolean, DateTime, String
+from sqlalchemy import Boolean, DateTime, String, inspect
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import Mapped, declared_attr
@@ -194,6 +194,9 @@ class Base:
         DateTime(), default=datetime.now, onupdate=datetime.now, nullable=False, is_importable=False
     )
     deleted_at: Mapped[datetime] = mapped_column(DateTime(), nullable=True, is_importable=False)
+
+    def model_to_dict(self):
+        return {c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs}
 
     def create(self, session):
         """
