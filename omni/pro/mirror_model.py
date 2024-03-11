@@ -132,10 +132,15 @@ class MirrorModelSQL(MirrorModelBase):
         Returns:
             bool: True if the read was successful, False otherwise.
         """
-        return self.context.pg_manager.retrieve_record(
+        return self.context.pg_manager.list_records(
             self.model,
             self.context.pg_manager.Session,
-            filters=data.get("filter"),
+            data.get("id"),
+            data.get("fields"),
+            data.get("filter"),
+            data.get("group_by"),
+            data.get("sort_by"),
+            data.get("paginated"),
         )
 
 
@@ -193,9 +198,7 @@ class MirrorModelNoSQL(MirrorModelBase):
             bool: True if the read was successful, False otherwise.
         """
 
-        return self.context.db_manager.get_document(
-            None, nested(data, "context.tenant"), self.model, data.get("filter")
-        )
+        return self.context.db_manager.list_documents(None, nested(data, "context.tenant"), self.model, **data)
 
     def delete_mirror_model(self, data):
         """
