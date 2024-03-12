@@ -1,6 +1,7 @@
 import ast
 
 import mongoengine as mongo
+from bson import ObjectId
 from omni.pro.exceptions import AlreadyExistError, NotFoundError
 from omni.pro.response import MessageResponse
 from omni_pro_base.logger import LoggerTraceback, configure_logger
