@@ -161,7 +161,7 @@ class MirrorModelNoSQL(MirrorModelBase):
 
     def create_mirror_model(self, data):
         """
-        Creates a mirror model without using SQL.
+        Creates a mirror model using NO_SQL.
 
         Args:
             model (str): The model name.
@@ -171,11 +171,12 @@ class MirrorModelNoSQL(MirrorModelBase):
             object: The created mirror model.
 
         """
-        return self.context.db_manager.create_document(None, self.model, **data["model_data"] | data["context"])
+        data["model_data"]["context"] = data["context"]
+        return self.context.db_manager.create_document(None, self.model, **data["model_data"])
 
     def update_mirror_model(self, data):
         """
-        Update the mirror model without using SQL.
+        Update the mirror model using NO_SQL.
 
         Args:
             model (str): The name of the model.
@@ -184,11 +185,12 @@ class MirrorModelNoSQL(MirrorModelBase):
         Returns:
             bool: True if the update was successful, False otherwise.
         """
-        return self.context.db_manager.update_document(None, self.model, **data["model_data"] | data["context"])
+        data["model_data"]["context"] = data["context"]
+        return self.context.db_manager.update_document(None, self.model, **data["model_data"])
 
-    def read_mirror_model(self, data):
+    def read_mirror_model(self, tenant, data):
         """
-        Reads the mirror model without using SQL.
+        Reads the mirror model using SQL.
 
         Args:
             model (str): The name of the model.
@@ -198,7 +200,7 @@ class MirrorModelNoSQL(MirrorModelBase):
             bool: True if the read was successful, False otherwise.
         """
 
-        return self.context.db_manager.list_documents(None, nested(data, "context.tenant"), self.model, **data)
+        return self.context.db_manager.list_documents(None, tenant, self.model, **data)
 
     def delete_mirror_model(self, data):
         """

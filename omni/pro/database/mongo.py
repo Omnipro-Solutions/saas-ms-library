@@ -75,16 +75,16 @@ class DatabaseManager(object):
         return document
 
     def list_documents(
-            self,
-            db_name: str,
-            tenant: str,
-            document_class,
-            fields: list = None,
-            filter: dict = None,
-            group_by: str = None,
-            paginated: dict = None,
-            sort_by: list = None,
-            str_filter: str = None,
+        self,
+        db_name: str,
+        tenant: str,
+        document_class,
+        fields: list = None,
+        filter: dict = None,
+        group_by: str = None,
+        paginated: dict = None,
+        sort_by: list = None,
+        str_filter: str = None,
     ) -> tuple[list, int]:
         """
         Parameters:
@@ -100,8 +100,9 @@ class DatabaseManager(object):
         # Filter documents based on criteria provided
         str_filter = str(str_filter).replace("true", "True").replace("false", "False")
         filter_conditions = ast.literal_eval(str_filter) if str_filter else []
-        if filter_conditions and self._is_reference_in_filter(document_class=document_class,
-                                                              filter_conditions=filter_conditions):
+        if filter_conditions and self._is_reference_in_filter(
+            document_class=document_class, filter_conditions=filter_conditions
+        ):
             query_set = self._list_documents(tenant, filter_conditions, None, document_class, paginated, sort_by)
             return query_set, len(query_set)
 
@@ -139,20 +140,20 @@ class DatabaseManager(object):
                 field, operator, value = condition
                 if "__" in field or "." in field:
                     if any(
-                            map(
-                                lambda x: (
-                                        isinstance(getattr(document_class, x), mongo.fields.ReferenceField)
-                                        if hasattr(document_class, x)
-                                        else {}
-                                ),
-                                field.replace("__", ".").split(".")[:-1],
-                            )
+                        map(
+                            lambda x: (
+                                isinstance(getattr(document_class, x), mongo.fields.ReferenceField)
+                                if hasattr(document_class, x)
+                                else {}
+                            ),
+                            field.replace("__", ".").split(".")[:-1],
+                        )
                     ):
                         return True
         return False
 
     def _list_documents(
-            self, tenant: str, filter_conditions: list, id: str, document_class, paginated: dict, sort: list = None
+        self, tenant: str, filter_conditions: list, id: str, document_class, paginated: dict, sort: list = None
     ) -> list:
         # filter = ["or", ("active","=",True), "and", ("appointment__id", "=", "65e1e7c1379356701b5f6b59"), ("context.tenant.value","=","TEST")]
         pipeline = self.parse_expression_to_pipeline(
@@ -170,7 +171,7 @@ class DatabaseManager(object):
         return query_set
 
     def parse_expression_to_pipeline(
-            self, document_class, filter_conditions: list, id: str, sort: list = None, paginated: dict = None
+        self, document_class, filter_conditions: list, id: str, sort: list = None, paginated: dict = None
     ) -> list:
         pipeline = []
         # Agregar filtro por _id si está presente
@@ -194,7 +195,7 @@ class DatabaseManager(object):
 
                         # Determinar si el campo actual es un campo de referencia
                         field_obj = getattr(document_class, parts[0], None)
-                        for sub_part in parts[1: i + 1]:
+                        for sub_part in parts[1 : i + 1]:
                             field_obj = (
                                 getattr(field_obj.document_type, sub_part, None)
                                 if field_obj and hasattr(field_obj, "document_type")
@@ -249,12 +250,12 @@ class DatabaseManager(object):
         return document
 
     def update_embeded_document(
-            self,
-            db_name: str,
-            document_class,
-            filters: dict,
-            update: dict,
-            many: bool = False,
+        self,
+        db_name: str,
+        document_class,
+        filters: dict,
+        update: dict,
+        many: bool = False,
     ) -> object:
         # with self.get_connection() as cnn:
         if many:
@@ -287,17 +288,17 @@ class DatabaseManager(object):
         return result
 
     def add_or_remove_document_relations(
-            self,
-            context,
-            document,
-            exsitent_relations_list,
-            new_relations_list,
-            attribute_search,
-            request_context,
-            element_name,
-            element_relation_name,
-            multiple_params=False,
-            params_multiple: tuple = None,
+        self,
+        context,
+        document,
+        exsitent_relations_list,
+        new_relations_list,
+        attribute_search,
+        request_context,
+        element_name,
+        element_relation_name,
+        multiple_params=False,
+        params_multiple: tuple = None,
     ):
         """
         The add_or_remove_document_relations function process and get registers to remove and add, to apply changes and return a list of result.
@@ -363,16 +364,16 @@ class DatabaseManager(object):
         return result_list
 
     def remove_document_relations(
-            self,
-            context,
-            document,
-            list_elements,
-            list_registers,
-            attribute_search,
-            request_context,
-            element_name,
-            element_relation_name,
-            multiple_params=False,
+        self,
+        context,
+        document,
+        list_elements,
+        list_registers,
+        attribute_search,
+        request_context,
+        element_name,
+        element_relation_name,
+        multiple_params=False,
     ):
         """
         The remove_document_relations function remove resgisters of list_registers the elements defined on list_elements.
@@ -402,16 +403,16 @@ class DatabaseManager(object):
         return list_registers
 
     def add_document_relations(
-            self,
-            context,
-            document,
-            list_elements,
-            list_registers,
-            attribute_search,
-            request_context,
-            element_name,
-            element_relation_name,
-            multiple_params=False,
+        self,
+        context,
+        document,
+        list_elements,
+        list_registers,
+        attribute_search,
+        request_context,
+        element_name,
+        element_relation_name,
+        multiple_params=False,
     ):
         """
         The add_document_relations function add resgisters to list_registers from elements defined on list_elements.
@@ -468,15 +469,15 @@ class DatabaseManager(object):
         return document.get_or_sync(request_context, **{attribute_search: element})
 
     def read_response(
-            self,
-            request,
-            context,
-            document_class,
-            message_response: MessageResponse,
-            msg_success: str,
-            msg_exception: str,
-            entry_field_name: str,
-            **kwargs,
+        self,
+        request,
+        context,
+        document_class,
+        message_response: MessageResponse,
+        msg_success: str,
+        msg_exception: str,
+        entry_field_name: str,
+        **kwargs,
     ):
         """
         :param request: request is a Message grpc\n
@@ -504,8 +505,8 @@ class DatabaseManager(object):
                 **data,
             )
             kwargs_return = {
-                                f"{entry_field_name}": [doc.to_proto() for doc in list_docs],
-                            } | kwargs
+                f"{entry_field_name}": [doc.to_proto() for doc in list_docs],
+            } | kwargs
             return message_response.fetched_response(
                 message=msg_success,
                 total=total,
@@ -652,13 +653,13 @@ class PolishNotationToMongoDB:
 class DBUtil(object):
     @classmethod
     def db_prepared_statement(
-            cls,
-            id: str,
-            fields: base_pb2.Fields,
-            filter: base_pb2.Filter,
-            paginated: base_pb2.Paginated,
-            group_by: base_pb2.GroupBy,
-            sort_by: base_pb2.SortBy,
+        cls,
+        id: str,
+        fields: base_pb2.Fields,
+        filter: base_pb2.Filter,
+        paginated: base_pb2.Paginated,
+        group_by: base_pb2.GroupBy,
+        sort_by: base_pb2.SortBy,
     ) -> dict:
         prepared_statement = {}
         prepared_statement["paginated"] = {
