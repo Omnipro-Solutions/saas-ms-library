@@ -1,14 +1,23 @@
 import re
 from datetime import datetime
 
-from google.protobuf.timestamp_pb2 import Timestamp
 from bson import ObjectId
-from mongoengine import BooleanField, DateTimeField, Document, EmbeddedDocument, EmbeddedDocumentField, StringField
+from google.protobuf.timestamp_pb2 import Timestamp
+from mongoengine import (
+    BooleanField,
+    DateTimeField,
+    Document,
+    EmbeddedDocument,
+    EmbeddedDocumentField,
+    StringField,
+    signals,
+)
+from omni.pro.airflow.actions import ActionToAirflow
 from omni.pro.database.sqlalchemy import mapped_column
 from omni_pro_grpc.common.base_pb2 import Context as ContextProto
 from omni_pro_grpc.common.base_pb2 import Object as ObjectProto
 from omni_pro_grpc.common.base_pb2 import ObjectAudit as AuditProto
-from sqlalchemy import Boolean, DateTime, String, inspect
+from sqlalchemy import Boolean, DateTime, String, event, inspect
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import Mapped, declared_attr
@@ -84,6 +93,12 @@ class BaseDocument(Document):
     }
 
     @classmethod
+    def __init_subclass__(cls, **kwargs):
+        super().__init_subclass__(**kwargs)
+        signals.post_save.connect(cls.post_save, sender=cls)
+        signals.post_delete.connect(cls.post_delete, sender=cls)
+
+    @classmethod
     @property
     def db(cls):
         return cls._get_db()
@@ -115,6 +130,18 @@ class BaseDocument(Document):
     @classmethod
     def reference_list(cls):
         return [cls]
+
+    @classmethod
+    def post_save(cls, sender, document, **kwargs):
+        ActionToAirflow.send_to_airflow(
+            cls, document, action="create", context={"tenant": document.context.tenant, "user": document.context.user}
+        )
+
+    @classmethod
+    def post_delete(cls, sender, document, **kwargs):
+        ActionToAirflow.send_to_airflow(
+            cls, document, action="delete", context={"tenant": document.context.tenant, "user": document.context.user}
+        )
 
 
 class BaseAuditEmbeddedDocument(BaseEmbeddedDocument):
@@ -315,3 +342,25 @@ class Base:
 
 
 BaseModel = declarative_base(cls=Base)
+
+
+# Definir un evento que escuche a todos los modelos que heredan de Base
+@event.listens_for(BaseModel, "after_insert", propagate=True)
+def post_save(mapper, connection, target):
+    ActionToAirflow.send_to_airflow(
+        mapper, target, "create", context={"tenant": target.tenant, "user": target.updated_by}
+    )
+
+
+@event.listens_for(BaseModel, "after_update", propagate=True)
+def post_update(mapper, connection, target):
+    ActionToAirflow.send_to_airflow(
+        mapper, target, "update", context={"tenant": target.tenant, "user": target.updated_by}
+    )
+
+
+@event.listens_for(BaseModel, "after_delete", propagate=True)
+def post_delete(mapper, connection, target):
+    ActionToAirflow.send_to_airflow(
+        mapper, target, "delete", context={"tenant": target.tenant, "user": target.updated_by}
+    )
