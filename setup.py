@@ -27,6 +27,7 @@ INSTALL_REQUIRES = [
     "apache-airflow-client==2.8.0",
     "newrelic==8.8.1",
     "alembic==1.11.2",
+    "blinker==1.7.0",
 ]
 # with open(HERE / "requirements.txt") as f:
 #     INSTALL_REQUIRES = f.read().splitlines()
