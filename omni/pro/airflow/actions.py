@@ -2,10 +2,10 @@ import json
 
 from mongoengine import Document
 from omni.pro.airflow.airflow_client_base import AirflowClientBase
-from omni_pro_base.logger import Logger
+from omni_pro_base.logger import configure_logger
 from omni_pro_grpc.util import MessageToDict
 
-logger = Logger(__name__)
+logger = configure_logger(__name__)
 
 
 class ActionToAirflow(object):
