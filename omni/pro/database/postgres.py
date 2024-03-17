@@ -124,6 +124,35 @@ class PostgresDatabaseManager(SessionManager):
     #     """
     #     return session.query(model).filter_by(**filters).first()
 
+    def _retrieve_records(self, model, session, filters):
+        """
+        Constructs a query with the given filters, supporting both AND and OR conditions.
+
+        Args:
+            model (Base): The SQLAlchemy model to query.
+            session (Session): An instance of the database session.
+            filters: Filters to apply, supporting a dict for AND conditions, or a list for OR conditions,
+                     with the ability to nest dicts and lists for complex logic.
+
+        Returns:
+            A SQLAlchemy query object with the filters applied.
+        """
+        query = session.query(model)
+        if isinstance(filters, dict):
+            query = query.filter_by(**filters)
+        elif isinstance(filters, list):
+            or_conditions = []
+            for filter_group in filters:
+                if isinstance(filter_group, dict):
+                    and_conditions = [getattr(model, key) == value for key, value in filter_group.items()]
+                    or_conditions.append(and_(*and_conditions))
+                elif isinstance(filter_group, list):
+                    raise NotImplementedError("Nested OR conditions are not implemented.")
+            query = query.filter(or_(*or_conditions))
+        else:
+            raise ValueError("Filters must be a dict or a list.")
+        return query
+
     def retrieve_record(self, model, session, filters):
         """
         Retrieves a single database record based on provided filters, supporting both simple AND conditions
@@ -142,39 +171,29 @@ class PostgresDatabaseManager(SessionManager):
         Returns:
             The first record that matches the filters, or None if not found.
         """
-        query = session.query(model)
-        if isinstance(filters, dict):
-            # Trata los filtros como condiciones AND
-            query = query.filter_by(**filters)
-        elif isinstance(filters, list):
-            or_conditions = []
-            for filter_group in filters:
-                if isinstance(filter_group, dict):
-                    # Construimos condiciones AND dentro de este grupo de filtro
-                    and_conditions = [getattr(model, key) == value for key, value in filter_group.items()]
-                    or_conditions.append(and_(*and_conditions))
-                elif isinstance(filter_group, list):
-                    # Aquí manejarías listas anidadas para condiciones OR más complejas
-                    raise NotImplementedError("Nested OR conditions are not implemented.")
-            query = query.filter(or_(*or_conditions))
-        else:
-            raise ValueError("Filters must be a dict or a list.")
-
+        query = self._retrieve_records(model, session, filters)
         return query.first()
 
     def retrieve_records(self, model, session, filters: dict):
         """
-        Retrieves database records based on provided filters.
+       Retrieves a single database record based on provided filters, supporting both simple AND conditions
+        and complex AND/OR logic without breaking existing implementations that use a dictionary for filters.
+
+        Example:
+            filters = [{"name": self.sale_vals.get("name")}, {"sale_sql_id": int(self.sale_vals.get("id"))}]
+            self.sale_model = self.pg_manager.retrieve_record(SaleModel, self.session, filters)
 
         Args:
-        model (Base): The SQLAlchemy model to query.
-        session (Session): An instance of the database session.
-        filters (dict): A dictionary of attributes to filter the records by.
+            model (Base): The SQLAlchemy model to query.
+            session (Session): An instance of the database session.
+            filters: The filters to apply, which can be a simple dict for AND conditions, or a list for OR conditions,
+                     with the ability to nest dicts and lists for complex AND/OR logic.
 
         Returns:
-        (objs): List of records that match with filters, or empty list if not found.
+            The all records that matches the filters, or None if not found.
         """
-        return session.query(model).filter_by(**filters).all()
+        query = self._retrieve_records(model, session, filters)
+        return query.all()
 
     def retrieve_record_by_id(self, model, session, id: int):
         """
