@@ -176,8 +176,9 @@ class DatabaseManager(object):
             paginated=paginated,
             sort=sort,
         )
+
         query_set = []
-        for item in document_class.objects(context__tenant=tenant).aggregate(pipeline):
+        for item in document_class._get_collection().aggregate(pipeline):
             inst = document_class._from_son(item)
             inst.reload()
             query_set.append(inst)
@@ -220,8 +221,8 @@ class DatabaseManager(object):
                                 {
                                     "$lookup": {
                                         "from": field_obj.document_type._meta["collection"],
-                                        "localField": f"{ref_field}.$id.oid",
-                                        "foreignField": "_id.oid",
+                                        "localField": f"{ref_field}",
+                                        "foreignField": "_id",
                                         "as": ref_field,
                                     }
                                 }
