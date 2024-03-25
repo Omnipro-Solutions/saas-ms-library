@@ -259,6 +259,7 @@ class Base:
         instance.update(session)
         """
         session.flush()
+        session.refresh(self)
 
     def delete(self, session):
         """
