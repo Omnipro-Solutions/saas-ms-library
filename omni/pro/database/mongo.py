@@ -64,6 +64,7 @@ class DatabaseManager(object):
             document,
             action="update",
             context={"tenant": document.context.tenant, "user": document.context.user},
+            **kwargs,
         )
         return document
 
@@ -75,6 +76,7 @@ class DatabaseManager(object):
             document_instance,
             action="update",
             context={"tenant": document_instance.context.tenant, "user": document_instance.context.user},
+            **kwargs,
         )
         return document_instance
 
