@@ -176,21 +176,21 @@ class PostgresDatabaseManager(SessionManager):
 
     def retrieve_records(self, model, session, filters: dict):
         """
-       Retrieves a single database record based on provided filters, supporting both simple AND conditions
-        and complex AND/OR logic without breaking existing implementations that use a dictionary for filters.
+        Retrieves a single database record based on provided filters, supporting both simple AND conditions
+         and complex AND/OR logic without breaking existing implementations that use a dictionary for filters.
 
-        Example:
-            filters = [{"name": self.sale_vals.get("name")}, {"sale_sql_id": int(self.sale_vals.get("id"))}]
-            self.sale_model = self.pg_manager.retrieve_record(SaleModel, self.session, filters)
+         Example:
+             filters = [{"name": self.sale_vals.get("name")}, {"sale_sql_id": int(self.sale_vals.get("id"))}]
+             self.sale_model = self.pg_manager.retrieve_record(SaleModel, self.session, filters)
 
-        Args:
-            model (Base): The SQLAlchemy model to query.
-            session (Session): An instance of the database session.
-            filters: The filters to apply, which can be a simple dict for AND conditions, or a list for OR conditions,
-                     with the ability to nest dicts and lists for complex AND/OR logic.
+         Args:
+             model (Base): The SQLAlchemy model to query.
+             session (Session): An instance of the database session.
+             filters: The filters to apply, which can be a simple dict for AND conditions, or a list for OR conditions,
+                      with the ability to nest dicts and lists for complex AND/OR logic.
 
-        Returns:
-            The all records that matches the filters, or None if not found.
+         Returns:
+             The all records that matches the filters, or None if not found.
         """
         query = self._retrieve_records(model, session, filters)
         return query.all()
@@ -215,15 +215,15 @@ class PostgresDatabaseManager(SessionManager):
         return session.query(model).get(id)
 
     def list_records(
-            self,
-            model,
-            session,
-            id: int,
-            fields: base_pb2.Fields,
-            filter: base_pb2.Filter,
-            group_by: base_pb2.GroupBy,
-            sort_by: base_pb2.SortBy,
-            paginated: base_pb2.Paginated,
+        self,
+        model,
+        session,
+        id: int,
+        fields: base_pb2.Fields,
+        filter: base_pb2.Filter,
+        group_by: base_pb2.GroupBy,
+        sort_by: base_pb2.SortBy,
+        paginated: base_pb2.Paginated,
     ):
         """
         Lists database records based on provided parameters.
@@ -403,7 +403,7 @@ class PostgresDatabaseManager(SessionManager):
             "like": operators.like_op,
             "ilike": operators.ilike_op,
             "in": operators.in_op,
-            "not in": operators.notin_op,
+            "nin": operators.notin_op,
             # Agrega más operadores según sea necesario
         }
         return operator_mapping.get(op)
@@ -574,15 +574,15 @@ class QueryBuilder:
 
     @classmethod
     def build_filter(
-            cls,
-            model,
-            session,
-            id: int,
-            fields: base_pb2.Fields,
-            filter: base_pb2.Filter,
-            group_by: base_pb2.GroupBy,
-            sort_by: base_pb2.SortBy,
-            paginated: base_pb2.Paginated,
+        cls,
+        model,
+        session,
+        id: int,
+        fields: base_pb2.Fields,
+        filter: base_pb2.Filter,
+        group_by: base_pb2.GroupBy,
+        sort_by: base_pb2.SortBy,
+        paginated: base_pb2.Paginated,
     ):
         query = session.query(model)
 
