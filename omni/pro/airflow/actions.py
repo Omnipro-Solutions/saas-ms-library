@@ -27,11 +27,8 @@ class ActionToAirflow(object):
         ```
         """
         try:
-            action_code = (
-                f"{cls_name._collection.name}_{str(action).lower()}"
-                if isinstance(instance, Document)
-                else f"{cls_name.mapped_table.name}_{str(action).lower()}"
-            )
+            model_code = cls_name._collection.name if isinstance(instance, Document) else cls_name.mapped_table.name
+            action_code = f"{model_code}_{str(action).lower()}"
             try:
                 instance_pj = MessageToDict(instance.to_proto())
             except Exception as e:
@@ -51,10 +48,12 @@ class ActionToAirflow(object):
                     if event.operation == "update":
                         if isinstance(instance, Document):
                             # modified_fields = instance._get_changed_fields()
-                            modified_fields = set(kwargs.keys())
+                            modified_fields = set([f"{model_code}-{key}" for key in kwargs.keys()])
                         else:
                             state = inspect(instance)
-                            modified_fields = set([attr.key for attr in state.attrs if attr.history.has_changes()])
+                            modified_fields = set(
+                                [f"{model_code}-{attr.key}" for attr in state.attrs if attr.history.has_changes()]
+                            )
                     for webhook in webhooks:
 
                         if event.operation == "update" and not modified_fields & set(webhook.trigger_fields):
