@@ -190,6 +190,19 @@ class DatabaseManager(object):
         self, document_class, filter_conditions: list, id: str, sort: list = None, paginated: dict = None
     ) -> list:
         pipeline = []
+        operator_mapping = {
+            "=": "$eq",
+            ">": "$gt",
+            "<": "$lt",
+            ">=": "$gte",
+            "<=": "$lte",
+            "in": "$in",
+            "nin": "$nin",
+            "!=": "$ne",
+            "!like": "$not",
+            "like": "$regex",
+            "ilike": "$regex",
+        }
         # Agregar filtro por _id si está presente
         if id:
             pipeline.append({"$match": {"_id": ObjectId(id)}})
@@ -200,6 +213,7 @@ class DatabaseManager(object):
             for condition in reversed(filter_conditions):
                 if isinstance(condition, tuple):
                     field, operator, value = condition
+                    mongo_operator = operator_mapping.get(operator)
                     parts = field.split("__") if "__" in field else field.split(".")
 
                     # Construir referencia para campos de múltiples niveles
@@ -235,7 +249,18 @@ class DatabaseManager(object):
                         value = ObjectId(value)
                         parts[-1] = "_id"
 
-                    condition = {".".join(parts): value}
+                    # condition = {".".join(parts): value}
+                    # Manejo especial para 'like' y '!like', asumiendo que usas expresiones regulares
+                    if operator in ["like", "ilike"]:
+                        condition = {".".join(parts): {"$regex": value, "$options": "i"}}
+                    elif operator == "!like":
+                        condition = {".".join(parts): {"$not": {"$regex": value, "$options": "i"}}}
+                    else:
+                        # Asegurar el mapeo correcto para otros operadores
+                        if mongo_operator:
+                            condition = {".".join(parts): {mongo_operator: value}}
+                        else:
+                            raise ValueError(f"Operador no soportado: {operator}")
                     stack.append(condition)
                 else:
                     # Combinar condiciones usando el operador
