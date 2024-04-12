@@ -1,5 +1,26 @@
 from importlib import import_module
+from itertools import groupby
+from pathlib import Path
+
+import newrelic.agent
+from marshmallow import ValidationError
+from omni.pro.database import DBUtil
+from omni.pro.decorators import resources_decorator
+from omni.pro.exceptions import handle_error
+from omni.pro.locales import set_language
+from omni.pro.logger import LoggerTraceback, configure_logger
+from omni.pro.redis import RedisManager
+from omni.pro.response import MessageResponse
+from omni.pro.stack import ExitStackDocument
+from omni.pro.util import Resource, convert_model_alchemy_to_struct, convert_model_mongo_to_struct
+from omni_pro_base.config import Config
 from omni_pro_base.util import nested
+from omni_pro_grpc.grpc_function import EventRPCFucntion, MethodRPCFunction, ModelRPCFucntion, WebhookRPCFucntion
+from omni_pro_grpc.util import MessageToDict, to_list_value
+from omni_pro_grpc.v1.util import mirror_model_pb2, mirror_model_pb2_grpc
+from sqlalchemy.exc import IntegrityError, OperationalError
+
+logger = configure_logger(__name__)
 
 
 class MirrorModelBase:
@@ -222,3 +243,286 @@ def mirror_factory(context, model_path: str):
         if not hasattr(context, "pg_manager")
         else MirrorModelSQL(context, model_path)
     )
+
+
+class MirrorModelServiceMongo(mirror_model_pb2_grpc.MirrorModelServiceServicer):
+    def __init__(self, path: Path):
+        localdir = path / "locales"
+        self._ = set_language(localedir=localdir)
+        super().__init__()
+
+    @newrelic.agent.function_trace()
+    @resources_decorator([Resource.MONGODB])
+    def CreateMirrorModel(
+        self, request: mirror_model_pb2.CreateOrUpdateMirrorModelRequest, context
+    ) -> mirror_model_pb2.CreateOrUpdateCreateMirrorResponse:
+        message_response = MessageResponse(mirror_model_pb2.CreateOrUpdateCreateMirrorResponse)
+        try:
+            data = MessageToDict(request)
+            base = mirror_factory(context, data.pop("model_path"))
+            with ExitStackDocument(
+                document_classes=base.model.reference_list(),
+                db_alias=context.db_name,
+            ):
+                data = MessageToDict(request)
+                result = base.create_mirror_model(data)
+
+                return message_response.created_response(
+                    message="Mirror model created successfully", model_data=convert_model_mongo_to_struct(result)
+                )
+
+        except Exception as e:
+            LoggerTraceback.error(self._("Mirro model create exception"), e, logger)
+            return message_response.internal_response(message=self._("Mirror model not created"))
+
+    @newrelic.agent.function_trace()
+    @resources_decorator([Resource.MONGODB])
+    def UpdateMirrorModel(
+        self, request: mirror_model_pb2.CreateOrUpdateMirrorModelRequest, context
+    ) -> mirror_model_pb2.CreateOrUpdateCreateMirrorResponse:
+        message_response = MessageResponse(mirror_model_pb2.CreateOrUpdateCreateMirrorResponse)
+        try:
+            data = MessageToDict(request)
+            base = mirror_factory(context, data.pop("model_path"))
+            with ExitStackDocument(
+                document_classes=base.model.reference_list(),
+                db_alias=context.db_name,
+            ):
+                result = base.update_mirror_model(data)
+
+                return message_response.updated_response(
+                    message="Mirror updated successfully",
+                    model_data=convert_model_mongo_to_struct(result),
+                )
+
+        except Exception as e:
+            LoggerTraceback.error(self._("Mirror model update exception"), e, logger)
+            return message_response.internal_response(message=self._("Mirror model not updated"))
+
+    @newrelic.agent.function_trace()
+    @resources_decorator([Resource.MONGODB])
+    def ReadMirrorModel(
+        self, request: mirror_model_pb2.ReadMirrorModelRequest, context
+    ) -> mirror_model_pb2.ReadMirrorModelResponse:
+        message_response = MessageResponse(mirror_model_pb2.ReadMirrorModelResponse)
+        try:
+
+            base = mirror_factory(context, request.model_path)
+            with ExitStackDocument(
+                document_classes=base.model.reference_list(),
+                db_alias=context.db_name,
+            ):
+                data = DBUtil.db_prepared_statement(
+                    request.id, request.fields, request.filter, request.paginated, None, request.sort_by
+                )
+                result = base.read_mirror_model(request.context.tenant, data)
+                return message_response.created_response(
+                    message="Mirror model read successfully",
+                    mirror_models=to_list_value([mirror_model.generate_dict() for mirror_model in result[0]]),
+                )
+
+        except Exception as e:
+            LoggerTraceback.error(self._("Mirror model read exception"), e, logger)
+            return message_response.internal_response(message=self._("Mirror model not read"))
+
+
+class MirrorModelServicePostgres(mirror_model_pb2_grpc.MirrorModelServiceServicer):
+
+    def __init__(self, path: Path):
+        localdir = path / "locales"
+        self._ = set_language(localedir=localdir)
+        super().__init__()
+
+    @newrelic.agent.function_trace()
+    @resources_decorator([Resource.POSTGRES])
+    def CreateMirrorModel(
+        self, request: mirror_model_pb2.CreateOrUpdateMirrorModelRequest, context
+    ) -> mirror_model_pb2.CreateOrUpdateCreateMirrorResponse:
+        message_response = MessageResponse(mirror_model_pb2.CreateOrUpdateCreateMirrorResponse)
+        try:
+            with context.pg_manager as session:
+                data = MessageToDict(request)
+                result = mirror_factory(context, data.pop("model_path")).create_mirror_model(data)
+
+                return message_response.created_response(
+                    message="Mirror model created successfully", model_data=convert_model_alchemy_to_struct(result)
+                )
+
+        except (IntegrityError, ValidationError, OperationalError, Exception) as e:
+            return handle_error("Mirror model", "Created", logger, e, message_response)
+
+    @newrelic.agent.function_trace()
+    @resources_decorator([Resource.POSTGRES])
+    def UpdateMirrorModel(
+        self, request: mirror_model_pb2.CreateOrUpdateMirrorModelRequest, context
+    ) -> mirror_model_pb2.CreateOrUpdateCreateMirrorResponse:
+        message_response = MessageResponse(mirror_model_pb2.CreateOrUpdateCreateMirrorResponse)
+        try:
+            with context.pg_manager as session:
+                data = MessageToDict(request)
+                result = mirror_factory(context, data.pop("model_path")).update_mirror_model(data)
+
+                return message_response.updated_response(
+                    message="Mirror updated successfully",
+                    model_data=convert_model_alchemy_to_struct(result),
+                )
+
+        except (IntegrityError, ValidationError, OperationalError, Exception) as e:
+            return handle_error("Mirror model", "Updated", logger, e, message_response)
+
+    @newrelic.agent.function_trace()
+    @resources_decorator([Resource.POSTGRES])
+    def ReadMirrorModel(
+        self, request: mirror_model_pb2.ReadMirrorModelRequest, context
+    ) -> mirror_model_pb2.ReadMirrorModelResponse:
+        message_response = MessageResponse(mirror_model_pb2.ReadMirrorModelResponse)
+        try:
+            with context.pg_manager as session:
+                data = MessageToDict(request)
+                result = mirror_factory(context, data.pop("model_path")).read_mirror_model(request)
+                return message_response.created_response(
+                    message="Mirror model read successfully",
+                    mirror_models=to_list_value([mirror_model.model_to_dict() for mirror_model in result[0]]),
+                )
+
+        except (IntegrityError, ValidationError, OperationalError, Exception) as e:
+            return handle_error("Mirror model", "Read", logger, e, message_response)
+
+
+class MirroModelWebhookRegister(object):
+
+    @classmethod
+    def create_or_update_webhook_by_mirror(cls, context: dict, params: dict):
+        """
+        Create or update a webhook based on the mirror model.
+
+        Args:
+            context (dict): The context dictionary.
+            params (dict): The parameters dictionary.
+
+        Returns:
+            tuple: A tuple containing the response, success flag, and event.
+        """
+        rpc = WebhookRPCFucntion(context=context)
+        filters = params.pop("filter", {})
+        resp, success, _e = rpc.read_webhook(filters)
+        if success:
+            data = params.pop("data")
+            if resp.webhooks:
+                if len(resp.webhooks) == 1:
+                    webhook = resp.webhooks[0]
+                    return rpc.update_webhook({"webhook": data | {"id": webhook.id}})
+            else:
+                return rpc.create_webhook(data)
+        return resp, success, _e
+
+    @classmethod
+    def register(cls, context: dict):
+        """
+        Register method that processes mirror models and creates webhooks for events.
+
+        Args:
+            cls: The class object.
+            context (dict): The context dictionary.
+
+        Returns:
+            None
+
+        Raises:
+            Exception: If there is an error creating the webhook.
+
+        """
+        all_models_resp = ModelRPCFucntion(context=context).read_model(
+            params={
+                "paginated": {
+                    "offset": 1,
+                    "limit": 1000,
+                },
+                "sort_by": {"name_field": "code", "type": "ASC"},
+            }
+        )
+
+        grouped_by_code = {key: list(group) for key, group in groupby(all_models_resp[0].models, key=lambda x: x.code)}
+        method_index = {
+            "create": "MirrorModelService.CreateMirrorModel",
+            "update": "MirrorModelService.UpdateMirrorModel",
+            "delete": "MirrorModelService.DeleteMirrorModel",
+        }
+        method_resp = MethodRPCFunction(context=context).read_method_rpc(
+            params={"filter": {"filter": f"[('class_name', '=','MirrorModelServiceStub')]"}}
+        )
+        # Procesar cada grupo
+        method_micro_op_idx = {}
+        for method in method_resp[0].method_grpcs:
+            action = None
+            for key, value in method_index.items():
+                if value in method.code:
+                    action = key
+                    break
+            if action:
+                key = f"{method.microservice.code}-{action}"
+                method_micro_op_idx[key] = method.id
+
+        for code, models in grouped_by_code.items():
+            original = next((model for model in models if model.is_replic.value == False), None)
+            replicas = [model for model in models if model.is_replic.value == True]
+
+            if not replicas or not original:
+                continue
+
+            trigger_fields = set(
+                [
+                    f"{code}-{field.field_aliasing}"
+                    for model in replicas
+                    for field in model.fields
+                    if field.field_aliasing
+                ]
+            )
+            if not trigger_fields:
+                continue
+
+            event_resp = EventRPCFucntion(context=context).read_event(
+                params={"filter": {"filter": f"[('code', 'in', {[code+'_create', code+'_update', code+'_delete']})]"}}
+            )
+            for event in event_resp[0].events:
+                if not (method_grpc := method_micro_op_idx.get(f"{original.microservice}-{event.operation}")):
+                    continue
+                event_ids = [event.id]
+                name = event.name + "-Mirror"
+                resp = cls.create_or_update_webhook_by_mirror(
+                    context=context,
+                    params={
+                        "filter": {"filter": {"filter": f"[('name', '=', '{name}')]"}},
+                        "data": {
+                            "name": name,
+                            "event_ids": event_ids,
+                            "method": "post",
+                            "format": "json",
+                            "type_webhook": "internal",
+                            "protocol": "grpc",
+                            "python_code": "__result__ = True",
+                            "trigger_fields": list(trigger_fields),
+                            "dag_id": "Mirror-Models",
+                            "method_grpc_id": method_grpc,
+                            "headers": {},
+                            # "url": "",
+                            "auth_type": "no_auth",
+                        },
+                    },
+                )
+                if not resp[1]:
+                    raise Exception(f"{resp[0]}-{resp[2]}")
+
+    @classmethod
+    def run(cls, pattern="*", exlcudes_keys=["SETTINGS"]) -> None:
+        redis_manager = RedisManager(
+            host=Config.REDIS_HOST, port=Config.REDIS_PORT, db=Config.REDIS_DB, redis_ssl=Config.REDIS_SSL
+        )
+        tenans = redis_manager.get_tenant_codes(pattern=pattern, exlcudes_keys=exlcudes_keys)
+        for tenant in tenans:
+            user = redis_manager.get_user_admin(tenant)
+            context = {
+                "tenant": tenant,
+                "user": user.get("id") or "admin",
+            }
+            cls.register(context=context)
