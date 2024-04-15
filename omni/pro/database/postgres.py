@@ -440,9 +440,12 @@ class PostgresDatabaseManager(SessionManager):
                 if not operator_func:
                     raise ValueError(f"Operador desconocido: {op}")
 
-                # Casting a texto si es necesario
-                if isinstance(field.type, Enum) and op in ["like", "ilike"]:
-                    field = cast(field, String)
+                if op in ["like", "ilike"]:
+                    value = f"%{value}%"
+
+                    # Casting a texto si es necesario
+                    if isinstance(field.type, Enum):
+                        field = cast(field, String)
 
                 clause = operator_func(field, value)
                 stack.append(clause)
