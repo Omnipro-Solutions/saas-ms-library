@@ -7,7 +7,6 @@ from marshmallow import ValidationError
 from omni.pro.database import DBUtil
 from omni.pro.decorators import resources_decorator
 from omni.pro.exceptions import handle_error
-from omni.pro.locales import set_language
 from omni.pro.logger import LoggerTraceback, configure_logger
 from omni.pro.redis import RedisManager
 from omni.pro.response import MessageResponse
@@ -17,7 +16,7 @@ from omni_pro_base.config import Config
 from omni_pro_base.util import nested
 from omni_pro_grpc.grpc_function import EventRPCFucntion, MethodRPCFunction, ModelRPCFucntion, WebhookRPCFucntion
 from omni_pro_grpc.util import MessageToDict, to_list_value
-from omni_pro_grpc.v1.util import mirror_model_pb2, mirror_model_pb2_grpc
+from omni_pro_grpc.v1.utilities import mirror_model_pb2, mirror_model_pb2_grpc
 from sqlalchemy.exc import IntegrityError, OperationalError
 
 logger = configure_logger(__name__)
