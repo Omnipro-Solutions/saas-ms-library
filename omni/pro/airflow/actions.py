@@ -29,15 +29,15 @@ class ActionToAirflow(object):
         try:
             model_code = cls_name._collection.name if isinstance(instance, Document) else cls_name.mapped_table.name
             action_code = f"{model_code}_{str(action).lower()}"
-            try:
-                instance_pj = MessageToDict(instance.to_proto())
-            except Exception as e:
-                instance_pj = (
-                    json.loads(instance.to_json()) if isinstance(instance, Document) else instance.model_to_dict()
-                )
 
             rpc_event = EventRPCFucntion(context=context)
-            response, success, _e = rpc_event.read_event({"filter": {"filter": f"[('code','=','{action_code}')]"}})
+            response, success, _e = rpc_event.read_event(
+                {
+                    "filter": {
+                        "filter": f"['and',('code','=','{action_code}'), ('model__is_replic', '=',{instance.__is_replic_table__})]"
+                    }
+                }
+            )
             if success and len((events := response.events)):
                 event = events[0]
 
@@ -54,6 +54,9 @@ class ActionToAirflow(object):
                             modified_fields = set(
                                 [f"{model_code}-{attr.key}" for attr in state.attrs if attr.history.has_changes()]
                             )
+                    instance_pj = (
+                        instance.generate_dict() if isinstance(instance, Document) else instance.model_to_dict()
+                    )
                     for webhook in webhooks:
 
                         if event.operation == "update" and not modified_fields & set(webhook.trigger_fields):
