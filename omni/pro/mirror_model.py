@@ -248,7 +248,7 @@ def mirror_factory(context, model_path: str):
 class MirrorModelServiceMongo(mirror_model_pb2_grpc.MirrorModelServiceServicer):
     def __init__(self, path: Path):
         localdir = path / "locales"
-        self._ = set_language(localedir=localdir)
+        # self._ = set_language(localedir=localdir)
         super().__init__()
 
     @newrelic.agent.function_trace()
@@ -272,8 +272,8 @@ class MirrorModelServiceMongo(mirror_model_pb2_grpc.MirrorModelServiceServicer):
                 )
 
         except Exception as e:
-            LoggerTraceback.error(self._("Mirro model create exception"), e, logger)
-            return message_response.internal_response(message=self._("Mirror model not created"))
+            LoggerTraceback.error("Mirro model create exception", e, logger)
+            return message_response.internal_response(message="Mirror model not created")
 
     @newrelic.agent.function_trace()
     @resources_decorator([Resource.MONGODB])
@@ -296,8 +296,8 @@ class MirrorModelServiceMongo(mirror_model_pb2_grpc.MirrorModelServiceServicer):
                 )
 
         except Exception as e:
-            LoggerTraceback.error(self._("Mirror model update exception"), e, logger)
-            return message_response.internal_response(message=self._("Mirror model not updated"))
+            LoggerTraceback.error("Mirror model update exception"), e, logger
+            return message_response.internal_response(message="Mirror model not updated")
 
     @newrelic.agent.function_trace()
     @resources_decorator([Resource.MONGODB])
@@ -322,15 +322,15 @@ class MirrorModelServiceMongo(mirror_model_pb2_grpc.MirrorModelServiceServicer):
                 )
 
         except Exception as e:
-            LoggerTraceback.error(self._("Mirror model read exception"), e, logger)
-            return message_response.internal_response(message=self._("Mirror model not read"))
+            LoggerTraceback.error("Mirror model read exception", e, logger)
+            return message_response.internal_response(message="Mirror model not read")
 
 
 class MirrorModelServicePostgres(mirror_model_pb2_grpc.MirrorModelServiceServicer):
 
     def __init__(self, path: Path):
         localdir = path / "locales"
-        self._ = set_language(localedir=localdir)
+        # self._ = set_language(localedir=localdir)
         super().__init__()
 
     @newrelic.agent.function_trace()
@@ -502,7 +502,7 @@ class MirroModelWebhookRegister(object):
                             "protocol": "grpc",
                             "python_code": "__result__ = True",
                             "trigger_fields": list(trigger_fields),
-                            "dag_id": "Mirror-Models",
+                            "dag_id": "Signal_Event",
                             "method_grpc_id": method_grpc,
                             "headers": {},
                             # "url": "",
