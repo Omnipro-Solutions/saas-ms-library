@@ -502,7 +502,7 @@ class MirroModelWebhookRegister(object):
                             "protocol": "grpc",
                             "python_code": "__result__ = True",
                             "trigger_fields": list(trigger_fields),
-                            "dag_id": "Mirror-Models",
+                            "dag_id": "Signal_Event",
                             "method_grpc_id": method_grpc,
                             "headers": {},
                             # "url": "",
