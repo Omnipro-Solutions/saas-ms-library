@@ -459,8 +459,8 @@ class MirroModelWebhookRegister(object):
                     action = key
                     break
             if action:
-                key = f"{method.microservice.code}-{action}"
-                method_micro_op_idx[key] = method.id
+                # key = f"{method.microservice.code}-{action}"
+                method_micro_op_idx[action] = method.id
 
         for code, models in grouped_by_code.items():
             original = next((model for model in models if model.is_replic.value == False), None)
@@ -484,8 +484,9 @@ class MirroModelWebhookRegister(object):
                 params={"filter": {"filter": f"[('code', 'in', {[code+'_create', code+'_update', code+'_delete']})]"}}
             )
             for event in event_resp[0].events:
-                if not (method_grpc := method_micro_op_idx.get(f"{original.microservice}-{event.operation}")):
-                    continue
+                # if not (method_grpc := method_micro_op_idx.get(f"{original.microservice}-{event.operation}")):
+                #     continue
+                method_grpc = method_micro_op_idx.get(event.operation)
                 event_ids = [event.id]
                 name = event.name + "-Mirror"
                 resp = cls.create_or_update_webhook_by_mirror(
