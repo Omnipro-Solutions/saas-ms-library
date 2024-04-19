@@ -440,12 +440,27 @@ class PostgresDatabaseManager(SessionManager):
                 if not operator_func:
                     raise ValueError(f"Operador desconocido: {op}")
 
-                if op in ["like", "ilike"]:
-                    value = f"%{value}%"
+                # Casting a texto si es necesario
+                if isinstance(field.type, Enum):
+                    if op in ["like", "ilike"]:
+                        operator_func = self.get_sqlalchemy_operator("in")
+                        value = list(
+                            dict(
+                                filter(
+                                    lambda v: str(value).lower() in str(v[1].value).lower(),
+                                    field.type.enum_class.__members__.items(),
+                                )
+                            ).keys()
+                        )
+                    elif op in ["in", "nin"]:
+                        value = [field.type.enum_class(v).name for v in value]
 
-                    # Casting a texto si es necesario
-                    if isinstance(field.type, Enum):
-                        field = cast(field, String)
+                    elif value in [x.value for x in field.type.enum_class.__members__.values()]:
+                        value = field.type.enum_class(value).name
+
+                    field = cast(field, String)
+                elif op in ["like", "ilike"]:
+                    value = f"%{value}%"
 
                 clause = operator_func(field, value)
                 stack.append(clause)
