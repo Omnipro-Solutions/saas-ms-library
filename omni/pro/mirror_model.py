@@ -206,6 +206,7 @@ class MirrorModelNoSQL(MirrorModelBase):
             bool: True if the update was successful, False otherwise.
         """
         data["model_data"]["context"] = data["context"]
+        logger.info(f"Updating mirror model {self.model} with data {data['model_data']}")
         return self.context.db_manager.update_document(None, self.model, **data["model_data"])
 
     def read_mirror_model(self, tenant, data):
@@ -253,15 +254,15 @@ class MirrorModelServiceMongo(mirror_model_pb2_grpc.MirrorModelServiceServicer):
     @newrelic.agent.function_trace()
     @resources_decorator([Resource.MONGODB])
     def CreateMirrorModel(
-        self, request: mirror_model_pb2.CreateOrUpdateMirrorModelRequest, context
+            self, request: mirror_model_pb2.CreateOrUpdateMirrorModelRequest, context
     ) -> mirror_model_pb2.CreateOrUpdateCreateMirrorResponse:
         message_response = MessageResponse(mirror_model_pb2.CreateOrUpdateCreateMirrorResponse)
         try:
             data = MessageToDict(request)
             base = mirror_factory(context, data.pop("model_path"))
             with ExitStackDocument(
-                document_classes=base.model.reference_list(),
-                db_alias=context.db_name,
+                    document_classes=base.model.reference_list(),
+                    db_alias=context.db_name,
             ):
                 data = MessageToDict(request)
                 result = base.create_mirror_model(data)
@@ -277,15 +278,15 @@ class MirrorModelServiceMongo(mirror_model_pb2_grpc.MirrorModelServiceServicer):
     @newrelic.agent.function_trace()
     @resources_decorator([Resource.MONGODB])
     def UpdateMirrorModel(
-        self, request: mirror_model_pb2.CreateOrUpdateMirrorModelRequest, context
+            self, request: mirror_model_pb2.CreateOrUpdateMirrorModelRequest, context
     ) -> mirror_model_pb2.CreateOrUpdateCreateMirrorResponse:
         message_response = MessageResponse(mirror_model_pb2.CreateOrUpdateCreateMirrorResponse)
         try:
             data = MessageToDict(request)
             base = mirror_factory(context, data.pop("model_path"))
             with ExitStackDocument(
-                document_classes=base.model.reference_list(),
-                db_alias=context.db_name,
+                    document_classes=base.model.reference_list(),
+                    db_alias=context.db_name,
             ):
                 result = base.update_mirror_model(data)
 
@@ -301,15 +302,15 @@ class MirrorModelServiceMongo(mirror_model_pb2_grpc.MirrorModelServiceServicer):
     @newrelic.agent.function_trace()
     @resources_decorator([Resource.MONGODB])
     def ReadMirrorModel(
-        self, request: mirror_model_pb2.ReadMirrorModelRequest, context
+            self, request: mirror_model_pb2.ReadMirrorModelRequest, context
     ) -> mirror_model_pb2.ReadMirrorModelResponse:
         message_response = MessageResponse(mirror_model_pb2.ReadMirrorModelResponse)
         try:
 
             base = mirror_factory(context, request.model_path)
             with ExitStackDocument(
-                document_classes=base.model.reference_list(),
-                db_alias=context.db_name,
+                    document_classes=base.model.reference_list(),
+                    db_alias=context.db_name,
             ):
                 data = DBUtil.db_prepared_statement(
                     request.id, request.fields, request.filter, request.paginated, None, request.sort_by
@@ -335,7 +336,7 @@ class MirrorModelServicePostgres(mirror_model_pb2_grpc.MirrorModelServiceService
     @newrelic.agent.function_trace()
     @resources_decorator([Resource.POSTGRES])
     def CreateMirrorModel(
-        self, request: mirror_model_pb2.CreateOrUpdateMirrorModelRequest, context
+            self, request: mirror_model_pb2.CreateOrUpdateMirrorModelRequest, context
     ) -> mirror_model_pb2.CreateOrUpdateCreateMirrorResponse:
         message_response = MessageResponse(mirror_model_pb2.CreateOrUpdateCreateMirrorResponse)
         try:
@@ -353,7 +354,7 @@ class MirrorModelServicePostgres(mirror_model_pb2_grpc.MirrorModelServiceService
     @newrelic.agent.function_trace()
     @resources_decorator([Resource.POSTGRES])
     def UpdateMirrorModel(
-        self, request: mirror_model_pb2.CreateOrUpdateMirrorModelRequest, context
+            self, request: mirror_model_pb2.CreateOrUpdateMirrorModelRequest, context
     ) -> mirror_model_pb2.CreateOrUpdateCreateMirrorResponse:
         message_response = MessageResponse(mirror_model_pb2.CreateOrUpdateCreateMirrorResponse)
         try:
@@ -372,7 +373,7 @@ class MirrorModelServicePostgres(mirror_model_pb2_grpc.MirrorModelServiceService
     @newrelic.agent.function_trace()
     @resources_decorator([Resource.POSTGRES])
     def ReadMirrorModel(
-        self, request: mirror_model_pb2.ReadMirrorModelRequest, context
+            self, request: mirror_model_pb2.ReadMirrorModelRequest, context
     ) -> mirror_model_pb2.ReadMirrorModelResponse:
         message_response = MessageResponse(mirror_model_pb2.ReadMirrorModelResponse)
         try:
@@ -481,7 +482,8 @@ class MirroModelWebhookRegister(object):
                 continue
 
             event_resp = EventRPCFucntion(context=context).read_event(
-                params={"filter": {"filter": f"[('code', 'in', {[code+'_create', code+'_update', code+'_delete']})]"}}
+                params={
+                    "filter": {"filter": f"[('code', 'in', {[code + '_create', code + '_update', code + '_delete']})]"}}
             )
             for event in event_resp[0].events:
                 # if not (method_grpc := method_micro_op_idx.get(f"{original.microservice}-{event.operation}")):
