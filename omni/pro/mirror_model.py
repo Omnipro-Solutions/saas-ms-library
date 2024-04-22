@@ -120,6 +120,7 @@ class MirrorModelSQL(MirrorModelBase):
             object: The newly created record.
 
         """
+        self.model.transform_mirror(data["model_data"])
         audit = {"tenant": nested(data, "context.tenant"), "updated_by": nested(data, "context.user")}
         return self.context.pg_manager.create_new_record(
             self.model, self.context.pg_manager.Session, **data["model_data"] | audit
@@ -191,6 +192,7 @@ class MirrorModelNoSQL(MirrorModelBase):
             object: The created mirror model.
 
         """
+        self.model.transform_mirror(data["model_data"])
         data["model_data"]["context"] = data["context"]
         return self.context.db_manager.create_document(None, self.model, **data["model_data"])
 

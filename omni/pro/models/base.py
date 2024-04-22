@@ -143,6 +143,9 @@ class BaseDocument(Document):
             cls, document, action="delete", context={"tenant": document.context.tenant, "user": document.context.user}
         )
 
+    def transform_mirror(self, data: object):
+        pass
+
 
 class BaseAuditEmbeddedDocument(BaseEmbeddedDocument):
     context = EmbeddedDocumentField(Context)
@@ -340,6 +343,15 @@ class Base:
             NotImplementedError: If the method is not overridden in a subclass.
         """
         raise NotImplementedError
+
+    def transform_mirror(self, data: object):
+        """
+        Transform the data for the model instance.
+
+        This method should be overridden in subclasses.
+
+        """
+        pass
 
 
 BaseModel = declarative_base(cls=Base)
