@@ -489,7 +489,7 @@ class MirroModelWebhookRegister(object):
                 # if not (method_grpc := method_micro_op_idx.get(f"{original.microservice}-{event.operation}")):
                 #     continue
                 method_grpc = method_micro_op_idx.get(event.operation)
-                event_ids = [event.id]
+                event_ids = [event.id] if event.operation == "create" else [{"id": event.id}]
                 name = event.name + "-Mirror"
                 resp = cls.create_or_update_webhook_by_mirror(
                     context=context,
