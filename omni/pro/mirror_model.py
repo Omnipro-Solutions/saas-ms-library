@@ -412,6 +412,8 @@ class MirroModelWebhookRegister(object):
             if resp.webhooks:
                 if len(resp.webhooks) == 1:
                     webhook = resp.webhooks[0]
+                    data["events"] = [{"id": x for x in data.pop("event_ids")}]
+                    data["method_grpc"] = {"id": data.pop("method_grpc_id")}
                     return rpc.update_webhook({"webhook": data | {"id": webhook.id}})
             else:
                 return rpc.create_webhook(data)
@@ -499,15 +501,11 @@ class MirroModelWebhookRegister(object):
                     "python_code": "__result__ = True",
                     "trigger_fields": list(trigger_fields),
                     "dag_id": "Signal_Event",
-                    "method_grpc_id": method_grpc,
                     "headers": {},
-                    # "url": "",
+                    "event_ids": [event.id],
+                    "method_grpc_id": method_grpc,
                     "auth_type": "no_auth",
                 }
-                if event.operation == "create":
-                    data["event_ids"] = [event.id]
-                else:
-                    data["events"] = [{"id": event.id}]
                 resp = cls.create_or_update_webhook_by_mirror(
                     context=context,
                     params={
