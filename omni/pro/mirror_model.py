@@ -492,27 +492,30 @@ class MirroModelWebhookRegister(object):
                 # if not (method_grpc := method_micro_op_idx.get(f"{original.microservice}-{event.operation}")):
                 #     continue
                 method_grpc = method_micro_op_idx.get(event.operation)
-                event_ids = [event.id] if event.operation == "create" else [{"id": event.id}]
                 name = event.name + "-Mirror"
+                data = {
+                    "name": name,
+                    "method": "post",
+                    "format": "json",
+                    "type_webhook": "internal",
+                    "protocol": "grpc",
+                    "python_code": "__result__ = True",
+                    "trigger_fields": list(trigger_fields),
+                    "dag_id": "Signal_Event",
+                    "method_grpc_id": method_grpc,
+                    "headers": {},
+                    # "url": "",
+                    "auth_type": "no_auth",
+                }
+                if event.operation == "create":
+                    data["event_ids"] = [event.id]
+                else:
+                    data["events"] = [{"id": event.id}]
                 resp = cls.create_or_update_webhook_by_mirror(
                     context=context,
                     params={
                         "filter": {"filter": {"filter": f"[('name', '=', '{name}')]"}},
-                        "data": {
-                            "name": name,
-                            "event_ids": event_ids,
-                            "method": "post",
-                            "format": "json",
-                            "type_webhook": "internal",
-                            "protocol": "grpc",
-                            "python_code": "__result__ = True",
-                            "trigger_fields": list(trigger_fields),
-                            "dag_id": "Signal_Event",
-                            "method_grpc_id": method_grpc,
-                            "headers": {},
-                            # "url": "",
-                            "auth_type": "no_auth",
-                        },
+                        "data": data,
                     },
                 )
                 if not resp[1]:
