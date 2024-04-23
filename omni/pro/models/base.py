@@ -143,7 +143,14 @@ class BaseDocument(Document):
             cls, document, action="delete", context={"tenant": document.context.tenant, "user": document.context.user}
         )
 
-    def transform_mirror(self, data: object):
+    @classmethod
+    def transform_mirror(cls, data: object):
+        """
+        Transform the data for the model instance.
+
+        This method should be overridden in subclasses.
+
+        """
         pass
 
 
@@ -344,7 +351,8 @@ class Base:
         """
         raise NotImplementedError
 
-    def transform_mirror(self, data: object):
+    @classmethod
+    def transform_mirror(cls, data: object):
         """
         Transform the data for the model instance.
 
