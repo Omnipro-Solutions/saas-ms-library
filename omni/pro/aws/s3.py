@@ -87,3 +87,40 @@ class AWSS3Client(AWSClient):
         :return: presigned url
         """
         return self.client.generate_presigned_url("get_object", Params={"Bucket": self.bucket_name, "Key": object_name})
+
+    def upload_file_to_s3_binary(self, object_name, file_content, content_type):
+        """
+        Uploads a binary file to an S3 bucket and returns the URL of the object.
+
+        This function uploads a file directly from a binary object, such as a file read into memory or a data stream.
+        This is useful for handling files that do not need to be saved to the local filesystem before being uploaded.
+
+        :param object_name: The key under which the file will be stored in S3.
+        :param file_content: The binary content of the file to upload.
+        :param content_type: The MIME type of the file, which helps the browser to handle the file appropriately.
+
+        :return: A URL to the uploaded file in the format "https://<bucket_name>.s3.amazonaws.com/<object_name>"
+
+        :raises boto3.exceptions.S3UploadFailedError: If the upload to S3 fails.
+        """
+        self._client.put_object(Bucket=self.bucket_name, Key=object_name, Body=file_content, ContentType=content_type)
+        url = f"https://{self.bucket_name}.s3.amazonaws.com/{object_name}"
+        return url
+
+    def get_object_metadata(self, object_name):
+        """
+        Retrieves metadata for a specific object from the S3 bucket.
+
+        This function fetches metadata for an object using the AWS S3 `head_object` API call,
+        which provides information such as the object's size, MIME type, and the last modified timestamp,
+        among other headers. This is useful for evaluating properties of the file without downloading it.
+
+        :param object_name: The key of the object in the S3 bucket for which metadata is desired.
+
+        :return: A dictionary containing the headers and metadata of the specified object. This includes,
+                 but is not limited to, keys such as 'ContentLength', 'ContentType', 'ETag', and 'LastModified'.
+
+        :raises ClientError: An error thrown by boto3's S3 client if the object is not found or the request fails
+                             for some other reason. This could be due to a permissions issue, non-existent bucket or object, etc.
+        """
+        return self._client.head_object(Bucket=self.bucket_name, Key=object_name)
