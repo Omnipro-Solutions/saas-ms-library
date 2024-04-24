@@ -1,5 +1,6 @@
 import re
 from datetime import datetime
+from enum import Enum
 
 from bson import ObjectId
 from google.protobuf.timestamp_pb2 import Timestamp
@@ -247,7 +248,10 @@ class Base:
             Un diccionario que representa al modelo.
         """
         # Primero, obtenemos los campos simples
-        data = {c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs}
+        data = {
+            c.key: vlu.name if isinstance((vlu := getattr(self, c.key)), Enum) else vlu
+            for c in inspect(self).mapper.column_attrs
+        }
 
         depth = self.__max_depth__ if depth == None else depth
         properties = properties or self.__properties__
