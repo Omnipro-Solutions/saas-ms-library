@@ -17,6 +17,7 @@ from omni_pro_base.util import nested
 from omni_pro_grpc.grpc_function import EventRPCFucntion, MethodRPCFunction, ModelRPCFucntion, WebhookRPCFucntion
 from omni_pro_grpc.util import MessageToDict, to_list_value
 from omni_pro_grpc.v1.utilities import mirror_model_pb2, mirror_model_pb2_grpc
+from sqlalchemy import inspect
 from sqlalchemy.exc import IntegrityError, OperationalError
 
 logger = configure_logger(__name__)
@@ -120,6 +121,15 @@ class MirrorModelSQL(MirrorModelBase):
             object: The newly created record.
 
         """
+        mapper = inspect(self.model)
+        filters = {}
+        for column in mapper.columns:
+            if column.unique and hasattr(column, "field_aliasing") and column.name in data["model_data"]:
+                filters[column.name] = data["model_data"][column.name]
+        if filters and (
+            mdl := self.context.pg_manager.retrieve_record(self.model, self.context.pg_manager.Session, filters)
+        ):
+            return mdl
         self.model.transform_mirror(data["model_data"])
         audit = {"tenant": nested(data, "context.tenant"), "updated_by": nested(data, "context.user")}
         return self.context.pg_manager.create_new_record(
@@ -137,6 +147,12 @@ class MirrorModelSQL(MirrorModelBase):
         Returns:
             bool: True if the update was successful, False otherwise.
         """
+        mdl = self.context.pg_manager.retrieve_record_by_id(
+            self.model, self.context.pg_manager.Session, data["model_data"]["id"] or 0
+        )
+        if not mdl:
+            data["model_data"].pop("id")
+            return self.create_mirror_model(data)
         audit = {"tenant": nested(data, "context.tenant"), "updated_by": nested(data, "context.user")}
         return self.context.pg_manager.update_record(
             self.model, self.context.pg_manager.Session, nested(data, "model_data.id"), data["model_data"] | audit
