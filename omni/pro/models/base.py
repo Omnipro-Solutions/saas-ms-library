@@ -194,6 +194,8 @@ class Base:
     """
 
     __is_replic_table__ = False
+    __max_depth__ = 0
+    __properties__ = []
 
     @staticmethod
     def _camel_to_snake(name):
@@ -232,8 +234,41 @@ class Base:
     )
     deleted_at: Mapped[datetime] = mapped_column(DateTime(), nullable=True, is_importable=False)
 
-    def model_to_dict(self):
-        return {c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs}
+    def model_to_dict(self, depth=None, properties=None):
+        """
+        Convierte un modelo SQLAlchemy a un dict, incluyendo propiedades y relaciones
+        hasta un nivel de profundidad especificado.
+
+        Parameters:
+            depth: Nivel de profundidad para relaciones.
+            properties: Lista de nombres de propiedades para incluir.
+
+        Returns:
+            Un diccionario que representa al modelo.
+        """
+        # Primero, obtenemos los campos simples
+        data = {c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs}
+
+        depth = self.__max_depth__ if depth == None else depth
+        properties = properties or self.__properties__
+        if depth > 0:
+            # Ahora manejamos las relaciones, si depth > 0
+            for relation in inspect(self).mapper.relationships:
+                value = getattr(self, relation.key)
+                if value is None:
+                    data[relation.key] = None
+                elif relation.uselist:  # es una relación de tipo lista
+                    data[relation.key] = [item.model_to_dict(depth=depth - 1) for item in value]
+                else:  # es una relación de uno a uno
+                    data[relation.key] = value.model_to_dict(depth=depth - 1)
+
+        # Incluir propiedades si se especifica
+        for prop_name in properties:
+            if hasattr(self, prop_name):
+                prop_value = getattr(self, prop_name)
+                data[prop_name] = prop_value
+
+        return data
 
     def create(self, session):
         """
