@@ -17,6 +17,7 @@ from omni_pro_base.util import nested
 from omni_pro_grpc.grpc_function import EventRPCFucntion, MethodRPCFunction, ModelRPCFucntion, WebhookRPCFucntion
 from omni_pro_grpc.util import MessageToDict, to_list_value
 from omni_pro_grpc.v1.utilities import mirror_model_pb2, mirror_model_pb2_grpc
+from sqlalchemy import inspect
 from sqlalchemy.exc import IntegrityError, OperationalError
 
 logger = configure_logger(__name__)
@@ -120,6 +121,15 @@ class MirrorModelSQL(MirrorModelBase):
             object: The newly created record.
 
         """
+        mapper = inspect(self.model)
+        filters = {}
+        for column in mapper.columns:
+            if column.unique and hasattr(column, "field_aliasing") and column.name in data["model_data"]:
+                filters[column.name] = data["model_data"][column.name]
+        if filters and (
+            mdl := self.context.pg_manager.retrieve_record(self.model, self.context.pg_manager.Session, filters)
+        ):
+            return mdl
         self.model.transform_mirror(data["model_data"])
         audit = {"tenant": nested(data, "context.tenant"), "updated_by": nested(data, "context.user")}
         return self.context.pg_manager.create_new_record(
@@ -137,6 +147,12 @@ class MirrorModelSQL(MirrorModelBase):
         Returns:
             bool: True if the update was successful, False otherwise.
         """
+        mdl = self.context.pg_manager.retrieve_record_by_id(
+            self.model, self.context.pg_manager.Session, data["model_data"]["id"] or 0
+        )
+        if not mdl:
+            data["model_data"].pop("id")
+            return self.create_mirror_model(data)
         audit = {"tenant": nested(data, "context.tenant"), "updated_by": nested(data, "context.user")}
         return self.context.pg_manager.update_record(
             self.model, self.context.pg_manager.Session, nested(data, "model_data.id"), data["model_data"] | audit
@@ -192,6 +208,14 @@ class MirrorModelNoSQL(MirrorModelBase):
             object: The created mirror model.
 
         """
+        filters = {}
+        for field_key, field in self.model._fields.items():
+            if field.unique and hasattr(field, "field_aliasing") and field.db_field in data["model_data"]:
+                filters[field_key] = data["model_data"][field_key]
+        if filters and (
+            doc := self.context.db_manager.get_document(None, data["context"]["tenant"], self.model, **filters)
+        ):
+            return doc
         self.model.transform_mirror(data["model_data"])
         data["model_data"]["context"] = data["context"]
         return self.context.db_manager.create_document(None, self.model, **data["model_data"])
@@ -208,6 +232,12 @@ class MirrorModelNoSQL(MirrorModelBase):
             bool: True if the update was successful, False otherwise.
         """
         data["model_data"]["context"] = data["context"]
+        doc = self.context.db_manager.get_document(
+            None, data["context"]["tenant"], self.model, id=data["model_data"]["id"]
+        )
+        if not doc:
+            data["model_data"].pop("id")
+            return self.create_mirror_model(data)
         logger.info(f"Updating mirror model {self.model} with data {data['model_data']}")
         return self.context.db_manager.update_document(None, self.model, **data["model_data"])
 
