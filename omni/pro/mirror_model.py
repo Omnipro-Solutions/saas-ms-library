@@ -238,6 +238,7 @@ class MirrorModelNoSQL(MirrorModelBase):
         if not doc:
             data["model_data"].pop("id")
             return self.create_mirror_model(data)
+        logger.info(f"Updating mirror model {self.model} with data {data['model_data']}")
         return self.context.db_manager.update_document(None, self.model, **data["model_data"])
 
     def read_mirror_model(self, tenant, data):
@@ -327,7 +328,7 @@ class MirrorModelServiceMongo(mirror_model_pb2_grpc.MirrorModelServiceServicer):
                 )
 
         except Exception as e:
-            LoggerTraceback.error("Mirror model update exception"), e, logger
+            LoggerTraceback.error("Mirror model update exception", e, logger)
             return message_response.internal_response(message="Mirror model not updated")
 
     @newrelic.agent.function_trace()
@@ -515,7 +516,9 @@ class MirroModelWebhookRegister(object):
                 continue
 
             event_resp = EventRPCFucntion(context=context).read_event(
-                params={"filter": {"filter": f"[('code', 'in', {[code+'_create', code+'_update', code+'_delete']})]"}}
+                params={
+                    "filter": {"filter": f"[('code', 'in', {[code + '_create', code + '_update', code + '_delete']})]"}
+                }
             )
             for event in event_resp[0].events:
                 # if not (method_grpc := method_micro_op_idx.get(f"{original.microservice}-{event.operation}")):
