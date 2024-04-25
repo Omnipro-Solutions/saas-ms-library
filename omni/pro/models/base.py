@@ -1,5 +1,6 @@
 import re
 from datetime import datetime
+from decimal import Decimal
 from enum import Enum
 
 from bson import ObjectId
@@ -248,10 +249,15 @@ class Base:
             Un diccionario que representa al modelo.
         """
         # Primero, obtenemos los campos simples
-        data = {
-            c.key: vlu.name if isinstance((vlu := getattr(self, c.key)), Enum) else vlu
-            for c in inspect(self).mapper.column_attrs
-        }
+        data = {}
+        for col in inspect(self).mapper.column_attrs:
+            col_val = getattr(self, col.key)
+            if isinstance(col_val, Enum):
+                data[col.key] = col_val.name
+            elif isinstance(col_val, Decimal):
+                data[col.key] = float(col_val)
+            else:
+                data[col.key] = col_val
 
         depth = self.__max_depth__ if depth == None else depth
         properties = properties or self.__properties__
