@@ -84,7 +84,8 @@ class Descriptor(object):
                 field_info["size"] = field.max_length
 
             # If the field is an EmbeddedDocumentField or ReferenceField, recurse into its fields
-            if isinstance(field, EmbeddedDocumentField) or isinstance(field, ReferenceField):
+            is_reference = isinstance(field, ReferenceField)
+            if isinstance(field, EmbeddedDocumentField) or is_reference:
                 if depth < max_depth:
                     embedded_model = field.document_type_obj
                     try:
@@ -94,12 +95,14 @@ class Descriptor(object):
                             current_code,
                             depth=depth + 1,
                             max_depth=max_depth,
-                            is_reference=True if isinstance(field, ReferenceField) else False,
+                            is_reference=is_reference,
                         )
                     except RecursionError as e:
                         continue
                     fields.extend(embedded_fields)  # extend main fields list with the result of recursion
-                    continue  # we don't add a separate field for the embedded/reference field itself
+                    # add reference field to the main fields list for replic models
+                    if not (is_reference and depth == 0):
+                        continue  # we don't add a separate field for the embedded/reference field itself
 
             # if the field is an Enum, add options values
             if hasattr(field, "choices") and field.choices:
