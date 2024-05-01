@@ -136,18 +136,18 @@ class BaseDocument(Document):
     @classmethod
     def post_save(cls, sender, document, **kwargs):
         # identify if the object is a new instance or an existing one
-        if document._changed_fields and not document._created:
-            ActionToAirflow.send_to_airflow(
-                cls,
-                document,
-                action="update",
-                context={"tenant": document.context.tenant, "user": document.context.user},
-            )
-        elif document._created:
+        if kwargs.get("created", False):
             ActionToAirflow.send_to_airflow(
                 cls,
                 document,
                 action="create",
+                context={"tenant": document.context.tenant, "user": document.context.user},
+            )
+        elif document._changed_fields:
+            ActionToAirflow.send_to_airflow(
+                cls,
+                document,
+                action="update",
                 context={"tenant": document.context.tenant, "user": document.context.user},
             )
 
