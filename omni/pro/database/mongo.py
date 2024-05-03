@@ -59,25 +59,27 @@ class DatabaseManager(object):
         document = document_class.objects(id=id).first()
         document_class.objects(id=document.id).first().update(**kwargs)
         document.reload()
-        ActionToAirflow.send_to_airflow(
-            document_class,
-            document,
-            action="update",
-            context={"tenant": document.context.tenant, "user": document.context.user},
-            **kwargs,
-        )
+        if not document.__is_replic_table__:
+            ActionToAirflow.send_to_airflow(
+                document_class,
+                document,
+                action="update",
+                context={"tenant": document.context.tenant, "user": document.context.user},
+                **kwargs,
+            )
         return document
 
     def update(self, document_instance, **kwargs):
         document_instance.update(**kwargs)
         document_instance.reload()
-        ActionToAirflow.send_to_airflow(
-            document_instance.__class__,
-            document_instance,
-            action="update",
-            context={"tenant": document_instance.context.tenant, "user": document_instance.context.user},
-            **kwargs,
-        )
+        if not document_instance.__is_replic_table__:
+            ActionToAirflow.send_to_airflow(
+                document_instance.__class__,
+                document_instance,
+                action="update",
+                context={"tenant": document_instance.context.tenant, "user": document_instance.context.user},
+                **kwargs,
+            )
         return document_instance
 
     def delete(self, document_instance):
