@@ -131,11 +131,10 @@ class AlembicMigrateCheck(object):
             logger.error(f"Failed to upgrade revision: {e}")
             raise e
 
-    def is_database_up_to_date(self):
+    def is_database_up_to_date(self, current_version):
         # Esta función verifica si la base de datos está actualizada
         script_directory = ScriptDirectory.from_config(self.alembic_config)
         head_revision = script_directory.get_current_head()
-        current_version = self.get_current_version()
 
         return current_version == head_revision
 
@@ -144,14 +143,11 @@ class AlembicMigrateCheck(object):
             self.check()  # Asegúrate de que la base de datos esté preparada para migraciones
             current_version = self.get_current_version()
 
-            if not self.is_database_up_to_date():
+            if not self.is_database_up_to_date(current_version):
                 logger.info("Database is not up to date. Upgrading to head.")
                 self.upgrade_head("head")  # Actualiza la base de datos si no está al día
-
-            script_directory = ScriptDirectory.from_config(self.alembic_config)
-            if current_version is None and list(script_directory.walk_revisions()):
-                self.upgrade_head()
                 current_version = self.get_current_version()
+
             status, script = self.apply_revision()
             if not status:
                 logger.exception(f"Error creating revision: \n{script}")
