@@ -135,6 +135,8 @@ class BaseDocument(Document):
 
     @classmethod
     def post_save(cls, sender, document, **kwargs):
+        if document.__is_replic_table__:  # Ignore replic tables
+            return
         # identify if the object is a new instance or an existing one
         if kwargs.get("created", False):
             ActionToAirflow.send_to_airflow(
@@ -153,6 +155,8 @@ class BaseDocument(Document):
 
     @classmethod
     def post_delete(cls, sender, document, **kwargs):
+        if document.__is_replic_table__:  # Ignore replic tables
+            return
         ActionToAirflow.send_to_airflow(
             cls, document, action="delete", context={"tenant": document.context.tenant, "user": document.context.user}
         )
@@ -425,6 +429,8 @@ BaseModel = declarative_base(cls=Base)
 # Definir un evento que escuche a todos los modelos que heredan de Base
 @event.listens_for(BaseModel, "after_insert", propagate=True)
 def post_save(mapper, connection, target):
+    if target.__is_replic_table__:  # Ignore replic tables
+        return
     ActionToAirflow.send_to_airflow(
         mapper, target, "create", context={"tenant": target.tenant, "user": target.updated_by}
     )
@@ -432,6 +438,8 @@ def post_save(mapper, connection, target):
 
 @event.listens_for(BaseModel, "after_update", propagate=True)
 def post_update(mapper, connection, target):
+    if target.__is_replic_table__:  # Ignore replic tables
+        return
     ActionToAirflow.send_to_airflow(
         mapper, target, "update", context={"tenant": target.tenant, "user": target.updated_by}
     )
@@ -439,6 +447,8 @@ def post_update(mapper, connection, target):
 
 @event.listens_for(BaseModel, "after_delete", propagate=True)
 def post_delete(mapper, connection, target):
+    if target.__is_replic_table__:  # Ignore replic tables
+        return
     ActionToAirflow.send_to_airflow(
         mapper, target, "delete", context={"tenant": target.tenant, "user": target.updated_by}
     )
