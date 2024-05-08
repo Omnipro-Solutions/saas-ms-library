@@ -49,6 +49,10 @@ class ActionToAirflow(object):
                         if isinstance(instance, Document):
                             # modified_fields = instance._get_changed_fields()
                             modified_fields = set([f"{model_code}-{key}" for key in kwargs.keys()])
+                            if hasattr(instance, "_changed_fields"):
+                                modified_fields = modified_fields.union(
+                                    set(f"{model_code}-{key}" for key in instance._changed_fields)
+                                )
                         else:
                             state = inspect(instance)
                             modified_fields = set(
