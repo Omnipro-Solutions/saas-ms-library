@@ -13,6 +13,7 @@ from omni.pro.response import MessageResponse
 from omni.pro.stack import ExitStackDocument
 from omni.pro.util import Resource, convert_model_alchemy_to_struct, convert_model_mongo_to_struct
 from omni_pro_base.config import Config
+from omni_pro_base.microservice import MicroService as MicroServiceEnum
 from omni_pro_base.util import nested
 from omni_pro_grpc.grpc_function import EventRPCFucntion, MethodRPCFunction, ModelRPCFucntion, WebhookRPCFucntion
 from omni_pro_grpc.util import MessageToDict, to_list_value
@@ -466,6 +467,12 @@ class MirroModelWebhookRegister(object):
             Exception: If there is an error creating the webhook.
 
         """
+        dags = {
+            "picking": "Signal_Event_Picking",
+            "quant": "Signal_Event_Quants",
+            MicroServiceEnum.SAAS_MS_CATALOG.value: "Signal_Event_Catalog",
+            MicroServiceEnum.SAAS_MS_SALE.value: "Signal_Event_Sale",
+        }
         all_models_resp = ModelRPCFucntion(context=context).read_model(
             params={
                 "paginated": {
@@ -520,6 +527,10 @@ class MirroModelWebhookRegister(object):
                     "filter": {"filter": f"[('code', 'in', {[code + '_create', code + '_update', code + '_delete']})]"}
                 }
             )
+            dag_id = dags.get(code)
+            if not dag_id:
+                dag_id = dags.get(original.microservice) or "Signal_Event"
+
             for event in event_resp[0].events:
                 # if not (method_grpc := method_micro_op_idx.get(f"{original.microservice}-{event.operation}")):
                 #     continue
@@ -533,7 +544,7 @@ class MirroModelWebhookRegister(object):
                     "protocol": "grpc",
                     "python_code": "__result__ = True",
                     "trigger_fields": list(trigger_fields),
-                    "dag_id": "Signal_Event",
+                    "dag_id": dag_id,
                     "headers": {},
                     "event_ids": [event.id],
                     "method_grpc_id": method_grpc,
