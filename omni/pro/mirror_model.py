@@ -154,6 +154,7 @@ class MirrorModelSQL(MirrorModelBase):
         if not mdl:
             data["model_data"].pop("id")
             return self.create_mirror_model(data)
+        self.model.transform_mirror(data["model_data"])
         audit = {"tenant": nested(data, "context.tenant"), "updated_by": nested(data, "context.user")}
         return self.context.pg_manager.update_record(
             self.model, self.context.pg_manager.Session, nested(data, "model_data.id"), data["model_data"] | audit
@@ -240,6 +241,7 @@ class MirrorModelNoSQL(MirrorModelBase):
             data["model_data"].pop("id")
             return self.create_mirror_model(data)
         logger.info(f"Updating mirror model {self.model} with data {data['model_data']}")
+        self.model.transform_mirror(data["model_data"])
         return self.context.db_manager.update_document(None, self.model, **data["model_data"])
 
     def read_mirror_model(self, tenant, data):
