@@ -114,7 +114,9 @@ class ObjectIdField(fields.Field):
         except UnicodeDecodeError as error:
             raise self.make_error("invalid_utf8") from error
         except (ValueError, AttributeError, TypeError) as error:
-            raise ValidationError("ObjectIds must be a 12-byte input or a 24-character hex string") from error
+            raise ValidationError(
+                "ObjectIds must be a 12-byte input or a 24-character hex string"
+            ) from error
 
 
 class MicroServiceValidator(Context, Schema):
@@ -128,6 +130,7 @@ class MicroServiceValidator(Context, Schema):
     depends = fields.List(fields.String())
     data = fields.List(fields.String())
     settings = fields.List(fields.Dict(), required=False)
+    permissions = fields.Dict()
 
 
 class MicroServiceValidatorData(MicroServiceValidator):
@@ -168,7 +171,10 @@ class MicroServicePathValidator(MicroServiceValidator):
         list_dict = []
         for setting in data.get("settings", []):
             setting = dict(sorted(setting.items()))
-            setting_db = next((x for x in micro_settings if x.get("code") == setting.get("code")), None)
+            setting_db = next(
+                (x for x in micro_settings if x.get("code") == setting.get("code")),
+                None,
+            )
             if not setting_db:
                 list_dict.append(setting)
             else:
