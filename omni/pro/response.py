@@ -26,6 +26,7 @@ class MessageCode(object):
     EXPORT_SUCCESS = "EX001"
     EXPORT_ERROR = "EX002"
     IMPORT_EXPORT_PROCESSING = "IM003"
+    OPERATION_ERROR = "OE001"
 
 
 class MessageResponse(object):
@@ -203,5 +204,14 @@ class MessageResponse(object):
             message=message,
             status_code=HTTPStatus.BAD_REQUEST,
             message_code=MessageCode.EXPORT_ERROR,
+            **kwargs,
+        )
+
+    def operation_error(self, message: str, **kwargs):
+        return self.response(
+            success=False,
+            message=message,
+            status_code=HTTPStatus.OK,
+            message_code=MessageCode.OPERATION_ERROR,
             **kwargs,
         )
