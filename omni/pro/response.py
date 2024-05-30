@@ -209,7 +209,7 @@ class MessageResponse(object):
 
     def operation_error(self, message: str, **kwargs):
         return self.response(
-            success=False,
+            success=True,
             message=message,
             status_code=HTTPStatus.OK,
             message_code=MessageCode.OPERATION_ERROR,
