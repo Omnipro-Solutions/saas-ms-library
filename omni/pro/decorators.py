@@ -52,7 +52,7 @@ def resources_decorator(
                     context.pg_manager = PostgresDatabaseManager(**db_params)
             except Exception as e:
                 LoggerTraceback.error("Resource Decorator exception", e, logger)
-            if not request.context.user == "internal" and permission:
+            if not request.context.user == "internal" or not permission:
                 result = permission_required(request, funcion, message_response, permission_code)
                 if result:
                     return result
