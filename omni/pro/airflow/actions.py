@@ -68,7 +68,7 @@ class ActionToAirflow(object):
                             continue
 
                         if eval_condition(instance_pj, webhook.python_code):
-                            if webhook.type_webhook == "external":
+                            if webhook.type_webhook != "internal":
                                 try:
                                     instance_proto = instance.to_proto()
                                 except Exception as e:
