@@ -216,7 +216,7 @@ class MessageResponse(object):
             **kwargs,
         )
 
-    def no_content_error(self, message: str, **kwargs):
+    def no_content_response(self, message: str, **kwargs):
         return self.response(
             success=True,
             message=message,
