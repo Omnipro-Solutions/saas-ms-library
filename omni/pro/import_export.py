@@ -95,7 +95,7 @@ class QueryExport(ImportExportBase):
         Returns: Data retrieved from the SQL database.
         """
         sql_query = text(
-            f"SELECT {','.join(fields)} FROM '{model.__tablename__}' WHERE tenant = '{context['tenant']}' AND created_at BETWEEN '{start_date}' AND '{end_date}'"
+            f"""SELECT {','.join(fields)} FROM "{model.__tablename__}" WHERE tenant = '{context['tenant']}' AND created_at BETWEEN '{start_date}' AND '{end_date}'"""
         )
         result = self.context.pg_manager.Session.execute(sql_query)
         return self._serialize_query_result(result)
