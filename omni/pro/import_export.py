@@ -1,7 +1,8 @@
 from datetime import datetime
+from importlib import import_module
+
 from dateutil import parser
 from sqlalchemy import text
-from importlib import import_module
 
 
 class ImportExportBase:
@@ -93,9 +94,44 @@ class QueryExport(ImportExportBase):
         context (dict): The context for the SQL database operation.
         Returns: Data retrieved from the SQL database.
         """
+        from sqlalchemy import inspect
+
+        inspector = inspect(model)
+        foreign_keys = []
+        related_fields = ["id", "name"]
+        main_table = model.__tablename__
+        main_table_fields = ", ".join([f"{main_table}.{field}" for field in fields])
+        join_clauses = ""
+        related_table_fields = ""
+
+        for column in inspector.columns:
+            if column.name in fields:
+                for fk in column.foreign_keys:
+                    target_class = fk.column.table.name.capitalize()
+                    foreign_keys.append(
+                        {
+                            "column": column.name,
+                            "target_class": str(target_class).lower(),
+                        }
+                    )
+
+        for foreign_key in foreign_keys:
+            related_table = foreign_key["target_class"]
+            join_clauses += f' LEFT JOIN "{related_table}" ON {main_table}.{foreign_key["column"]} = {related_table}.id'
+            for field in related_fields:
+                alias = f"{related_table}_{field}"
+                related_table_fields += f", {related_table}.{field} AS {alias}"
+
         sql_query = text(
-            f"SELECT {','.join(fields)} FROM {model.__tablename__} WHERE tenant = '{context['tenant']}' AND created_at BETWEEN '{start_date}' AND '{end_date}'"
+            f"""
+            SELECT {main_table_fields}{related_table_fields} 
+            FROM "{main_table}"
+            {join_clauses}
+            WHERE {main_table}.tenant = '{context['tenant']}'
+            AND {main_table}.created_at BETWEEN '{start_date}' AND '{end_date}'
+            """
         )
+
         result = self.context.pg_manager.Session.execute(sql_query)
         return self._serialize_query_result(result)
 
