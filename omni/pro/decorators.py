@@ -1,3 +1,5 @@
+from functools import wraps
+
 from newrelic.api.function_trace import function_trace
 from omni.pro.aws import AWSCognitoClient, AWSS3Client
 from omni.pro.config import Config
@@ -12,6 +14,7 @@ logger = configure_logger(name=__name__)
 def resources_decorator(resource_list: list) -> callable:
     def decorador_func(funcion: callable) -> callable:
         @function_trace(name=funcion.__name__)
+        @wraps(funcion)
         def inner(instance, request, context):
             try:
                 redis_manager = RedisManager(

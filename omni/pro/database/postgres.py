@@ -1,11 +1,12 @@
 import ast
 import operator
+from datetime import datetime
 
 from omni_pro_grpc.common import base_pb2
 from sqlalchemy import and_, asc, create_engine, desc, not_, or_
 from sqlalchemy.orm import aliased, scoped_session, sessionmaker
 from sqlalchemy.sql import cast, operators
-from sqlalchemy.sql.sqltypes import Enum, String
+from sqlalchemy.sql.sqltypes import DateTime, Enum, String
 
 
 class SessionManager:
@@ -459,6 +460,14 @@ class PostgresDatabaseManager(SessionManager):
                         value = field.type.enum_class(value).name
 
                     field = cast(field, String)
+                # Manejo de formato de fecha
+                elif isinstance(field.type, DateTime):
+                    try:
+                        value = datetime.strptime(value, "%Y-%m-%d %H:%M:%S")
+                    except ValueError:
+                        #  raise ValueError(f"Formato de fecha inválido para el campo {field_path}: {value}")
+                        pass
+
                 elif op in ["like", "ilike"]:
                     value = f"%{value}%"
 
