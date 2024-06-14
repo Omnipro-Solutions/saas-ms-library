@@ -2,7 +2,7 @@ from datetime import datetime
 from importlib import import_module
 
 from dateutil import parser
-from sqlalchemy import text
+from sqlalchemy import inspect, text
 
 
 class ImportExportBase:
@@ -86,23 +86,23 @@ class QueryExport(ImportExportBase):
         """
         Fetches data from a SQL database.
         Parameters:
-        model: The model class for the SQL operation.
-        model_path (str): The path to the model class.
-        fields (list): A list of field names to be fetched.
-        date_init(datetime): The start date for the query.
-        date_finish(datetime): The end date for the query.
-        context (dict): The context for the SQL database operation.
-        Returns: Data retrieved from the SQL database.
+        model (Type[Any]): The model class for the SQL operation.
+        fields (List[str]): A list of field names to be fetched.
+        start_date (datetime): The start date for the query.
+        end_date (datetime): The end date for the query.
+        context (Dict[str, Any]): The context for the SQL database operation.
+
+        Returns:
+        List[Dict[str, Any]]: Data retrieved from the SQL database.
         """
-        from sqlalchemy import inspect
 
         inspector = inspect(model)
         foreign_keys = []
         related_fields = ["id", "name"]
         main_table = model.__tablename__
         main_table_fields = ", ".join([f"{main_table}.{field}" for field in fields])
-        join_clauses = ""
-        related_table_fields = ""
+        join_clauses = []
+        related_table_fields = []
 
         for column in inspector.columns:
             if column.name in fields:
@@ -115,24 +115,35 @@ class QueryExport(ImportExportBase):
                         }
                     )
 
-        for foreign_key in foreign_keys:
-            related_table = foreign_key["target_class"]
-            join_clauses += f' LEFT JOIN "{related_table}" ON {main_table}.{foreign_key["column"]} = {related_table}.id'
+        # Create join clauses and related fields for foreign keys
+        for fk in foreign_keys:
+            related_table = fk["target_class"]
+            join_clauses.append(f'LEFT JOIN "{related_table}" ON {main_table}.{fk["column"]} = {related_table}.id')
             for field in related_fields:
                 alias = f"{related_table}_{field}"
-                related_table_fields += f", {related_table}.{field} AS {alias}"
+                related_table_fields.append(f"{related_table}.{field} AS {alias}")
 
+        # Build the SQL query
         sql_query = text(
             f"""
-            SELECT {main_table_fields}{related_table_fields} 
+            SELECT {main_table_fields}{","+", ".join(related_table_fields ) if related_table_fields else ""}
             FROM "{main_table}"
-            {join_clauses}
-            WHERE {main_table}.tenant = '{context['tenant']}'
-            AND {main_table}.created_at BETWEEN '{start_date}' AND '{end_date}'
+            {" ".join(join_clauses)}
+            WHERE {main_table}.tenant = :tenant
+            AND {main_table}.created_at BETWEEN :start_date AND :end_date
             """
         )
 
-        result = self.context.pg_manager.Session.execute(sql_query)
+        # Execute the query with parameters to avoid SQL injection
+        result = self.context.pg_manager.Session.execute(
+            sql_query,
+            {
+                "tenant": context["tenant"],
+                "start_date": start_date,
+                "end_date": end_date,
+            },
+        )
+
         return self._serialize_query_result(result)
 
     def _serialize_query_result(self, result):
