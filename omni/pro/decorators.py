@@ -1,4 +1,7 @@
+import threading
+import time
 from functools import wraps
+from queue import Empty, Queue
 
 from newrelic.api.function_trace import function_trace
 from omni.pro.aws import AWSCognitoClient, AWSS3Client
@@ -51,3 +54,52 @@ def resources_decorator(resource_list: list) -> callable:
         return inner
 
     return decorador_func
+
+
+class FunctionThreadController:
+    def __init__(self, timeout=Config.TIMEOUT_THREAD_CONTROLLER):
+        self.timeout = timeout
+        self.function_threads = {}
+
+    def _worker(self, function_name, queue):
+        while True:
+            try:
+                target, args, kwargs = queue.get(timeout=self.timeout)
+                target(*args, **kwargs)
+                queue.task_done()
+            except Empty:
+                with self.function_threads[function_name]["lock"]:
+                    if time.time() - self.function_threads[function_name]["last_activity"] >= self.timeout:
+                        self.function_threads[function_name]["thread"] = None
+                        break
+
+    def run_thread_controller(self, target):
+        function_name = target.__name__
+
+        @wraps(target)
+        def wrapper(*args, **kwargs):
+            if function_name not in self.function_threads:
+                self.function_threads[function_name] = {
+                    "queue": Queue(),
+                    "lock": threading.Lock(),
+                    "last_activity": time.time(),
+                    "thread": None,
+                }
+
+            function_info = self.function_threads[function_name]
+
+            with function_info["lock"]:
+                function_info["last_activity"] = time.time()
+                if function_info["thread"] is None or not function_info["thread"].is_alive():
+                    function_info["thread"] = threading.Thread(
+                        target=self._worker,
+                        args=(function_name, function_info["queue"]),
+                        name=f"Thread-Func-{function_name}-Worker",
+                    )
+                    function_info["thread"].start()
+                function_info["queue"].put((target, args, kwargs))
+
+        return wrapper
+
+
+function_thread_controller = FunctionThreadController(timeout=Config.TIMEOUT_THREAD_CONTROLLER)
