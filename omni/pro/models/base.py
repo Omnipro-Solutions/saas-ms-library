@@ -23,6 +23,7 @@ from sqlalchemy import Boolean, DateTime, String, event, inspect
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import Mapped, declared_attr
+from sqlalchemy.orm.session import Session
 
 
 class BaseEmbeddedDocument(EmbeddedDocument):
@@ -313,6 +314,15 @@ class Base:
         session.add(self)
         session.flush()
         return self
+
+    @classmethod
+    def bulk_insert(cls, session: Session, items: list[dict], field_name: str = None, field_value=None):
+        session.bulk_insert_mappings(cls, items)
+        session.flush()
+        if field_name and hasattr(cls, field_name):
+            field_attr = getattr(cls, field_name)
+            return session.query(cls).filter(field_attr == field_value).all()
+        return []
 
     def update(self, session):
         """
