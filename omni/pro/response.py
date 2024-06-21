@@ -215,3 +215,12 @@ class MessageResponse(object):
             message_code=MessageCode.OPERATION_ERROR,
             **kwargs,
         )
+
+    def no_content_response(self, message: str, **kwargs):
+        return self.response(
+            success=True,
+            message=message,
+            status_code=HTTPStatus.NO_CONTENT,
+            message_code=MessageCode.RESOURCE_NOT_FOUND,
+            **kwargs,
+        )
