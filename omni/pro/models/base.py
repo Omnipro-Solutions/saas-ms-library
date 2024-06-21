@@ -324,6 +324,15 @@ class Base:
             return session.query(cls).filter(field_attr == field_value).all()
         return []
 
+    @classmethod
+    def bulk_update(cls, session: Session, items: list[dict], field_name: str = None, field_value=None):
+        session.bulk_update_mappings(cls, items)
+        session.flush()
+        if field_name and hasattr(cls, field_name):
+            field_attr = getattr(cls, field_name)
+            return session.query(cls).filter(field_attr == field_value).all()
+        return []
+
     def update(self, session):
         """
         Flush the changes made to the current instance to the database through the provided session.
