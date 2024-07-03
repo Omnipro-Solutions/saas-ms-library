@@ -106,9 +106,10 @@ class AWSS3Client(AWSClient):
         """
         try:
             binary_content = int(file_content, 2).to_bytes((len(file_content) + 7) // 8, byteorder="big")
-            url = self._client.put_object(
+            self._client.put_object(
                 Bucket=self.bucket_name, Key=object_name, Body=binary_content, ContentType=content_type
             )
+            url = f"https://{self.bucket_name}.s3.amazonaws.com/{object_name}"
             # url = self._client.generate_presigned_url(
             #     "get_object", Params={"Bucket": self.bucket_name, "Key": object_name}
             # )
