@@ -109,9 +109,10 @@ class AWSS3Client(AWSClient):
             self._client.put_object(
                 Bucket=self.bucket_name, Key=object_name, Body=binary_content, ContentType=content_type
             )
-            url = self._client.generate_presigned_url(
-                "get_object", Params={"Bucket": self.bucket_name, "Key": object_name}
-            )
+            url = f"https://{self.bucket_name}.s3.amazonaws.com/{object_name}"
+            # url = self._client.generate_presigned_url(
+            #     "get_object", Params={"Bucket": self.bucket_name, "Key": object_name}
+            # )
             return url
         except (NoCredentialsError, PartialCredentialsError) as e:
             raise e
