@@ -16,6 +16,7 @@ from mongoengine import (
 )
 from omni.pro.airflow.actions import ActionToAirflow
 from omni.pro.config import Config
+from omni.pro.logger import configure_logger
 from omni.pro.util import measure_time
 from omni.pro.database.sqlalchemy import mapped_column
 from omni_pro_grpc.common.base_pb2 import Context as ContextProto
@@ -27,6 +28,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import Mapped, declared_attr
 from sqlalchemy.orm.session import Session
 
+_logger = configure_logger(__name__)
 
 class BaseEmbeddedDocument(EmbeddedDocument):
     meta = {
@@ -139,6 +141,8 @@ class BaseDocument(Document):
     @classmethod
     @measure_time
     def post_save(cls, sender, document, **kwargs):
+        _logger.info(f"MONGO Post Save {document}")
+        _logger.info(f"MONGO PROCESS_WEBHOOK{Config.PROCESS_WEBHOOK}")
         if not Config.PROCESS_WEBHOOK:  # Ignore if the process webhook is disabled
             return
         if document.__is_replic_table__:  # Ignore replic tables
@@ -162,6 +166,8 @@ class BaseDocument(Document):
     @classmethod
     @measure_time
     def post_delete(cls, sender, document, **kwargs):
+        _logger.info(f"MONGO Post Delete {document}")
+        _logger.info(f"MONGO PROCESS_WEBHOOK{Config.PROCESS_WEBHOOK}")
         if not Config.PROCESS_WEBHOOK: # Ignore if the process webhook is disabled
             return
         if document.__is_replic_table__:  # Ignore replic tables
@@ -457,6 +463,8 @@ BaseModel = declarative_base(cls=Base)
 @event.listens_for(BaseModel, "after_insert", propagate=True)
 @measure_time
 def post_save(mapper, connection, target):
+    _logger.info(f"POSTGRES Post Save")
+    _logger.info(f"POSTGRES PROCESS_WEBHOOK{Config.PROCESS_WEBHOOK}")
     if not Config.PROCESS_WEBHOOK:  # Ignore if the process webhook is disabled
         return
     if target.__is_replic_table__:  # Ignore replic tables
@@ -469,6 +477,8 @@ def post_save(mapper, connection, target):
 @event.listens_for(BaseModel, "after_update", propagate=True)
 @measure_time
 def post_update(mapper, connection, target):
+    _logger.info(f"POSTGRES Post Update")
+    _logger.info(f"POSTGRES PROCESS_WEBHOOK{Config.PROCESS_WEBHOOK}")
     if not Config.PROCESS_WEBHOOK:  # Ignore if the process webhook is disabled
         return
     if target.__is_replic_table__:  # Ignore replic tables
@@ -481,6 +491,8 @@ def post_update(mapper, connection, target):
 @event.listens_for(BaseModel, "after_delete", propagate=True)
 @measure_time
 def post_delete(mapper, connection, target):
+    _logger.info(f"POSTGRES Post Delete")
+    _logger.info(f"POSTGRES PROCESS_WEBHOOK{Config.PROCESS_WEBHOOK}")
     if not Config.PROCESS_WEBHOOK:  # Ignore if the process webhook is disabled
         return
     if target.__is_replic_table__:  # Ignore replic tables
