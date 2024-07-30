@@ -30,6 +30,7 @@ from sqlalchemy.orm.session import Session
 
 _logger = configure_logger(__name__)
 
+
 class BaseEmbeddedDocument(EmbeddedDocument):
     meta = {
         "abstract": True,
@@ -141,40 +142,38 @@ class BaseDocument(Document):
     @classmethod
     @measure_time
     def post_save(cls, sender, document, **kwargs):
-        _logger.info(f"MONGO Post Save {document}")
-        _logger.info(f"MONGO PROCESS_WEBHOOK{Config.PROCESS_WEBHOOK}")
-        if not Config.PROCESS_WEBHOOK:  # Ignore if the process webhook is disabled
-            return
-        if document.__is_replic_table__:  # Ignore replic tables
-            return
-        # identify if the object is a new instance or an existing one
-        if kwargs.get("created", False):
-            ActionToAirflow.send_to_airflow(
-                cls,
-                document,
-                action="create",
-                context={"tenant": document.context.tenant, "user": document.context.user},
-            )
-        elif document._changed_fields:
-            ActionToAirflow.send_to_airflow(
-                cls,
-                document,
-                action="update",
-                context={"tenant": document.context.tenant, "user": document.context.user},
-            )
+        _logger.info(f"MONGO PROCESS_WEBHOOK{Config.PROCESS_WEBHOOK}") #TODO: Remove this line
+        if Config.PROCESS_WEBHOOK:  # Ignore if the process webhook is disabled
+            if document.__is_replic_table__:  # Ignore replic tables
+                return
+            # identify if the object is a new instance or an existing one
+            if kwargs.get("created", False):
+                ActionToAirflow.send_to_airflow(
+                    cls,
+                    document,
+                    action="create",
+                    context={"tenant": document.context.tenant, "user": document.context.user},
+                )
+            elif document._changed_fields:
+                ActionToAirflow.send_to_airflow(
+                    cls,
+                    document,
+                    action="update",
+                    context={"tenant": document.context.tenant, "user": document.context.user},
+                )
+        return
 
     @classmethod
     @measure_time
     def post_delete(cls, sender, document, **kwargs):
-        _logger.info(f"MONGO Post Delete {document}")
-        _logger.info(f"MONGO PROCESS_WEBHOOK{Config.PROCESS_WEBHOOK}")
-        if not Config.PROCESS_WEBHOOK: # Ignore if the process webhook is disabled
-            return
-        if document.__is_replic_table__:  # Ignore replic tables
-            return
-        ActionToAirflow.send_to_airflow(
-            cls, document, action="delete", context={"tenant": document.context.tenant, "user": document.context.user}
-        )
+        _logger.info(f"MONGO PROCESS_WEBHOOK{Config.PROCESS_WEBHOOK}") #TODO: Remove this line
+        if Config.PROCESS_WEBHOOK:  # Ignore if the process webhook is disabled
+            if document.__is_replic_table__:  # Ignore replic tables
+                return
+            ActionToAirflow.send_to_airflow(
+                cls, document, action="delete", context={"tenant": document.context.tenant, "user": document.context.user}
+            )
+        return
 
     @classmethod
     def transform_mirror(cls, data: object):
@@ -463,40 +462,37 @@ BaseModel = declarative_base(cls=Base)
 @event.listens_for(BaseModel, "after_insert", propagate=True)
 @measure_time
 def post_save(mapper, connection, target):
-    _logger.info(f"POSTGRES Post Save")
-    _logger.info(f"POSTGRES PROCESS_WEBHOOK{Config.PROCESS_WEBHOOK}")
-    if not Config.PROCESS_WEBHOOK:  # Ignore if the process webhook is disabled
-        return
-    if target.__is_replic_table__:  # Ignore replic tables
-        return
-    ActionToAirflow.send_to_airflow(
-        mapper, target, "create", context={"tenant": target.tenant, "user": target.updated_by}
-    )
+    _logger.info(f"POSTGRES PROCESS_WEBHOOK{Config.PROCESS_WEBHOOK}")  # TODO: Remove this line
+    if Config.PROCESS_WEBHOOK:  # Ignore if the process webhook is disabled
+        if target.__is_replic_table__:  # Ignore replic tables
+            return
+        ActionToAirflow.send_to_airflow(
+            mapper, target, "create", context={"tenant": target.tenant, "user": target.updated_by}
+        )
+    return
 
 
 @event.listens_for(BaseModel, "after_update", propagate=True)
 @measure_time
 def post_update(mapper, connection, target):
-    _logger.info(f"POSTGRES Post Update")
-    _logger.info(f"POSTGRES PROCESS_WEBHOOK{Config.PROCESS_WEBHOOK}")
-    if not Config.PROCESS_WEBHOOK:  # Ignore if the process webhook is disabled
-        return
-    if target.__is_replic_table__:  # Ignore replic tables
-        return
-    ActionToAirflow.send_to_airflow(
-        mapper, target, "update", context={"tenant": target.tenant, "user": target.updated_by}
-    )
+    _logger.info(f"POSTGRES PROCESS_WEBHOOK{Config.PROCESS_WEBHOOK}")  # TODO: Remove this line
+    if Config.PROCESS_WEBHOOK:  # Ignore if the process webhook is disabled
+        if target.__is_replic_table__:  # Ignore replic tables
+            return
+        ActionToAirflow.send_to_airflow(
+            mapper, target, "update", context={"tenant": target.tenant, "user": target.updated_by}
+        )
+    return
 
 
 @event.listens_for(BaseModel, "after_delete", propagate=True)
 @measure_time
 def post_delete(mapper, connection, target):
-    _logger.info(f"POSTGRES Post Delete")
-    _logger.info(f"POSTGRES PROCESS_WEBHOOK{Config.PROCESS_WEBHOOK}")
-    if not Config.PROCESS_WEBHOOK:  # Ignore if the process webhook is disabled
-        return
-    if target.__is_replic_table__:  # Ignore replic tables
-        return
-    ActionToAirflow.send_to_airflow(
-        mapper, target, "delete", context={"tenant": target.tenant, "user": target.updated_by}
-    )
+    _logger.info(f"POSTGRES PROCESS_WEBHOOK{Config.PROCESS_WEBHOOK}")  # TODO: Remove this line
+    if Config.PROCESS_WEBHOOK:  # Ignore if the process webhook is disabled
+        if target.__is_replic_table__:  # Ignore replic tables
+            return
+        ActionToAirflow.send_to_airflow(
+            mapper, target, "delete", context={"tenant": target.tenant, "user": target.updated_by}
+        )
+    return
