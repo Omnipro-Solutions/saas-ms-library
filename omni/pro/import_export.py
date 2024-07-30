@@ -100,7 +100,8 @@ class QueryExport(ImportExportBase):
         foreign_keys = []
         related_fields = ["id", "name"]
         main_table = model.__tablename__
-        main_table_fields = ", ".join([f"{main_table}.{field}" for field in fields])
+        main_table_alias = f"{main_table}_alias"
+        main_table_fields = ", ".join([f"{main_table_alias}.{field}" for field in fields])
         join_clauses = []
         related_table_fields = []
 
@@ -114,11 +115,12 @@ class QueryExport(ImportExportBase):
                             "target_class": str(target_class).lower(),
                         }
                     )
-
         # Create join clauses and related fields for foreign keys
         for fk in foreign_keys:
             related_table = fk["target_class"]
-            join_clauses.append(f'LEFT JOIN "{related_table}" ON {main_table}.{fk["column"]} = {related_table}.id')
+            join_clauses.append(
+                f'LEFT JOIN "{related_table}" ON "{main_table_alias}".{fk["column"]} = "{related_table}".id'
+            )
             for field in related_fields:
                 alias = f"{related_table}_{field}"
                 related_table_fields.append(f"{related_table}.{field} AS {alias}")
@@ -127,10 +129,10 @@ class QueryExport(ImportExportBase):
         sql_query = text(
             f"""
             SELECT {main_table_fields}{","+", ".join(related_table_fields ) if related_table_fields else ""}
-            FROM "{main_table}"
+            FROM "{main_table}" AS {main_table_alias}
             {" ".join(join_clauses)}
-            WHERE {main_table}.tenant = :tenant
-            AND {main_table}.created_at BETWEEN :start_date AND :end_date
+            WHERE {main_table_alias}.tenant = :tenant
+            AND {main_table_alias}.created_at BETWEEN :start_date AND :end_date
             """
         )
 
