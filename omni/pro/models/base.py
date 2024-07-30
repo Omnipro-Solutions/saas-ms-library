@@ -15,6 +15,8 @@ from mongoengine import (
     signals,
 )
 from omni.pro.airflow.actions import ActionToAirflow
+from omni.pro.config import Config
+from omni.pro.util import measure_time
 from omni.pro.database.sqlalchemy import mapped_column
 from omni_pro_grpc.common.base_pb2 import Context as ContextProto
 from omni_pro_grpc.common.base_pb2 import Object as ObjectProto
@@ -135,7 +137,10 @@ class BaseDocument(Document):
         return [cls]
 
     @classmethod
+    @measure_time
     def post_save(cls, sender, document, **kwargs):
+        if not Config.PROCESS_WEBHOOK:  # Ignore if the process webhook is disabled
+            return
         if document.__is_replic_table__:  # Ignore replic tables
             return
         # identify if the object is a new instance or an existing one
@@ -155,7 +160,10 @@ class BaseDocument(Document):
             )
 
     @classmethod
+    @measure_time
     def post_delete(cls, sender, document, **kwargs):
+        if not Config.PROCESS_WEBHOOK: # Ignore if the process webhook is disabled
+            return
         if document.__is_replic_table__:  # Ignore replic tables
             return
         ActionToAirflow.send_to_airflow(
@@ -447,7 +455,10 @@ BaseModel = declarative_base(cls=Base)
 
 # Definir un evento que escuche a todos los modelos que heredan de Base
 @event.listens_for(BaseModel, "after_insert", propagate=True)
+@measure_time
 def post_save(mapper, connection, target):
+    if not Config.PROCESS_WEBHOOK:  # Ignore if the process webhook is disabled
+        return
     if target.__is_replic_table__:  # Ignore replic tables
         return
     ActionToAirflow.send_to_airflow(
@@ -456,7 +467,10 @@ def post_save(mapper, connection, target):
 
 
 @event.listens_for(BaseModel, "after_update", propagate=True)
+@measure_time
 def post_update(mapper, connection, target):
+    if not Config.PROCESS_WEBHOOK:  # Ignore if the process webhook is disabled
+        return
     if target.__is_replic_table__:  # Ignore replic tables
         return
     ActionToAirflow.send_to_airflow(
@@ -465,7 +479,10 @@ def post_update(mapper, connection, target):
 
 
 @event.listens_for(BaseModel, "after_delete", propagate=True)
+@measure_time
 def post_delete(mapper, connection, target):
+    if not Config.PROCESS_WEBHOOK:  # Ignore if the process webhook is disabled
+        return
     if target.__is_replic_table__:  # Ignore replic tables
         return
     ActionToAirflow.send_to_airflow(
