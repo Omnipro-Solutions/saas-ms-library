@@ -11,6 +11,7 @@ from marshmallow.exceptions import ValidationError
 class ContextSchema(Schema):
     tenant = fields.String(required=True)
     user = fields.String(required=True)
+    locale = fields.Dict(required=False)
 
 
 class Context(Schema):
@@ -114,9 +115,7 @@ class ObjectIdField(fields.Field):
         except UnicodeDecodeError as error:
             raise self.make_error("invalid_utf8") from error
         except (ValueError, AttributeError, TypeError) as error:
-            raise ValidationError(
-                "ObjectIds must be a 12-byte input or a 24-character hex string"
-            ) from error
+            raise ValidationError("ObjectIds must be a 12-byte input or a 24-character hex string") from error
 
 
 class MicroServiceValidator(Context, Schema):
