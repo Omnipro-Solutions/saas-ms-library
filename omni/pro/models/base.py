@@ -198,13 +198,33 @@ class BaseDocument(Document):
 
     @classmethod
     def assign_crud_attrs_to_stack(cls, instance, action: str, **kwargs):
+        """
+        Captures and assigns CRUD attributes to the stack for a given instance based on the action performed.
+
+        This method updates the `created_attrs`, `updated_attrs`, or `deleted_attrs` dictionaries based on the
+        specified action (create, update, delete). It tracks the changes made to an instance and stores the
+        modified fields or the instance IDs in the appropriate attribute dictionary.
+
+        Parameters:
+            instance: The instance of the document being acted upon.
+            action (str): The CRUD action performed. It can be "create", "update", or "delete".
+            **kwargs: Additional keyword arguments containing the fields that were modified during an update action.
+
+        Behavior:
+            - For "update" actions:
+                - Identifies the modified fields from the provided `kwargs` and the instance's `_changed_fields`.
+                - Updates the `updated_attrs` dictionary with the modified fields for the instance.
+            - For "create" actions:
+                - Adds the instance ID to the `created_attrs` dictionary.
+            - For "delete" actions:
+                - Adds the instance ID to the `deleted_attrs` dictionary.
+
+
+        """
 
         model_name = cls._collection.name
 
         instance_id = str(instance.id)
-
-        # if hasattr(cls, "context"):
-        #     cls.context = {"tenant": instance.context.tenant, "user": instance.context.user}
 
         if action == "update" and hasattr(cls, "updated_attrs"):
 
@@ -499,6 +519,33 @@ class Base:
         pass
 
     def assign_crud_attrs_to_session(self, mapper, action: str, **kwargs):
+        """
+        Assigns CRUD attributes to the current session based on the action performed on an instance.
+
+        This method updates the `updated_attrs`, `created_attrs`, or `deleted_attrs` dictionaries in the
+        current session based on the specified action (create, update, delete). It tracks the changes made
+        to an instance and stores the modified fields or instance IDs in the appropriate attribute dictionary.
+
+        Parameters:
+            mapper: The SQLAlchemy mapper for the model associated with the instance.
+            action (str): The CRUD action performed. It can be "create", "update", or "delete".
+            **kwargs: Additional keyword arguments containing the fields that were modified during an update action.
+
+        Behavior:
+            - For "update" actions:
+                - Identifies the modified fields using the instance's attribute history.
+                - Updates the `updated_attrs` dictionary in the session with the modified fields for the instance.
+            - For "create" actions:
+                - Adds the instance ID to the `created_attrs` dictionary in the session.
+            - For "delete" actions:
+                - Adds the instance ID to the `deleted_attrs` dictionary in the session.
+
+        Additional Details:
+            - If the session's `context` is not set, it initializes the context with tenant and user information.
+            - Uses SQLAlchemy's `inspect` function to access the instance's state and attribute history.
+
+
+        """
         instance = self
         model_name = mapper.mapped_table.name
         state = inspect(instance)
