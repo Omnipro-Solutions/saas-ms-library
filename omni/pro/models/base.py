@@ -19,6 +19,7 @@ from omni.pro.config import Config
 from omni.pro.logger import configure_logger
 from omni.pro.util import measure_time
 from omni.pro.database.sqlalchemy import mapped_column
+from omni.pro.database.postgres import CustomSession
 from omni_pro_grpc.common.base_pb2 import Context as ContextProto
 from omni_pro_grpc.common.base_pb2 import Object as ObjectProto
 from omni_pro_grpc.common.base_pb2 import ObjectAudit as AuditProto
@@ -132,6 +133,10 @@ class BaseDocument(Document):
         self.audit.updated_at = datetime.utcnow()
         return super().save(*args, **kwargs)
 
+    def update(self, *args, **kwargs):
+        self.assign_crud_attrs_to_stack(self, "update", **kwargs)
+        return super().update(*args, **kwargs)
+
     def to_proto(self, *args, **kwargs):
         raise NotImplementedError
 
@@ -142,12 +147,13 @@ class BaseDocument(Document):
     @classmethod
     @measure_time
     def post_save(cls, sender, document, **kwargs):
-        _logger.info(f"MONGO PROCESS_WEBHOOK{Config.PROCESS_WEBHOOK}") #TODO: Remove this line
+        _logger.info(f"MONGO PROCESS_WEBHOOK{Config.PROCESS_WEBHOOK}")  # TODO: Remove this line
         if Config.PROCESS_WEBHOOK:  # Ignore if the process webhook is disabled
             if document.__is_replic_table__:  # Ignore replic tables
                 return
             # identify if the object is a new instance or an existing one
             if kwargs.get("created", False):
+                cls.assign_crud_attrs_to_stack(document, "create")
                 ActionToAirflow.send_to_airflow(
                     cls,
                     document,
@@ -155,6 +161,7 @@ class BaseDocument(Document):
                     context={"tenant": document.context.tenant, "user": document.context.user},
                 )
             elif document._changed_fields:
+                cls.assign_crud_attrs_to_stack(document, "update")
                 ActionToAirflow.send_to_airflow(
                     cls,
                     document,
@@ -166,12 +173,16 @@ class BaseDocument(Document):
     @classmethod
     @measure_time
     def post_delete(cls, sender, document, **kwargs):
-        _logger.info(f"MONGO PROCESS_WEBHOOK{Config.PROCESS_WEBHOOK}") #TODO: Remove this line
+        _logger.info(f"MONGO PROCESS_WEBHOOK{Config.PROCESS_WEBHOOK}")  # TODO: Remove this line
         if Config.PROCESS_WEBHOOK:  # Ignore if the process webhook is disabled
             if document.__is_replic_table__:  # Ignore replic tables
                 return
+            cls.assign_crud_attrs_to_stack(document, "delete")
             ActionToAirflow.send_to_airflow(
-                cls, document, action="delete", context={"tenant": document.context.tenant, "user": document.context.user}
+                cls,
+                document,
+                action="delete",
+                context={"tenant": document.context.tenant, "user": document.context.user},
             )
         return
 
@@ -184,6 +195,39 @@ class BaseDocument(Document):
 
         """
         pass
+
+    @classmethod
+    def assign_crud_attrs_to_stack(cls, instance, action: str, **kwargs):
+
+        model_name = cls._collection.name
+
+        instance_id = str(instance.id)
+
+        # if hasattr(cls, "context"):
+        #     cls.context = {"tenant": instance.context.tenant, "user": instance.context.user}
+
+        if action == "update" and hasattr(cls, "updated_attrs"):
+
+            modified_fields = set([f"{key}" for key in kwargs.keys()])
+            if hasattr(instance, "_changed_fields"):
+                modified_fields = modified_fields.union(set(f"{key}" for key in instance._changed_fields))
+
+            if modified_fields:
+                if not model_name in cls.updated_attrs:
+                    cls.updated_attrs[model_name] = {}
+                if not instance_id in cls.updated_attrs[model_name]:
+                    cls.updated_attrs[model_name][instance_id] = set()
+                cls.updated_attrs[model_name][instance_id] = (
+                    cls.updated_attrs[model_name][instance_id] | modified_fields
+                )
+        elif action == "create" and hasattr(cls, "created_attrs"):
+            if not model_name in cls.created_attrs:
+                cls.created_attrs[model_name] = []
+            cls.created_attrs[model_name].append(instance_id)
+        elif action == "delete" and hasattr(cls, "deleted_attrs"):
+            if not model_name in cls.deleted_attrs:
+                cls.deleted_attrs[model_name] = []
+            cls.deleted_attrs[model_name].append(instance_id)
 
 
 class BaseAuditEmbeddedDocument(BaseEmbeddedDocument):
@@ -454,6 +498,35 @@ class Base:
         """
         pass
 
+    def assign_crud_attrs_to_session(self, mapper, action: str, **kwargs):
+        instance = self
+        model_name = mapper.mapped_table.name
+        state = inspect(instance)
+        instance_id = instance.id
+
+        session: CustomSession = Session.object_session(instance)
+        if hasattr(session, "context") and not session.context:
+            session.context = {"tenant": instance.tenant, "user": instance.updated_by}
+
+        if action == "update" and hasattr(session, "updated_attrs"):
+            modified_fields = set([f"{attr.key}" for attr in state.attrs if attr.history.has_changes()])
+            if modified_fields:
+                if not model_name in session.updated_attrs:
+                    session.updated_attrs[model_name] = {}
+                if not instance_id in session.updated_attrs[model_name]:
+                    session.updated_attrs[model_name][instance_id] = set()
+                session.updated_attrs[model_name][instance_id] = (
+                    session.updated_attrs[model_name][instance_id] | modified_fields
+                )
+        elif action == "create" and hasattr(session, "created_attrs"):
+            if not model_name in session.created_attrs:
+                session.created_attrs[model_name] = []
+            session.created_attrs[model_name].append(instance_id)
+        elif action == "delete" and hasattr(session, "deleted_attrs"):
+            if not model_name in session.deleted_attrs:
+                session.deleted_attrs[model_name] = []
+            session.deleted_attrs[model_name].append(instance_id)
+
 
 BaseModel = declarative_base(cls=Base)
 
@@ -466,6 +539,7 @@ def post_save(mapper, connection, target):
     if Config.PROCESS_WEBHOOK:  # Ignore if the process webhook is disabled
         if target.__is_replic_table__:  # Ignore replic tables
             return
+        target.assign_crud_attrs_to_session(mapper, "create")
         ActionToAirflow.send_to_airflow(
             mapper, target, "create", context={"tenant": target.tenant, "user": target.updated_by}
         )
@@ -479,6 +553,7 @@ def post_update(mapper, connection, target):
     if Config.PROCESS_WEBHOOK:  # Ignore if the process webhook is disabled
         if target.__is_replic_table__:  # Ignore replic tables
             return
+        target.assign_crud_attrs_to_session(mapper, "update")
         ActionToAirflow.send_to_airflow(
             mapper, target, "update", context={"tenant": target.tenant, "user": target.updated_by}
         )
@@ -492,6 +567,7 @@ def post_delete(mapper, connection, target):
     if Config.PROCESS_WEBHOOK:  # Ignore if the process webhook is disabled
         if target.__is_replic_table__:  # Ignore replic tables
             return
+        target.assign_crud_attrs_to_session(mapper, "delete")
         ActionToAirflow.send_to_airflow(
             mapper, target, "delete", context={"tenant": target.tenant, "user": target.updated_by}
         )
