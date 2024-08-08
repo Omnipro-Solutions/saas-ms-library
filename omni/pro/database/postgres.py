@@ -1,32 +1,100 @@
 import ast
 import operator
 from datetime import datetime
-
+from typing import Dict, List, Set
 from omni_pro_grpc.common import base_pb2
 from sqlalchemy import and_, asc, create_engine, desc, not_, or_
-from sqlalchemy.orm import aliased, scoped_session, sessionmaker
+from sqlalchemy.orm import aliased, scoped_session, sessionmaker, Session
 from sqlalchemy.sql import cast, operators
 from sqlalchemy.sql.sqltypes import DateTime, Enum, String
+from omni.pro.webhook.webhook_handler import WebhookHandler
+
+
+class CustomSession(Session):
+    def __init__(self, *args, **kwargs):
+        """
+        Constructor to initialize the class attributes.
+
+        Args:
+            *args: Positional arguments.
+            **kwargs: Keyword arguments.
+
+        Attributes:
+            created_attrs (Dict[str, List[int]]): Dictionary to store created attributes.
+                - The primary key is the model name (str).
+                - The value is a list of instance IDs (int) for that model.
+            updated_attrs (Dict[str, Dict[str, Set[str]]]): Dictionary to store updated attributes.
+                - The primary key is the model name (str).
+                - The value is another dictionary where:
+                    - The key is the instance ID (str).
+                    - The value is a set of fields (str) that were updated for that instance.
+            deleted_attrs (Dict[str, List[int]]): Dictionary to store deleted attributes.
+                - The primary key is the model name (str).
+                - The value is a list of instance IDs (int) that were deleted for that model.
+            ms_context (Dict[str, any]): Dictionary to store the attributes related to the microservices connection.
+                - This includes any relevant configuration or state information for connecting to or interacting with microservices.
+        """
+        super().__init__(*args, **kwargs)
+        self.created_attrs: Dict[str, List[int]] = {}
+        self.updated_attrs: Dict[str, Dict[str, Set[str]]] = {}
+        self.deleted_attrs: Dict[str, List[int]] = {}
+        self.context: Dict[str, any] = {}
 
 
 class SessionManager:
     def __init__(self, base_url):
         self.base_url = base_url
         self.engine = create_engine(self.base_url)
-        self.session_factory = sessionmaker(bind=self.engine)
+        self.session_factory = sessionmaker(bind=self.engine, class_=CustomSession)
         self.Session = scoped_session(self.session_factory)
 
     def __enter__(self):
         # Esto dará una sesión específica para el hilo/contexto actual
-        return self.Session()
+        session = self.Session()
+        return session
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         # Cuando el contexto se cierra, la sesión se cierra y elimina.
+
         if exc_tb is None:
             self.Session.commit()
+            self._pull_crud_attrs()
         else:
             self.Session.rollback()
         self.Session.remove()
+
+    def _pull_crud_attrs(self):
+        """
+        Extracts CRUD attributes from the current session and initiates a new thread to handle webhooks.
+
+        This method retrieves the `context` and CRUD attributes (created, updated, deleted) from the
+        `CustomSession` instance. It then calls `WebhookHandler.start_thread` to process these attributes
+        in a separate thread.
+
+        Attributes Extracted:
+            - `context`: A dictionary containing the session context, if it exists.
+            - `created_attrs`: A dictionary of attributes for created records, if it exists.
+            - `updated_attrs`: A dictionary of attributes for updated records, if it exists.
+            - `deleted_attrs`: A dictionary of attributes for deleted records, if it exists.
+
+        Calls:
+            - `WebhookHandler.start_thread(crud_attrs, context)`: Initiates a new thread to filter events
+              and webhooks based on the extracted CRUD attributes and context.
+
+        """
+        session: CustomSession = self.Session()
+        crud_attrs: dict = {}
+        context: dict = {}
+        if hasattr(session, "context"):
+            context = session.context
+            context["type_db"] = "postgres"
+        if hasattr(session, "created_attrs"):
+            crud_attrs["created_attrs"] = session.created_attrs
+        if hasattr(session, "updated_attrs"):
+            crud_attrs["updated_attrs"] = session.updated_attrs
+        if hasattr(session, "deleted_attrs"):
+            crud_attrs["deleted_attrs"] = session.deleted_attrs
+        WebhookHandler.start_thread(crud_attrs=crud_attrs, context=context)
 
 
 class PostgresDatabaseManager(SessionManager):
