@@ -134,7 +134,7 @@ class BaseDocument(Document):
         return super().save(*args, **kwargs)
 
     def update(self, *args, **kwargs):
-        self.assign_crud_attrs_to_stack(self, "update", **kwargs)
+        self.assign_crud_attrs_to_stack("update", **kwargs)
         return super().update(*args, **kwargs)
 
     def to_proto(self, *args, **kwargs):
@@ -153,7 +153,7 @@ class BaseDocument(Document):
                 return
             # identify if the object is a new instance or an existing one
             if kwargs.get("created", False):
-                cls.assign_crud_attrs_to_stack(document, "create")
+                document.assign_crud_attrs_to_stack("create")
                 ActionToAirflow.send_to_airflow(
                     cls,
                     document,
@@ -161,7 +161,7 @@ class BaseDocument(Document):
                     context={"tenant": document.context.tenant, "user": document.context.user},
                 )
             elif document._changed_fields:
-                cls.assign_crud_attrs_to_stack(document, "update")
+                document.assign_crud_attrs_to_stack("update")
                 ActionToAirflow.send_to_airflow(
                     cls,
                     document,
@@ -177,7 +177,7 @@ class BaseDocument(Document):
         if Config.PROCESS_WEBHOOK:  # Ignore if the process webhook is disabled
             if document.__is_replic_table__:  # Ignore replic tables
                 return
-            cls.assign_crud_attrs_to_stack(document, "delete")
+            document.assign_crud_attrs_to_stack("delete")
             ActionToAirflow.send_to_airflow(
                 cls,
                 document,
@@ -196,8 +196,7 @@ class BaseDocument(Document):
         """
         pass
 
-    @classmethod
-    def assign_crud_attrs_to_stack(cls, instance, action: str, **kwargs):
+    def assign_crud_attrs_to_stack(self, action: str, **kwargs):
         """
         Captures and assigns CRUD attributes to the stack for a given instance based on the action performed.
 
@@ -222,32 +221,32 @@ class BaseDocument(Document):
 
         """
 
-        model_name = cls._collection.name
-
+        model_name = self._collection.name
+        instance = self
         instance_id = str(instance.id)
 
-        if action == "update" and hasattr(cls, "updated_attrs"):
+        if action == "update" and hasattr(instance, "updated_attrs"):
 
             modified_fields = set([f"{key}" for key in kwargs.keys()])
             if hasattr(instance, "_changed_fields"):
                 modified_fields = modified_fields.union(set(f"{key}" for key in instance._changed_fields))
 
             if modified_fields:
-                if not model_name in cls.updated_attrs:
-                    cls.updated_attrs[model_name] = {}
-                if not instance_id in cls.updated_attrs[model_name]:
-                    cls.updated_attrs[model_name][instance_id] = set()
-                cls.updated_attrs[model_name][instance_id] = (
-                    cls.updated_attrs[model_name][instance_id] | modified_fields
+                if not model_name in instance.updated_attrs:
+                    instance.updated_attrs[model_name] = {}
+                if not instance_id in instance.updated_attrs[model_name]:
+                    instance.updated_attrs[model_name][instance_id] = set()
+                instance.updated_attrs[model_name][instance_id] = (
+                    instance.updated_attrs[model_name][instance_id] | modified_fields
                 )
-        elif action == "create" and hasattr(cls, "created_attrs"):
-            if not model_name in cls.created_attrs:
-                cls.created_attrs[model_name] = []
-            cls.created_attrs[model_name].append(instance_id)
-        elif action == "delete" and hasattr(cls, "deleted_attrs"):
-            if not model_name in cls.deleted_attrs:
-                cls.deleted_attrs[model_name] = []
-            cls.deleted_attrs[model_name].append(instance_id)
+        elif action == "create" and hasattr(instance, "created_attrs"):
+            if not model_name in instance.created_attrs:
+                instance.created_attrs[model_name] = []
+            instance.created_attrs[model_name].append(instance_id)
+        elif action == "delete" and hasattr(instance, "deleted_attrs"):
+            if not model_name in instance.deleted_attrs:
+                instance.deleted_attrs[model_name] = []
+            instance.deleted_attrs[model_name].append(instance_id)
 
 
 class BaseAuditEmbeddedDocument(BaseEmbeddedDocument):
@@ -518,7 +517,7 @@ class Base:
         """
         pass
 
-    def assign_crud_attrs_to_session(self, mapper, action: str, **kwargs):
+    def assign_crud_attrs_to_session(self, action: str):
         """
         Assigns CRUD attributes to the current session based on the action performed on an instance.
 
@@ -527,7 +526,7 @@ class Base:
         to an instance and stores the modified fields or instance IDs in the appropriate attribute dictionary.
 
         Parameters:
-            mapper: The SQLAlchemy mapper for the model associated with the instance.
+
             action (str): The CRUD action performed. It can be "create", "update", or "delete".
             **kwargs: Additional keyword arguments containing the fields that were modified during an update action.
 
@@ -546,6 +545,7 @@ class Base:
 
 
         """
+        mapper = inspect(self).mapper
         instance = self
         model_name = mapper.mapped_table.name
         state = inspect(instance)
@@ -586,7 +586,7 @@ def post_save(mapper, connection, target):
     if Config.PROCESS_WEBHOOK:  # Ignore if the process webhook is disabled
         if target.__is_replic_table__:  # Ignore replic tables
             return
-        target.assign_crud_attrs_to_session(mapper, "create")
+        target.assign_crud_attrs_to_session("create")
         ActionToAirflow.send_to_airflow(
             mapper, target, "create", context={"tenant": target.tenant, "user": target.updated_by}
         )
@@ -600,7 +600,7 @@ def post_update(mapper, connection, target):
     if Config.PROCESS_WEBHOOK:  # Ignore if the process webhook is disabled
         if target.__is_replic_table__:  # Ignore replic tables
             return
-        target.assign_crud_attrs_to_session(mapper, "update")
+        target.assign_crud_attrs_to_session("update")
         ActionToAirflow.send_to_airflow(
             mapper, target, "update", context={"tenant": target.tenant, "user": target.updated_by}
         )
@@ -614,7 +614,7 @@ def post_delete(mapper, connection, target):
     if Config.PROCESS_WEBHOOK:  # Ignore if the process webhook is disabled
         if target.__is_replic_table__:  # Ignore replic tables
             return
-        target.assign_crud_attrs_to_session(mapper, "delete")
+        target.assign_crud_attrs_to_session("delete")
         ActionToAirflow.send_to_airflow(
             mapper, target, "delete", context={"tenant": target.tenant, "user": target.updated_by}
         )

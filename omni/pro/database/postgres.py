@@ -82,18 +82,21 @@ class SessionManager:
               and webhooks based on the extracted CRUD attributes and context.
 
         """
+
         session: CustomSession = self.Session()
         crud_attrs: dict = {}
         context: dict = {}
         if hasattr(session, "context"):
             context = session.context
-            context["type_db"] = "postgres"
+
         if hasattr(session, "created_attrs"):
             crud_attrs["created_attrs"] = session.created_attrs
         if hasattr(session, "updated_attrs"):
             crud_attrs["updated_attrs"] = session.updated_attrs
         if hasattr(session, "deleted_attrs"):
             crud_attrs["deleted_attrs"] = session.deleted_attrs
+
+        context["type_db"] = "sql"
         WebhookHandler.start_thread(crud_attrs=crud_attrs, context=context)
 
 
