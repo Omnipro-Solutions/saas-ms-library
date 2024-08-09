@@ -3,6 +3,7 @@ from itertools import groupby
 from pathlib import Path
 
 import newrelic.agent
+from bson import ObjectId
 from marshmallow import ValidationError
 from omni.pro.database import DBUtil
 from omni.pro.decorators import resources_decorator
@@ -18,6 +19,7 @@ from omni_pro_base.util import nested
 from omni_pro_grpc.grpc_function import EventRPCFucntion, MethodRPCFunction, ModelRPCFucntion, WebhookRPCFucntion
 from omni_pro_grpc.util import MessageToDict, to_list_value
 from omni_pro_grpc.v1.utilities import mirror_model_pb2, mirror_model_pb2_grpc
+from pymongo import DeleteOne, InsertOne, UpdateOne
 from sqlalchemy import inspect
 from sqlalchemy.exc import IntegrityError, OperationalError
 
@@ -137,6 +139,33 @@ class MirrorModelSQL(MirrorModelBase):
             self.model, self.context.pg_manager.Session, **data["model_data"] | audit
         )
 
+    def multi_create_mirror_model(self, items: list):
+        """
+        Creates a new record in the mirror model using the provided data.
+
+        Args:
+            model (str): The name of the mirror model.
+            items (list): The data to be used for creating the new record.
+
+        Returns:
+            object: The newly created record.
+
+        """
+        for data in items:
+            mapper = inspect(self.model)
+            filters = {}
+            for column in mapper.columns:
+                if column.unique and hasattr(column, "field_aliasing") and column.name in data["model_data"]:
+                    filters[column.name] = data["model_data"][column.name]
+            if filters and (
+                mdl := self.context.pg_manager.retrieve_record(self.model, self.context.pg_manager.Session, filters)
+            ):
+                continue
+            self.model.transform_mirror(data["model_data"])
+            audit = {"tenant": nested(data, "context.tenant"), "updated_by": nested(data, "context.user")}
+
+        return self.model.bulk_insert(self.context.pg_manager.Session, items)
+
     def update_mirror_model(self, data):
         """
         Updates the mirror model in the SQL database.
@@ -159,6 +188,29 @@ class MirrorModelSQL(MirrorModelBase):
         return self.context.pg_manager.update_record(
             self.model, self.context.pg_manager.Session, nested(data, "model_data.id"), data["model_data"] | audit
         )
+
+    def multi_update_mirror_model(self, items: list):
+        """
+        Updates the mirror model in the SQL database.
+
+        Args:
+            model (str): The name of the model to update.
+            items (list): The data to update the model with.
+
+        Returns:
+            bool: True if the update was successful, False otherwise.
+        """
+        for data in items:
+            mdl = self.context.pg_manager.retrieve_record_by_id(
+                self.model, self.context.pg_manager.Session, data["model_data"]["id"] or 0
+            )
+            if not mdl:
+                data["model_data"].pop("id")
+                return self.create_mirror_model(data)
+            self.model.transform_mirror(data["model_data"])
+            audit = {"tenant": nested(data, "context.tenant"), "updated_by": nested(data, "context.user")}
+
+        return self.model.bulk_update(self.context.pg_manager.Session, items)
 
     def read_mirror_model(self, data):
         """
@@ -222,6 +274,38 @@ class MirrorModelNoSQL(MirrorModelBase):
         data["model_data"]["context"] = data["context"]
         return self.context.db_manager.create_document(None, self.model, **data["model_data"])
 
+    def multi_create_mirror_model(self, items: list):
+        """
+        Creates a mirror model using NO_SQL.
+
+        Args:
+            model (str): The model name.
+            items (list): The data to be used for creating the mirror model.
+
+        Returns:
+            object: The created mirror model.
+
+        """
+        bulk_operations = []
+        for data in items:
+            filters = {}
+            for field_key, field in self.model._fields.items():
+                if field.unique and hasattr(field, "field_aliasing") and field.db_field in data["model_data"]:
+                    filters[field_key] = data["model_data"][field_key]
+            if filters and (
+                doc := self.context.db_manager.get_document(None, data["context"]["tenant"], self.model, **filters)
+            ):
+                continue
+            self.model.transform_mirror(data["model_data"])
+            data["model_data"]["context"] = data["context"]
+
+            bulk_operations.append(InsertOne(data["model_data"]))
+
+        if bulk_operations:
+            result = self.model._get_collection().bulk_write(bulk_operations, ordered=False)
+            return result
+        return None
+
     def update_mirror_model(self, data):
         """
         Update the mirror model using NO_SQL.
@@ -243,6 +327,34 @@ class MirrorModelNoSQL(MirrorModelBase):
         logger.info(f"Updating mirror model {self.model} with data {data['model_data']}")
         self.model.transform_mirror(data["model_data"])
         return self.context.db_manager.update_document(None, self.model, **data["model_data"])
+
+    def multi_update_mirror_model(self, items: list):
+        """
+        Update the mirror model using NO_SQL.
+
+        Args:
+            model (str): The name of the model.
+            items (list): The data to update the model with.
+
+        Returns:
+            bool: True if the update was successful, False otherwise.
+        """
+        bulk_operations = []
+        for data in items:
+            data["model_data"]["context"] = data["context"]
+            doc = self.context.db_manager.get_document(
+                None, data["context"]["tenant"], self.model, id=data["model_data"]["id"]
+            )
+            if not doc:
+                data["model_data"].pop("id")
+                return self.create_mirror_model(data)
+            logger.info(f"Updating mirror model {self.model} with data {data['model_data']}")
+            self.model.transform_mirror(data["model_data"])
+            bulk_operations.append(UpdateOne({"_id": ObjectId(data["model_data"]["id"])}, {"$set": data["model_data"]}))
+
+        if bulk_operations:
+            result = self.model._get_collection().bulk_write(bulk_operations, ordered=False)
+            return result
 
     def read_mirror_model(self, tenant, data):
         """
@@ -270,6 +382,26 @@ class MirrorModelNoSQL(MirrorModelBase):
             bool: True if the delete was successful, False otherwise.
         """
         return self.context.db_manager.delete_document(None, self.model, **data["model_data"])
+
+    def multi_delete_mirror_model(self, items: list):
+        """
+        Deletes the mirror model without using SQL.
+
+        Args:
+            model (str): The name of the model.
+            data (dict): The data to delete the model with.
+
+        Returns:
+            bool: True if the delete was successful, False otherwise.
+        """
+        bulk_operations = []
+        for data in items:
+            bulk_operations.append(DeleteOne({"_id": ObjectId(data["model_data"]["id"])}))
+
+        if bulk_operations:
+            result = self.model._get_collection().bulk_write(bulk_operations, ordered=False)
+            return result
+        return None
 
 
 def mirror_factory(context, model_path: str):
