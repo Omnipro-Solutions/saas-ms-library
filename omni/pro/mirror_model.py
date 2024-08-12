@@ -162,9 +162,10 @@ class MirrorModelSQL(MirrorModelBase):
             ):
                 continue
             self.model.transform_mirror(data["model_data"])
-            audit = {"tenant": nested(data, "context.tenant"), "updated_by": nested(data, "context.user")}
 
-        return self.model.bulk_insert(self.context.pg_manager.Session, items)
+        return self.model.bulk_insert(
+            session=self.context.pg_manager.Session, items=[data["model_data"] for data in items]
+        )
 
     def update_mirror_model(self, data):
         """
@@ -208,9 +209,8 @@ class MirrorModelSQL(MirrorModelBase):
                 data["model_data"].pop("id")
                 return self.create_mirror_model(data)
             self.model.transform_mirror(data["model_data"])
-            audit = {"tenant": nested(data, "context.tenant"), "updated_by": nested(data, "context.user")}
 
-        return self.model.bulk_update(self.context.pg_manager.Session, items)
+        return self.model.bulk_update(self.context.pg_manager.Session, items=[data["model_data"] for data in items])
 
     def read_mirror_model(self, data):
         """
