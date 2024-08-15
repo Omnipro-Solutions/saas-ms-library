@@ -155,17 +155,15 @@ class MirrorModelSQL(MirrorModelBase):
             mapper = inspect(self.model)
             filters = {}
             for column in mapper.columns:
-                if column.unique and hasattr(column, "field_aliasing") and column.name in data["model_data"]:
-                    filters[column.name] = data["model_data"][column.name]
+                if column.unique and hasattr(column, "field_aliasing") and column.name in data:
+                    filters[column.name] = data[column.name]
             if filters and (
                 mdl := self.context.pg_manager.retrieve_record(self.model, self.context.pg_manager.Session, filters)
             ):
                 continue
-            self.model.transform_mirror(data["model_data"])
+            self.model.transform_mirror(data)
 
-        return self.model.bulk_insert(
-            session=self.context.pg_manager.Session, items=[data["model_data"] for data in items]
-        )
+        return self.model.bulk_insert(session=self.context.pg_manager.Session, items=[data for data in items])
 
     def update_mirror_model(self, data):
         """
@@ -203,14 +201,14 @@ class MirrorModelSQL(MirrorModelBase):
         """
         for data in items:
             mdl = self.context.pg_manager.retrieve_record_by_id(
-                self.model, self.context.pg_manager.Session, data["model_data"]["id"] or 0
+                self.model, self.context.pg_manager.Session, data["id"] or 0
             )
             if not mdl:
-                data["model_data"].pop("id")
+                data.pop("id")
                 return self.create_mirror_model(data)
-            self.model.transform_mirror(data["model_data"])
+            self.model.transform_mirror(data)
 
-        return self.model.bulk_update(self.context.pg_manager.Session, items=[data["model_data"] for data in items])
+        return self.model.bulk_update(self.context.pg_manager.Session, items=[data for data in items])
 
     def read_mirror_model(self, data):
         """
@@ -290,16 +288,15 @@ class MirrorModelNoSQL(MirrorModelBase):
         for data in items:
             filters = {}
             for field_key, field in self.model._fields.items():
-                if field.unique and hasattr(field, "field_aliasing") and field.db_field in data["model_data"]:
-                    filters[field_key] = data["model_data"][field_key]
+                if field.unique and hasattr(field, "field_aliasing") and field.db_field in data:
+                    filters[field_key] = data[field_key]
             if filters and (
                 doc := self.context.db_manager.get_document(None, data["context"]["tenant"], self.model, **filters)
             ):
                 continue
-            self.model.transform_mirror(data["model_data"])
-            data["model_data"]["context"] = data["context"]
+            self.model.transform_mirror(data)
 
-            bulk_operations.append(InsertOne(data["model_data"]))
+            bulk_operations.append(InsertOne(data))
 
         if bulk_operations:
             result = self.model._get_collection().bulk_write(bulk_operations, ordered=False)
@@ -341,16 +338,13 @@ class MirrorModelNoSQL(MirrorModelBase):
         """
         bulk_operations = []
         for data in items:
-            data["model_data"]["context"] = data["context"]
-            doc = self.context.db_manager.get_document(
-                None, data["context"]["tenant"], self.model, id=data["model_data"]["id"]
-            )
+            doc = self.context.db_manager.get_document(None, data["context"]["tenant"], self.model, id=data["id"])
             if not doc:
-                data["model_data"].pop("id")
+                data.pop("id")
                 return self.create_mirror_model(data)
-            logger.info(f"Updating mirror model {self.model} with data {data['model_data']}")
-            self.model.transform_mirror(data["model_data"])
-            bulk_operations.append(UpdateOne({"_id": ObjectId(data["model_data"]["id"])}, {"$set": data["model_data"]}))
+            logger.info(f"Updating mirror model {self.model} with data {data}")
+            self.model.transform_mirror(data)
+            bulk_operations.append(UpdateOne({"_id": ObjectId(data["id"])}, {"$set": data}))
 
         if bulk_operations:
             result = self.model._get_collection().bulk_write(bulk_operations, ordered=False)
@@ -396,7 +390,7 @@ class MirrorModelNoSQL(MirrorModelBase):
         """
         bulk_operations = []
         for data in items:
-            bulk_operations.append(DeleteOne({"_id": ObjectId(data["model_data"]["id"])}))
+            bulk_operations.append(DeleteOne({"_id": ObjectId(data["id"])}))
 
         if bulk_operations:
             result = self.model._get_collection().bulk_write(bulk_operations, ordered=False)
