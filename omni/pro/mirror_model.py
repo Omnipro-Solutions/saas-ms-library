@@ -199,16 +199,22 @@ class MirrorModelSQL(MirrorModelBase):
         Returns:
             bool: True if the update was successful, False otherwise.
         """
+        items_create = []
         for data in items:
             mdl = self.context.pg_manager.retrieve_record_by_id(
                 self.model, self.context.pg_manager.Session, data["id"] or 0
             )
             if not mdl:
                 data.pop("id")
-                return self.create_mirror_model(data)
+                items_create.append(data)
+                continue
             self.model.transform_mirror(data)
 
-        return self.model.bulk_update(self.context.pg_manager.Session, items=[data for data in items])
+        if items_create:
+            res = self.multi_create_mirror_model(items_create)
+
+        res = self.model.bulk_update(self.context.pg_manager.Session, items=[data for data in items])
+        return res
 
     def read_mirror_model(self, data):
         """
@@ -337,18 +343,22 @@ class MirrorModelNoSQL(MirrorModelBase):
             bool: True if the update was successful, False otherwise.
         """
         bulk_operations = []
+        items_create = []
         for data in items:
             doc = self.context.db_manager.get_document(None, data["context"]["tenant"], self.model, id=data["id"])
             if not doc:
                 data.pop("id")
-                return self.create_mirror_model(data)
+                items_create.append(data)
+                continue
             logger.info(f"Updating mirror model {self.model} with data {data}")
             self.model.transform_mirror(data)
             bulk_operations.append(UpdateOne({"_id": ObjectId(data["id"])}, {"$set": data}))
 
         if bulk_operations:
             result = self.model._get_collection().bulk_write(bulk_operations, ordered=False)
-            return result
+        if items_create:
+            result = self.multi_create_mirror_model(items_create)
+        return result
 
     def read_mirror_model(self, tenant, data):
         """
