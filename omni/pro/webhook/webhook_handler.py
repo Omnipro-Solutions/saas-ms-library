@@ -1,7 +1,8 @@
 import threading
 from typing import Dict, List, Set, Type, Any
 import time
-
+from datetime import datetime
+from omni_pro_base.util import nested
 from google.protobuf import json_format
 from omni.pro.logger import configure_logger
 from omni_pro_grpc.grpc_function import EventRPCFucntion, WebhookRPCFucntion
@@ -23,6 +24,7 @@ class WebhookHandler:
         self.type_db = context.pop("type_db")
         self.context = context
         self.tenant = context.get("tenant")
+        self.user = context.get("user")
         self.rpc_event = EventRPCFucntion(context=context, cache=True)
         self.rpc_webhook = WebhookRPCFucntion(context=context, cache=True)
         self.rpc_model = ModelRPCFucntion(context=context, cache=True)
@@ -33,8 +35,12 @@ class WebhookHandler:
         self.redis_manager = RedisManager(
             host=Config.REDIS_HOST, port=Config.REDIS_PORT, db=Config.REDIS_DB, redis_ssl=Config.REDIS_SSL
         )
+        self.event_by_code: Dict[str, str] = {}
+        self.webhooks_by_event_id: Dict[str, list] = {}
+        self.instances_by_model_name_and_id: Dict[str, Dict[Any, object]] = {}
         self.session = None
         self.model_mirror_by_code: Dict[str, object] = {}
+        self.paginated_limit = 50000
 
     @classmethod
     def start_thread(cls, crud_attrs: dict, context: dict):
@@ -63,25 +69,31 @@ class WebhookHandler:
         # Lógica para filtrar eventos y webhooks
         # Aquí enviarías los eventos filtrados a microservicios internos y Airflow
         time.sleep(0.2)
-        print(f"\n===>>>>> ****** \n{self.created_attrs}\n{self.updated_attrs}\n{self.deleted_attrs}")
-        event_by_code: Dict[str, str] = self._get_event_by_code()
-        if not event_by_code:
+        # print(f"\n===>>>>> ****** \n{self.created_attrs}\n{self.updated_attrs}\n{self.deleted_attrs}")
+        self._set_event_by_code()
+        if not self.event_by_code:
             print("sin eventos")
             return
-        webhooks_by_event_id: Dict[str, list] = self._get_webhooks_by_event_id()
-        if not webhooks_by_event_id:
+        self._set_webhooks_by_event_id()
+        if not self.webhooks_by_event_id:
             print("sin webhooks")
             return
 
-        instances_by_model_name_and_id = self._get_instances_by_model_name_and_id()
-        for model_name, model_ids in self.created_attrs.items():
-            code = f"{model_name}_create"
-            event: dict = event_by_code.get(code)
+        self._execute_webhooks_by_operation(self.created_attrs, "create")
+        self._execute_webhooks_by_operation(self.updated_attrs, "update")
+        self._execute_webhooks_by_operation(self.deleted_attrs, "delete")
+
+    def _execute_webhooks_by_operation(self, operation_attrs: dict, operation: str):
+        for model_name, model_ids in operation_attrs.items():
+            code = f"{model_name}_{operation}"
+            event: dict = self.event_by_code.get(code)
             if event:
                 event_operation: str = event.operation
-                webhooks: List[dict] = webhooks_by_event_id.get(event.id, [])
+                webhooks: List[dict] = self.webhooks_by_event_id.get(event.id, [])
                 if webhooks:
-                    instances_in_model_name = instances_by_model_name_and_id.get(model_name, {})
+                    if not self.instances_by_model_name_and_id:
+                        self._set_instances_by_model_name_and_id()
+                    instances_in_model_name = self.instances_by_model_name_and_id.get(model_name, {})
                     model_ids_set = set(model_ids)
                     instances: List[object] = [
                         instance for id, instance in instances_in_model_name.items() if id in model_ids_set
@@ -96,85 +108,153 @@ class WebhookHandler:
                             # if event_operation == "update" and not modified_fields & set(webhook.trigger_fields):
                             #     continue
                             if webhook.type_webhook == "internal":
-                                filter_instances_attrs: list[dict] = [
+                                records: list[dict] = [
                                     item
                                     for item in instances_attrs
                                     if not webhook.python_code or eval_condition(item, webhook.python_code)
                                 ]
-                                self._send_to_internal_ms(event, webhook, filter_instances_attrs)
+                                self._send_to_internal_ms(event, webhook, records)
                             else:
                                 instance_ids = [
                                     item.get("id")
                                     for item in instances_attrs
                                     if not webhook.python_code or eval_condition(item, webhook.python_code)
                                 ]
-                                params = {
-                                    "instance_ids": instance_ids,
-                                    "action_code": code,
-                                    "context": self.context,
-                                    "webhook": MessageToDict(webhook),
-                                }
-                                AirflowClientBase(self.tenant).run_dag(
-                                    dag_id=webhook.get("dag_id") or "Signal_Event",
-                                    params=params,
-                                )
+                                if instance_ids:
+                                    params = {
+                                        "instance_ids": instance_ids,
+                                        "action_code": code,
+                                        "context": self.context,
+                                        "webhook": MessageToDict(webhook),
+                                    }
+                                    AirflowClientBase(self.tenant).run_dag(
+                                        dag_id=webhook.get("dag_id") or "Signal_Event",
+                                        params=params,
+                                    )
 
-    def _send_to_internal_ms(self, event, webhook, instances_attrs: list[dict]):
+    def _send_to_internal_ms(self, event, webhook, records: list[dict]):
         self._set_model_mirror_by_code()
         if webhook.method_grpc.class_name == "MirrorModelServiceStub":
-            # params = {"filter": {"filter": f"['and', ('code','=','{event.model.code}'), ('is_replic','=', true)]"}}
-            # response, success, _e = self.rpc_model.read_model(params)
-            # response_attrs = json_format.MessageToDict(
-            #     response, preserving_proto_field_name=True, including_default_value_fields=True
-            # )
-            # replic_models = []
-            model_mirror = self.model_mirror_by_code.get(event.model.code)
+            model_code = event.model.code
+            model_mirror = self.model_mirror_by_code.get(model_code)
             if model_mirror:
-
-                self._read_instance_in_model_mirror(model_mirror, instances_attrs[0])
-                client: GRPClient = GRPClient(model.microservice)
-                response, success = client.call_rpc_fuction(event)
-                l = 0
+                records = [records[i : i + self.paginated_limit] for i in range(0, len(records), self.paginated_limit)]
+                for sub_records in records:
+                    model_mirror_items = self._get_model_mirror_items(model_mirror, sub_records)
+                    # response = rpc_func.updated_model(
+                    #     {
+                    #         "model_path": model_mirror.class_name,
+                    #         "model_data": model_data,
+                    #         "context": self.context,
+                    #     }
+                    # )
 
             else:
-                logger.warning(f"Read mirror models resutl: {str(response.response_standard)}")
+                logger.warning(f"Model mirror with code = {model_code} does not exist")
 
-        self.event.update(
-            dict(
-                rpc_method="UpdateMirrorModel",
-                request_class="CreateOrUpdateMirrorModelRequest",
-                params={"context": self.context} | params,
-            )
-        )
-        response, success, event = self.client.call_rpc_fuction(self.event) + (self.event,)
-        return json_format.MessageToDict(
-            response, preserving_proto_field_name=True, including_default_value_fields=True
-        )
+        # self.event.update(
+        #     dict(
+        #         rpc_method="UpdateMirrorModel",
+        #         request_class="CreateOrUpdateMirrorModelRequest",
+        #         params={"context": self.context} | params,
+        #     )
+        # )
+        # response, success, event = self.client.call_rpc_fuction(self.event) + (self.event,)
+        # return json_format.MessageToDict(
+        #     response, preserving_proto_field_name=True, including_default_value_fields=True
+        # )
 
-    def _read_instance_in_model_mirror(self, model_mirror, record):
+    @measure_time
+    def _get_model_mirror_items(self, model_mirror: object, original_records: list[dict]) -> list[dict]:
 
         field_relational_in_mirror = self._get_field_aliasing_in_mirror_model(model_mirror)
 
         if field_relational_in_mirror:
             frm = json_format.MessageToDict(field_relational_in_mirror)
-
-            # if isinstance(record.get(field_relational_in_mirror.field_aliasing), int):
-            #     filter = {"filter": "[('{0}','=',{1})]".format(field_relational_in_mirror.code, record.get(field_relational_in_mirror.field_aliasing))}
-            # else:
-            filter = {
-                "filter": "[('{0}','=','{1}')]".format(
-                    field_relational_in_mirror.code, record.get(field_relational_in_mirror.field_aliasing)
+            filter_field_in_mirror_record: str = field_relational_in_mirror.code
+            main_field_in_original_record: str = field_relational_in_mirror.field_aliasing
+            filter_values = [
+                (
+                    record.get(main_field_in_original_record)
+                    if field_relational_in_mirror.type == "integer"
+                    else f"'{record.get(main_field_in_original_record)}'"
                 )
-            }
+                for record in original_records
+            ]
+
+            filter = {"filter": f"[('{filter_field_in_mirror_record}','in',{filter_values})]"}
 
             new_filter = {
                 "model_path": model_mirror.class_name,
                 "filter": filter,
+                "paginated": {"offset": 1, "limit": self.paginated_limit},
                 "context": self.context,
             }
             rpc_func = MirrorModelRPCFucntion(self.context, model_mirror.microservice)
             response = rpc_func.read_mirror_model(new_filter)
-            model = response["mirror_models"][0] if response["mirror_models"] and "mirror_models" in response else {}
+            mirror_records = response["mirror_models"]
+
+            return self._build_mirror_model_items(
+                filter_field_in_mirror_record,
+                main_field_in_original_record,
+                model_mirror,
+                original_records,
+                mirror_records,
+            )
+
+        return []
+
+    def _build_mirror_model_items(
+        self,
+        filter_field_in_mirror_record: str,
+        main_field_in_original_record: str,
+        model_mirror: object,
+        original_records: list[dict],
+        mirror_records: list[dict],
+    ):
+        mirror_records_by_filter_field: Dict[Any, dict] = {}
+        for mirror_record in mirror_records:
+            key = mirror_record.get(filter_field_in_mirror_record)
+            if isinstance(key, float):
+                key = int(key)
+            mirror_records_by_filter_field[key] = mirror_record
+        fields = self._get_fields_in_mirror_model(model_mirror)
+        model_data = []
+        for originalRecord in original_records:
+            id_original_record = originalRecord.get(main_field_in_original_record)
+            mirror_record: dict = mirror_records_by_filter_field.get(id_original_record)
+            item = {field.code: nested(originalRecord, field.field_aliasing) for field in fields}
+
+            id_mirror_record = None
+            if mirror_record:
+                id_mirror_record = mirror_record.get("id")
+                item.update({"id": id_mirror_record})
+
+            persistence_type = model_mirror.persistence_type
+            if persistence_type == "NO_SQL":
+                item.update(
+                    {
+                        "context": self.context,
+                        "audit": {
+                            "created_at": datetime.utcnow(),
+                            "created_by": self.user,
+                            "updated_at": datetime.utcnow(),
+                            "updated_by": self.user,
+                        },
+                    }
+                )
+            elif persistence_type == "SQL":
+                item.update(
+                    {
+                        "tenant": self.tenant,
+                        "updated_by": self.user,
+                        "created_by": self.user,
+                    }
+                )
+
+            model_data.append(item)
+
+        return model_data
 
     def _get_fields_in_mirror_model(self, mirror_model):
         return [field for field in mirror_model.fields if hasattr(field, "field_aliasing") and not ("." in field.code)]
@@ -186,7 +266,8 @@ class WebhookHandler:
             field = next((field for field in fields if field.field_aliasing == "code"), None)
         return field
 
-    def _get_instances_by_model_name_and_id(self) -> Dict[str, Dict[Any, object]]:
+    def _set_instances_by_model_name_and_id(self):
+
         instances_by_model_name_and_id: Dict[str, Dict[Any, object]] = {}
 
         def set_data(data_attrs: dict):
@@ -214,16 +295,19 @@ class WebhookHandler:
         set_data(self.created_attrs)
         set_data(self.updated_attrs)
         set_data(self.deleted_attrs)
-        return instances_by_model_name_and_id
+        self.instances_by_model_name_and_id = instances_by_model_name_and_id
 
     # @measure_time
-    def _get_webhooks_by_event_id(
+    def _set_webhooks_by_event_id(
         self,
     ) -> Dict[str, list]:
         webhooks_by_event_id: Dict[str, list] = {}
 
         try:
-            filter = {"filter": {"filter": f"[('active','=',True)]"}, "paginated": {"offset": 1, "limit": 10000}}
+            filter = {
+                "filter": {"filter": f"[('active','=',True)]"},
+                "paginated": {"offset": 1, "limit": self.paginated_limit},
+            }
             response, success, _e = self.rpc_webhook.read_webhook(filter)
 
             if success:
@@ -235,23 +319,25 @@ class WebhookHandler:
                             webhooks_by_event_id[event_id] = []
                         webhooks_by_event_id[event_id].append(webhook)
         except Exception as ex:
-            logger.error(f"_get_webhooks_by_event_id: {str(ex)}")
+            logger.error(f"_set_webhooks_by_event_id: {str(ex)}")
 
-        return webhooks_by_event_id
+        self.webhooks_by_event_id = webhooks_by_event_id
 
     # @measure_time
-    def _get_event_by_code(
+    def _set_event_by_code(
         self,
     ) -> Dict[str, object]:
         try:
-            filter_event = {"filter": {"filter": f"[('active','=',True)]"}, "paginated": {"offset": 1, "limit": 10000}}
+            filter_event = {
+                "filter": {"filter": f"[('active','=',True)]"},
+                "paginated": {"offset": 1, "limit": self.paginated_limit},
+            }
             response, success, _e = self.rpc_event.read_event(filter_event)
             if success:
                 events = response.events
-                return {event.code: event for event in events}
+                self.event_by_code = {event.code: event for event in events}
         except Exception as ex:
-            logger.error(f"_get_event_by_code: {str(ex)}")
-        return {}
+            logger.error(f"_set_event_by_code: {str(ex)}")
 
     def _set_model_mirror_by_code(
         self,
@@ -260,12 +346,10 @@ class WebhookHandler:
             try:
                 params = {
                     "filter": {"filter": f"[('is_replic','=', true)]"},
-                    "paginated": {"offset": 1, "limit": 10000},
+                    "paginated": {"offset": 1, "limit": self.paginated_limit},
                 }
                 response, success, _e = self.rpc_model.read_model(params)
-                # response_attrs = json_format.MessageToDict(
-                #     response, preserving_proto_field_name=True, including_default_value_fields=True
-                # )
+
                 if success:
                     self.model_mirror_by_code = {model.code: model for model in response.models}
             except Exception as ex:
