@@ -221,6 +221,7 @@ class Descriptor(object):
                     "relation": {"name": relation.entity.class_.__name__},
                     "is_exportable": False,
                     "is_importable": False,
+                    "is_filterable": False,
                 }
                 description["fields"].append(relation_info)
 
