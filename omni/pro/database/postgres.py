@@ -2,12 +2,13 @@ import ast
 import operator
 from datetime import datetime
 from typing import Dict, List, Set
+
+from omni.pro.webhook.webhook_handler import WebhookHandler
 from omni_pro_grpc.common import base_pb2
 from sqlalchemy import and_, asc, create_engine, desc, not_, or_
-from sqlalchemy.orm import aliased, scoped_session, sessionmaker, Session
+from sqlalchemy.orm import Session, aliased, scoped_session, sessionmaker
 from sqlalchemy.sql import cast, operators
 from sqlalchemy.sql.sqltypes import DateTime, Enum, String
-from omni.pro.webhook.webhook_handler import WebhookHandler
 
 
 class CustomSession(Session):
@@ -465,14 +466,20 @@ class PostgresDatabaseManager(SessionManager):
         operator_mapping = {
             "=": operators.eq,
             "!=": operators.ne,
+            "<>": operators.ne,
             "<": operators.lt,
             "<=": operators.le,
             ">": operators.gt,
             ">=": operators.ge,
-            "like": operators.like_op,
+            "like": operators.ilike_op,
             "ilike": operators.ilike_op,
+            "not_like": operators.notilike_op,
+            "!like": operators.notilike_op,
+            "not_ilike": operators.notilike_op,
+            "!ilike": operators.notilike_op,
             "in": operators.in_op,
             "nin": operators.notin_op,
+            "not_in": operators.notin_op,
             # Agrega más operadores según sea necesario
         }
         return operator_mapping.get(op)
@@ -511,8 +518,8 @@ class PostgresDatabaseManager(SessionManager):
 
                 # Casting a texto si es necesario
                 if isinstance(field.type, Enum):
-                    if op in ["like", "ilike"]:
-                        operator_func = self.get_sqlalchemy_operator("in")
+                    if op in ["like", "ilike"] + (nl := ["not_like", "!like", "not_ilike", "!ilike"]):
+                        operator_func = self.get_sqlalchemy_operator("in" if op not in nl else "not_in")
                         value = list(
                             dict(
                                 filter(
@@ -521,7 +528,7 @@ class PostgresDatabaseManager(SessionManager):
                                 )
                             ).keys()
                         )
-                    elif op in ["in", "nin"]:
+                    elif op in ["in", "nin", "not_in"]:
                         value = [field.type.enum_class(v).name for v in value]
 
                     elif value in [x.value for x in field.type.enum_class.__members__.values()]:
@@ -536,7 +543,7 @@ class PostgresDatabaseManager(SessionManager):
                         #  raise ValueError(f"Formato de fecha inválido para el campo {field_path}: {value}")
                         pass
 
-                elif op in ["like", "ilike"]:
+                elif op in ["like", "ilike"] + ["not_like", "!like", "not_ilike", "!ilike"]:
                     value = f"%{value}%"
 
                 clause = operator_func(field, value)

@@ -635,8 +635,12 @@ class PolishNotationToMongoDB:
             "in": "$in",
             "nin": "$nin",
             "!=": "$ne",
+            "not_like": "$not",
             "!like": "$not",
+            "not_ilike": "$not",
+            "!ilike": "$not",
             "like": "$regex",
+            "ilike": "$regex",
         }
 
     def is_logical_operator(self, token):
@@ -665,9 +669,9 @@ class PolishNotationToMongoDB:
                 field, old_operator, value = token
                 if old_operator in self.operators_comparison:
                     options = {}
-                    if old_operator == "like":
+                    if old_operator in ["like", "ilike"]:
                         options = {"$options": "i"}
-                    elif old_operator == "!like":
+                    elif old_operator in ["not_like", "!like", "not_ilike", "!ilike"]:
                         options = {
                             self.operators_comparison[old_operator]: {
                                 "$regex": value,
