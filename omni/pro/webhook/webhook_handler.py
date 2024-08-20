@@ -42,6 +42,8 @@ class WebhookHandler:
         self.stack = None
         self.models_mirror_by_code: Dict[str, object] = {}
         self.paginated_limit = 50000
+        self.internal_webhooks: list[dict] = []
+        self.external_webhooks: list[dict] = []
 
     @classmethod
     def start_thread(cls, crud_attrs: dict, context: dict):
@@ -101,11 +103,24 @@ class WebhookHandler:
             print("sin webhooks")
             return
 
-        self._execute_webhooks_by_operation(self.created_attrs, "create")
-        self._execute_webhooks_by_operation(self.updated_attrs, "update")
-        self._execute_webhooks_by_operation(self.deleted_attrs, "delete")
+        if self.created_attrs:
+            self._set_webhooks_destination_by_operation(self.created_attrs, "create")
+        if self.updated_attrs:
+            self._set_webhooks_destination_by_operation(self.updated_attrs, "update")
+        if self.deleted_attrs:
+            self._set_webhooks_destination_by_operation(self.deleted_attrs, "delete")
+        self._send_webhooks()
 
-    def _execute_webhooks_by_operation(self, operation_attrs: dict, operation: str):
+    def _send_webhooks(self):
+        for item in self.internal_webhooks:
+            event = item.get("event")
+            webhook = item.get("webhook")
+            records = item.get("records")
+            print(f"event: {event.name} - webhook: {webhook.name}")
+            self._send_internal_webhook(event, webhook, records)
+
+    @measure_time
+    def _set_webhooks_destination_by_operation(self, operation_attrs: dict, operation: str):
         for model_name, data_attrs in operation_attrs.items():
             code = f"{model_name}_{operation}"
             event: dict = self.event_by_code.get(code)
@@ -113,6 +128,7 @@ class WebhookHandler:
                 event_operation: str = event.operation
                 webhooks: List[dict] = self.webhooks_by_event_id.get(event.id, [])
                 if webhooks:
+                    # TODO: Aqui organizar los webhooks por priority
                     if not self.instances_by_model_name_and_id:
                         self._set_instances_by_model_name_and_id()
                     instances_in_model_name = self.instances_by_model_name_and_id.get(model_name, {})
@@ -144,7 +160,10 @@ class WebhookHandler:
                                             records.append(record)
 
                                 if records:
-                                    self._send_to_internal_ms(event, webhook, records)
+                                    self.internal_webhooks.append(
+                                        {"event": event, "webhook": webhook, "records": records}
+                                    )
+
                             else:
                                 instance_ids = [
                                     item.get("id")
@@ -163,7 +182,7 @@ class WebhookHandler:
                                         params=params,
                                     )
 
-    def _send_to_internal_ms(self, event: object, webhook: object, records: list[dict]):
+    def _send_internal_webhook(self, event: object, webhook: object, records: list[dict]):
         if webhook.method_grpc.class_name == "MirrorModelServiceStub":
             self._set_models_mirror_by_code()
             self._send_data_to_mirror_models(event, records)
@@ -353,7 +372,7 @@ class WebhookHandler:
         set_data(self.deleted_attrs)
         self.instances_by_model_name_and_id = instances_by_model_name_and_id
 
-    # @measure_time
+    @measure_time
     def _set_webhooks_by_event_id(
         self,
     ) -> Dict[str, list]:
@@ -379,7 +398,7 @@ class WebhookHandler:
 
         self.webhooks_by_event_id = webhooks_by_event_id
 
-    # @measure_time
+    @measure_time
     def _set_event_by_code(
         self,
     ) -> Dict[str, object]:
