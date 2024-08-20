@@ -16,7 +16,7 @@ from mongoengine import Document
 from omni_pro_grpc.util import MessageToDict
 from omni_pro_base.util import eval_condition
 
-logger = configure_logger(name=__name__)
+_logger = configure_logger(name=__name__)
 
 
 class WebhookHandler:
@@ -46,7 +46,7 @@ class WebhookHandler:
     @classmethod
     def start_thread(cls, crud_attrs: dict, context: dict):
         if not context:
-            logger.error(f'WebhookHandler start_thread context is empty')
+            _logger.error(f"WebhookHandler start_thread context is empty")
         if crud_attrs.get("created_attrs") or crud_attrs.get("updated_attrs") or crud_attrs.get("deleted_attrs"):
             webhook_handler = WebhookHandler(crud_attrs, context)
             thread = threading.Thread(target=webhook_handler.resolve_interface)
@@ -64,19 +64,17 @@ class WebhookHandler:
                     self.execute_events()
 
             except Exception as e:
-                logger.error(f"resolve_interface sql: {str(e)}")
+                _logger.error(f"resolve_interface sql: {str(e)}")
         elif self.type_db == "document":
             try:
                 from omni.pro.database import DatabaseManager
                 from omni.pro.stack import ExitStackDocument
 
-        
-                
-                db_params =self.redis_manager.get_mongodb_config(Config.SERVICE_ID, self.tenant)
+                db_params = self.redis_manager.get_mongodb_config(Config.SERVICE_ID, self.tenant)
                 db_alias = f"{self.tenant}_{db_params.get('name')}"
-                db_params["db"] = db_params.pop("name")              
+                db_params["db"] = db_params.pop("name")
                 db_manager = DatabaseManager(**db_params)
-           
+
                 with ExitStackDocument(
                     document_classes=list(self.class_by_name.values()),
                     db_alias=db_alias,
@@ -85,7 +83,7 @@ class WebhookHandler:
                     self.execute_events()
 
             except Exception as e:
-                logger.error(f"resolve_interface sql: {str(e)}")
+                _logger.error(f"resolve_interface sql: {str(e)}")
 
     @measure_time
     def execute_events(self):
@@ -108,7 +106,7 @@ class WebhookHandler:
         self._execute_webhooks_by_operation(self.deleted_attrs, "delete")
 
     def _execute_webhooks_by_operation(self, operation_attrs: dict, operation: str):
-        for model_name, model_ids in operation_attrs.items():
+        for model_name, data_attrs in operation_attrs.items():
             code = f"{model_name}_{operation}"
             event: dict = self.event_by_code.get(code)
             if event:
@@ -118,7 +116,7 @@ class WebhookHandler:
                     if not self.instances_by_model_name_and_id:
                         self._set_instances_by_model_name_and_id()
                     instances_in_model_name = self.instances_by_model_name_and_id.get(model_name, {})
-                    model_ids_set = set(model_ids)
+                    model_ids_set = set(data_attrs)
                     instances: List[object] = [
                         instance for id, instance in instances_in_model_name.items() if id in model_ids_set
                     ]
@@ -129,15 +127,24 @@ class WebhookHandler:
                             for instance in instances
                         ]
                         for webhook in webhooks:
-                            # if event_operation == "update" and not modified_fields & set(webhook.trigger_fields):
-                            #     continue
                             if webhook.type_webhook == "internal":
-                                records: list[dict] = [
-                                    item
-                                    for item in instances_attrs
-                                    if not webhook.python_code or eval_condition(item, webhook.python_code)
-                                ]
-                                self._send_to_internal_ms(event, webhook, records)
+                                records = []
+                                if event_operation == "create":
+                                    records: list[dict] = [
+                                        item
+                                        for item in instances_attrs
+                                        if not webhook.python_code or eval_condition(item, webhook.python_code)
+                                    ]
+                                elif event_operation == "update":
+                                    trigger_fields = set([attr.split("-", 1)[-1] for attr in webhook.trigger_fields])
+                                    for record in instances_attrs:
+                                        record_id = record.get("id")
+                                        modified_fields = data_attrs.get(record_id, set())
+                                        if modified_fields & trigger_fields:
+                                            records.append(record)
+
+                                if records:
+                                    self._send_to_internal_ms(event, webhook, records)
                             else:
                                 instance_ids = [
                                     item.get("id")
@@ -156,41 +163,58 @@ class WebhookHandler:
                                         params=params,
                                     )
 
-    def _send_to_internal_ms(self, event:object, webhook:object, records: list[dict]):        
+    def _send_to_internal_ms(self, event: object, webhook: object, records: list[dict]):
         if webhook.method_grpc.class_name == "MirrorModelServiceStub":
             self._set_models_mirror_by_code()
             self._send_data_to_mirror_models(event, records)
-            l=0
+            l = 0
 
-    def _send_data_to_mirror_models(self, event:object, records: list[dict]):
+    def _send_data_to_mirror_models(self, event: object, records: list[dict]):
         log_send = ""
         try:
             model_code = event.model.code
-            models_mirror: list[object]= self.models_mirror_by_code.get(model_code, [])
+            models_mirror: list[object] = self.models_mirror_by_code.get(model_code, [])
             if models_mirror:
-                paginated_records = [records[i : i + self.paginated_limit] for i in range(0, len(records), self.paginated_limit)]
+                paginated_records = [
+                    records[i : i + self.paginated_limit] for i in range(0, len(records), self.paginated_limit)
+                ]
                 for model_mirror in models_mirror:
-                    
+
                     count_items_send = 0
                     for sub_records in paginated_records:
-                        model_mirror_items = self._get_model_mirror_items(model_mirror, sub_records)
+                        model_mirror_items = self._get_model_mirror_items_with_retry(model_mirror, sub_records)
                         count_items_send += len(model_mirror_items)
-                        l=0
-                        # response = rpc_func.updated_model(
+                        # rpc_mirror = MirrorModelRPCFucntion(self.context, model_mirror.microservice)
+                        # response = rpc_mirror.updated_model(
                         #     {
                         #         "model_path": model_mirror.class_name,
                         #         "model_data": model_data,
                         #         "context": self.context,
                         #     }
                         # )
-                    log_send += f'\nMirror microservice: {model_mirror.microservice} - mirror model: {model_mirror.name} - count items send: {count_items_send}'
+                    log_send += f"\nMirror microservice: {model_mirror.microservice} - mirror model: {model_mirror.name} - count items send: {count_items_send}"
 
             else:
-                logger.warning(f"Model mirror with code = {model_code} does not exist")
+                _logger.warning(f"Model mirror with code = {model_code} does not exist")
 
         except Exception as ex:
-            logger.error(f"_send_data_to_mirror_models:\n{str(ex)}")
+            _logger.error(f"_send_data_to_mirror_models:\n{str(ex)}")
         print(f"\nlog =====> {log_send}")
+
+    def _get_model_mirror_items_with_retry(self, model_mirror, sub_records, retries=3):
+        attempt = 0
+        while attempt < retries:
+            try:
+                model_mirror_items = self._get_model_mirror_items(model_mirror, sub_records)
+                return model_mirror_items
+            except Exception as e:
+                attempt += 1
+                _logger.warning(f"Error encountered: {e}. Retrying {attempt}/{retries}...")
+                if attempt >= retries:
+                    _logger.error(
+                        f"\nMicroservice = {model_mirror.microservice} - model mirror = {model_mirror.name}, Max retries reached. Could not get model mirror items."
+                    )
+                    # Generar aqui la logica para guardar un logger de excepciones
 
     @measure_time
     def _get_model_mirror_items(self, model_mirror: object, original_records: list[dict]) -> list[dict]:
@@ -303,16 +327,15 @@ class WebhookHandler:
                 class_model: Type[object] = self.class_by_name.get(model_name)
                 if model_attrs and class_model:
                     instances: list[class_model] = []
-                    model_ids = list(model_attrs.keys())
+                    model_ids = list(model_attrs.keys()) if isinstance(model_attrs, dict) else model_attrs
                     if self.session:
                         instances = (
                             self.session.query(class_model)
                             .filter(class_model.id.in_(model_ids), class_model.tenant == self.tenant)
                             .all()
                         )
-                    elif self.type_db== 'document':                        
+                    elif self.type_db == "document":
                         instances = class_model.objects(id__in=model_ids, context__tenant=self.tenant)
-                    
 
                     if instances:
                         if not model_name in instances_by_model_name_and_id:
@@ -320,14 +343,10 @@ class WebhookHandler:
 
                         for instance in instances:
                             instance_id = instance.id
-                            if self.type_db== 'document':
+                            if self.type_db == "document":
                                 instance_id = str(instance_id)
                             if not instance_id in instances_by_model_name_and_id[model_name]:
                                 instances_by_model_name_and_id[model_name][instance_id] = instance
-                    
-                        
-        
-                      
 
         set_data(self.created_attrs)
         set_data(self.updated_attrs)
@@ -356,7 +375,7 @@ class WebhookHandler:
                             webhooks_by_event_id[event_id] = []
                         webhooks_by_event_id[event_id].append(webhook)
         except Exception as ex:
-            logger.error(f"_set_webhooks_by_event_id: {str(ex)}")
+            _logger.error(f"_set_webhooks_by_event_id: {str(ex)}")
 
         self.webhooks_by_event_id = webhooks_by_event_id
 
@@ -374,7 +393,7 @@ class WebhookHandler:
                 events = response.events
                 self.event_by_code = {event.code: event for event in events}
         except Exception as ex:
-            logger.error(f"_set_event_by_code: {str(ex)}")
+            _logger.error(f"_set_event_by_code: {str(ex)}")
 
     def _set_models_mirror_by_code(
         self,
@@ -389,12 +408,12 @@ class WebhookHandler:
 
                 if success:
                     for model in response.models:
-                        model_code= model.code
+                        model_code = model.code
                         if not model_code in self.models_mirror_by_code:
                             self.models_mirror_by_code[model_code] = []
                         self.models_mirror_by_code[model_code].append(model)
             except Exception as ex:
-                logger.error(f"_set_models_mirror_by_code: {str(ex)}")
+                _logger.error(f"_set_models_mirror_by_code: {str(ex)}")
 
     def _get_event_codes(self) -> list[str]:
         event_codes: list = []
