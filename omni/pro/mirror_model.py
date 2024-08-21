@@ -496,6 +496,77 @@ class MirrorModelServiceMongo(mirror_model_pb2_grpc.MirrorModelServiceServicer):
             LoggerTraceback.error("Mirror model read exception", e, logger)
             return message_response.internal_response(message="Mirror model not read")
 
+    @newrelic.agent.function_trace()
+    @resources_decorator([Resource.MONGODB])
+    def MultiCreateMirrorModel(
+        self, request: mirror_model_pb2.MultiCreateOrMultiUpdateMirrorModelRequest, context
+    ) -> mirror_model_pb2.MultiCreateOrMultiUpdateMirrorModelResponse:
+        message_response = MessageResponse(mirror_model_pb2.MultiCreateOrMultiUpdateMirrorModelResponse)
+        try:
+            data = MessageToDict(request)
+            base = mirror_factory(context, data.pop("model_path"))
+            with ExitStackDocument(
+                document_classes=base.model.reference_list(),
+                db_alias=context.db_name,
+            ):
+                result = base.multi_create_mirror_model(data.get("data"))
+
+                return message_response.created_response(
+                    message="Mirror model created successfully", model_data=convert_model_mongo_to_struct(result)
+                )
+
+        except Exception as e:
+            LoggerTraceback.error("Mirror model create exception", e, logger)
+            return message_response.internal_response(message="Mirror model not created")
+
+    @newrelic.agent.function_trace()
+    @resources_decorator([Resource.MONGODB])
+    def MultiUpdateMirrorModel(
+        self, request: mirror_model_pb2.MultiCreateOrMultiUpdateMirrorModelRequest, context
+    ) -> mirror_model_pb2.MultiCreateOrMultiUpdateMirrorModelResponse:
+        message_response = MessageResponse(mirror_model_pb2.MultiCreateOrMultiUpdateMirrorModelResponse)
+        try:
+            data = MessageToDict(request)
+            base = mirror_factory(context, data.pop("model_path"))
+            with ExitStackDocument(
+                document_classes=base.model.reference_list(),
+                db_alias=context.db_name,
+            ):
+                result = base.multi_update_mirror_model(data.get("data"))
+
+                return message_response.updated_response(
+                    message="Mirror updated successfully",
+                    model_data=convert_model_mongo_to_struct(result),
+                )
+
+        except Exception as e:
+            LoggerTraceback.error("Mirror model update exception", e, logger)
+            return message_response.internal_response(message="Mirror model not updated")
+
+    @newrelic.agent.function_trace()
+    @resources_decorator([Resource.MONGODB])
+    def MultiDeleteMirrorModel(
+        self, request: mirror_model_pb2.MultiDeleteMirrorModelRequest, context
+    ) -> mirror_model_pb2.CreateOrUpdateCreateMirrorResponse:
+        message_response = MessageResponse(mirror_model_pb2.CreateOrUpdateCreateMirrorResponse)
+        try:
+            data = MessageToDict(request)
+            base = mirror_factory(context, data.pop("model_path"))
+            with ExitStackDocument(
+                document_classes=base.model.reference_list(),
+                db_alias=context.db_name,
+            ):
+                result = base.multi_delete_mirror_model(data)
+
+                return message_response.updated_response(
+                    message="Mirror updated successfully",
+                    model_data=convert_model_mongo_to_struct(result),
+                )
+
+        except Exception as e:
+            LoggerTraceback.error("Mirror model update exception", e, logger)
+            return message_response.internal_response(message="Mirror model not updated")
+
 
 class MirrorModelServicePostgres(mirror_model_pb2_grpc.MirrorModelServiceServicer):
 
@@ -558,6 +629,43 @@ class MirrorModelServicePostgres(mirror_model_pb2_grpc.MirrorModelServiceService
 
         except (IntegrityError, ValidationError, OperationalError, Exception) as e:
             return handle_error("Mirror model", "Read", logger, e, message_response)
+
+    @newrelic.agent.function_trace()
+    @resources_decorator([Resource.POSTGRES])
+    def MultiCreateMirrorModel(
+        self, request: mirror_model_pb2.MultiCreateOrMultiUpdateMirrorModelRequest, context
+    ) -> mirror_model_pb2.MultiCreateOrMultiUpdateMirrorModelResponse:
+        message_response = MessageResponse(mirror_model_pb2.MultiCreateOrMultiUpdateMirrorModelResponse)
+        try:
+            with context.pg_manager as session:
+                data = MessageToDict(request)
+                result = mirror_factory(context, data.pop("model_path")).multi_create_mirror_model(data.get("data"))
+
+                return message_response.created_response(
+                    message="Mirror model created successfully", model_data=convert_model_alchemy_to_struct(result)
+                )
+
+        except (IntegrityError, ValidationError, OperationalError, Exception) as e:
+            return handle_error("Mirror model", "Created", logger, e, message_response)
+
+    @newrelic.agent.function_trace()
+    @resources_decorator([Resource.POSTGRES])
+    def MultiUpdateMirrorModel(
+        self, request: mirror_model_pb2.MultiCreateOrMultiUpdateMirrorModelRequest, context
+    ) -> mirror_model_pb2.MultiCreateOrMultiUpdateMirrorModelResponse:
+        message_response = MessageResponse(mirror_model_pb2.MultiCreateOrMultiUpdateMirrorModelResponse)
+        try:
+            with context.pg_manager as session:
+                data = MessageToDict(request)
+                result = mirror_factory(context, data.pop("model_path")).multi_update_mirror_model(data.get("data"))
+
+                return message_response.updated_response(
+                    message="Mirror updated successfully",
+                    model_data=convert_model_alchemy_to_struct(result),
+                )
+
+        except (IntegrityError, ValidationError, OperationalError, Exception) as e:
+            return handle_error("Mirror model", "Updated", logger, e, message_response)
 
 
 class MirroModelWebhookRegister(object):
