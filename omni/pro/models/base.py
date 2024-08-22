@@ -59,7 +59,7 @@ class BaseObjectEmbeddedDocument(BaseEmbeddedDocument):
 class Audit(BaseEmbeddedDocument):
     created_at = DateTimeField(default=datetime.utcnow, is_importable=False)
     created_by = StringField(is_importable=False)
-    updated_at = DateTimeField(is_importable=False)
+    updated_at = DateTimeField(default=datetime.utcnow, is_importable=False)
     updated_by = StringField(is_importable=False)
     deleted_at = DateTimeField(is_importable=False)
     deleted_by = StringField(is_importable=False)
@@ -140,6 +140,12 @@ class BaseDocument(Document):
         self.audit.updated_at = datetime.utcnow()
         return super().save(*args, **kwargs)
 
+    def update(self, **kwargs):
+        res = super().update(**kwargs)
+        if kwargs and isinstance(kwargs, dict):
+            self.validate_change_fields(set(kwargs.keys()))
+        return res
+
     def to_proto(self, *args, **kwargs):
         raise NotImplementedError
 
@@ -157,45 +163,9 @@ class BaseDocument(Document):
             # identify if the object is a new instance or an existing one
             if kwargs.get("created", False):
                 document.assign_crud_attrs_to_stack("create")
-                # ActionToAirflow.send_to_airflow(
-                #     cls,
-                #     document,
-                #     action="create",
-                #     context={"tenant": document.context.tenant, "user": document.context.user},
-                # )
             else:
-                other_changed_fields = cls.detect_other_changed_fields(document)
-                changed_fields = set(document._changed_fields) | other_changed_fields
-                if changed_fields:
-                    document.assign_crud_attrs_to_stack("update", changed_fields)
-                    # ActionToAirflow.send_to_airflow(
-                    #     cls,
-                    #     document,
-                    #     action="update",
-                    #     context={"tenant": document.context.tenant, "user": document.context.user},
-                    # )
+                document.validate_change_fields()
         return
-
-    @classmethod
-    def detect_other_changed_fields(cls, document):
-        changes = []
-        updated_data = document.to_mongo().to_dict()
-        for field_name, field_type in document._fields.items():
-            if field_name in ["context", "audit", "created_attrs", "updated_attrs", "deleted_attrs"]:
-                continue
-            original_value = document._initial_data.get(field_name)
-            updated_value = updated_data.get(field_name)
-
-            if isinstance(original_value, dict) and isinstance(updated_value, dict):
-                changed_keys = {
-                    key
-                    for key in set(original_value) | set(updated_value)
-                    if original_value.get(key) != updated_value.get(key)
-                }
-                for key in changed_keys:
-                    changes.append(f"{field_name}.{key}")
-
-        return set(changes)
 
     @classmethod
     @measure_time
@@ -246,6 +216,32 @@ class BaseDocument(Document):
             if not model_name in instance.deleted_attrs:
                 instance.deleted_attrs[model_name] = []
             instance.deleted_attrs[model_name].append(instance_id)
+
+    def validate_change_fields(self, changed_fields_in_update={}):
+        other_changed_fields = self._detect_other_changed_fields()
+        changed_fields = set(self._changed_fields) | set(other_changed_fields) | set(changed_fields_in_update)
+        if changed_fields:
+            self.assign_crud_attrs_to_stack("update", changed_fields)
+
+    def _detect_other_changed_fields(self):
+        changes = []
+        updated_data = self.to_mongo().to_dict()
+        for field_name, field_type in self._fields.items():
+            if field_name in ["context", "audit", "created_attrs", "updated_attrs", "deleted_attrs"]:
+                continue
+            original_value = self._initial_data.get(field_name)
+            updated_value = updated_data.get(field_name)
+
+            if isinstance(original_value, dict) and isinstance(updated_value, dict):
+                changed_keys = {
+                    key
+                    for key in set(original_value) | set(updated_value)
+                    if original_value.get(key) != updated_value.get(key)
+                }
+                for key in changed_keys:
+                    changes.append(f"{field_name}.{key}")
+
+        return set(changes)
 
 
 class BaseAuditEmbeddedDocument(BaseEmbeddedDocument):

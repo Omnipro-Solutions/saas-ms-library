@@ -4,6 +4,7 @@ import time
 from datetime import datetime
 from omni_pro_base.util import nested
 from google.protobuf import json_format
+from google.protobuf.timestamp_pb2 import Timestamp
 from omni.pro.logger import configure_logger
 from omni_pro_grpc.grpc_function import EventRPCFucntion, WebhookRPCFucntion
 from omni_pro_grpc.grpc_function import MirrorModelRPCFucntion, ModelRPCFucntion
@@ -47,12 +48,13 @@ class WebhookHandler:
 
     @classmethod
     def start_thread(cls, crud_attrs: dict, context: dict):
-        if not context:
-            _logger.error(f"WebhookHandler start_thread context is empty")
         if crud_attrs.get("created_attrs") or crud_attrs.get("updated_attrs") or crud_attrs.get("deleted_attrs"):
-            webhook_handler = WebhookHandler(crud_attrs, context)
-            thread = threading.Thread(target=webhook_handler.resolve_interface)
-            thread.start()
+            if context.get("tenant") and context.get("type_db"):
+                webhook_handler = WebhookHandler(crud_attrs, context)
+                thread = threading.Thread(target=webhook_handler.resolve_interface)
+                thread.start()
+            else:
+                _logger.error(f"Tenant or type db is not defined")
 
     def resolve_interface(self):
         if self.type_db == "sql":
@@ -89,26 +91,20 @@ class WebhookHandler:
 
     @measure_time
     def execute_events(self):
-
-        # Lógica para filtrar eventos y webhooks
-        # Aquí enviarías los eventos filtrados a microservicios internos y Airflow
         time.sleep(0.2)
-        # print(f"\n===>>>>> ****** \n{self.created_attrs}\n{self.updated_attrs}\n{self.deleted_attrs}")
         self._set_event_by_code()
         if not self.event_by_code:
-            print("sin eventos")
             return
         self._set_webhooks_by_event_id()
         if not self.webhooks_by_event_id:
-            print("sin webhooks")
             return
 
         if self.created_attrs:
-            self._set_webhooks_destination_by_operation(self.created_attrs, "create")
+            self._set_internal_external_webhooks_by_operation(self.created_attrs, "create")
         if self.updated_attrs:
-            self._set_webhooks_destination_by_operation(self.updated_attrs, "update")
+            self._set_internal_external_webhooks_by_operation(self.updated_attrs, "update")
         if self.deleted_attrs:
-            self._set_webhooks_destination_by_operation(self.deleted_attrs, "delete")
+            self._set_internal_external_webhooks_by_operation(self.deleted_attrs, "delete")
         self._send_webhooks()
 
     def _send_webhooks(self):
@@ -120,7 +116,7 @@ class WebhookHandler:
             self._send_internal_webhook(event, webhook, records)
 
     @measure_time
-    def _set_webhooks_destination_by_operation(self, operation_attrs: dict, operation: str):
+    def _set_internal_external_webhooks_by_operation(self, operation_attrs: dict, operation: str):
         for model_name, data_attrs in operation_attrs.items():
             code = f"{model_name}_{operation}"
             event: dict = self.event_by_code.get(code)
@@ -190,6 +186,7 @@ class WebhookHandler:
 
     def _send_data_to_mirror_models(self, event: object, records: list[dict]):
         log_send = ""
+        len_records = len(records)
         try:
             model_code = event.model.code
             models_mirror: list[object] = self.models_mirror_by_code.get(model_code, [])
@@ -201,17 +198,12 @@ class WebhookHandler:
 
                     count_items_send = 0
                     for sub_records in paginated_records:
-                        model_mirror_items = self._get_model_mirror_items_with_retry(model_mirror, sub_records)
-                        count_items_send += len(model_mirror_items)
-                        # rpc_mirror = MirrorModelRPCFucntion(self.context, model_mirror.microservice)
-                        # response = rpc_mirror.updated_model(
-                        #     {
-                        #         "model_path": model_mirror.class_name,
-                        #         "model_data": model_data,
-                        #         "context": self.context,
-                        #     }
-                        # )
-                    log_send += f"\nMirror microservice: {model_mirror.microservice} - mirror model: {model_mirror.name} - count items send: {count_items_send}"
+                        items = self._get_model_mirror_items(model_mirror, sub_records)
+                        pull_result: bool = self._pull_mirror_model(model_mirror, items)
+                        if pull_result:
+                            count_items_send += len(items)
+
+                    log_send += f"\nMirror microservice: {model_mirror.microservice} - mirror model: {model_mirror.name}- count records = {len_records} - count items pull: {count_items_send}"
 
             else:
                 _logger.warning(f"Model mirror with code = {model_code} does not exist")
@@ -219,6 +211,30 @@ class WebhookHandler:
         except Exception as ex:
             _logger.error(f"_send_data_to_mirror_models:\n{str(ex)}")
         print(f"\nlog =====> {log_send}")
+
+    def _pull_mirror_model(self, model_mirror, items: list[dict], retries=3) -> bool:
+        rpc_mirror = MirrorModelRPCFucntion(self.context, model_mirror.microservice)
+        try:
+            response = rpc_mirror.multi_update_model(
+                {
+                    "model_path": model_mirror.class_name,
+                    "data": items,
+                    "context": self.context,
+                }
+            )
+            if response.get("response_standard", {}).get("success"):
+                return True
+            else:
+                error_message = response.get("response_standard", {}).get("message")
+
+        except Exception as e:
+            error_message = str(e)
+        if error_message:
+            _logger.error(
+                f"\nMicroservice = {model_mirror.microservice} - model mirror = {model_mirror.name}, Max retries reached. Could not pull to mirror model.\n message = {error_message}"
+            )
+            # Generar aqui la logica para guardar un logger de excepciones
+        return False
 
     def _get_model_mirror_items_with_retry(self, model_mirror, sub_records, retries=3):
         attempt = 0
@@ -234,43 +250,18 @@ class WebhookHandler:
                         f"\nMicroservice = {model_mirror.microservice} - model mirror = {model_mirror.name}, Max retries reached. Could not get model mirror items."
                     )
                     # Generar aqui la logica para guardar un logger de excepciones
+        return []
 
     @measure_time
     def _get_model_mirror_items(self, model_mirror: object, original_records: list[dict]) -> list[dict]:
 
-        field_relational_in_mirror = self._get_field_aliasing_in_mirror_model(model_mirror)
+        field_aliasing_in_mirror: object = self._get_field_aliasing_in_mirror_model(model_mirror)
 
-        if field_relational_in_mirror:
-            # frm = json_format.MessageToDict(field_relational_in_mirror)
-            filter_field_in_mirror_record: str = field_relational_in_mirror.code
-            main_field_in_original_record: str = field_relational_in_mirror.field_aliasing
-            filter_values = [
-                (
-                    record.get(main_field_in_original_record)
-                    if field_relational_in_mirror.type == "integer"
-                    else f"{record.get(main_field_in_original_record)}"
-                )
-                for record in original_records
-            ]
-
-            filter = {"filter": f"[('{filter_field_in_mirror_record}','in',{filter_values})]"}
-
-            new_filter = {
-                "model_path": model_mirror.class_name,
-                "filter": filter,
-                "paginated": {"offset": 1, "limit": self.paginated_limit},
-                "context": self.context,
-            }
-            rpc_func = MirrorModelRPCFucntion(self.context, model_mirror.microservice)
-            response = rpc_func.read_mirror_model(new_filter)
-            mirror_records = response["mirror_models"]
-
+        if field_aliasing_in_mirror:
+            filter_field_in_mirror_record: str = field_aliasing_in_mirror.code
+            main_field_in_original_record: str = field_aliasing_in_mirror.field_aliasing
             return self._build_mirror_model_items(
-                filter_field_in_mirror_record,
-                main_field_in_original_record,
-                model_mirror,
-                original_records,
-                mirror_records,
+                filter_field_in_mirror_record, main_field_in_original_record, model_mirror, original_records
             )
 
         return []
@@ -281,51 +272,44 @@ class WebhookHandler:
         main_field_in_original_record: str,
         model_mirror: object,
         original_records: list[dict],
-        mirror_records: list[dict],
     ):
         mirror_records_by_filter_field: Dict[Any, dict] = {}
-        for mirror_record in mirror_records:
-            key = mirror_record.get(filter_field_in_mirror_record)
-            if isinstance(key, float):
-                key = int(key)
-            mirror_records_by_filter_field[key] = mirror_record
+
         fields = self._get_fields_in_mirror_model(model_mirror)
-        model_data = []
+        items = []
         for originalRecord in original_records:
             id_original_record = originalRecord.get(main_field_in_original_record)
-            mirror_record: dict = mirror_records_by_filter_field.get(id_original_record)
-            item = {field.code: nested(originalRecord, field.field_aliasing) for field in fields}
+            # mirror_record: dict = mirror_records_by_filter_field.get(id_original_record)
+
+            item = {
+                field.code: nested(originalRecord, field.field_aliasing) for field in fields if field.field_aliasing
+            }
 
             id_mirror_record = None
-            if mirror_record:
-                id_mirror_record = mirror_record.get("id")
-                item.update({"id": id_mirror_record})
 
             persistence_type = model_mirror.persistence_type
+            user = self.user or "admin"
             if persistence_type == "NO_SQL":
-                item.update(
-                    {
-                        "context": self.context,
-                        "audit": {
-                            "created_at": datetime.utcnow(),
-                            "created_by": self.user,
-                            "updated_at": datetime.utcnow(),
-                            "updated_by": self.user,
-                        },
-                    }
-                )
+                item.update({"context": self.context})
             elif persistence_type == "SQL":
                 item.update(
                     {
                         "tenant": self.tenant,
-                        "updated_by": self.user,
-                        "created_by": self.user,
+                        "updated_by": user,
+                        "created_by": user,
                     }
                 )
 
-            model_data.append(item)
+            items.append(item)
 
-        return model_data
+        # if items:
+        #     # Se añade el nombre del campo por el cual se va a hacer la busqueda de los documentos
+        #     # en la insercicio o el update del microservicio espejo
+        #     items.insert(0, {
+        #         'field_filter':filter_field_in_mirror_record
+        #     })
+
+        return items
 
     def _get_fields_in_mirror_model(self, mirror_model):
         return [field for field in mirror_model.fields if hasattr(field, "field_aliasing") and not ("." in field.code)]

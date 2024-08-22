@@ -1,7 +1,7 @@
 from importlib import import_module
 from itertools import groupby
 from pathlib import Path
-
+from datetime import datetime
 import newrelic.agent
 from bson import ObjectId
 from marshmallow import ValidationError
@@ -98,7 +98,7 @@ class MirrorModelBase:
 
 class MirrorModelSQL(MirrorModelBase):
 
-    def __init__(self, context: dict, model_path: str):
+    def __init__(self, context: dict, model_path: str, tenant: str, user: str):
         """
         Initializes a new instance of the MirrorModel class.
 
@@ -111,6 +111,8 @@ class MirrorModelSQL(MirrorModelBase):
         """
         self.context = context
         self.model = self.get_model(model_path)
+        self.tenant = tenant
+        self.user = user
 
     def create_mirror_model(self, data):
         """
@@ -151,19 +153,24 @@ class MirrorModelSQL(MirrorModelBase):
             object: The newly created record.
 
         """
-        for data in items:
-            mapper = inspect(self.model)
-            filters = {}
-            for column in mapper.columns:
-                if column.unique and hasattr(column, "field_aliasing") and column.name in data:
-                    filters[column.name] = data[column.name]
-            if filters and (
-                mdl := self.context.pg_manager.retrieve_record(self.model, self.context.pg_manager.Session, filters)
-            ):
-                continue
-            self.model.transform_mirror(data)
+        bulk_create_items = []
+        unique_field_aliasing = self._get_unique_field_aliasing()
 
-        return self.model.bulk_insert(session=self.context.pg_manager.Session, items=[data for data in items])
+        if self.tenant and unique_field_aliasing:
+            instance_ids_by_unique_field_aliasing = self._get_doc_ids_by_unique_field_aliasing(
+                items, unique_field_aliasing
+            )
+
+            for item in items:
+                unique_field_aliasing_value = item.get(unique_field_aliasing)
+                instance_id = instance_ids_by_unique_field_aliasing.get(unique_field_aliasing_value)
+                if instance_id:
+                    continue
+                self.model.transform_mirror(item)
+                bulk_create_items.append(item)
+
+        if bulk_create_items:
+            self.model.bulk_insert(session=self.context.pg_manager.Session, items=bulk_create_items)
 
     def update_mirror_model(self, data):
         """
@@ -199,22 +206,68 @@ class MirrorModelSQL(MirrorModelBase):
         Returns:
             bool: True if the update was successful, False otherwise.
         """
-        items_create = []
-        for data in items:
-            mdl = self.context.pg_manager.retrieve_record_by_id(
-                self.model, self.context.pg_manager.Session, data["id"] or 0
+
+        bulk_update_items = []
+        bulk_create_items = []
+        unique_field_aliasing = self._get_unique_field_aliasing()
+
+        if self.tenant and unique_field_aliasing:
+            instance_ids_by_unique_field_aliasing = self._get_doc_ids_by_unique_field_aliasing(
+                items, unique_field_aliasing
             )
-            if not mdl:
-                data.pop("id")
-                items_create.append(data)
-                continue
-            self.model.transform_mirror(data)
 
-        if items_create:
-            res = self.multi_create_mirror_model(items_create)
+            for item in items:
+                unique_field_aliasing_value = item.get(unique_field_aliasing)
+                instance_id = instance_ids_by_unique_field_aliasing.get(unique_field_aliasing_value)
+                self.model.transform_mirror(item)
+                if not instance_id:
+                    if "id" in item:
+                        item.pop("id")
+                    bulk_create_items.append(item)
+                else:
+                    item["id"] = instance_id
+                    bulk_update_items.append(item)
 
-        res = self.model.bulk_update(self.context.pg_manager.Session, items=[data for data in items])
-        return res
+            if bulk_update_items:
+                self.model.bulk_update(self.context.pg_manager.Session, items=bulk_update_items)
+
+            if bulk_create_items:
+                self.model.bulk_insert(session=self.context.pg_manager.Session, items=bulk_create_items)
+
+        else:
+            raise Exception(f"tenant or unique_field_aliasing is not defined")
+
+    def _get_doc_ids_by_unique_field_aliasing(self, items: list[dict], unique_field_aliasing: str):
+        unique_field_aliasing_ids = [
+            item.get(unique_field_aliasing) for item in items if item.get(unique_field_aliasing)
+        ]
+        if unique_field_aliasing_ids:
+            instances = (
+                self.context.pg_manager.Session.query(self.model)
+                .filter(
+                    self.model.tenant == self.tenant,
+                    getattr(self.model, unique_field_aliasing).in_(unique_field_aliasing_ids),
+                )
+                .all()
+            )
+            return {
+                getattr(instance, unique_field_aliasing): instance.id
+                for instance in instances
+                if hasattr(instance, unique_field_aliasing)
+            }
+        return {}
+
+    def _get_unique_field_aliasing(self):
+        code_field_aliasing = None
+        mapper = inspect(self.model)
+        for column in mapper.columns:
+            if column.unique and hasattr(column, "field_aliasing") and column.name:
+                if column.field_aliasing == "id":
+                    return column.name
+                elif column.field_aliasing == "code":
+                    code_field_aliasing = column.name
+
+        return code_field_aliasing
 
     def read_mirror_model(self, data):
         """
@@ -240,7 +293,7 @@ class MirrorModelSQL(MirrorModelBase):
 
 
 class MirrorModelNoSQL(MirrorModelBase):
-    def __init__(self, context: dict, model_path: str):
+    def __init__(self, context: dict, model_path: str, tenant: str, user: str):
         """
         Initializes a new instance of the MirrorModel class.
 
@@ -253,6 +306,8 @@ class MirrorModelNoSQL(MirrorModelBase):
         """
         self.context = context
         self.model = self.get_model(model_path)
+        self.tenant = tenant
+        self.user = user
 
     def create_mirror_model(self, data):
         """
@@ -290,24 +345,27 @@ class MirrorModelNoSQL(MirrorModelBase):
             object: The created mirror model.
 
         """
-        bulk_operations = []
-        for data in items:
-            filters = {}
-            for field_key, field in self.model._fields.items():
-                if field.unique and hasattr(field, "field_aliasing") and field.db_field in data:
-                    filters[field_key] = data[field_key]
-            if filters and (
-                doc := self.context.db_manager.get_document(None, data["context"]["tenant"], self.model, **filters)
-            ):
-                continue
-            self.model.transform_mirror(data)
+        bulk_create_items = []
+        doc_ids_by_unique_field_aliasing = {}
 
-            bulk_operations.append(InsertOne(data))
+        unique_field_aliasing = self._get_unique_field_aliasing()
 
-        if bulk_operations:
-            result = self.model._get_collection().bulk_write(bulk_operations, ordered=False)
-            return result
-        return None
+        if self.tenant and unique_field_aliasing:
+            doc_ids_by_unique_field_aliasing = self._get_doc_ids_by_unique_field_aliasing(items, unique_field_aliasing)
+
+            for item in items:
+                item: dict
+                unique_field_aliasing_value = item.get(unique_field_aliasing)
+                doc_id = doc_ids_by_unique_field_aliasing.get(unique_field_aliasing_value)
+                if doc_id:
+                    continue
+                self.model.transform_mirror(item)
+                bulk_create_items.append(InsertOne(item))
+
+            if bulk_create_items:
+                self.model._get_collection().bulk_write(bulk_create_items, ordered=False)
+        else:
+            raise Exception(f"tenant or unique_field_aliasing is not defined")
 
     def update_mirror_model(self, data):
         """
@@ -342,23 +400,63 @@ class MirrorModelNoSQL(MirrorModelBase):
         Returns:
             bool: True if the update was successful, False otherwise.
         """
-        bulk_operations = []
+        bulk_write_items = []
+        bulk_create_items = []
         items_create = []
-        for data in items:
-            doc = self.context.db_manager.get_document(None, data["context"]["tenant"], self.model, id=data["id"])
-            if not doc:
-                data.pop("id")
-                items_create.append(data)
-                continue
-            logger.info(f"Updating mirror model {self.model} with data {data}")
-            self.model.transform_mirror(data)
-            bulk_operations.append(UpdateOne({"_id": ObjectId(data["id"])}, {"$set": data}))
+        unique_field_aliasing = self._get_unique_field_aliasing()
 
-        if bulk_operations:
-            result = self.model._get_collection().bulk_write(bulk_operations, ordered=False)
-        if items_create:
-            result = self.multi_create_mirror_model(items_create)
-        return result
+        if self.tenant and unique_field_aliasing:
+            doc_ids_by_unique_field_aliasing = self._get_doc_ids_by_unique_field_aliasing(items, unique_field_aliasing)
+
+            for item in items:
+                item: dict
+                unique_field_aliasing_value = item.get(unique_field_aliasing)
+                doc_id = doc_ids_by_unique_field_aliasing.get(unique_field_aliasing_value)
+                self.model.transform_mirror(item)
+                utcnow = datetime.utcnow
+                item["audit"] = {
+                    "created_at": datetime.utcnow(),
+                    "created_by": self.user,
+                    "updated_at": datetime.utcnow(),
+                    "updated_by": self.user,
+                }
+                if not doc_id:
+                    if "id" in item:
+                        item.pop("id")
+                    bulk_create_items.append(InsertOne(item))
+                else:
+                    bulk_write_items.append(UpdateOne({"_id": doc_id}, {"$set": item}))
+
+            if bulk_write_items:
+                result = self.model._get_collection().bulk_write(bulk_write_items, ordered=False)
+
+            if bulk_create_items:
+                self.model._get_collection().bulk_write(bulk_create_items, ordered=False)
+        else:
+            raise Exception(f"tenant or unique_field_aliasing is not defined")
+
+    def _get_doc_ids_by_unique_field_aliasing(self, items: list[dict], unique_field_aliasing: str):
+        unique_field_aliasing_ids = [
+            item.get(unique_field_aliasing) for item in items if item.get(unique_field_aliasing)
+        ]
+        if unique_field_aliasing_ids:
+            filter_criteria = {f"{unique_field_aliasing}__in": unique_field_aliasing_ids}
+            return {
+                getattr(doc, unique_field_aliasing): doc.id
+                for doc in self.model.objects(**filter_criteria, context__tenant=self.tenant)
+                if hasattr(doc, unique_field_aliasing)
+            }
+        return {}
+
+    def _get_unique_field_aliasing(self):
+        code_field_aliasing = None
+        for field_key, field in self.model._fields.items():
+            if field.unique and hasattr(field, "field_aliasing") and field.db_field:
+                if field.field_aliasing == "id":
+                    return field.db_field
+                elif field.field_aliasing == "code":
+                    code_field_aliasing = field.db_field
+        return code_field_aliasing
 
     def read_mirror_model(self, tenant, data):
         """
@@ -408,11 +506,11 @@ class MirrorModelNoSQL(MirrorModelBase):
         return None
 
 
-def mirror_factory(context, model_path: str):
+def mirror_factory(context, model_path: str, tenant: str = "", user: str = ""):
     return (
-        MirrorModelNoSQL(context, model_path)
+        MirrorModelNoSQL(context, model_path, tenant, user)
         if not hasattr(context, "pg_manager")
-        else MirrorModelSQL(context, model_path)
+        else MirrorModelSQL(context, model_path, tenant, user)
     )
 
 
@@ -504,11 +602,12 @@ class MirrorModelServiceMongo(mirror_model_pb2_grpc.MirrorModelServiceServicer):
         message_response = MessageResponse(mirror_model_pb2.MultiCreateOrMultiUpdateMirrorModelResponse)
         try:
             data = MessageToDict(request)
-            base = mirror_factory(context, data.pop("model_path"))
+            base = mirror_factory(context, data.pop("model_path"), request.context.tenant, request.context.user)
             with ExitStackDocument(
                 document_classes=base.model.reference_list(),
                 db_alias=context.db_name,
             ):
+
                 result = base.multi_create_mirror_model(data.get("data"))
 
                 return message_response.created_response(
@@ -527,16 +626,17 @@ class MirrorModelServiceMongo(mirror_model_pb2_grpc.MirrorModelServiceServicer):
         message_response = MessageResponse(mirror_model_pb2.MultiCreateOrMultiUpdateMirrorModelResponse)
         try:
             data = MessageToDict(request)
-            base = mirror_factory(context, data.pop("model_path"))
+            base = mirror_factory(context, data.pop("model_path"), request.context.tenant, request.context.user)
             with ExitStackDocument(
                 document_classes=base.model.reference_list(),
                 db_alias=context.db_name,
             ):
+
                 result = base.multi_update_mirror_model(data.get("data"))
 
                 return message_response.updated_response(
                     message="Mirror updated successfully",
-                    model_data=convert_model_mongo_to_struct(result),
+                    # model_data=convert_model_mongo_to_struct(result),
                 )
 
         except Exception as e:
@@ -551,7 +651,7 @@ class MirrorModelServiceMongo(mirror_model_pb2_grpc.MirrorModelServiceServicer):
         message_response = MessageResponse(mirror_model_pb2.CreateOrUpdateCreateMirrorResponse)
         try:
             data = MessageToDict(request)
-            base = mirror_factory(context, data.pop("model_path"))
+            base = mirror_factory(context, data.pop("model_path"), request.context.tenant, request.context.user)
             with ExitStackDocument(
                 document_classes=base.model.reference_list(),
                 db_alias=context.db_name,
@@ -560,7 +660,7 @@ class MirrorModelServiceMongo(mirror_model_pb2_grpc.MirrorModelServiceServicer):
 
                 return message_response.updated_response(
                     message="Mirror updated successfully",
-                    model_data=convert_model_mongo_to_struct(result),
+                    # model_data=convert_model_mongo_to_struct(result),
                 )
 
         except Exception as e:
@@ -639,10 +739,13 @@ class MirrorModelServicePostgres(mirror_model_pb2_grpc.MirrorModelServiceService
         try:
             with context.pg_manager as session:
                 data = MessageToDict(request)
-                result = mirror_factory(context, data.pop("model_path")).multi_create_mirror_model(data.get("data"))
+                result = mirror_factory(
+                    context, data.pop("model_path"), request.context.tenant, request.context.user
+                ).multi_create_mirror_model(data.get("data"))
 
                 return message_response.created_response(
-                    message="Mirror model created successfully", model_data=convert_model_alchemy_to_struct(result)
+                    message="Mirror model created successfully",
+                    # model_data=convert_model_alchemy_to_struct(result)
                 )
 
         except (IntegrityError, ValidationError, OperationalError, Exception) as e:
@@ -657,11 +760,14 @@ class MirrorModelServicePostgres(mirror_model_pb2_grpc.MirrorModelServiceService
         try:
             with context.pg_manager as session:
                 data = MessageToDict(request)
-                result = mirror_factory(context, data.pop("model_path")).multi_update_mirror_model(data.get("data"))
+
+                result = mirror_factory(
+                    context, data.pop("model_path"), request.context.tenant, request.context.user
+                ).multi_update_mirror_model(data.get("data"))
 
                 return message_response.updated_response(
                     message="Mirror updated successfully",
-                    model_data=convert_model_alchemy_to_struct(result),
+                    # model_data=convert_model_alchemy_to_struct(result),
                 )
 
         except (IntegrityError, ValidationError, OperationalError, Exception) as e:
