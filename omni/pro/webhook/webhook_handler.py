@@ -108,11 +108,15 @@ class WebhookHandler:
         self._send_webhooks()
 
     def _send_webhooks(self):
+        self.internal_webhooks.sort(key=lambda item: item.get("webhook").priority_level)
         for item in self.internal_webhooks:
             event = item.get("event")
             webhook = item.get("webhook")
             records = item.get("records")
-            print(f"event: {event.name} - webhook: {webhook.name}")
+            print(f"event: {event.name} - webhook: {webhook.name} - priority: {webhook.priority_level}")
+            if event.operation == "delete":
+                # TODO: No estan creados los servicios para eliminar en el mirro_model.py
+                continue
             self._send_internal_webhook(event, webhook, records)
 
     @measure_time
@@ -182,7 +186,6 @@ class WebhookHandler:
         if webhook.method_grpc.class_name == "MirrorModelServiceStub":
             self._set_models_mirror_by_code()
             self._send_data_to_mirror_models(event, records)
-            l = 0
 
     def _send_data_to_mirror_models(self, event: object, records: list[dict]):
         log_send = ""
