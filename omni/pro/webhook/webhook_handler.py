@@ -4,8 +4,9 @@ import time
 from datetime import datetime
 from omni_pro_base.util import nested
 from google.protobuf import json_format
-from google.protobuf.timestamp_pb2 import Timestamp
+from omni_pro_base.http_request import OmniRequest
 from omni.pro.logger import configure_logger
+from omni_pro_grpc.util import format_datetime_to_iso
 from omni_pro_grpc.grpc_function import EventRPCFucntion, WebhookRPCFucntion
 from omni_pro_grpc.grpc_function import MirrorModelRPCFucntion, ModelRPCFucntion
 from omni_pro_grpc.grpc_connector import Event, GRPClient
@@ -16,6 +17,7 @@ from omni.pro.redis import RedisManager
 from mongoengine import Document
 from omni_pro_grpc.util import MessageToDict
 from omni_pro_base.util import eval_condition
+import json
 
 _logger = configure_logger(name=__name__)
 
@@ -42,9 +44,12 @@ class WebhookHandler:
         self.session = None
         self.stack = None
         self.models_mirror_by_code: Dict[str, object] = {}
-        self.paginated_limit = 50000
+        self.paginated_limit_records = 5000
+        self.timeout_pull_mirror_model = 10
+        self.paginated_limit = 30000
         self.internal_webhooks: list[dict] = []
         self.external_webhooks: list[dict] = []
+        self.notification_webhooks: list[dict] = []
 
     @classmethod
     def start_thread(cls, crud_attrs: dict, context: dict):
@@ -99,12 +104,9 @@ class WebhookHandler:
         if not self.webhooks_by_event_id:
             return
 
-        if self.created_attrs:
-            self._set_internal_external_webhooks_by_operation(self.created_attrs, "create")
-        if self.updated_attrs:
-            self._set_internal_external_webhooks_by_operation(self.updated_attrs, "update")
-        if self.deleted_attrs:
-            self._set_internal_external_webhooks_by_operation(self.deleted_attrs, "delete")
+        self._set_internal_external_webhooks_by_operation(self.created_attrs, "create")
+        self._set_internal_external_webhooks_by_operation(self.updated_attrs, "update")
+        self._set_internal_external_webhooks_by_operation(self.deleted_attrs, "delete")
         self._send_webhooks()
 
     def _send_webhooks(self):
@@ -117,7 +119,36 @@ class WebhookHandler:
             if event.operation == "delete":
                 # TODO: No estan creados los servicios para eliminar en el mirro_model.py
                 continue
-            self._send_internal_webhook(event, webhook, records)
+            self._send_internal_webhook(item)
+
+        self.external_webhooks.sort(key=lambda item: item.get("webhook").priority_level)
+        for item in self.external_webhooks:
+            self._send_external_webhook(item)
+
+    def _send_external_webhook(self, item: dict):
+        event: object = item.get("event")
+        webhook: dict = json_format.MessageToDict(item.get("webhook"))
+        records: list[dict] = item.get("records")
+        url = webhook.get("url")
+        url = "----"  # Esto hasta obtener urls de prueba
+        response = OmniRequest.make_request(
+            url,
+            webhook.get("method"),
+            json=records,
+            tipo_auth=webhook.get("auth_type"),
+            auth_params=webhook.get("auth"),
+        )
+        print("GET RESPONSE APP...")
+        response_object = OmniRequest.get_response(response)
+        print(json.dumps(response_object, indent=4))
+        response.raise_for_status()
+
+    def _send_internal_webhook(self, item: dict):
+        event: object = item.get("event")
+        webhook: object = item.get("webhook")
+        records: list[dict] = item.get("records")
+        if webhook.method_grpc.class_name == "MirrorModelServiceStub":
+            self._send_data_to_mirror_models(event, records)
 
     @measure_time
     def _set_internal_external_webhooks_by_operation(self, operation_attrs: dict, operation: str):
@@ -143,66 +174,55 @@ class WebhookHandler:
                             for instance in instances
                         ]
                         for webhook in webhooks:
-                            if webhook.type_webhook == "internal":
-                                records = []
-                                if event_operation == "create":
-                                    records: list[dict] = [
-                                        item
-                                        for item in instances_attrs
-                                        if not webhook.python_code or eval_condition(item, webhook.python_code)
-                                    ]
-                                elif event_operation == "update":
+                            records: list[dict] = [
+                                item
+                                for item in instances_attrs
+                                if not webhook.python_code or eval_condition(item, webhook.python_code)
+                            ]
+                            if event_operation == "update":
+                                if webhook.trigger_fields:
                                     trigger_fields = set([attr.split("-", 1)[-1] for attr in webhook.trigger_fields])
-                                    for record in instances_attrs:
+                                    filter_records = []
+                                    for record in records:
                                         record_id = record.get("id")
                                         modified_fields = data_attrs.get(record_id, set())
                                         if modified_fields & trigger_fields:
-                                            records.append(record)
-
-                                if records:
+                                            filter_records.append(record)
+                                    records = filter_records
+                            if records:
+                                if webhook.type_webhook == "internal":
                                     self.internal_webhooks.append(
                                         {"event": event, "webhook": webhook, "records": records}
                                     )
-
-                            else:
-                                instance_ids = [
-                                    item.get("id")
-                                    for item in instances_attrs
-                                    if not webhook.python_code or eval_condition(item, webhook.python_code)
-                                ]
-                                if instance_ids:
-                                    params = {
-                                        "instance_ids": instance_ids,
-                                        "action_code": code,
-                                        "context": self.context,
-                                        "webhook": MessageToDict(webhook),
-                                    }
-                                    AirflowClientBase(self.tenant).run_dag(
-                                        dag_id=webhook.get("dag_id") or "Signal_Event",
-                                        params=params,
+                                elif webhook.type_webhook == "external":
+                                    self.external_webhooks.append(
+                                        {"event": event, "webhook": webhook, "records": records}
                                     )
-
-    def _send_internal_webhook(self, event: object, webhook: object, records: list[dict]):
-        if webhook.method_grpc.class_name == "MirrorModelServiceStub":
-            self._set_models_mirror_by_code()
-            self._send_data_to_mirror_models(event, records)
+                                elif webhook.type_webhook == "notification":
+                                    self.notification_webhooks.append(
+                                        {"event": event, "webhook": webhook, "records": records}
+                                    )
 
     def _send_data_to_mirror_models(self, event: object, records: list[dict]):
         log_send = ""
         len_records = len(records)
+        self._set_models_mirror_by_code()
         try:
             model_code = event.model.code
             models_mirror: list[object] = self.models_mirror_by_code.get(model_code, [])
             if models_mirror:
                 paginated_records = [
-                    records[i : i + self.paginated_limit] for i in range(0, len(records), self.paginated_limit)
+                    records[i : i + self.paginated_limit_records]
+                    for i in range(0, len(records), self.paginated_limit_records)
                 ]
                 for model_mirror in models_mirror:
-
+                    model_mirror_dict = json_format.MessageToDict(model_mirror)
                     count_items_send = 0
                     for sub_records in paginated_records:
                         items = self._get_model_mirror_items(model_mirror, sub_records)
-                        pull_result: bool = self._pull_mirror_model(model_mirror, items)
+                        pull_result: bool = self.pull_mirror_model(
+                            model_mirror_dict, items, timeout=self.timeout_pull_mirror_model
+                        )
                         if pull_result:
                             count_items_send += len(items)
 
@@ -213,14 +233,17 @@ class WebhookHandler:
 
         except Exception as ex:
             _logger.error(f"_send_data_to_mirror_models:\n{str(ex)}")
-        print(f"\nlog =====> {log_send}")
+        _logger.info(f"Send details:\n{log_send}")
 
-    def _pull_mirror_model(self, model_mirror, items: list[dict], retries=3) -> bool:
-        rpc_mirror = MirrorModelRPCFucntion(self.context, model_mirror.microservice)
+    @measure_time
+    def pull_mirror_model(self, model_mirror: dict, items: list[dict], timeout=0) -> bool:
+        microservice = model_mirror.get("microservice")
+        class_name = model_mirror.get("className")
+        rpc_mirror = MirrorModelRPCFucntion(self.context, microservice, timeout=timeout)
         try:
             response = rpc_mirror.multi_update_model(
                 {
-                    "model_path": model_mirror.class_name,
+                    "model_path": class_name,
                     "data": items,
                     "context": self.context,
                 }
@@ -234,7 +257,7 @@ class WebhookHandler:
             error_message = str(e)
         if error_message:
             _logger.error(
-                f"\nMicroservice = {model_mirror.microservice} - model mirror = {model_mirror.name}, Max retries reached. Could not pull to mirror model.\n message = {error_message}"
+                f"\nMicroservice = {microservice} - model mirror = {model_mirror.get('name')}, Max retries reached. Could not pull to mirror model.\n message = {error_message}"
             )
             # Generar aqui la logica para guardar un logger de excepciones
         return False
@@ -256,61 +279,38 @@ class WebhookHandler:
         return []
 
     @measure_time
-    def _get_model_mirror_items(self, model_mirror: object, original_records: list[dict]) -> list[dict]:
+    def _get_model_mirror_items(self, model_mirror: object, records: list[dict]) -> list[dict]:
 
         field_aliasing_in_mirror: object = self._get_field_aliasing_in_mirror_model(model_mirror)
-
-        if field_aliasing_in_mirror:
-            filter_field_in_mirror_record: str = field_aliasing_in_mirror.code
-            main_field_in_original_record: str = field_aliasing_in_mirror.field_aliasing
-            return self._build_mirror_model_items(
-                filter_field_in_mirror_record, main_field_in_original_record, model_mirror, original_records
-            )
-
-        return []
-
-    def _build_mirror_model_items(
-        self,
-        filter_field_in_mirror_record: str,
-        main_field_in_original_record: str,
-        model_mirror: object,
-        original_records: list[dict],
-    ):
-        mirror_records_by_filter_field: Dict[Any, dict] = {}
-
-        fields = self._get_fields_in_mirror_model(model_mirror)
         items = []
-        for originalRecord in original_records:
-            id_original_record = originalRecord.get(main_field_in_original_record)
-            # mirror_record: dict = mirror_records_by_filter_field.get(id_original_record)
+        if field_aliasing_in_mirror:
+            main_field_in_original_record: str = field_aliasing_in_mirror.field_aliasing
+            mirror_records_by_filter_field: Dict[Any, dict] = {}
 
-            item = {
-                field.code: nested(originalRecord, field.field_aliasing) for field in fields if field.field_aliasing
-            }
+            fields = self._get_fields_in_mirror_model(model_mirror)
+            items = []
+            for record in records:
+                item = {}
+                for field in fields:
+                    if field.field_aliasing:
+                        field_value = nested(record, field.field_aliasing)
+                        if isinstance(field_value, datetime):
+                            field_value = field_value.isoformat()
+                        item[field.code] = field_value
+                persistence_type = model_mirror.persistence_type
+                user = self.user or "admin"
+                if persistence_type == "NO_SQL":
+                    item.update({"context": self.context})
+                elif persistence_type == "SQL":
+                    item.update(
+                        {
+                            "tenant": self.tenant,
+                            "updated_by": user,
+                            "created_by": user,
+                        }
+                    )
 
-            id_mirror_record = None
-
-            persistence_type = model_mirror.persistence_type
-            user = self.user or "admin"
-            if persistence_type == "NO_SQL":
-                item.update({"context": self.context})
-            elif persistence_type == "SQL":
-                item.update(
-                    {
-                        "tenant": self.tenant,
-                        "updated_by": user,
-                        "created_by": user,
-                    }
-                )
-
-            items.append(item)
-
-        # if items:
-        #     # Se añade el nombre del campo por el cual se va a hacer la busqueda de los documentos
-        #     # en la insercicio o el update del microservicio espejo
-        #     items.insert(0, {
-        #         'field_filter':filter_field_in_mirror_record
-        #     })
+                items.append(item)
 
         return items
 
