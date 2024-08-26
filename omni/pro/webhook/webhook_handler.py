@@ -46,6 +46,7 @@ class WebhookHandler:
         self.models_mirror_by_code: Dict[str, object] = {}
         self.paginated_limit_records = 5000
         self.timeout_pull_mirror_model = 10
+        self.timeout_external = 10
         self.paginated_limit = 30000
         self.internal_webhooks: list[dict] = []
         self.external_webhooks: list[dict] = []
@@ -132,24 +133,29 @@ class WebhookHandler:
         event = item.get("event")
         webhook = item.get("webhook")
         records = item.get("records")
-        try:
-            url = webhook.get("url")
-            response = OmniRequest.make_request(
-                url,
-                webhook.get("method"),
-                json=records,
-                tipo_auth=webhook.get("auth_type"),
-                auth_params=webhook.get("auth"),
-            )
-            print("GET RESPONSE APP...")
-            response.raise_for_status()
-            response_object = OmniRequest.get_response(response)
-            print(json.dumps(response_object, indent=4))
-        except Exception as ex:
-            _logger.error(f"send external webhook: {str(ex)}")
-            if self.send_to_queue:
-                # TODO: Logica aqui para enviarlo a cola
-                pass
+        paginated_records = [
+            records[i : i + self.paginated_limit_records] for i in range(0, len(records), self.paginated_limit_records)
+        ]
+        for sub_records in paginated_records:
+            try:
+                url = webhook.get("url")
+                response = OmniRequest.make_request(
+                    url,
+                    webhook.get("method"),
+                    json=sub_records,
+                    tipo_auth=webhook.get("auth_type"),
+                    auth_params=webhook.get("auth"),
+                    timeout=self.timeout_external,
+                )
+                print("GET RESPONSE APP...")
+                response.raise_for_status()
+                response_object = OmniRequest.get_response(response)
+                print(json.dumps(response_object, indent=4))
+            except Exception as ex:
+                _logger.error(f"send external webhook: {str(ex)}")
+                if self.send_to_queue:
+                    # TODO: Logica aqui para enviarlo a cola
+                    pass
 
     def send_internal_webhook(self, item: dict):
         event: dict = item.get("event")
