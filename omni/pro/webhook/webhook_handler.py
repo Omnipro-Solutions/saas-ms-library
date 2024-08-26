@@ -50,6 +50,7 @@ class WebhookHandler:
         self.internal_webhooks: list[dict] = []
         self.external_webhooks: list[dict] = []
         self.notification_webhooks: list[dict] = []
+        self.send_to_queue: bool = False
 
     @classmethod
     def start_thread(cls, crud_attrs: dict, context: dict):
@@ -110,123 +111,76 @@ class WebhookHandler:
         self._send_webhooks()
 
     def _send_webhooks(self):
-        self.internal_webhooks.sort(key=lambda item: item.get("webhook").priority_level)
+        self._sort_webhooks_by_priority_level()
+        self.send_to_queue = True
         for item in self.internal_webhooks:
             event = item.get("event")
-            webhook = item.get("webhook")
-            records = item.get("records")
-            print(f"event: {event.name} - webhook: {webhook.name} - priority: {webhook.priority_level}")
-            if event.operation == "delete":
+            if event.get("operation") == "delete":
                 # TODO: No estan creados los servicios para eliminar en el mirro_model.py
                 continue
-            self._send_internal_webhook(item)
+            self.send_internal_webhook(item)
 
-        self.external_webhooks.sort(key=lambda item: item.get("webhook").priority_level)
         for item in self.external_webhooks:
-            self._send_external_webhook(item)
+            self.send_external_webhook(item)
 
-    def _send_external_webhook(self, item: dict):
-        event: object = item.get("event")
-        webhook: dict = json_format.MessageToDict(item.get("webhook"))
-        records: list[dict] = item.get("records")
-        url = webhook.get("url")
-        url = "----"  # Esto hasta obtener urls de prueba
-        response = OmniRequest.make_request(
-            url,
-            webhook.get("method"),
-            json=records,
-            tipo_auth=webhook.get("auth_type"),
-            auth_params=webhook.get("auth"),
-        )
-        print("GET RESPONSE APP...")
-        response_object = OmniRequest.get_response(response)
-        print(json.dumps(response_object, indent=4))
-        response.raise_for_status()
+    def _sort_webhooks_by_priority_level(self):
+        self.internal_webhooks.sort(key=lambda item: item.get("webhook", {}).get("priority_level"))
+        self.external_webhooks.sort(key=lambda item: item.get("webhook").get("priority_level"))
+        self.notification_webhooks.sort(key=lambda item: item.get("webhook").get("priority_level"))
 
-    def _send_internal_webhook(self, item: dict):
-        event: object = item.get("event")
-        webhook: object = item.get("webhook")
+    def send_external_webhook(self, item: dict):
+        event = item.get("event")
+        webhook = item.get("webhook")
+        records = item.get("records")
+        try:
+            url = webhook.get("url")
+            response = OmniRequest.make_request(
+                url,
+                webhook.get("method"),
+                json=records,
+                tipo_auth=webhook.get("auth_type"),
+                auth_params=webhook.get("auth"),
+            )
+            print("GET RESPONSE APP...")
+            response.raise_for_status()
+            response_object = OmniRequest.get_response(response)
+            print(json.dumps(response_object, indent=4))
+        except Exception as ex:
+            _logger.error(f"send external webhook: {str(ex)}")
+            if self.send_to_queue:
+                # TODO: Logica aqui para enviarlo a cola
+                pass
+
+    def send_internal_webhook(self, item: dict):
+        event: dict = item.get("event")
+        webhook: dict = item.get("webhook")
         records: list[dict] = item.get("records")
-        if webhook.method_grpc.class_name == "MirrorModelServiceStub":
+        if webhook.get("method_grpc", {}).get("class_name") == "MirrorModelServiceStub":
             self._send_data_to_mirror_models(event, records)
 
-    @measure_time
-    def _set_internal_external_webhooks_by_operation(self, operation_attrs: dict, operation: str):
-        for model_name, data_attrs in operation_attrs.items():
-            code = f"{model_name}_{operation}"
-            event: dict = self.event_by_code.get(code)
-            if event:
-                event_operation: str = event.operation
-                webhooks: List[dict] = self.webhooks_by_event_id.get(event.id, [])
-                if webhooks:
-                    # TODO: Aqui organizar los webhooks por priority
-                    if not self.instances_by_model_name_and_id:
-                        self._set_instances_by_model_name_and_id()
-                    instances_in_model_name = self.instances_by_model_name_and_id.get(model_name, {})
-                    model_ids_set = set(data_attrs)
-                    instances: List[object] = [
-                        instance for id, instance in instances_in_model_name.items() if id in model_ids_set
-                    ]
-
-                    if instances:
-                        instances_attrs: List[dict] = [
-                            instance.generate_dict() if isinstance(instance, Document) else instance.model_to_dict()
-                            for instance in instances
-                        ]
-                        for webhook in webhooks:
-                            records: list[dict] = [
-                                item
-                                for item in instances_attrs
-                                if not webhook.python_code or eval_condition(item, webhook.python_code)
-                            ]
-                            if event_operation == "update":
-                                if webhook.trigger_fields:
-                                    trigger_fields = set([attr.split("-", 1)[-1] for attr in webhook.trigger_fields])
-                                    filter_records = []
-                                    for record in records:
-                                        record_id = record.get("id")
-                                        modified_fields = data_attrs.get(record_id, set())
-                                        if modified_fields & trigger_fields:
-                                            filter_records.append(record)
-                                    records = filter_records
-                            if records:
-                                if webhook.type_webhook == "internal":
-                                    self.internal_webhooks.append(
-                                        {"event": event, "webhook": webhook, "records": records}
-                                    )
-                                elif webhook.type_webhook == "external":
-                                    self.external_webhooks.append(
-                                        {"event": event, "webhook": webhook, "records": records}
-                                    )
-                                elif webhook.type_webhook == "notification":
-                                    self.notification_webhooks.append(
-                                        {"event": event, "webhook": webhook, "records": records}
-                                    )
-
-    def _send_data_to_mirror_models(self, event: object, records: list[dict]):
+    def _send_data_to_mirror_models(self, event: dict, records: list[dict]):
         log_send = ""
         len_records = len(records)
         self._set_models_mirror_by_code()
         try:
-            model_code = event.model.code
-            models_mirror: list[object] = self.models_mirror_by_code.get(model_code, [])
+            model_code = event.get("model", {}).get("code")
+            models_mirror: list[dict] = self.models_mirror_by_code.get(model_code, [])
             if models_mirror:
                 paginated_records = [
                     records[i : i + self.paginated_limit_records]
                     for i in range(0, len(records), self.paginated_limit_records)
                 ]
                 for model_mirror in models_mirror:
-                    model_mirror_dict = json_format.MessageToDict(model_mirror)
                     count_items_send = 0
                     for sub_records in paginated_records:
                         items = self._get_model_mirror_items(model_mirror, sub_records)
                         pull_result: bool = self.pull_mirror_model(
-                            model_mirror_dict, items, timeout=self.timeout_pull_mirror_model
+                            model_mirror, items, timeout=self.timeout_pull_mirror_model
                         )
                         if pull_result:
                             count_items_send += len(items)
 
-                    log_send += f"\nMirror microservice: {model_mirror.microservice} - mirror model: {model_mirror.name}- count records = {len_records} - count items pull: {count_items_send}"
+                    log_send += f"\nMirror microservice: {model_mirror.get('microservice')} - mirror model: {model_mirror.get('name')}- count records = {len_records} - count items pull: {count_items_send}"
 
             else:
                 _logger.warning(f"Model mirror with code = {model_code} does not exist")
@@ -238,7 +192,7 @@ class WebhookHandler:
     @measure_time
     def pull_mirror_model(self, model_mirror: dict, items: list[dict], timeout=0) -> bool:
         microservice = model_mirror.get("microservice")
-        class_name = model_mirror.get("className")
+        class_name = model_mirror.get("class_name")
         rpc_mirror = MirrorModelRPCFucntion(self.context, microservice, timeout=timeout)
         try:
             response = rpc_mirror.multi_update_model(
@@ -259,24 +213,85 @@ class WebhookHandler:
             _logger.error(
                 f"\nMicroservice = {microservice} - model mirror = {model_mirror.get('name')}, Max retries reached. Could not pull to mirror model.\n message = {error_message}"
             )
-            # Generar aqui la logica para guardar un logger de excepciones
+            if self.send_to_queue:
+                # TODO: Generar aqui la logica para guardar en la cola
+                pass
         return False
 
-    def _get_model_mirror_items_with_retry(self, model_mirror, sub_records, retries=3):
-        attempt = 0
-        while attempt < retries:
-            try:
-                model_mirror_items = self._get_model_mirror_items(model_mirror, sub_records)
-                return model_mirror_items
-            except Exception as e:
-                attempt += 1
-                _logger.warning(f"Error encountered: {e}. Retrying {attempt}/{retries}...")
-                if attempt >= retries:
-                    _logger.error(
-                        f"\nMicroservice = {model_mirror.microservice} - model mirror = {model_mirror.name}, Max retries reached. Could not get model mirror items."
+    @measure_time
+    def _set_internal_external_webhooks_by_operation(self, operation_attrs: dict, operation: str):
+        for model_name, data_attrs in operation_attrs.items():
+            code = f"{model_name}_{operation}"
+            event: dict = self.event_by_code.get(code)
+            if event:
+                event_operation: str = event.get("operation")
+                webhooks: List[dict] = self.webhooks_by_event_id.get(event.get("id"), [])
+                if webhooks:
+                    if not self.instances_by_model_name_and_id:
+                        self._set_instances_by_model_name_and_id()
+                    instances_in_model_name = self.instances_by_model_name_and_id.get(model_name, {})
+                    model_ids_set = set(data_attrs)
+                    instances: List[object] = [
+                        instance for id, instance in instances_in_model_name.items() if id in model_ids_set
+                    ]
+
+                    if instances:
+                        instances_by_id = {
+                            str(instan.id) if self.type_db == "document" else instan.id: instan for instan in instances
+                        }
+                        instances_attrs: List[dict] = [
+                            instance.generate_dict() if isinstance(instance, Document) else instance.model_to_dict()
+                            for instance in instances
+                        ]
+                        for webhook in webhooks:
+                            records: list[dict] = [
+                                item
+                                for item in instances_attrs
+                                if not webhook.get("python_code") or eval_condition(item, webhook.get("python_code"))
+                            ]
+                            if event_operation == "update":
+                                if webhook.get("trigger_fields"):
+                                    trigger_fields = set(
+                                        [attr.split("-", 1)[-1] for attr in webhook.get("trigger_fields")]
+                                    )
+                                    filter_records = []
+                                    for record in records:
+                                        record_id = record.get("id")
+                                        modified_fields = data_attrs.get(record_id, set())
+                                        if modified_fields & trigger_fields:
+                                            filter_records.append(record)
+                                    records = filter_records
+                            if records:
+                                type_webhook = webhook.get("type_webhook")
+                                if type_webhook == "internal":
+                                    self.internal_webhooks.append(
+                                        {"event": event, "webhook": webhook, "records": records}
+                                    )
+                                elif type_webhook == "external":
+                                    records = self._get_records_from_proto(records, instances_by_id)
+                                    self.external_webhooks.append(
+                                        {"event": event, "webhook": webhook, "records": records}
+                                    )
+                                elif type_webhook == "notification":
+                                    self.notification_webhooks.append(
+                                        {"event": event, "webhook": webhook, "records": records}
+                                    )
+
+    @measure_time
+    def _get_records_from_proto(self, records: list[dict], instances_by_id: Dict[Any, object]) -> list[dict]:
+        records_from_proto = []
+        for record in records:
+            id = record.get("id")
+            instance = instances_by_id.get(id)
+            if instance:
+                try:
+                    instance_proto = instance.to_proto()
+                    records_from_proto.append(
+                        json_format.MessageToDict(instance_proto, preserving_proto_field_name=True)
                     )
-                    # Generar aqui la logica para guardar un logger de excepciones
-        return []
+                except Exception as e:
+                    _logger.error(f"Error converting instance to proto: {e}")
+        return records_from_proto
 
     @measure_time
     def _get_model_mirror_items(self, model_mirror: object, records: list[dict]) -> list[dict]:
@@ -284,20 +299,19 @@ class WebhookHandler:
         field_aliasing_in_mirror: object = self._get_field_aliasing_in_mirror_model(model_mirror)
         items = []
         if field_aliasing_in_mirror:
-            main_field_in_original_record: str = field_aliasing_in_mirror.field_aliasing
-            mirror_records_by_filter_field: Dict[Any, dict] = {}
-
             fields = self._get_fields_in_mirror_model(model_mirror)
             items = []
             for record in records:
                 item = {}
                 for field in fields:
-                    if field.field_aliasing:
-                        field_value = nested(record, field.field_aliasing)
+                    field_aliasing = field.get("field_aliasing")
+                    field_code = field.get("code")
+                    if field_aliasing:
+                        field_value = nested(record, field_aliasing)
                         if isinstance(field_value, datetime):
                             field_value = field_value.isoformat()
-                        item[field.code] = field_value
-                persistence_type = model_mirror.persistence_type
+                        item[field_code] = field_value
+                persistence_type = model_mirror.get("persistence_type")
                 user = self.user or "admin"
                 if persistence_type == "NO_SQL":
                     item.update({"context": self.context})
@@ -315,13 +329,17 @@ class WebhookHandler:
         return items
 
     def _get_fields_in_mirror_model(self, mirror_model):
-        return [field for field in mirror_model.fields if hasattr(field, "field_aliasing") and not ("." in field.code)]
+        return [
+            field
+            for field in mirror_model.get("fields")
+            if "field_aliasing" in field and not ("." in field.get("code"))
+        ]
 
     def _get_field_aliasing_in_mirror_model(self, model_mirror):
         fields = self._get_fields_in_mirror_model(model_mirror)
-        field = next((field for field in fields if field.field_aliasing == "id"), None)
+        field = next((field for field in fields if field.get("field_aliasing") == "id"), None)
         if not field:
-            field = next((field for field in fields if field.field_aliasing == "code"), None)
+            field = next((field for field in fields if field.get("field_aliasing") == "code"), None)
         return field
 
     def _set_instances_by_model_name_and_id(self):
@@ -359,6 +377,13 @@ class WebhookHandler:
         set_data(self.deleted_attrs)
         self.instances_by_model_name_and_id = instances_by_model_name_and_id
 
+    def _instances_convert_datetime_fields_to_iso(self, instances: list[dict]) -> list[dict]:
+        converted_instances = [
+            {key: value.isoformat() if isinstance(value, datetime) else value for key, value in item.items()}
+            for item in instances
+        ]
+        return converted_instances
+
     @measure_time
     def _set_webhooks_by_event_id(
         self,
@@ -373,13 +398,14 @@ class WebhookHandler:
             response, success, _e = self.rpc_webhook.read_webhook(filter)
 
             if success:
-                webhooks = response.webhooks
-                for webhook in webhooks:
+                for webhook in response.webhooks:
                     for event in webhook.events:
                         event_id = event.id
                         if not event_id in webhooks_by_event_id:
                             webhooks_by_event_id[event_id] = []
-                        webhooks_by_event_id[event_id].append(webhook)
+                        webhooks_by_event_id[event_id].append(
+                            json_format.MessageToDict(webhook, preserving_proto_field_name=True)
+                        )
         except Exception as ex:
             _logger.error(f"_set_webhooks_by_event_id: {str(ex)}")
 
@@ -396,8 +422,10 @@ class WebhookHandler:
             }
             response, success, _e = self.rpc_event.read_event(filter_event)
             if success:
-                events = response.events
-                self.event_by_code = {event.code: event for event in events}
+                self.event_by_code = {
+                    event.code: json_format.MessageToDict(event, preserving_proto_field_name=True)
+                    for event in response.events
+                }
         except Exception as ex:
             _logger.error(f"_set_event_by_code: {str(ex)}")
 
@@ -417,20 +445,11 @@ class WebhookHandler:
                         model_code = model.code
                         if not model_code in self.models_mirror_by_code:
                             self.models_mirror_by_code[model_code] = []
-                        self.models_mirror_by_code[model_code].append(model)
+                        self.models_mirror_by_code[model_code].append(
+                            json_format.MessageToDict(model, preserving_proto_field_name=True)
+                        )
             except Exception as ex:
                 _logger.error(f"_set_models_mirror_by_code: {str(ex)}")
-
-    def _get_event_codes(self) -> list[str]:
-        event_codes: list = []
-
-        for model_name in self.created_attrs.keys():
-            event_codes.append(f"{model_name}_create")
-        for model_name in self.updated_attrs.keys():
-            event_codes.append(f"{model_name}_update")
-        for model_name in self.deleted_attrs.keys():
-            event_codes.append(f"{model_name}_delete")
-        return event_codes
 
     def _get_class_by_name(self) -> Dict[str, Type[object]]:
         from omni.pro.models.base import BaseDocument
