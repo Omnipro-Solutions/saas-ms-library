@@ -18,13 +18,14 @@ from mongoengine import Document
 from omni_pro_grpc.util import MessageToDict
 from omni_pro_base.util import eval_condition
 import json
+from copy import deepcopy
 
 _logger = configure_logger(name=__name__)
 
 
 class WebhookHandler:
-    def __init__(self, crud_attrs: dict, context: dict) -> None:
-        self.type_db = context.pop("type_db")
+    def __init__(self, crud_attrs: dict = {}, context: dict = {}) -> None:
+        self.type_db = context.pop("type_db") if "type_db" in context else None
         self.context = context
         self.tenant = context.get("tenant")
         self.user = context.get("user")
@@ -45,12 +46,14 @@ class WebhookHandler:
         self.stack = None
         self.models_mirror_by_code: Dict[str, object] = {}
         self.paginated_limit_records = 5000
+        self.paginated_limit_notification_records = 100
         self.timeout_pull_mirror_model = 10
         self.timeout_external = 10
+        self.timeout_notification = 10
         self.paginated_limit = 30000
-        self.internal_webhooks: list[dict] = []
-        self.external_webhooks: list[dict] = []
-        self.notification_webhooks: list[dict] = []
+        self.internal_webhook_records: list[dict] = []
+        self.external_webhook_records: list[dict] = []
+        self.notification_webhook_records: list[dict] = []
         self.send_to_queue: bool = False
 
     @classmethod
@@ -106,33 +109,74 @@ class WebhookHandler:
         if not self.webhooks_by_event_id:
             return
 
-        self._set_internal_external_webhooks_by_operation(self.created_attrs, "create")
-        self._set_internal_external_webhooks_by_operation(self.updated_attrs, "update")
-        self._set_internal_external_webhooks_by_operation(self.deleted_attrs, "delete")
+        self._set_internal_external_webhook_records_by_operation(self.created_attrs, "create")
+        self._set_internal_external_webhook_records_by_operation(self.updated_attrs, "update")
+        self._set_internal_external_webhook_records_by_operation(self.deleted_attrs, "delete")
         self._send_webhooks()
 
     def _send_webhooks(self):
         self._sort_webhooks_by_priority_level()
         self.send_to_queue = True
-        for item in self.internal_webhooks:
-            event = item.get("event")
-            if event.get("operation") == "delete":
-                # TODO: No estan creados los servicios para eliminar en el mirro_model.py
-                continue
-            self.send_internal_webhook(item)
+        for webhook_entry in self.internal_webhook_records:
+            webhook: dict = webhook_entry.get("webhook")
+            if webhook.get("method_grpc", {}).get("class_name") == "MirrorModelServiceStub":
+                self._build_and_send_records_to_mirror_models(webhook_entry)
 
-        for item in self.external_webhooks:
-            self.send_external_webhook(item)
+        for webhook_entry in self.external_webhook_records:
+            self._send_external_webhook_records(webhook_entry)
+
+        for webhook_entry in self.notification_webhook_records:
+            self._send_notification_webhook_records(webhook_entry)
+
+    def resend_webhook_entry(self, webhook_entry: dict, timeout: float = 0) -> bool:
+        if self.context:
+            model_mirror = webhook_entry.get("model_mirror")
+            if model_mirror:
+                self._send_records_to_mirror_model(webhook_entry, timeout=timeout)
+            else:
+                webhook: dict = webhook_entry.get("webhook")
+                type_webhook = webhook.get("type_webhook")
+
+                if type_webhook == "external":
+                    self._send_external_webhook_records(webhook_entry, timeout=timeout)
+                elif type_webhook == "notification":
+                    self._send_notification_webhook_records(webhook_entry, timeout=timeout)
+        else:
+            raise Exception("Undefined context")
+
+    def _send_notification_webhook_records(self, webhook_entry: dict, timeout: float = 0) -> bool:
+        # Se debe consultar el renderizado enviando los ids
+        # Luego enviar ese dict que devuelve el metodo a la app
+        records = webhook_entry.get("records")
+        webhook = webhook_entry.get("webhook")
+
+        paginated_records = [
+            records[i : i + self.paginated_limit_notification_records]
+            for i in range(0, len(records), self.paginated_limit_notification_records)
+        ]
+        for sub_records in paginated_records:
+            try:
+                if not webhook.get("template_notification"):
+                    raise Exception(f"Webhook without template_notification")
+
+            except Exception as e:
+                message = str(e)
+                _logger.error(f"send notification webhook: {str(e)}")
+                if self.send_to_queue:
+                    # TODO: Logica aqui para enviarlo a cola
+                    webhook_entry["message"] = message
+                else:
+                    raise Exception(message)
+        return True
 
     def _sort_webhooks_by_priority_level(self):
-        self.internal_webhooks.sort(key=lambda item: item.get("webhook", {}).get("priority_level"))
-        self.external_webhooks.sort(key=lambda item: item.get("webhook").get("priority_level"))
-        self.notification_webhooks.sort(key=lambda item: item.get("webhook").get("priority_level"))
+        self.internal_webhook_records.sort(key=lambda item: item.get("webhook", {}).get("priority_level"))
+        self.external_webhook_records.sort(key=lambda item: item.get("webhook").get("priority_level"))
+        self.notification_webhook_records.sort(key=lambda item: item.get("webhook").get("priority_level"))
 
-    def send_external_webhook(self, item: dict):
-        event = item.get("event")
-        webhook = item.get("webhook")
-        records = item.get("records")
+    def _send_external_webhook_records(self, webhook_entry: dict, timeout: float = 0):
+        webhook = webhook_entry.get("webhook")
+        records = webhook_entry.get("records")
         paginated_records = [
             records[i : i + self.paginated_limit_records] for i in range(0, len(records), self.paginated_limit_records)
         ]
@@ -145,26 +189,25 @@ class WebhookHandler:
                     json=sub_records,
                     tipo_auth=webhook.get("auth_type"),
                     auth_params=webhook.get("auth"),
-                    timeout=self.timeout_external,
+                    timeout=timeout or self.timeout_external,
                 )
                 print("GET RESPONSE APP...")
                 response.raise_for_status()
                 response_object = OmniRequest.get_response(response)
                 print(json.dumps(response_object, indent=4))
-            except Exception as ex:
-                _logger.error(f"send external webhook: {str(ex)}")
+            except Exception as e:
+                message = str(e)
+                _logger.error(f"send external webhook: {str(e)}")
                 if self.send_to_queue:
                     # TODO: Logica aqui para enviarlo a cola
-                    pass
+                    webhook_entry["message"] = message
+                    # WebhookHandler(context=self.context).resend_webhook_entry(webhook_entry)
+                else:
+                    raise Exception(message)
 
-    def send_internal_webhook(self, item: dict):
-        event: dict = item.get("event")
-        webhook: dict = item.get("webhook")
-        records: list[dict] = item.get("records")
-        if webhook.get("method_grpc", {}).get("class_name") == "MirrorModelServiceStub":
-            self._send_data_to_mirror_models(event, records)
-
-    def _send_data_to_mirror_models(self, event: dict, records: list[dict]):
+    def _build_and_send_records_to_mirror_models(self, webhook_entry: dict):
+        event: dict = webhook_entry.get("event")
+        records: list[dict] = webhook_entry.get("records")
         log_send = ""
         len_records = len(records)
         self._set_models_mirror_by_code()
@@ -177,55 +220,65 @@ class WebhookHandler:
                     for i in range(0, len(records), self.paginated_limit_records)
                 ]
                 for model_mirror in models_mirror:
-                    count_items_send = 0
+                    webhook_entry_mirror = deepcopy(webhook_entry)
+                    webhook_entry_mirror["model_mirror"] = model_mirror
+                    count_records_send = 0
                     for sub_records in paginated_records:
-                        items = self._get_model_mirror_items(model_mirror, sub_records)
-                        pull_result: bool = self.pull_mirror_model(
-                            model_mirror, items, timeout=self.timeout_pull_mirror_model
+                        mirror_records = self._get_model_mirror_records(model_mirror, sub_records)
+                        webhook_entry_mirror["records"] = mirror_records
+                        pull_result: bool = self._send_records_to_mirror_model(
+                            webhook_entry_mirror, timeout=self.timeout_pull_mirror_model
                         )
                         if pull_result:
-                            count_items_send += len(items)
+                            count_records_send += len(mirror_records)
 
-                    log_send += f"\nMirror microservice: {model_mirror.get('microservice')} - mirror model: {model_mirror.get('name')}- count records = {len_records} - count items pull: {count_items_send}"
+                    log_send += f"\nMirror microservice: {model_mirror.get('microservice')} - mirror model: {model_mirror.get('name')}- count records = {len_records} - count items pull: {count_records_send}"
 
             else:
                 _logger.warning(f"Model mirror with code = {model_code} does not exist")
 
         except Exception as ex:
-            _logger.error(f"_send_data_to_mirror_models:\n{str(ex)}")
+            _logger.error(f"_send_records_to_mirror_models:\n{str(ex)}")
         _logger.info(f"Send details:\n{log_send}")
 
     @measure_time
-    def pull_mirror_model(self, model_mirror: dict, items: list[dict], timeout=0) -> bool:
+    def _send_records_to_mirror_model(self, webhook_entry: dict, timeout=0) -> bool:
+        event = webhook_entry.get("event")
+        model_mirror = webhook_entry.get("model_mirror")
         microservice = model_mirror.get("microservice")
         class_name = model_mirror.get("class_name")
         rpc_mirror = MirrorModelRPCFucntion(self.context, microservice, timeout=timeout)
         try:
-            response = rpc_mirror.multi_update_model(
-                {
-                    "model_path": class_name,
-                    "data": items,
-                    "context": self.context,
-                }
-            )
-            if response.get("response_standard", {}).get("success"):
-                return True
+            if event.get("operation") == "delete":
+                pass
             else:
-                error_message = response.get("response_standard", {}).get("message")
+                response = rpc_mirror.multi_update_model(
+                    {
+                        "model_path": class_name,
+                        "data": webhook_entry.get("records", []),
+                        "context": self.context,
+                    }
+                )
+                if response.get("response_standard", {}).get("success"):
+                    return True
+                else:
+                    raise Exception(response.get("response_standard", {}).get("message"))
 
         except Exception as e:
-            error_message = str(e)
-        if error_message:
+            message = str(e)
             _logger.error(
-                f"\nMicroservice = {microservice} - model mirror = {model_mirror.get('name')}, Max retries reached. Could not pull to mirror model.\n message = {error_message}"
+                f"\nMicroservice = {microservice} - model mirror = {model_mirror.get('name')}, Max retries reached. Could not pull to mirror model.\n message = {str(e)}"
             )
             if self.send_to_queue:
-                # TODO: Generar aqui la logica para guardar en la cola
-                pass
+                webhook_entry["message"] = message
+                # TODO: Enviar a cola
+                # WebhookHandler(context=self.context).resend_webhook_entry(webhook_entry)
+            else:
+                raise Exception(message)
         return False
 
     @measure_time
-    def _set_internal_external_webhooks_by_operation(self, operation_attrs: dict, operation: str):
+    def _set_internal_external_webhook_records_by_operation(self, operation_attrs: dict, operation: str):
         for model_name, data_attrs in operation_attrs.items():
             code = f"{model_name}_{operation}"
             event: dict = self.event_by_code.get(code)
@@ -269,19 +322,14 @@ class WebhookHandler:
                                     records = filter_records
                             if records:
                                 type_webhook = webhook.get("type_webhook")
+                                webhook_entry = {"event": event, "webhook": webhook, "records": records, "message": ""}
                                 if type_webhook == "internal":
-                                    self.internal_webhooks.append(
-                                        {"event": event, "webhook": webhook, "records": records}
-                                    )
+                                    self.internal_webhook_records.append(webhook_entry)
                                 elif type_webhook == "external":
-                                    records = self._get_records_from_proto(records, instances_by_id)
-                                    self.external_webhooks.append(
-                                        {"event": event, "webhook": webhook, "records": records}
-                                    )
+                                    webhook_entry["records"] = self._get_records_from_proto(records, instances_by_id)
+                                    self.external_webhook_records.append(webhook_entry)
                                 elif type_webhook == "notification":
-                                    self.notification_webhooks.append(
-                                        {"event": event, "webhook": webhook, "records": records}
-                                    )
+                                    self.notification_webhook_records.append(webhook_entry)
 
     @measure_time
     def _get_records_from_proto(self, records: list[dict], instances_by_id: Dict[Any, object]) -> list[dict]:
@@ -300,7 +348,7 @@ class WebhookHandler:
         return records_from_proto
 
     @measure_time
-    def _get_model_mirror_items(self, model_mirror: object, records: list[dict]) -> list[dict]:
+    def _get_model_mirror_records(self, model_mirror: object, records: list[dict]) -> list[dict]:
 
         field_aliasing_in_mirror: object = self._get_field_aliasing_in_mirror_model(model_mirror)
         items = []
