@@ -28,6 +28,7 @@ INSTALL_REQUIRES = [
     "newrelic==9.10.0",
     "alembic==1.11.2",
     "blinker==1.7.0",
+    "celery==5.4.0",
 ]
 # with open(HERE / "requirements.txt") as f:
 #     INSTALL_REQUIRES = f.read().splitlines()
