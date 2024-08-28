@@ -22,6 +22,3 @@ class RedisCeleryQueueManager(object):
             backend=f"redis://{conf['host']}:{conf['port']}/{conf['db']}",
         )
         return app
-
-    def send_task(self):
-        pass
