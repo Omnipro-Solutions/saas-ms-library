@@ -14,11 +14,13 @@ from omni.pro.util import measure_time
 from omni.pro.config import Config
 from omni.pro.airflow.airflow_client_base import AirflowClientBase
 from omni.pro.redis import RedisManager
+from omni.pro.celery.celery_redis import CeleryRedis
 from mongoengine import Document
 from omni_pro_grpc.util import MessageToDict
 from omni_pro_base.util import eval_condition
 import json
 from copy import deepcopy
+from celery import Celery
 
 _logger = configure_logger(name=__name__)
 
@@ -55,6 +57,13 @@ class WebhookHandler:
         self.external_webhook_records: list[dict] = []
         self.notification_webhook_records: list[dict] = []
         self.send_to_queue: bool = False
+        self.celery_app: Celery = self._get_celery_app()
+
+    def _get_celery_app(self):
+        try:
+            return CeleryRedis.get_celery_app_by_tenant(self.tenant)
+        except Exception as e:
+            _logger.error(f"{str(e)}")
 
     @classmethod
     def start_thread(cls, crud_attrs: dict, context: dict):
@@ -128,6 +137,28 @@ class WebhookHandler:
         for webhook_entry in self.notification_webhook_records:
             self._send_notification_webhook_records(webhook_entry)
 
+    def _create_celery_task(self, webhook_entry: dict):
+        webhook: dict = webhook_entry.get("webhook", {})
+        kwargs = {"name": webhook.get("name"), "records_count": len(webhook_entry.get("records", []))}
+        model_mirror = webhook_entry.get("model_mirror")
+        if model_mirror:
+            kwargs["microservice"] = model_mirror.get("microservice")
+
+        priority_queue = {
+            1: "critical",
+            2: "high",
+            3: "medium",
+            4: "low",
+            5: "very_low",
+        }
+
+        priority_level: int = webhook.get("priority_level", 3)
+        queue = priority_queue.get(priority_level)
+
+        name = "celery_worker.retry_send_webhook"
+        task = self.celery_app.send_task(name=name, args=[webhook_entry, self.context], kwargs=kwargs, queue=queue)
+        print(f"task ID: {task.id}")
+
     def resend_webhook_entry(self, webhook_entry: dict, timeout: float = 0) -> bool:
         if self.context:
             model_mirror = webhook_entry.get("model_mirror")
@@ -165,6 +196,7 @@ class WebhookHandler:
                 if self.send_to_queue:
                     # TODO: Logica aqui para enviarlo a cola
                     webhook_entry["message"] = message
+                    self._create_celery_task(webhook_entry)
                 else:
                     raise Exception(message)
         return True
@@ -195,13 +227,13 @@ class WebhookHandler:
                 response.raise_for_status()
                 response_object = OmniRequest.get_response(response)
                 print(json.dumps(response_object, indent=4))
+                return True
             except Exception as e:
                 message = str(e)
                 _logger.error(f"send external webhook: {str(e)}")
                 if self.send_to_queue:
-                    # TODO: Logica aqui para enviarlo a cola
                     webhook_entry["message"] = message
-                    # WebhookHandler(context=self.context).resend_webhook_entry(webhook_entry)
+                    self._create_celery_task(webhook_entry)
                 else:
                     raise Exception(message)
 
@@ -250,7 +282,8 @@ class WebhookHandler:
         rpc_mirror = MirrorModelRPCFucntion(self.context, microservice, timeout=timeout)
         try:
             if event.get("operation") == "delete":
-                pass
+                # TODO: Falta añadir logica de eliminacion
+                return True
             else:
                 response = rpc_mirror.multi_update_model(
                     {
@@ -271,8 +304,7 @@ class WebhookHandler:
             )
             if self.send_to_queue:
                 webhook_entry["message"] = message
-                # TODO: Enviar a cola
-                # WebhookHandler(context=self.context).resend_webhook_entry(webhook_entry)
+                self._create_celery_task(webhook_entry)
             else:
                 raise Exception(message)
         return False
