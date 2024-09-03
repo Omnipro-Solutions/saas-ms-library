@@ -43,8 +43,8 @@ from kombu import Queue
 from omni.pro.webhook.webhook_handler import WebhookHandler
 from celery.exceptions import MaxRetriesExceededError
 
-os.environ["CELERY_BROKER"] = "redis://localhost:6379/5"
-os.environ["CELERY_BACKEND"] = "redis://localhost:6379/5"
+# os.environ["CELERY_BROKER"] = "redis://localhost:6379/5"
+# os.environ["CELERY_BACKEND"] = "redis://localhost:6379/5"
 app = Celery(__name__, broker=os.environ.get("CELERY_BROKER"), backend=os.environ.get("CELERY_BACKEND"))
 
 app.conf.task_queues = (
