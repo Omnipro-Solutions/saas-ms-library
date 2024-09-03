@@ -8,7 +8,7 @@ from omni_pro_base.http_request import OmniRequest
 from omni.pro.logger import configure_logger
 from omni_pro_grpc.util import format_datetime_to_iso
 from omni_pro_grpc.grpc_function import EventRPCFucntion, WebhookRPCFucntion
-from omni_pro_grpc.grpc_function import MirrorModelRPCFucntion, ModelRPCFucntion
+from omni_pro_grpc.grpc_function import MirrorModelRPCFucntion, ModelRPCFucntion, TemplateNotificationRPCFucntion
 from omni_pro_grpc.grpc_connector import Event, GRPClient
 from omni.pro.util import measure_time
 from omni.pro.config import Config
@@ -19,7 +19,7 @@ from mongoengine import Document
 from omni_pro_grpc.util import MessageToDict
 from omni_pro_base.util import eval_condition
 import json
-from copy import deepcopy
+from copy import deepcopy, copy
 from celery import Celery
 
 _logger = configure_logger(name=__name__)
@@ -138,26 +138,27 @@ class WebhookHandler:
             self._send_notification_webhook_records(webhook_entry)
 
     def _create_celery_task(self, webhook_entry: dict):
-        webhook: dict = webhook_entry.get("webhook", {})
-        kwargs = {"name": webhook.get("name"), "records_count": len(webhook_entry.get("records", []))}
-        model_mirror = webhook_entry.get("model_mirror")
-        if model_mirror:
-            kwargs["microservice"] = model_mirror.get("microservice")
+        if self.celery_app:
+            webhook: dict = webhook_entry.get("webhook", {})
+            kwargs = {"name": webhook.get("name"), "records_count": len(webhook_entry.get("records", []))}
+            model_mirror = webhook_entry.get("model_mirror")
+            if model_mirror:
+                kwargs["microservice"] = model_mirror.get("microservice")
 
-        priority_queue = {
-            1: "critical",
-            2: "high",
-            3: "medium",
-            4: "low",
-            5: "very_low",
-        }
+            priority_queue = {
+                1: "critical",
+                2: "high",
+                3: "medium",
+                4: "low",
+                5: "very_low",
+            }
 
-        priority_level: int = webhook.get("priority_level", 3)
-        queue = priority_queue.get(priority_level)
+            priority_level: int = webhook.get("priority_level", 3)
+            queue = priority_queue.get(priority_level)
 
-        name = "celery_worker.retry_send_webhook"
-        task = self.celery_app.send_task(name=name, args=[webhook_entry, self.context], kwargs=kwargs, queue=queue)
-        print(f"task ID: {task.id}")
+            name = "celery_worker.retry_send_webhook"
+            task = self.celery_app.send_task(name=name, args=[webhook_entry, self.context], kwargs=kwargs, queue=queue)
+            print(f"task ID: {task.id}")
 
     def resend_webhook_entry(self, webhook_entry: dict, timeout: float = 0) -> bool:
         if self.context:
@@ -180,6 +181,7 @@ class WebhookHandler:
         # Luego enviar ese dict que devuelve el metodo a la app
         records = webhook_entry.get("records")
         webhook = webhook_entry.get("webhook")
+        rpc_template = TemplateNotificationRPCFucntion(self.context, timeout=timeout)
 
         paginated_records = [
             records[i : i + self.paginated_limit_notification_records]
@@ -187,8 +189,27 @@ class WebhookHandler:
         ]
         for sub_records in paginated_records:
             try:
-                if not webhook.get("template_notification"):
+                template_notification = webhook.get("template_notification")
+                if not template_notification:
                     raise Exception(f"Webhook without template_notification")
+
+                model_ids = [str(record.get("id")) for record in sub_records]
+                template_id = template_notification.get("id")
+
+                response = rpc_template.template_notification_render(
+                    {
+                        "id": template_id,
+                        "model_ids": model_ids,
+                        "context": self.context,
+                    }
+                )
+                if response.get("response_standard", {}).get("success"):
+                    webhook_entry_render = copy(webhook_entry)
+                    render_records = list(response.get("render", {}).values())
+                    webhook_entry_render["records"] = render_records
+                    self._send_external_webhook_records(webhook_entry_render, timeout=timeout)
+                else:
+                    raise Exception(response.get("response_standard", {}).get("message"))
 
             except Exception as e:
                 message = str(e)
