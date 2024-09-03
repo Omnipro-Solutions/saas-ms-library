@@ -64,7 +64,7 @@ def retry_send_webhook(self, webhook_entry: dict, context: dict, **kwargs):
         return "Successful"
     except Exception as e:
         retry_count = self.request.retries or 0
-        retry_delay = (2**retry_count) * 10  # example: 10s, 20s, 40s.
+        retry_delay = (2**retry_count) * 30  # example: 10s, 60s, 120s.
         try:
             raise self.retry(exc=e, countdown=retry_delay)
         except MaxRetriesExceededError:

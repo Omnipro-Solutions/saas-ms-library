@@ -215,18 +215,18 @@ class WebhookHandler:
         for sub_records in paginated_records:
             try:
                 url = webhook.get("url")
+                auth = webhook.get("auth")
                 response = OmniRequest.make_request(
                     url,
                     webhook.get("method"),
                     json=sub_records,
                     tipo_auth=webhook.get("auth_type"),
-                    auth_params=webhook.get("auth"),
+                    auth_params=auth,
                     timeout=timeout or self.timeout_external,
                 )
-                print("GET RESPONSE APP...")
                 response.raise_for_status()
-                response_object = OmniRequest.get_response(response)
-                print(json.dumps(response_object, indent=4))
+                # response_object = OmniRequest.get_response(response)
+                # print(json.dumps(response_object, indent=4))
                 return True
             except Exception as e:
                 message = str(e)
