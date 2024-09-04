@@ -67,6 +67,24 @@ class WebhookHandler:
 
     @classmethod
     def start_thread(cls, crud_attrs: dict, context: dict):
+        """
+        Starts a new thread to handle webhook processing if certain CRUD attributes are present.
+
+        This method checks for the presence of "created_attrs", "updated_attrs", or "deleted_attrs"
+        within the provided CRUD attributes dictionary. If any of these attributes exist, and both
+        the "tenant" and "type_db" are defined in the context, a new thread is created to process
+        the webhook via the `WebhookHandler` class. If either "tenant" or "type_db" are missing, an
+        error is logged.
+
+        Args:
+            crud_attrs (dict): A dictionary containing the CRUD attributes ("created_attrs",
+                "updated_attrs", or "deleted_attrs") to be checked.
+            context (dict): A dictionary containing the "tenant" and "type_db" keys for context
+                verification.
+
+        Returns:
+            None
+        """
         if crud_attrs.get("created_attrs") or crud_attrs.get("updated_attrs") or crud_attrs.get("deleted_attrs"):
             if context.get("tenant") and context.get("type_db"):
                 webhook_handler = WebhookHandler(crud_attrs, context)
@@ -76,6 +94,18 @@ class WebhookHandler:
                 _logger.error(f"Tenant or type db is not defined")
 
     def resolve_interface(self):
+        """
+        Resolves the appropriate interface for handling events based on the database type.
+
+        This method determines which type of database to interact with ("sql" or "document") based
+        on the value of `self.type_db`. For an SQL database, it initializes a connection using
+        `PostgresDatabaseManager` and executes events within a session context. For a document-based
+        database, it uses `DatabaseManager` and `ExitStackDocument` to handle events within a document
+        management stack context. Any exceptions during this process are logged as errors.
+
+        Returns:
+            None
+        """
         if self.type_db == "sql":
             try:
                 from omni.pro.database import PostgresDatabaseManager
@@ -84,7 +114,7 @@ class WebhookHandler:
                 pg_manager = PostgresDatabaseManager(**db_params)
                 with pg_manager as session:
                     self.session = session
-                    self.execute_events()
+                    self.process_and_dispatch_webhooks()
 
             except Exception as e:
                 _logger.error(f"resolve_interface sql: {str(e)}")
@@ -103,13 +133,25 @@ class WebhookHandler:
                     db_alias=db_alias,
                 ) as stack:
                     self.stack = stack
-                    self.execute_events()
+                    self.process_and_dispatch_webhooks()
 
             except Exception as e:
                 _logger.error(f"resolve_interface sql: {str(e)}")
 
     @measure_time
-    def execute_events(self):
+    def process_and_dispatch_webhooks(self):
+        """
+        Processes and dispatches webhooks based on CRUD operations and event data.
+
+        This method initiates a short delay to allow for any asynchronous operations to settle.
+        It then sets the internal state for events and associated webhooks using the provided
+        CRUD attributes ("created_attrs", "updated_attrs", and "deleted_attrs"). If the required
+        event or webhook data is not found, the process is halted. Once the internal and external
+        webhook records are established, the method triggers the dispatch of the webhooks.
+
+        Returns:
+            None
+        """
         time.sleep(0.2)
         self._set_event_by_code()
         if not self.event_by_code:
@@ -118,12 +160,24 @@ class WebhookHandler:
         if not self.webhooks_by_event_id:
             return
 
-        self._set_internal_external_webhook_records_by_operation(self.created_attrs, "create")
-        self._set_internal_external_webhook_records_by_operation(self.updated_attrs, "update")
-        self._set_internal_external_webhook_records_by_operation(self.deleted_attrs, "delete")
+        self._configure_webhook_records_by_operation(self.created_attrs, "create")
+        self._configure_webhook_records_by_operation(self.updated_attrs, "update")
+        self._configure_webhook_records_by_operation(self.deleted_attrs, "delete")
         self._send_webhooks()
 
     def _send_webhooks(self):
+        """
+        Sends internal, external, and notification webhooks based on sorted priority levels.
+
+        This method first sorts the webhooks by their priority level. It then iterates over different
+        sets of webhook records (internal, external, and notification) and dispatches them accordingly.
+        For internal webhooks, if the gRPC method class name is "MirrorModelServiceStub", the records
+        are built and sent to mirror models. External and notification webhook records are processed
+        and sent using their respective methods.
+
+        Returns:
+            None
+        """
         self._sort_webhooks_by_priority_level()
         self.send_to_queue = True
         for webhook_entry in self.internal_webhook_records:
@@ -138,6 +192,22 @@ class WebhookHandler:
             self._send_notification_webhook_records(webhook_entry)
 
     def _create_celery_task(self, webhook_entry: dict):
+        """
+        Creates a Celery task to asynchronously process a webhook entry.
+
+        This method checks if a Celery application is available (`self.celery_app`). If so, it
+        prepares the task parameters based on the provided `webhook_entry`, including the webhook
+        name, number of records, and associated microservice (if applicable). The method determines
+        the appropriate priority queue for the task using a predefined priority mapping. It then
+        sends the task to the Celery worker for processing and prints the task ID.
+
+        Args:
+            webhook_entry (dict): A dictionary containing information about the webhook, including
+                its name, records, model mirror, and priority level.
+
+        Returns:
+            None
+        """
         if self.celery_app:
             webhook: dict = webhook_entry.get("webhook", {})
             kwargs = {"name": webhook.get("name"), "records_count": len(webhook_entry.get("records", []))}
@@ -157,8 +227,13 @@ class WebhookHandler:
             queue = priority_queue.get(priority_level)
 
             name = "celery_worker.retry_send_webhook"
-            task = self.celery_app.send_task(name=name, args=[webhook_entry, self.context], kwargs=kwargs, queue=queue)
-            print(f"task ID: {task.id}")
+            try:
+                task = self.celery_app.send_task(
+                    name=name, args=[webhook_entry, self.context], kwargs=kwargs, queue=queue
+                )
+                _logger.info(f"task ID: {task.id}")
+            except Exception as e:
+                _logger.error(str(e))
 
     def resend_webhook_entry(self, webhook_entry: dict, timeout: float = 0) -> bool:
         if self.context:
@@ -177,8 +252,25 @@ class WebhookHandler:
             raise Exception("Undefined context")
 
     def _send_notification_webhook_records(self, webhook_entry: dict, timeout: float = 0) -> bool:
-        # Se debe consultar el renderizado enviando los ids
-        # Luego enviar ese dict que devuelve el metodo a la app
+        """
+        Sends notification webhook records using RPC and handles errors or retries via a queue.
+
+        This method processes notification webhook records by dividing them into paginated sublists
+        and rendering each group using a template. The rendered records are then sent as external
+        webhooks. If rendering fails or an exception occurs, it logs the error and, depending on the
+        configuration, either raises an exception or creates a Celery task to handle the retry.
+
+        Args:
+            webhook_entry (dict): A dictionary containing the webhook data, including records and
+                the template notification details.
+            timeout (float, optional): The timeout duration for the RPC call. Defaults to 0.
+
+        Returns:
+            bool: True if all notification webhook records are processed successfully.
+
+        Raises:
+            Exception: If the process fails and `send_to_queue` is not enabled.
+        """
         records = webhook_entry.get("records")
         webhook = webhook_entry.get("webhook")
         rpc_template = TemplateNotificationRPCFucntion(self.context, timeout=timeout)
@@ -215,7 +307,6 @@ class WebhookHandler:
                 message = str(e)
                 _logger.error(f"send notification webhook: {str(e)}")
                 if self.send_to_queue:
-                    # TODO: Logica aqui para enviarlo a cola
                     webhook_entry["message"] = message
                     self._create_celery_task(webhook_entry)
                 else:
@@ -228,6 +319,25 @@ class WebhookHandler:
         self.notification_webhook_records.sort(key=lambda item: item.get("webhook").get("priority_level"))
 
     def _send_external_webhook_records(self, webhook_entry: dict, timeout: float = 0):
+        """
+        Sends external webhook records to a specified URL with pagination and handles errors or retries.
+
+        This method divides the external webhook records into paginated sublists and sends each group
+        to the specified URL using the `OmniRequest.make_request` method. If an error occurs during the
+        request, it logs the error and, depending on the configuration, either raises an exception or
+        creates a Celery task to handle the retry.
+
+        Args:
+            webhook_entry (dict): A dictionary containing the webhook data, including the URL, method,
+                authentication details, and records to be sent.
+            timeout (float, optional): The timeout duration for the request. Defaults to 0.
+
+        Returns:
+            bool: True if the external webhook records are successfully sent.
+
+        Raises:
+            Exception: If the process fails and `send_to_queue` is not enabled.
+        """
         webhook = webhook_entry.get("webhook")
         records = webhook_entry.get("records")
         paginated_records = [
@@ -246,8 +356,6 @@ class WebhookHandler:
                     timeout=timeout or self.timeout_external,
                 )
                 response.raise_for_status()
-                # response_object = OmniRequest.get_response(response)
-                # print(json.dumps(response_object, indent=4))
                 return True
             except Exception as e:
                 message = str(e)
@@ -259,6 +367,20 @@ class WebhookHandler:
                     raise Exception(message)
 
     def _build_and_send_records_to_mirror_models(self, webhook_entry: dict):
+        """
+        Builds and sends records to mirror models based on the webhook entry data.
+
+        This method retrieves mirror models associated with a specific event model code and sends
+        paginated records to each mirror model. It logs details about the number of records sent
+        and any issues encountered during the process. If no mirror models are found for the event
+        model code, a warning is logged.
+
+        Args:
+            webhook_entry (dict): A dictionary containing event and record data to be sent to mirror models.
+
+        Returns:
+            None
+        """
         event: dict = webhook_entry.get("event")
         records: list[dict] = webhook_entry.get("records")
         log_send = ""
@@ -277,7 +399,7 @@ class WebhookHandler:
                     webhook_entry_mirror["model_mirror"] = model_mirror
                     count_records_send = 0
                     for sub_records in paginated_records:
-                        mirror_records = self._get_model_mirror_records(model_mirror, sub_records)
+                        mirror_records = self._transforms_model_mirror_records(model_mirror, sub_records)
                         webhook_entry_mirror["records"] = mirror_records
                         pull_result: bool = self._send_records_to_mirror_model(
                             webhook_entry_mirror, timeout=self.timeout_pull_mirror_model
@@ -296,6 +418,26 @@ class WebhookHandler:
 
     @measure_time
     def _send_records_to_mirror_model(self, webhook_entry: dict, timeout=0) -> bool:
+        """
+        Sends records to a mirror model using RPC and handles errors or retries.
+
+        This method checks the operation type specified in the event and sends records to the mirror model
+        via an RPC call. If the operation is "delete", it currently does nothing but is marked for future
+        implementation. For other operations, it performs a multi-update on the mirror model. If the RPC
+        call is successful, it returns True. If an error occurs or the response indicates failure, it logs
+        the error and, depending on the configuration, either retries the operation by creating a Celery task
+        or raises an exception.
+
+        Args:
+            webhook_entry (dict): A dictionary containing event data, model mirror details, and records to be sent.
+            timeout (int, optional): The timeout duration for the RPC call. Defaults to 0.
+
+        Returns:
+            bool: True if the records are successfully sent to the mirror model, False otherwise.
+
+        Raises:
+            Exception: If the process fails and `send_to_queue` is not enabled.
+        """
         event = webhook_entry.get("event")
         model_mirror = webhook_entry.get("model_mirror")
         microservice = model_mirror.get("microservice")
@@ -331,7 +473,22 @@ class WebhookHandler:
         return False
 
     @measure_time
-    def _set_internal_external_webhook_records_by_operation(self, operation_attrs: dict, operation: str):
+    def _configure_webhook_records_by_operation(self, operation_attrs: dict, operation: str):
+        """
+        Configures webhook records based on the operation type and attributes.
+
+        This method processes records according to the specified operation (create, update, or delete)
+        and the associated attributes. It sets up webhook entries for internal, external, and notification
+        webhooks based on the event data, operation, and conditions specified in the webhooks. Records are
+        filtered and grouped by the type of webhook and then stored in the respective lists.
+
+        Args:
+            operation_attrs (dict): A dictionary containing the attributes for each model associated with the operation.
+            operation (str): The type of operation ("create", "update", or "delete").
+
+        Returns:
+            None
+        """
         for model_name, data_attrs in operation_attrs.items():
             code = f"{model_name}_{operation}"
             event: dict = self.event_by_code.get(code)
@@ -401,7 +558,21 @@ class WebhookHandler:
         return records_from_proto
 
     @measure_time
-    def _get_model_mirror_records(self, model_mirror: object, records: list[dict]) -> list[dict]:
+    def _transforms_model_mirror_records(self, model_mirror: object, records: list[dict]) -> list[dict]:
+        """
+        Transforms records into the format required by the mirror model.
+
+        This method maps the fields of each record to the mirror model's field aliases and applies necessary
+        transformations such as converting datetime values to ISO format. It also adds metadata based on the
+        persistence type of the mirror model (e.g., "NO_SQL" or "SQL").
+
+        Args:
+            model_mirror (object): The mirror model object containing field aliasing and persistence type information.
+            records (list[dict]): A list of records to be transformed.
+
+        Returns:
+            list[dict]: A list of transformed records formatted according to the mirror model's requirements.
+        """
 
         field_aliasing_in_mirror: object = self._get_field_aliasing_in_mirror_model(model_mirror)
         items = []
@@ -559,6 +730,16 @@ class WebhookHandler:
                 _logger.error(f"_set_models_mirror_by_code: {str(ex)}")
 
     def _get_class_by_name(self) -> Dict[str, Type[object]]:
+        """
+        Retrieves a dictionary mapping collection or table names to their respective class types.
+
+        Depending on the database type, this method returns a dictionary where the keys are the names of the
+        collections or tables and the values are the corresponding class types. For document databases, it
+        uses `BaseDocument` subclasses, and for SQL databases, it uses classes from the SQLAlchemy registry.
+
+        Returns:
+            Dict[str, Type[object]]: A dictionary mapping collection or table names to their class types.
+        """
         from omni.pro.models.base import BaseDocument
         from omni.pro.models.base import BaseModel
 
