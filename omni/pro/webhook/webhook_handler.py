@@ -226,7 +226,7 @@ class WebhookHandler:
             priority_level: int = webhook.get("priority_level", 3)
             queue = priority_queue.get(priority_level)
 
-            name = "celery_worker.retry_send_webhook"
+            name = "retry_send_webhook"
             try:
                 task = self.celery_app.send_task(
                     name=name, args=[webhook_entry, self.context], kwargs=kwargs, queue=queue
