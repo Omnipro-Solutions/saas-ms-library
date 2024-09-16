@@ -8,6 +8,8 @@ from omni.pro.response import MessageResponse
 from omni_pro_base.logger import LoggerTraceback, configure_logger
 from omni_pro_grpc.common import base_pb2
 from pymongo import UpdateOne
+import ast
+import time
 
 logger = configure_logger(name=__name__)
 
@@ -104,53 +106,91 @@ class DatabaseManager(object):
         str_filter: str = None,
     ) -> tuple[list, int]:
         """
+        Recupera una lista de documentos basada en los filtros y la paginación proporcionados.
+
         Parameters:
-        fields (list): Optional list of fields to retrieve from the documents.
-        filter (dict): Optional dictionary containing filter criteria for the query.
-        group_by (str): Optional field to group results by.
-        paginated (dict): Optional dictionary containing pagination information.
-        sort_by (list): Optional list of fields to sort results by.
+        fields (list): Lista opcional de campos a recuperar.
+        filter (dict): Diccionario opcional con criterios de filtrado.
+        group_by (str): Campo opcional para agrupar resultados.
+        paginated (dict): Diccionario opcional con información de paginación.
+        sort_by (list): Lista opcional de campos para ordenar resultados.
 
         Returns:
-        list: A list of documents matching the specified criteria.
+        tuple: Una lista de documentos que coinciden con los criterios especificados y el conteo total.
         """
-        # Filter documents based on criteria provided
+        start_time = time.time()
+        
+        documents = []
+        total_count = 0
+
+        # Convertir filtro de string a diccionario si está presente
         str_filter = str(str_filter).replace("true", "True").replace("false", "False")
-        filter_conditions = ast.literal_eval(str_filter) if str_filter else []
-        if filter_conditions and self._is_reference_in_filter(
-            document_class=document_class, filter_conditions=filter_conditions
-        ):
+        filter_conditions = ast.literal_eval(str_filter) if str_filter else {}
+        
+        # Agregar el filtro por tenant
+        filter_cursor = {"context.tenant": tenant}
+
+        # Verificar si el filtro contiene referencias y si se debe usar _list_documents
+        if filter_conditions and self._is_reference_in_filter(document_class=document_class, filter_conditions=filter_conditions):
+            # Si hay referencias, llamar a _list_documents
             query_set = self._list_documents(tenant, filter_conditions, None, document_class, paginated, sort_by)
             return query_set, len(query_set)
 
-        if filter:
-            query_set = document_class.objects(context__tenant=tenant).filter(__raw__=filter)
-        else:
-            query_set = document_class.objects(context__tenant=tenant)
+        # Manejar el filtro si está presente
+        collection = document_class._get_collection()
+        with collection.database.client.start_session() as session:
+            try:
+                # Si no hay filtros complejos, trabajar con el cursor de PyMongo
+                if filter:
+                    query_set = document_class.objects(context__tenant=tenant).filter(__raw__=filter)
+                else:
+                    query_set = collection.find(filter_cursor, session=session, no_cursor_timeout=True).batch_size(100)
 
-        # Only retrieve specified fields
-        if fields:
-            query_set = query_set.only(*fields)
+                # Aplicar los campos especificados si existen
+                if fields:
+                    query_set = query_set.only(*fields)
+                    
+                if group_by:
+                    query_set = query_set.only(*fields)
+                    
+                # Aplicar paginación si está presente
+                if paginated:
+                    page = int(paginated.get("page") or 1)
+                    per_page = int(paginated.get("per_page") or 10)
+                    start = (page - 1) * per_page
+                    end = start + per_page
+                    query_set = query_set[start:end]
 
-        # Group results by specified field
-        if group_by:
-            query_set = query_set.group_by(group_by)
+                # Aplicar ordenamiento si está presente
+                if sort_by:
+                    query_set = query_set.order_by(*sort_by)
 
-        # Paginate results based on criteria provided
-        if paginated:
-            page = int(paginated.get("page") or 1)
-            per_page = int(paginated.get("per_page") or 10)
-            start = (page - 1) * per_page
-            end = start + per_page
-            query_set = query_set[start:end]
+                # Procesar los documentos del cursor si es PyMongo
+                if not isinstance(query_set, list) and not hasattr(query_set, 'count'):
+                    for doc in query_set:
+                        documents.append(document_class._from_son(doc))
 
-        # Sort results based on criteria provided
-        if sort_by:
-            query_set = query_set.order_by(*sort_by)
+                    total_count = collection.count_documents(filter_cursor, session=session)
+                    # # Usar agregación para contar el total de documentos coincidentes
+                    # pipeline = [
+                    #     {"$match": filter_cursor}, 
+                    #     {"$count": "total"}  
+                    # ]
+                    # result = list(collection.aggregate(pipeline, session=session))
+                    # total_count = result[0]["total"] if result else 0
+                    # total_count = collection.count_documents(filter_conditions, session=session)
+                else:
+                    documents = list(query_set)
+                    total_count = query_set.count()
 
-        # Return list of documents matching the specified criteria and total count of documents
-        return list(query_set), query_set.count()
+            except Exception as e:
+                print(f"Error occurred during query execution: {e}")
+            finally:
+                elapsed_time = time.time() - start_time
+                print(f"Elapsed time: {elapsed_time}")
 
+        return documents, total_count
+    
     def _is_reference_in_filter(self, document_class, filter_conditions: list):
         for condition in filter_conditions:
             if isinstance(condition, tuple):
