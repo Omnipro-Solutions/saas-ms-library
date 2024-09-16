@@ -1,4 +1,5 @@
 import ast
+import time
 
 import mongoengine as mongo
 from bson import ObjectId
@@ -8,8 +9,6 @@ from omni.pro.response import MessageResponse
 from omni_pro_base.logger import LoggerTraceback, configure_logger
 from omni_pro_grpc.common import base_pb2
 from pymongo import UpdateOne
-import ast
-import time
 
 logger = configure_logger(name=__name__)
 
@@ -119,19 +118,21 @@ class DatabaseManager(object):
         tuple: Una lista de documentos que coinciden con los criterios especificados y el conteo total.
         """
         start_time = time.time()
-        
+
         documents = []
         total_count = 0
 
         # Convertir filtro de string a diccionario si está presente
         str_filter = str(str_filter).replace("true", "True").replace("false", "False")
         filter_conditions = ast.literal_eval(str_filter) if str_filter else {}
-        
+
         # Agregar el filtro por tenant
         filter_cursor = {"context.tenant": tenant}
 
         # Verificar si el filtro contiene referencias y si se debe usar _list_documents
-        if filter_conditions and self._is_reference_in_filter(document_class=document_class, filter_conditions=filter_conditions):
+        if filter_conditions and self._is_reference_in_filter(
+            document_class=document_class, filter_conditions=filter_conditions
+        ):
             # Si hay referencias, llamar a _list_documents
             query_set = self._list_documents(tenant, filter_conditions, None, document_class, paginated, sort_by)
             return query_set, len(query_set)
@@ -149,10 +150,10 @@ class DatabaseManager(object):
                 # Aplicar los campos especificados si existen
                 if fields:
                     query_set = query_set.only(*fields)
-                    
+
                 if group_by:
-                    query_set = query_set.only(*fields)
-                    
+                    query_set = query_set.group_by(group_by)
+
                 # Aplicar paginación si está presente
                 if paginated:
                     page = int(paginated.get("page") or 1)
@@ -163,22 +164,18 @@ class DatabaseManager(object):
 
                 # Aplicar ordenamiento si está presente
                 if sort_by:
-                    query_set = query_set.order_by(*sort_by)
+                    if hasattr(query_set, "order_by"):
+                        query_set = query_set.order_by(*sort_by)
+                    elif hasattr(query_set, "sort"):
+                        sort_criteria = [(field.lstrip("-"), -1 if field.startswith("-") else 1) for field in sort_by]
+                        query_set = query_set.sort(sort_criteria)
 
                 # Procesar los documentos del cursor si es PyMongo
-                if not isinstance(query_set, list) and not hasattr(query_set, 'count'):
+                if not isinstance(query_set, list) and not hasattr(query_set, "count"):
                     for doc in query_set:
                         documents.append(document_class._from_son(doc))
 
                     total_count = collection.count_documents(filter_cursor, session=session)
-                    # # Usar agregación para contar el total de documentos coincidentes
-                    # pipeline = [
-                    #     {"$match": filter_cursor}, 
-                    #     {"$count": "total"}  
-                    # ]
-                    # result = list(collection.aggregate(pipeline, session=session))
-                    # total_count = result[0]["total"] if result else 0
-                    # total_count = collection.count_documents(filter_conditions, session=session)
                 else:
                     documents = list(query_set)
                     total_count = query_set.count()
@@ -190,7 +187,7 @@ class DatabaseManager(object):
                 print(f"Elapsed time: {elapsed_time}")
 
         return documents, total_count
-    
+
     def _is_reference_in_filter(self, document_class, filter_conditions: list):
         for condition in filter_conditions:
             if isinstance(condition, tuple):
