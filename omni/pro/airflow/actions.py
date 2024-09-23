@@ -61,14 +61,20 @@ class ActionToAirflow(object):
                     instance_pj = (
                         instance.generate_dict() if isinstance(instance, Document) else instance.model_to_dict()
                     )
+                    instance_proto = None
                     for webhook in webhooks:
 
                         if event.operation == "update" and not modified_fields & set(webhook.trigger_fields):
                             continue
 
                         if eval_condition(instance_pj, webhook.python_code):
+                            if webhook.type_webhook != "internal":
+                                try:
+                                    instance_proto = instance.to_proto()
+                                except Exception as e:
+                                    logger.error(f"Error converting instance to proto: {e}")
                             params = {
-                                "instance": instance_pj,
+                                "instance": MessageToDict(instance_proto) if instance_proto else instance_pj,
                                 "action_code": action_code,
                                 "context": context,
                                 "webhook": MessageToDict(webhook),
@@ -77,5 +83,6 @@ class ActionToAirflow(object):
                                 dag_id=webhook.dag_id or "Signal_Event",
                                 params=params,
                             )
+                            instance_proto = None
         except Exception as e:
             logger.error(f"Error sending to Airflow: {e}")

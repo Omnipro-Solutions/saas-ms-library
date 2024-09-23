@@ -198,7 +198,7 @@ class Descriptor(object):
 
             if isinstance(column.type, Enum):
                 column_info["options"] = [
-                    {"code": x.value, "name": to_camel_case(x.value)} for x in column.type.enum_class
+                    {"code": x.name, "name": to_camel_case(x.value)} for x in column.type.enum_class
                 ]
 
             if column.foreign_keys:
@@ -221,6 +221,7 @@ class Descriptor(object):
                     "relation": {"name": relation.entity.class_.__name__},
                     "is_exportable": False,
                     "is_importable": False,
+                    "is_filterable": False,
                 }
                 description["fields"].append(relation_info)
 

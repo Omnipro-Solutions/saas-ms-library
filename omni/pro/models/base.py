@@ -15,7 +15,11 @@ from mongoengine import (
     signals,
 )
 from omni.pro.airflow.actions import ActionToAirflow
+from omni.pro.config import Config
+from omni.pro.logger import configure_logger
+from omni.pro.util import measure_time
 from omni.pro.database.sqlalchemy import mapped_column
+from omni.pro.database.postgres import CustomSession
 from omni_pro_grpc.common.base_pb2 import Context as ContextProto
 from omni_pro_grpc.common.base_pb2 import Object as ObjectProto
 from omni_pro_grpc.common.base_pb2 import ObjectAudit as AuditProto
@@ -23,6 +27,9 @@ from sqlalchemy import Boolean, DateTime, String, event, inspect
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import Mapped, declared_attr
+from sqlalchemy.orm.session import Session
+
+_logger = configure_logger(__name__)
 
 
 class BaseEmbeddedDocument(EmbeddedDocument):
@@ -52,7 +59,7 @@ class BaseObjectEmbeddedDocument(BaseEmbeddedDocument):
 class Audit(BaseEmbeddedDocument):
     created_at = DateTimeField(default=datetime.utcnow, is_importable=False)
     created_by = StringField(is_importable=False)
-    updated_at = DateTimeField(is_importable=False)
+    updated_at = DateTimeField(default=datetime.utcnow, is_importable=False)
     updated_by = StringField(is_importable=False)
     deleted_at = DateTimeField(is_importable=False)
     deleted_by = StringField(is_importable=False)
@@ -94,6 +101,13 @@ class BaseDocument(Document):
         "strict": False,
     }
 
+    def __init__(self, *args, **kwargs):
+        super(BaseDocument, self).__init__(*args, **kwargs)
+        if self.pk:
+            self._initial_data = self.to_mongo().to_dict()
+        else:
+            self._initial_data = {}
+
     @classmethod
     def __init_subclass__(cls, **kwargs):
         super().__init_subclass__(**kwargs)
@@ -126,6 +140,12 @@ class BaseDocument(Document):
         self.audit.updated_at = datetime.utcnow()
         return super().save(*args, **kwargs)
 
+    def update(self, **kwargs):
+        res = super().update(**kwargs)
+        if kwargs and isinstance(kwargs, dict):
+            self.validate_change_fields(set(kwargs.keys()))
+        return res
+
     def to_proto(self, *args, **kwargs):
         raise NotImplementedError
 
@@ -134,32 +154,34 @@ class BaseDocument(Document):
         return [cls]
 
     @classmethod
+    @measure_time
     def post_save(cls, sender, document, **kwargs):
-        if document.__is_replic_table__:  # Ignore replic tables
-            return
-        # identify if the object is a new instance or an existing one
-        if kwargs.get("created", False):
-            ActionToAirflow.send_to_airflow(
-                cls,
-                document,
-                action="create",
-                context={"tenant": document.context.tenant, "user": document.context.user},
-            )
-        elif document._changed_fields:
-            ActionToAirflow.send_to_airflow(
-                cls,
-                document,
-                action="update",
-                context={"tenant": document.context.tenant, "user": document.context.user},
-            )
+        _logger.info(f"MONGO PROCESS_WEBHOOK{Config.PROCESS_WEBHOOK}")  # TODO: Remove this line
+        if Config.PROCESS_WEBHOOK:  # Ignore if the process webhook is disabled
+            if document.__is_replic_table__:  # Ignore replic tables
+                return
+            # identify if the object is a new instance or an existing one
+            if kwargs.get("created", False):
+                document.assign_crud_attrs_to_stack("create")
+            else:
+                document.validate_change_fields()
+        return
 
     @classmethod
+    @measure_time
     def post_delete(cls, sender, document, **kwargs):
-        if document.__is_replic_table__:  # Ignore replic tables
-            return
-        ActionToAirflow.send_to_airflow(
-            cls, document, action="delete", context={"tenant": document.context.tenant, "user": document.context.user}
-        )
+        _logger.info(f"MONGO PROCESS_WEBHOOK{Config.PROCESS_WEBHOOK}")  # TODO: Remove this line
+        if Config.PROCESS_WEBHOOK:  # Ignore if the process webhook is disabled
+            if document.__is_replic_table__:  # Ignore replic tables
+                return
+            document.assign_crud_attrs_to_stack("delete")
+            # ActionToAirflow.send_to_airflow(
+            #     cls,
+            #     document,
+            #     action="delete",
+            #     context={"tenant": document.context.tenant, "user": document.context.user},
+            # )
+        return
 
     @classmethod
     def transform_mirror(cls, data: object):
@@ -170,6 +192,56 @@ class BaseDocument(Document):
 
         """
         pass
+
+    def assign_crud_attrs_to_stack(self, action: str, changed_fields: set = None):
+
+        model_name = self._collection.name
+        instance = self
+        instance_id = str(instance.id)
+
+        if action == "update" and hasattr(instance, "updated_attrs"):
+            if changed_fields:
+                if not model_name in instance.updated_attrs:
+                    instance.updated_attrs[model_name] = {}
+                if not instance_id in instance.updated_attrs[model_name]:
+                    instance.updated_attrs[model_name][instance_id] = set()
+                instance.updated_attrs[model_name][instance_id] = (
+                    instance.updated_attrs[model_name][instance_id] | changed_fields
+                )
+        elif action == "create" and hasattr(instance, "created_attrs"):
+            if not model_name in instance.created_attrs:
+                instance.created_attrs[model_name] = []
+            instance.created_attrs[model_name].append(instance_id)
+        elif action == "delete" and hasattr(instance, "deleted_attrs"):
+            if not model_name in instance.deleted_attrs:
+                instance.deleted_attrs[model_name] = []
+            instance.deleted_attrs[model_name].append(instance_id)
+
+    def validate_change_fields(self, changed_fields_in_update={}):
+        other_changed_fields = self._detect_other_changed_fields()
+        changed_fields = set(self._changed_fields) | set(other_changed_fields) | set(changed_fields_in_update)
+        if changed_fields:
+            self.assign_crud_attrs_to_stack("update", changed_fields)
+
+    def _detect_other_changed_fields(self):
+        changes = []
+        updated_data = self.to_mongo().to_dict()
+        for field_name, field_type in self._fields.items():
+            if field_name in ["context", "audit", "created_attrs", "updated_attrs", "deleted_attrs"]:
+                continue
+            original_value = self._initial_data.get(field_name)
+            updated_value = updated_data.get(field_name)
+
+            if isinstance(original_value, dict) and isinstance(updated_value, dict):
+                changed_keys = {
+                    key
+                    for key in set(original_value) | set(updated_value)
+                    if original_value.get(key) != updated_value.get(key)
+                }
+                for key in changed_keys:
+                    changes.append(f"{field_name}.{key}")
+
+        return set(changes)
 
 
 class BaseAuditEmbeddedDocument(BaseEmbeddedDocument):
@@ -314,6 +386,24 @@ class Base:
         session.flush()
         return self
 
+    @classmethod
+    def bulk_insert(cls, session: Session, items: list[dict], field_name: str = None, field_value=None):
+        session.bulk_insert_mappings(cls, items)
+        session.flush()
+        if field_name and hasattr(cls, field_name):
+            field_attr = getattr(cls, field_name)
+            return session.query(cls).filter(field_attr == field_value).all()
+        return []
+
+    @classmethod
+    def bulk_update(cls, session: Session, items: list[dict], field_name: str = None, field_value=None):
+        session.bulk_update_mappings(cls, items)
+        session.flush()
+        if field_name and hasattr(cls, field_name):
+            field_attr = getattr(cls, field_name)
+            return session.query(cls).filter(field_attr == field_value).all()
+        return []
+
     def update(self, session):
         """
         Flush the changes made to the current instance to the database through the provided session.
@@ -422,33 +512,105 @@ class Base:
         """
         pass
 
+    def assign_crud_attrs_to_session(self, action: str):
+        """
+        Assigns CRUD attributes to the current session based on the action performed on an instance.
+
+        This method updates the `updated_attrs`, `created_attrs`, or `deleted_attrs` dictionaries in the
+        current session based on the specified action (create, update, delete). It tracks the changes made
+        to an instance and stores the modified fields or instance IDs in the appropriate attribute dictionary.
+
+        Parameters:
+
+            action (str): The CRUD action performed. It can be "create", "update", or "delete".
+            **kwargs: Additional keyword arguments containing the fields that were modified during an update action.
+
+        Behavior:
+            - For "update" actions:
+                - Identifies the modified fields using the instance's attribute history.
+                - Updates the `updated_attrs` dictionary in the session with the modified fields for the instance.
+            - For "create" actions:
+                - Adds the instance ID to the `created_attrs` dictionary in the session.
+            - For "delete" actions:
+                - Adds the instance ID to the `deleted_attrs` dictionary in the session.
+
+        Additional Details:
+            - If the session's `context` is not set, it initializes the context with tenant and user information.
+            - Uses SQLAlchemy's `inspect` function to access the instance's state and attribute history.
+
+
+        """
+        mapper = inspect(self).mapper
+        instance = self
+        model_name = mapper.mapped_table.name
+        state = inspect(instance)
+        instance_id = instance.id
+
+        session: CustomSession = Session.object_session(instance)
+        if hasattr(session, "context") and not session.context:
+            session.context = {"tenant": instance.tenant, "user": instance.updated_by}
+
+        if action == "update" and hasattr(session, "updated_attrs"):
+            modified_fields = set([f"{attr.key}" for attr in state.attrs if attr.history.has_changes()])
+            if modified_fields:
+                if not model_name in session.updated_attrs:
+                    session.updated_attrs[model_name] = {}
+                if not instance_id in session.updated_attrs[model_name]:
+                    session.updated_attrs[model_name][instance_id] = set()
+                session.updated_attrs[model_name][instance_id] = (
+                    session.updated_attrs[model_name][instance_id] | modified_fields
+                )
+        elif action == "create" and hasattr(session, "created_attrs"):
+            if not model_name in session.created_attrs:
+                session.created_attrs[model_name] = []
+            session.created_attrs[model_name].append(instance_id)
+        elif action == "delete" and hasattr(session, "deleted_attrs"):
+            if not model_name in session.deleted_attrs:
+                session.deleted_attrs[model_name] = []
+            session.deleted_attrs[model_name].append(instance_id)
+
 
 BaseModel = declarative_base(cls=Base)
 
 
 # Definir un evento que escuche a todos los modelos que heredan de Base
 @event.listens_for(BaseModel, "after_insert", propagate=True)
+@measure_time
 def post_save(mapper, connection, target):
-    if target.__is_replic_table__:  # Ignore replic tables
-        return
-    ActionToAirflow.send_to_airflow(
-        mapper, target, "create", context={"tenant": target.tenant, "user": target.updated_by}
-    )
+    _logger.info(f"POSTGRES PROCESS_WEBHOOK{Config.PROCESS_WEBHOOK}")  # TODO: Remove this line
+    if Config.PROCESS_WEBHOOK:  # Ignore if the process webhook is disabled
+        if target.__is_replic_table__:  # Ignore replic tables
+            return
+        target.assign_crud_attrs_to_session("create")
+        # ActionToAirflow.send_to_airflow(
+        #     mapper, target, "create", context={"tenant": target.tenant, "user": target.updated_by}
+        # )
+    return
 
 
 @event.listens_for(BaseModel, "after_update", propagate=True)
+@measure_time
 def post_update(mapper, connection, target):
-    if target.__is_replic_table__:  # Ignore replic tables
-        return
-    ActionToAirflow.send_to_airflow(
-        mapper, target, "update", context={"tenant": target.tenant, "user": target.updated_by}
-    )
+    _logger.info(f"POSTGRES PROCESS_WEBHOOK{Config.PROCESS_WEBHOOK}")  # TODO: Remove this line
+    if Config.PROCESS_WEBHOOK:  # Ignore if the process webhook is disabled
+        if target.__is_replic_table__:  # Ignore replic tables
+            return
+        target.assign_crud_attrs_to_session("update")
+        # ActionToAirflow.send_to_airflow(
+        #     mapper, target, "update", context={"tenant": target.tenant, "user": target.updated_by}
+        # )
+    return
 
 
 @event.listens_for(BaseModel, "after_delete", propagate=True)
+@measure_time
 def post_delete(mapper, connection, target):
-    if target.__is_replic_table__:  # Ignore replic tables
-        return
-    ActionToAirflow.send_to_airflow(
-        mapper, target, "delete", context={"tenant": target.tenant, "user": target.updated_by}
-    )
+    _logger.info(f"POSTGRES PROCESS_WEBHOOK{Config.PROCESS_WEBHOOK}")  # TODO: Remove this line
+    if Config.PROCESS_WEBHOOK:  # Ignore if the process webhook is disabled
+        if target.__is_replic_table__:  # Ignore replic tables
+            return
+        target.assign_crud_attrs_to_session("delete")
+        # ActionToAirflow.send_to_airflow(
+        #     mapper, target, "delete", context={"tenant": target.tenant, "user": target.updated_by}
+        # )
+    return

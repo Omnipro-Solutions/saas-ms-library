@@ -25,9 +25,10 @@ INSTALL_REQUIRES = [
     "omni-pro-redis>=0.0.0,<=2.0.0",
     "omni-pro-grpc>=0.0.0,<=2.0.0",
     "apache-airflow-client==2.8.0",
-    "newrelic==8.8.1",
+    "newrelic==9.10.0",
     "alembic==1.11.2",
     "blinker==1.7.0",
+    "celery==5.4.0",
 ]
 # with open(HERE / "requirements.txt") as f:
 #     INSTALL_REQUIRES = f.read().splitlines()
