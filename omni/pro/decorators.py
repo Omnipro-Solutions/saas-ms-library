@@ -1,5 +1,4 @@
 import re
-
 import threading
 import time
 from functools import wraps
@@ -58,16 +57,18 @@ def resources_decorator(
                     context.pg_manager = PostgresDatabaseManager(**db_params)
             except Exception as e:
                 LoggerTraceback.error("Resource Decorator exception", e, logger)
-            if not request.context.user == "internal" or not permission:
-                result = permission_required(request, funcion, message_response, permission_code)
-                if result:
-                    return result
+            if not request.context.user == "internal":
+                if permission:
+                    result = permission_required(request, funcion, message_response, permission_code)
+                    if result:
+                        return result
             c = funcion(instance, request, context)
             return c
 
         return inner
 
     return decorador_func
+
 
 def permission_required(request, funcion: callable, message_response, permission_code: str):
     try:
@@ -91,7 +92,7 @@ def permission_required(request, funcion: callable, message_response, permission
         response, success = GRPClient(MicroService.SAAS_MS_USER.value).call_rpc_fuction(event)
 
         if not success or not response.has_permission:
-            return MessageResponse(cls).unauthorized_response()
+            return MessageResponse(user_pb2.HasPermissionResponse).unauthorized_response()
         if hasattr(request, "filter"):
             response_dict = MessageToDict(response)
             filter_exist = str(request.filter.filter)
@@ -124,6 +125,7 @@ def convert_name_upper_snake_case(function_name: str, model_name: str) -> str:
         action = "_".join(resul)
         return f"CAN_{action}_{model_name}".upper()
     return f"CAN_{snake_case}".upper()
+
 
 class FunctionThreadController:
     def __init__(self, timeout=Config.TIMEOUT_THREAD_CONTROLLER):
