@@ -70,7 +70,7 @@ class ExitStackDocument(ExitStack):
             updated_attrs=self.updated_attrs,
             deleted_attrs=self.deleted_attrs,
         )
-        self.context["type_db"] = "mongo"
+        self.context["type_db"] = "document"
         WebhookHandler.start_thread(crud_attrs=crud_attrs, context=self.context)
 
 
