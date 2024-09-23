@@ -1,3 +1,5 @@
+import re
+
 import threading
 import time
 from functools import wraps
@@ -9,12 +11,20 @@ from omni.pro.config import Config
 from omni.pro.database import DatabaseManager, PostgresDatabaseManager
 from omni.pro.logger import LoggerTraceback, configure_logger
 from omni.pro.redis import RedisManager
+from omni.pro.response import MessageResponse
 from omni.pro.util import Resource
+from omni_pro_base.microservice import MicroService
+from omni_pro_grpc.common.base_pb2 import Filter
+from omni_pro_grpc.grpc_connector import Event, GRPClient
+from omni_pro_grpc.util import MessageToDict
+from omni_pro_grpc.v1.users import user_pb2
 
 logger = configure_logger(name=__name__)
 
 
-def resources_decorator(resource_list: list) -> callable:
+def resources_decorator(
+    resource_list: list, permission: bool = True, message_response=None, permission_code: str = None
+) -> callable:
     def decorador_func(funcion: callable) -> callable:
         @function_trace(name=funcion.__name__)
         @wraps(funcion)
@@ -48,6 +58,10 @@ def resources_decorator(resource_list: list) -> callable:
                     context.pg_manager = PostgresDatabaseManager(**db_params)
             except Exception as e:
                 LoggerTraceback.error("Resource Decorator exception", e, logger)
+            if not request.context.user == "internal" or not permission:
+                result = permission_required(request, funcion, message_response, permission_code)
+                if result:
+                    return result
             c = funcion(instance, request, context)
             return c
 
@@ -55,6 +69,61 @@ def resources_decorator(resource_list: list) -> callable:
 
     return decorador_func
 
+def permission_required(request, funcion: callable, message_response, permission_code: str):
+    try:
+        event = Event(
+            module_grpc="v1.users.user_pb2_grpc",
+            module_pb2="v1.users.user_pb2",
+            stub_classname="UsersServiceStub",
+            rpc_method="HasPermission",
+            request_class="HasPermissionRequest",
+            params={
+                "username": request.context.user,
+                "permission": (
+                    permission_code
+                    if permission_code
+                    else convert_name_upper_snake_case(funcion.__name__, funcion.__module__.split(".")[-1].upper())
+                ),
+                "context": {"tenant": request.context.tenant},
+            },
+        )
+        response: user_pb2.HasPermissionResponse = None
+        response, success = GRPClient(MicroService.SAAS_MS_USER.value).call_rpc_fuction(event)
+
+        if not success or not response.has_permission:
+            return MessageResponse(cls).unauthorized_response()
+        if hasattr(request, "filter"):
+            response_dict = MessageToDict(response)
+            filter_exist = str(request.filter.filter)
+            filter_domain = str(response_dict.get("domains", [""])[0])
+
+            if filter_exist and filter_domain:
+                filter_exist = filter_exist.replace("]", "")
+                filter_domain = filter_domain.replace("[", "")
+                str_filter = f"{filter_exist}, 'and', {filter_domain}"
+            else:
+                str_filter = filter_exist or filter_domain
+
+            request_filter = Filter(filter=str_filter)
+            request.filter.CopyFrom(request_filter)
+
+    except Exception as e:
+        LoggerTraceback.error("Permission required decorator exception", e, logger)
+        return MessageResponse(message_response).internal_response(message="Permission required decorator exception")
+
+
+def convert_name_upper_snake_case(function_name: str, model_name: str) -> str:
+    snake = re.sub(r"([A-Z])", r"_\1", function_name).lower()
+    # Eliminar el guión bajo inicial si existe y convertir todo a mayúsculas
+    snake_case = (snake[1:] if snake.startswith("_") else snake).upper()
+    components = snake_case.split("_")
+
+    # Identificar la acción y el modelo
+    if set(model_name.split("_")).intersection(set(components)):
+        resul = [component for component in components if component not in model_name.split("_")]
+        action = "_".join(resul)
+        return f"CAN_{action}_{model_name}".upper()
+    return f"CAN_{snake_case}".upper()
 
 class FunctionThreadController:
     def __init__(self, timeout=Config.TIMEOUT_THREAD_CONTROLLER):
