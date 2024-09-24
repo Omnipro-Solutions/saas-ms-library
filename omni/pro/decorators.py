@@ -93,7 +93,7 @@ def permission_required(request, funcion: callable, message_response, permission
 
         if not success or not response.has_permission:
             return MessageResponse(user_pb2.HasPermissionResponse).unauthorized_response()
-        if hasattr(request, "filter"):
+        if hasattr(request, "filter") and hasattr(request.filter, "filter"):
             response_dict = MessageToDict(response)
             filter_exist = str(request.filter.filter)
             filter_domain = str(response_dict.get("domains", [""])[0])
