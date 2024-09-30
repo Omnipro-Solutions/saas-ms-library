@@ -156,7 +156,6 @@ class BaseDocument(Document):
     @classmethod
     @measure_time
     def post_save(cls, sender, document, **kwargs):
-        _logger.info(f"MONGO PROCESS_WEBHOOK{Config.PROCESS_WEBHOOK}")  # TODO: Remove this line
         if Config.PROCESS_WEBHOOK:  # Ignore if the process webhook is disabled
             if document.__is_replic_table__:  # Ignore replic tables
                 return
@@ -170,7 +169,6 @@ class BaseDocument(Document):
     @classmethod
     @measure_time
     def post_delete(cls, sender, document, **kwargs):
-        _logger.info(f"MONGO PROCESS_WEBHOOK{Config.PROCESS_WEBHOOK}")  # TODO: Remove this line
         if Config.PROCESS_WEBHOOK:  # Ignore if the process webhook is disabled
             if document.__is_replic_table__:  # Ignore replic tables
                 return
@@ -577,7 +575,6 @@ BaseModel = declarative_base(cls=Base)
 @event.listens_for(BaseModel, "after_insert", propagate=True)
 @measure_time
 def post_save(mapper, connection, target):
-    _logger.info(f"POSTGRES PROCESS_WEBHOOK{Config.PROCESS_WEBHOOK}")  # TODO: Remove this line
     if Config.PROCESS_WEBHOOK:  # Ignore if the process webhook is disabled
         if target.__is_replic_table__:  # Ignore replic tables
             return
@@ -591,7 +588,6 @@ def post_save(mapper, connection, target):
 @event.listens_for(BaseModel, "after_update", propagate=True)
 @measure_time
 def post_update(mapper, connection, target):
-    _logger.info(f"POSTGRES PROCESS_WEBHOOK{Config.PROCESS_WEBHOOK}")  # TODO: Remove this line
     if Config.PROCESS_WEBHOOK:  # Ignore if the process webhook is disabled
         if target.__is_replic_table__:  # Ignore replic tables
             return
@@ -605,7 +601,6 @@ def post_update(mapper, connection, target):
 @event.listens_for(BaseModel, "after_delete", propagate=True)
 @measure_time
 def post_delete(mapper, connection, target):
-    _logger.info(f"POSTGRES PROCESS_WEBHOOK{Config.PROCESS_WEBHOOK}")  # TODO: Remove this line
     if Config.PROCESS_WEBHOOK:  # Ignore if the process webhook is disabled
         if target.__is_replic_table__:  # Ignore replic tables
             return
