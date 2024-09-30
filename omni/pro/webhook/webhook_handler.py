@@ -231,7 +231,7 @@ class WebhookHandler:
                 task = self.celery_app.send_task(
                     name=name, args=[webhook_entry, self.context], kwargs=kwargs, queue=queue
                 )
-                _logger.info(f"task ID: {task.id}")
+                _logger.debug(f"task ID: {task.id}")
             except Exception as e:
                 _logger.error(str(e))
 
@@ -414,7 +414,7 @@ class WebhookHandler:
 
         except Exception as ex:
             _logger.error(f"_send_records_to_mirror_models:\n{str(ex)}")
-        _logger.info(f"Send details:\n{log_send}")
+        _logger.debug(f"Send details:\n{log_send}")
 
     @measure_time
     def _send_records_to_mirror_model(self, webhook_entry: dict, timeout=0) -> bool:
