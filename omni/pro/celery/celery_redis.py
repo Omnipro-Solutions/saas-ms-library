@@ -11,6 +11,17 @@ class CeleryRedis:
         self.app: Celery = self._get_app()
 
     def get_queue_with_min_tasks(self, queues: list[str] = ["critical", "high", "medium", "low", "very_low"]) -> str:
+        """
+        Determines which queue has the fewest tasks and returns the name of that queue.
+
+        Args:
+            queues (list[str]): A list of queue names to check. Defaults to a list of priority-based queues:
+                                ["critical", "high", "medium", "low", "very_low"].
+
+        Returns:
+            str: The name of the queue with the fewest tasks.
+
+        """
         redis_client = redis.Redis(host=self.conf["host"], port=self.conf["port"], db=self.conf["db"])
         min_tasks = float("inf")
         selected_queue = None
