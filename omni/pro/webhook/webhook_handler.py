@@ -61,7 +61,7 @@ class WebhookHandler:
 
     def _get_celery_app(self):
         try:
-            return CeleryRedis.get_celery_app_by_tenant(self.tenant)
+            return CeleryRedis(self.tenant).app
         except Exception as e:
             _logger.error(f"{str(e)}")
 
