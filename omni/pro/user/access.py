@@ -9,6 +9,8 @@ from omni_pro_grpc.v1.users import user_pb2
 
 logger = configure_logger(name=__name__)
 
+INTERNAL_USER = "internal"
+
 
 @unique
 class Permission(Enum):
