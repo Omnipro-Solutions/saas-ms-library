@@ -192,7 +192,10 @@ class BaseDocument(Document):
         pass
 
     def assign_crud_attrs_to_stack(self, action: str, changed_fields: set = None):
-
+        if not self._collection:
+            _logger.debug("Collection is empty")
+            _logger.debug(f"Instance id = {str(self.id)}")
+            return
         model_name = self._collection.name
         instance = self
         instance_id = str(instance.id)
