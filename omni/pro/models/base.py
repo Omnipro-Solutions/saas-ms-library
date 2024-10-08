@@ -200,8 +200,13 @@ class BaseDocument(Document):
         instance = self
         instance_id = str(instance.id)
 
+        if not self.context:
+            _logger.error("Context is not defined and CRUD attributes cannot be assigned to the stack.")
+            return
+
         if action == "update" and hasattr(instance, "updated_attrs"):
             if changed_fields:
+                instance.updated_attrs["tenant"] = self.context.tenant
                 if not model_name in instance.updated_attrs:
                     instance.updated_attrs[model_name] = {}
                 if not instance_id in instance.updated_attrs[model_name]:
@@ -210,10 +215,12 @@ class BaseDocument(Document):
                     instance.updated_attrs[model_name][instance_id] | changed_fields
                 )
         elif action == "create" and hasattr(instance, "created_attrs"):
+            instance.created_attrs["tenant"] = self.context.tenant
             if not model_name in instance.created_attrs:
                 instance.created_attrs[model_name] = []
             instance.created_attrs[model_name].append(instance_id)
         elif action == "delete" and hasattr(instance, "deleted_attrs"):
+            instance.deleted_attrs["tenant"] = self.context.tenant
             if not model_name in instance.deleted_attrs:
                 instance.deleted_attrs[model_name] = []
             instance.deleted_attrs[model_name].append(instance_id)

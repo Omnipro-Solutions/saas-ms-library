@@ -30,7 +30,7 @@ class WebhookHandler:
         self.type_db = context.pop("type_db") if "type_db" in context else None
         self.context = context
         self.tenant = context.get("tenant")
-        self.user = context.get("user")
+        self.user = context.get("user", "internal")
         self.rpc_event = EventRPCFucntion(context=context, cache=True)
         self.rpc_webhook = WebhookRPCFucntion(context=context, cache=True)
         self.rpc_model = ModelRPCFucntion(context=context, cache=True)
@@ -86,12 +86,29 @@ class WebhookHandler:
             None
         """
         if crud_attrs.get("created_attrs") or crud_attrs.get("updated_attrs") or crud_attrs.get("deleted_attrs"):
+            tenant = cls._get_tenant_in_crud_attrs(crud_attrs)
+            if tenant and not context.get("tenant"):
+                context["tenant"] = tenant
             if context.get("tenant") and context.get("type_db"):
                 webhook_handler = WebhookHandler(crud_attrs, context)
                 thread = threading.Thread(target=webhook_handler.resolve_interface)
                 thread.start()
             else:
                 _logger.error(f"Tenant or type db is not defined")
+
+    @classmethod
+    def _get_tenant_in_crud_attrs(cls, crud_attrs: dict) -> str:
+        created_attrs = crud_attrs.get("created_attrs")
+        updated_attrs = crud_attrs.get("updated_attrs")
+        deleted_attrs = crud_attrs.get("deleted_attrs")
+        tenant = None
+        if created_attrs and created_attrs.get("tenant"):
+            tenant = created_attrs.pop("tenant")
+        if updated_attrs and updated_attrs.get("tenant"):
+            tenant = updated_attrs.pop("tenant")
+        if deleted_attrs and deleted_attrs.get("tenant"):
+            tenant = deleted_attrs.pop("tenant")
+        return tenant
 
     def resolve_interface(self):
         """
