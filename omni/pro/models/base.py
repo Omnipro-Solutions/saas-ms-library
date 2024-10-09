@@ -16,10 +16,10 @@ from mongoengine import (
 )
 from omni.pro.airflow.actions import ActionToAirflow
 from omni.pro.config import Config
+from omni.pro.database.postgres import CustomSession
+from omni.pro.database.sqlalchemy import mapped_column
 from omni.pro.logger import configure_logger
 from omni.pro.util import measure_time
-from omni.pro.database.sqlalchemy import mapped_column
-from omni.pro.database.postgres import CustomSession
 from omni_pro_grpc.common.base_pb2 import Context as ContextProto
 from omni_pro_grpc.common.base_pb2 import Object as ObjectProto
 from omni_pro_grpc.common.base_pb2 import ObjectAudit as AuditProto
@@ -252,6 +252,15 @@ class BaseAuditEmbeddedDocument(BaseEmbeddedDocument):
         "abstract": True,
         "strict": False,
     }
+
+    def update_audit_fields(self):
+        """Actualiza los campos de auditoría."""
+        if not self.context:
+            self.context = Context()
+        if not self.audit:
+            self.audit = Audit(created_by=self.context.user)
+        self.audit.updated_by = self.context.user
+        self.audit.updated_at = datetime.utcnow()
 
     # TODO: Add a method to update the audit fields
     def save(self, *args, **kwargs):

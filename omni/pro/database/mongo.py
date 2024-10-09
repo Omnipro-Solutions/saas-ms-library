@@ -349,9 +349,10 @@ class DatabaseManager(object):
         """
 
         relations_list = set([x.__getattribute__(attribute_search) for x in exsitent_relations_list])
-        set_new_relations_list = set(
-            new_relations_list if multiple_params is False else [x["code"] for x in new_relations_list]
-        )
+        if multiple_params:
+            set_new_relations_list = set([x["code"] for x in new_relations_list])
+        else:
+            set_new_relations_list = set([x[attribute_search] for x in new_relations_list])
 
         if multiple_params:
             add_relations_list = [item for item in new_relations_list if item["code"] not in relations_list]
@@ -628,17 +629,16 @@ class PolishNotationToMongoDB:
         }
 
     def is_logical_operator(self, token):
-        if not isinstance(token, str):
-            return False
-        return token in self.operators_logical
+        return isinstance(token, str) and token in self.operators_logical
 
     def is_comparison_operator(self, token):
-        if not isinstance(token, str):
-            return False
-        return token in self.operators_comparison
+        return isinstance(token, str) and token in self.operators_comparison
 
     def is_tuple(self, token):
         return isinstance(token, tuple) and len(token) == 3
+
+    def is_subexpression(self, token):
+        return isinstance(token, list) and len(token) > 1
 
     def convert(self):
         operand_stack = []
@@ -665,8 +665,14 @@ class PolishNotationToMongoDB:
                     operand_stack.append({field: {self.operators_comparison[old_operator]: value} | options})
                 else:
                     raise ValueError(f"Unexpected operator: {old_operator}")
+            elif self.is_subexpression(token):
+                sub_converter = PolishNotationToMongoDB(token)
+                operand_stack.append(sub_converter.convert())
             else:
                 raise ValueError(f"Unexpected token: {token}")
+
+        if len(operand_stack) > 1 and not operator_stack:
+            return {"$and": operand_stack}
 
         while operator_stack:
             operator = operator_stack.pop()
@@ -697,41 +703,38 @@ class DBUtil(object):
             "page": paginated.offset,
             "per_page": paginated.limit or 10,
         }
-        if (ft := filter.ListFields()) or id:
-            expression = [("_id", "=", cls.generate_object_id(id))]
-            if ft:
-                str_filter = filter.filter.replace("true", "True").replace("false", "False").replace("__", ".")
-                expression = ast.literal_eval(str_filter)
-                # reemplace filter id by _id and convert to ObjectId
-                for idx, exp in enumerate(expression):
-                    if isinstance(exp, tuple) and len(exp) == 3 and exp[0] == "id":
-                        if type(exp[2]) == list:
-                            expression[idx] = (
-                                "_id",
-                                exp[1],
-                                [cls.generate_object_id(x) for x in exp[2]],
-                            )
-                            continue
-                        expression[idx] = (
-                            "_id",
-                            exp[1],
-                            cls.generate_object_id(exp[2]),
-                        )
-            filter_custom = PolishNotationToMongoDB(expression=expression).convert()
-            prepared_statement["filter"] = filter_custom
-        if group_by:
-            prepared_statement["group_by"] = [x.name_field for x in group_by]
+        expression = []
+        if id:
+            expression.append(("_id", "=", cls.generate_object_id(id)))  # Cambia id a _id y conviértelo en ObjectId
+        if filter.ListFields():
+            str_filter = filter.filter.replace("true", "True").replace("false", "False").replace("__", ".")
+            expression = ast.literal_eval(str_filter)
+            # Verificar si hay que reemplazar id por _id
+            for idx, exp in enumerate(expression):
+                if isinstance(exp, tuple) and exp[0] == "id":
+                    expression[idx] = ("_id", exp[1], cls.generate_object_id(exp[2]))
+
+        # Convertir la expresión usando Polish Notation a MongoDB
+        filter_custom = PolishNotationToMongoDB(expression=expression).convert()
+        prepared_statement["filter"] = filter_custom
+
+        # Asignar group_by si existe
+        if group_by and group_by.name_field:
+            prepared_statement["group_by"] = [x for x in group_by.name_field]
+
         if sort_by.ListFields():
             prepared_statement["sort_by"] = [cls.db_trans_sort(sort_by)]
+
         if fields:
             prepared_statement["fields"] = fields.name_field
+
         return prepared_statement | {"str_filter": filter.filter}
 
     @classmethod
     def db_trans_sort(cls, sort_by: base_pb2.SortBy) -> str:
         if not sort_by.name_field:
             return None
-        return f"{'-' if sort_by.type == sort_by.DESC else '+'}{sort_by.name_field}"
+        return f"{'-' if sort_by.type == base_pb2.SortBy.DESC else '+'}{sort_by.name_field}"
 
     @classmethod
     def generate_object_id(cls, id=None):
