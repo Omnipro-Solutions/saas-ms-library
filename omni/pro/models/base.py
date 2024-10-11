@@ -16,10 +16,11 @@ from mongoengine import (
 )
 from omni.pro.airflow.actions import ActionToAirflow
 from omni.pro.config import Config
-from omni.pro.logger import configure_logger
-from omni.pro.util import measure_time
-from omni.pro.database.sqlalchemy import mapped_column
 from omni.pro.database.postgres import CustomSession
+from omni.pro.database.sqlalchemy import mapped_column
+from omni.pro.logger import configure_logger
+from omni.pro.user.access import INTERNAL_USER
+from omni.pro.util import measure_time
 from omni_pro_grpc.common.base_pb2 import Context as ContextProto
 from omni_pro_grpc.common.base_pb2 import Object as ObjectProto
 from omni_pro_grpc.common.base_pb2 import ObjectAudit as AuditProto
@@ -200,8 +201,13 @@ class BaseDocument(Document):
         instance = self
         instance_id = str(instance.id)
 
+        if not self.context:
+            _logger.error("Context is not defined and CRUD attributes cannot be assigned to the stack.")
+            return
+
         if action == "update" and hasattr(instance, "updated_attrs"):
             if changed_fields:
+                instance.updated_attrs["tenant"] = self.context.tenant
                 if not model_name in instance.updated_attrs:
                     instance.updated_attrs[model_name] = {}
                 if not instance_id in instance.updated_attrs[model_name]:
@@ -210,10 +216,12 @@ class BaseDocument(Document):
                     instance.updated_attrs[model_name][instance_id] | changed_fields
                 )
         elif action == "create" and hasattr(instance, "created_attrs"):
+            instance.created_attrs["tenant"] = self.context.tenant
             if not model_name in instance.created_attrs:
                 instance.created_attrs[model_name] = []
             instance.created_attrs[model_name].append(instance_id)
         elif action == "delete" and hasattr(instance, "deleted_attrs"):
+            instance.deleted_attrs["tenant"] = self.context.tenant
             if not model_name in instance.deleted_attrs:
                 instance.deleted_attrs[model_name] = []
             instance.deleted_attrs[model_name].append(instance_id)
@@ -271,10 +279,12 @@ BaseAuditContextEmbeddedDocument = BaseAuditEmbeddedDocument
 
 
 def set_created_by(context):
-    params = context.get_current_parameters()
-    if params.get("created_by") is None:
-        return params.get("updated_by")
-    return params.get("created_by")
+    if hasattr(context, "get_current_parameters"):
+        params = context.get_current_parameters()
+        if params.get("created_by") is None:
+            return params.get("updated_by")
+        return params.get("created_by")
+    return INTERNAL_USER
 
 
 class Base:
@@ -569,6 +579,19 @@ class Base:
             if not model_name in session.deleted_attrs:
                 session.deleted_attrs[model_name] = []
             session.deleted_attrs[model_name].append(instance_id)
+
+    @classmethod
+    def dt_to_ts(cls, dt) -> Timestamp:
+        """
+        Convert a datetime object to a Timestamp object.
+
+        Parameters:
+            dt (datetime): The datetime object to convert.
+
+        Returns:
+            Timestamp: The converted Timestamp object.
+        """
+        return (t := Timestamp(), t.FromDatetime(dt))[0] if dt else None
 
 
 BaseModel = declarative_base(cls=Base)
