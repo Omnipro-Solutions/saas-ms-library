@@ -561,6 +561,9 @@ class Base:
         if hasattr(session, "context") and not session.context:
             session.context = {"tenant": instance.tenant, "user": instance.updated_by}
 
+        if not self._can_write_crud_attrs(mapper):
+            return
+
         if action == "update" and hasattr(session, "updated_attrs"):
             modified_fields = set([f"{attr.key}" for attr in state.attrs if attr.history.has_changes()])
             if modified_fields:
@@ -579,6 +582,13 @@ class Base:
             if not model_name in session.deleted_attrs:
                 session.deleted_attrs[model_name] = []
             session.deleted_attrs[model_name].append(instance_id)
+
+    def _can_write_crud_attrs(self, mapper) -> bool:
+        table_name = mapper.mapped_table.name
+        can_write = True
+        if table_name == "sale" and hasattr(self, "client_id") and not self.client_id:
+            can_write = False
+        return can_write
 
     @classmethod
     def dt_to_ts(cls, dt) -> Timestamp:
