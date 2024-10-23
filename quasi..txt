@@ -1,0 +1,4 @@
+Cuenta creada
+Deposited 100. New balance: 3900
+Checked balance. Current balance: 3900
+Checked balance. Current balance: 3900
