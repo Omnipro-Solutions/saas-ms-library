@@ -11,6 +11,7 @@ from omni.pro.database import DatabaseManager, PostgresDatabaseManager
 from omni.pro.logger import LoggerTraceback, configure_logger
 from omni.pro.redis import RedisManager
 from omni.pro.response import MessageResponse
+from omni.pro.user.access import Permission
 from omni.pro.util import Resource
 from omni_pro_base.util import nested
 from omni_pro_grpc.common.base_pb2 import Filter
@@ -74,27 +75,26 @@ def permission_required(rm: RedisManager, request, funcion: callable, message_re
             funcion.__name__, funcion.__module__.split(".")[-1].upper()
         )
         config = rm.get_resource_config(Config.SAAS_MS_USER, request.context.tenant)
-        db = nested(config, "dbs.redis.db")
-        with rm.use_db(db):
-            sub = request.context.user
-            # TODO: La variable iS_SUPERUSER debe ser una constante en la librería
-            domain_val, is_superuser_val = rm.get_multi_hash(sub, permission, "IS_SUPERUSER")
-            if domain_val is None and is_superuser_val is None:
-                return MessageResponse(user_pb2.HasPermissionResponse).unauthorized_response()
+        rds_conn = nested(config, "dbs.redis")
+        rm_per = RedisManager(**rds_conn)
+        sub = request.context.user
+        domain_val, is_superuser_val = rm_per.get_multi_hash(sub, permission, Permission.IS_SUPERUSER.value)
+        if domain_val is None and is_superuser_val is None:
+            return MessageResponse(user_pb2.HasPermissionResponse).unauthorized_response()
 
-            if hasattr(request, "filter") and hasattr(request.filter, "filter"):
-                filter_exist = str(request.filter.filter)
-                filter_domain = domain_val
+        if hasattr(request, "filter") and hasattr(request.filter, "filter"):
+            filter_exist = str(request.filter.filter)
+            filter_domain = domain_val
 
-                if filter_exist and filter_domain:
-                    filter_exist = filter_exist.replace("]", "").replace("[", "")
-                    filter_domain = filter_domain.replace("[", "").replace("]", "")
-                    str_filter = f"['and', {filter_exist}, {filter_domain}]"
-                else:
-                    str_filter = filter_exist or filter_domain
+            if filter_exist and filter_domain:
+                filter_exist = filter_exist.replace("]", "").replace("[", "")
+                filter_domain = filter_domain.replace("[", "").replace("]", "")
+                str_filter = f"['and', {filter_exist}, {filter_domain}]"
+            else:
+                str_filter = filter_exist or filter_domain
 
-                request_filter = Filter(filter=str_filter)
-                request.filter.CopyFrom(request_filter)
+            request_filter = Filter(filter=str_filter)
+            request.filter.CopyFrom(request_filter)
 
     except Exception as e:
         LoggerTraceback.error("Permission required decorator exception", e, logger)
