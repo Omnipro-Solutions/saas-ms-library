@@ -127,6 +127,7 @@ class Descriptor(object):
                 "name": model.__name__,
                 "class_name": f"{model.__module__}.{model.__name__}",
                 "code": model._meta.get("collection") or model.__name__.lower(),
+                "verbose_name": model._meta.get("verbose_name"),
                 "fields": fields,
             }
             if hasattr(model, "__is_replic_table__"):
@@ -172,6 +173,7 @@ class Descriptor(object):
             "name": model.__name__,
             "class_name": f"{model.__module__}.{model.__name__}",
             "code": mapper.mapped_table.name,
+            "verbose_name": model.__verbose_name__ if hasattr(model, "__verbose_name__") else None,
             "fields": [],
             "is_replic": model.__is_replic_table__,
         }
