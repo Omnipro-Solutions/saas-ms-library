@@ -215,7 +215,7 @@ class MirrorModelSQL(MirrorModelBase):
             instance_ids_by_unique_field_aliasing = self._get_doc_ids_by_unique_field_aliasing(
                 items, unique_field_aliasing
             )
-
+            self._convert_fields_to_db_types(items)
             for item in items:
                 unique_field_aliasing_value = item.get(unique_field_aliasing)
                 instance_id = instance_ids_by_unique_field_aliasing.get(unique_field_aliasing_value)
@@ -236,6 +236,19 @@ class MirrorModelSQL(MirrorModelBase):
 
         else:
             raise Exception(f"tenant or unique_field_aliasing is not defined")
+
+    def _convert_fields_to_db_types(self, items: list[dict]):
+        field_type_by_name = {}
+        mapper = inspect(self.model)
+        for column in mapper.columns:
+            column_type = str(column.type)
+            if column_type in ["INTEGER"]:
+                field_type_by_name[column.name] = column_type
+        for item in items:
+            for field_name, field_type in field_type_by_name.items():
+                if field_name in item and field_type == "INTEGER":
+                    field_value = item[field_name]
+                    item[field_name] = int(field_value)
 
     def _get_doc_ids_by_unique_field_aliasing(self, items: list[dict], unique_field_aliasing: str):
         unique_field_aliasing_ids = [
@@ -407,7 +420,7 @@ class MirrorModelNoSQL(MirrorModelBase):
 
         if self.tenant and unique_field_aliasing:
             doc_ids_by_unique_field_aliasing = self._get_doc_ids_by_unique_field_aliasing(items, unique_field_aliasing)
-
+            self._convert_fields_to_db_types(items)
             for item in items:
                 item: dict
                 unique_field_aliasing_value = item.get(unique_field_aliasing)
@@ -420,6 +433,7 @@ class MirrorModelNoSQL(MirrorModelBase):
                     "updated_at": datetime.utcnow(),
                     "updated_by": self.user,
                 }
+
                 if not doc_id:
                     if "id" in item:
                         item.pop("id")
@@ -434,6 +448,23 @@ class MirrorModelNoSQL(MirrorModelBase):
                 self.model._get_collection().bulk_write(bulk_create_items, ordered=False)
         else:
             raise Exception(f"tenant or unique_field_aliasing is not defined")
+
+    def _convert_fields_to_db_types(self, items: list[dict]):
+        field_type_by_name = {}
+        for field_name in self.model._fields:
+            field = self.model._fields.get(field_name)
+            field_type = field.__class__.__name__
+            if field_type in ["ReferenceField", "IntField"]:
+                field_type_by_name[field_name] = field_type
+
+        for item in items:
+            for field_name, field_type in field_type_by_name.items():
+                if field_name in item:
+                    field_value = item[field_name]
+                    if field_type == "ReferenceField":
+                        item[field_name] = ObjectId(field_value)
+                    elif field_type == "IntField":
+                        item[field_name] = int(field_value)
 
     def _get_doc_ids_by_unique_field_aliasing(self, items: list[dict], unique_field_aliasing: str):
         unique_field_aliasing_ids = [
