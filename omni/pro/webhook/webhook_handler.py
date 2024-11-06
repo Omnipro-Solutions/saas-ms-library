@@ -201,12 +201,27 @@ class WebhookHandler:
             webhook: dict = webhook_entry.get("webhook")
             if webhook.get("method_grpc", {}).get("class_name") == "MirrorModelServiceStub":
                 self._build_and_send_records_to_mirror_models(webhook_entry)
+            elif webhook.get("url") == "click_house":
+                self._create_click_house_task(webhook_entry)
 
         for webhook_entry in self.external_webhook_records:
             self._send_external_webhook_records(webhook_entry)
 
         for webhook_entry in self.notification_webhook_records:
             self._send_notification_webhook_records(webhook_entry)
+
+    def _create_click_house_task(self, webhook_entry: dict):
+        if self.celery_app:
+            webhook: dict = webhook_entry.get("webhook", {})
+            records = webhook_entry.get("records", [])
+            kwargs = {"name": webhook.get("name"), "records_count": len(records)}
+            queue = "click_house"
+            name = "export_to_click_house"
+            try:
+                task = self.celery_app.send_task(name=name, args=[records, self.context], kwargs=kwargs, queue=queue)
+                _logger.debug(f"task ID: {task.id}")
+            except Exception as e:
+                _logger.error(str(e))
 
     def _create_celery_task(self, webhook_entry: dict):
         """
@@ -530,12 +545,13 @@ class WebhookHandler:
                             for instance in instances
                         ]
                         for webhook in webhooks:
+                            webhook_url = webhook.get("url")
                             records: list[dict] = [
                                 item
                                 for item in instances_attrs
                                 if not webhook.get("python_code") or eval_condition(item, webhook.get("python_code"))
                             ]
-                            if event_operation == "update":
+                            if event_operation == "update" and webhook_url != "click_house":
                                 if webhook.get("trigger_fields"):
                                     trigger_fields = set(
                                         [attr.split("-", 1)[-1] for attr in webhook.get("trigger_fields")]
