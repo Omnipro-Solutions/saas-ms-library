@@ -556,6 +556,8 @@ class WebhookHandler:
                                     trigger_fields = set(
                                         [attr.split("-", 1)[-1] for attr in webhook.get("trigger_fields")]
                                     )
+                                    if not "active" in trigger_fields:
+                                        trigger_fields.add("active")
                                     filter_records = []
                                     for record in records:
                                         record_id = record.get("id")
@@ -617,6 +619,8 @@ class WebhookHandler:
                 for field in fields:
                     field_aliasing = field.get("field_aliasing")
                     field_code = field.get("code")
+                    if not field_aliasing and field_code == "active":
+                        field_aliasing = field_code
                     if field_aliasing:
                         field_value = nested(record, field_aliasing)
                         if isinstance(field_value, datetime):
@@ -643,7 +647,7 @@ class WebhookHandler:
         return [
             field
             for field in mirror_model.get("fields")
-            if "field_aliasing" in field and not ("." in field.get("code"))
+            if ("field_aliasing" in field or field.get("code") == "active") and not ("." in field.get("code"))
         ]
 
     def _get_field_aliasing_in_mirror_model(self, model_mirror):
