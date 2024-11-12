@@ -1,13 +1,21 @@
+import redis
 from celery import Celery
 from omni.pro.redis import RedisManager
 from omni_pro_base.config import Config
-import redis
 
 
-class CeleryRedis:
-    def __init__(self, tenant: str) -> None:
+class OmniCelery(Celery):
+    def __init__(self, tenant: str, **kwargs) -> None:
         self.tenant = tenant
-        self.conf = self._get_conf()
+        if not all(k in kwargs for k in ["broker", "backend"]):
+            self.conf = self._get_conf()
+            broker = f"redis://{self.conf['host']}:{self.conf['port']}/{self.conf['db']}"
+            backend = f"redis://{self.conf['host']}:{self.conf['port']}/{self.conf['db']}"
+
+        kwargs["broker"] = kwargs.get("broker", broker)
+        kwargs["backend"] = kwargs.get("backend", backend)
+        kwargs["main"] = "tasks"
+        super().__init__(**kwargs)
         self.app: Celery = self._get_app()
 
     def get_queue_with_min_tasks(self, queues: list[str] = ["critical", "high", "medium", "low", "very_low"]) -> str:
@@ -44,9 +52,8 @@ class CeleryRedis:
         return conf
 
     def _get_app(self) -> Celery:
+        return self
 
-        return Celery(
-            "tasks",
-            broker=f"redis://{self.conf['host']}:{self.conf['port']}/{self.conf['db']}",
-            backend=f"redis://{self.conf['host']}:{self.conf['port']}/{self.conf['db']}",
-        )
+
+# TODO: Remove this alias in the future
+CeleryRedis = OmniCelery

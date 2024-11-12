@@ -1,4 +1,5 @@
 from google.protobuf import json_format
+from omni.pro.celery.call_register_models import RegisterModels
 from omni.pro.config import Config
 from omni.pro.database import PersistenceTypeEnum
 from omni.pro.descriptor import Descriptor
@@ -7,7 +8,6 @@ from omni.pro.redis import RedisManager
 from omni.pro.topology import Topology
 from omni.pro.util import generate_hash
 from omni_pro_grpc.grpc_function import ModelRPCFucntion
-from omni.pro.airflow.call_register_models import RegisterModels
 
 logger = configure_logger(name=__name__)
 
@@ -63,10 +63,11 @@ class RegisterModel(object):
         models_libs = Topology().get_models_from_libs()
         logger.info(f"Running for loop")
         for tenant in tenans:
-            user = redis_manager.get_user_admin(tenant)
+            # user = redis_manager.get_user_admin(tenant)
             context = {
                 "tenant": tenant,
-                "user": user.get("id") or "admin",
+                # "user": user.get("id") or "admin",
+                "user": "internal",
             }
             register_model = RegisterModels(tenant)
             for model in models_libs:
@@ -78,7 +79,7 @@ class RegisterModel(object):
                 response = register_model.register_model(request)
 
                 getattr(logger, "warning" if not response else "info")(
-                    f"Model {desc['class_name']} {str(response['state'])} with id {str(response['dag_run_id'])}"
+                    f"Model {desc['class_name']} state {response.state} status {response.status} with id {response.id}"
                 )
 
     def transform_model_desc(self, model):
