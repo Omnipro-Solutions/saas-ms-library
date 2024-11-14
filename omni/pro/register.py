@@ -20,6 +20,9 @@ class RegisterModel(object):
     def get_rpc_model_func_class(self):
         return ModelRPCFucntion
 
+    def get_topology_class(self) -> Topology:
+        return Topology
+
     def register_mongo_model(self):
         """
         Register MongoDB models.
@@ -60,7 +63,12 @@ class RegisterModel(object):
         logger.info(f"Running redis_manager.get_tenant_codes()")
         tenans = redis_manager.get_tenant_codes()
         logger.info(f"Running Topology().get_models_from_libs()")
-        models_libs = Topology().get_models_from_libs()
+
+        TopologyClass: Topology = self.get_topology_class()
+        if isinstance(self.models_path, str):
+            models_libs = TopologyClass(path_models=self.models_path).get_models_from_libs()
+        else:
+            models_libs = TopologyClass().get_models_from_libs()
         logger.info(f"Running for loop")
         for tenant in tenans:
             # user = redis_manager.get_user_admin(tenant)
