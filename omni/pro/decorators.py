@@ -58,8 +58,8 @@ def resources_decorator(
                 LoggerTraceback.error("Resource Decorator exception", e, logger)
             if not request.context.user == INTERNAL_USER:
                 if permission:
-                    message_response = message_response or funcion.__annotations__.get("return")
-                    result = permission_required(redis_manager, request, funcion, message_response, permission_code)
+                    message_responses = message_response or funcion.__annotations__.get("return")
+                    result = permission_required(redis_manager, request, funcion, message_responses, permission_code)
                     if result:
                         return result
             c = funcion(instance, request, context)
