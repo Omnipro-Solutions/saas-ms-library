@@ -100,6 +100,7 @@ class BaseDocument(Document):
     meta = {
         "abstract": True,
         "strict": False,
+        "click_house": True,
     }
 
     def __init__(self, *args, **kwargs):
@@ -297,6 +298,7 @@ class Base:
     __is_replic_table__ = False
     __max_depth__ = 0
     __properties__ = []
+    __click_house__ = True
 
     @staticmethod
     def _camel_to_snake(name):

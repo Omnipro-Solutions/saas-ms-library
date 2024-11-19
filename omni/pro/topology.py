@@ -10,8 +10,8 @@ logger = configure_logger(__name__)
 
 
 class Topology(object):
-    def __init__(self):
-        self.path_models = importlib.import_module("models")
+    def __init__(self, path_models: str = "models"):
+        self.path_models = importlib.import_module(path_models)
 
     def get_model_classes_from_module(self, module_name_list: list) -> list:
         model_classes = []

@@ -1,5 +1,6 @@
 from google.protobuf import json_format
 from omni.pro.airflow.call_register_models import RegisterModels
+from omni.pro.celery.call_register_models import RegisterModels
 from omni.pro.config import Config
 from omni.pro.database import PersistenceTypeEnum
 from omni.pro.descriptor import Descriptor
@@ -20,6 +21,9 @@ class RegisterModel(object):
 
     def get_rpc_model_func_class(self):
         return ModelRPCFucntion
+
+    def get_topology_class(self) -> Topology:
+        return Topology
 
     def register_mongo_model(self):
         """
@@ -61,7 +65,12 @@ class RegisterModel(object):
         logger.info(f"Running redis_manager.get_tenant_codes()")
         tenans = redis_manager.get_tenant_codes()
         logger.info(f"Running Topology().get_models_from_libs()")
-        models_libs = Topology().get_models_from_libs()
+
+        TopologyClass: Topology = self.get_topology_class()
+        if isinstance(self.models_path, str):
+            models_libs = TopologyClass(path_models=self.models_path).get_models_from_libs()
+        else:
+            models_libs = TopologyClass().get_models_from_libs()
         logger.info(f"Running for loop")
         for tenant in tenans:
             context = {
@@ -78,7 +87,7 @@ class RegisterModel(object):
                 response = register_model.register_model(request)
 
                 getattr(logger, "warning" if not response else "info")(
-                    f"Model {desc['class_name']} {str(response['state'])} with id {str(response['dag_run_id'])}"
+                    f"Model {desc['class_name']} state {response.state} status {response.status} with id {response.id}"
                 )
 
     def transform_model_desc(self, model):
