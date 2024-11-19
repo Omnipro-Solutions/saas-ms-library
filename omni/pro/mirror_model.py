@@ -1,7 +1,8 @@
+from datetime import datetime
 from importlib import import_module
 from itertools import groupby
 from pathlib import Path
-from datetime import datetime
+
 import newrelic.agent
 from bson import ObjectId
 from marshmallow import ValidationError
@@ -12,6 +13,7 @@ from omni.pro.logger import LoggerTraceback, configure_logger
 from omni.pro.redis import RedisManager
 from omni.pro.response import MessageResponse
 from omni.pro.stack import ExitStackDocument
+from omni.pro.user.access import INTERNAL_USER
 from omni.pro.util import Resource, convert_model_alchemy_to_struct, convert_model_mongo_to_struct
 from omni_pro_base.config import Config
 from omni_pro_base.microservice import MicroService as MicroServiceEnum
@@ -919,9 +921,8 @@ class MirroModelWebhookRegister(object):
         )
         tenans = redis_manager.get_tenant_codes(pattern=pattern, exlcudes_keys=exlcudes_keys)
         for tenant in tenans:
-            user = redis_manager.get_user_admin(tenant)
             context = {
                 "tenant": tenant,
-                "user": user.get("id") or "admin",
+                "user": INTERNAL_USER,
             }
             cls.register(context=context)

@@ -1,36 +1,42 @@
-import threading
-from typing import Dict, List, Set, Type, Any
-import time
-from datetime import datetime
-from omni_pro_base.util import nested
-from google.protobuf import json_format
-from omni_pro_base.http_request import OmniRequest
-from omni.pro.logger import configure_logger
-from omni_pro_grpc.util import format_datetime_to_iso
-from omni_pro_grpc.grpc_function import EventRPCFucntion, WebhookRPCFucntion
-from omni_pro_grpc.grpc_function import MirrorModelRPCFucntion, ModelRPCFucntion, TemplateNotificationRPCFucntion
-from omni_pro_grpc.grpc_connector import Event, GRPClient
-from omni.pro.util import measure_time
-from omni.pro.config import Config
-from omni.pro.airflow.airflow_client_base import AirflowClientBase
-from omni.pro.redis import RedisManager
-from omni.pro.celery.celery_redis import CeleryRedis
-from mongoengine import Document
-from omni_pro_grpc.util import MessageToDict
-from omni_pro_base.util import eval_condition
 import json
-from copy import deepcopy, copy
+import threading
+import time
+from copy import copy, deepcopy
+from datetime import datetime
+from typing import Any, Dict, List, Set, Type
+
 from celery import Celery
+from google.protobuf import json_format
+from mongoengine import Document
+from omni.pro.airflow.airflow_client_base import AirflowClientBase
+from omni.pro.celery.celery_redis import CeleryRedis
+from omni.pro.config import Config
+from omni.pro.logger import configure_logger
+from omni.pro.redis import RedisManager
+from omni.pro.user.access import INTERNAL_USER
+from omni.pro.util import measure_time
+from omni_pro_base.http_request import OmniRequest
+from omni_pro_base.util import eval_condition, nested
+from omni_pro_grpc.grpc_connector import Event, GRPClient
+from omni_pro_grpc.grpc_function import (
+    EventRPCFucntion,
+    MirrorModelRPCFucntion,
+    ModelRPCFucntion,
+    TemplateNotificationRPCFucntion,
+    WebhookRPCFucntion,
+)
+from omni_pro_grpc.util import MessageToDict, format_datetime_to_iso
 
 _logger = configure_logger(name=__name__)
 
 
 class WebhookHandler:
     def __init__(self, crud_attrs: dict = {}, context: dict = {}) -> None:
+        context.update({"user": INTERNAL_USER})
         self.type_db = context.pop("type_db") if "type_db" in context else None
         self.context = context
         self.tenant = context.get("tenant")
-        self.user = context.get("user", "internal")
+        self.user = INTERNAL_USER  ##context.get("user", "internal")
         self.rpc_event = EventRPCFucntion(context=context, cache=True)
         self.rpc_webhook = WebhookRPCFucntion(context=context, cache=True)
         self.rpc_model = ModelRPCFucntion(context=context, cache=True)
@@ -607,7 +613,7 @@ class WebhookHandler:
                             field_value = field_value.isoformat()
                         item[field_code] = field_value
                 persistence_type = model_mirror.get("persistence_type")
-                user = self.user or "admin"
+                user = self.user or INTERNAL_USER
                 if persistence_type == "NO_SQL":
                     item.update({"context": self.context})
                 elif persistence_type == "SQL":
@@ -757,8 +763,7 @@ class WebhookHandler:
         Returns:
             Dict[str, Type[object]]: A dictionary mapping collection or table names to their class types.
         """
-        from omni.pro.models.base import BaseDocument
-        from omni.pro.models.base import BaseModel
+        from omni.pro.models.base import BaseDocument, BaseModel
 
         class_by_name = {}
         if self.type_db == "document":
