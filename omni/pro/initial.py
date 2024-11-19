@@ -15,6 +15,7 @@ from omni.pro.microservice import MicroService
 from omni.pro.models.base import Audit, Base
 from omni.pro.redis import RedisManager
 from omni.pro.stack import ExitStackDocument
+from omni.pro.user.access import INTERNAL_USER
 from omni.pro.validators import MicroServicePathValidator
 from omni_pro_grpc.grpc_connector import Event, GRPClient
 from omni_pro_grpc.v1.users import user_pb2
@@ -38,10 +39,9 @@ class LoadData(object):
         )
         tenans = redis_manager.get_tenant_codes()
         for tenant in tenans:
-            user = redis_manager.get_user_admin(tenant)
             context = {
                 "tenant": tenant,
-                "user": user.get("id") or "admin",
+                "user": INTERNAL_USER,
             }
             micro: MicroserviceProto = self.get_rpc_manifest_func_class()(context).get_micro(
                 code=self.microserivce,
@@ -177,10 +177,9 @@ class Manifest(object):
         )
         tenans = redis_manager.get_tenant_codes()
         for tenant in tenans:
-            user = redis_manager.get_user_admin(tenant)
             context = {
                 "tenant": tenant,
-                "user": user.get("id") or "admin",
+                "user": INTERNAL_USER,
             }
             rpc_func: ManifestRPCFunction = self.get_rpc_manifest_func_class()(context)
             try:

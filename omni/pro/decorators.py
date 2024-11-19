@@ -11,7 +11,7 @@ from omni.pro.database import DatabaseManager, PostgresDatabaseManager
 from omni.pro.logger import LoggerTraceback, configure_logger
 from omni.pro.redis import RedisManager
 from omni.pro.response import MessageResponse
-from omni.pro.user.access import Permission
+from omni.pro.user.access import INTERNAL_USER, Permission
 from omni.pro.util import Resource
 from omni_pro_base.util import nested
 from omni_pro_grpc.common.base_pb2 import Filter
@@ -56,8 +56,9 @@ def resources_decorator(
                     context.pg_manager = PostgresDatabaseManager(**db_params)
             except Exception as e:
                 LoggerTraceback.error("Resource Decorator exception", e, logger)
-            if not request.context.user == "internal":
+            if not request.context.user == INTERNAL_USER:
                 if permission:
+                    message_response = message_response or funcion.__annotations__.get("return")
                     result = permission_required(redis_manager, request, funcion, message_response, permission_code)
                     if result:
                         return result
@@ -80,7 +81,7 @@ def permission_required(rm: RedisManager, request, funcion: callable, message_re
         sub = request.context.user
         domain_val, is_superuser_val = rm_per.get_multi_hash(sub, permission, Permission.IS_SUPERUSER.value)
         if domain_val is None and is_superuser_val is None:
-            return MessageResponse(user_pb2.HasPermissionResponse).unauthorized_response()
+            return MessageResponse(message_response).unauthorized_response()
 
         if hasattr(request, "filter") and hasattr(request.filter, "filter"):
             filter_exist = str(request.filter.filter)
