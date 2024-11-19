@@ -58,6 +58,7 @@ def resources_decorator(
                 LoggerTraceback.error("Resource Decorator exception", e, logger)
             if not request.context.user == "internal":
                 if permission:
+                    message_response = message_response or funcion.__annotations__.get("return")
                     result = permission_required(redis_manager, request, funcion, message_response, permission_code)
                     if result:
                         return result
@@ -80,7 +81,7 @@ def permission_required(rm: RedisManager, request, funcion: callable, message_re
         sub = request.context.user
         domain_val, is_superuser_val = rm_per.get_multi_hash(sub, permission, Permission.IS_SUPERUSER.value)
         if domain_val is None and is_superuser_val is None:
-            return MessageResponse(user_pb2.HasPermissionResponse).unauthorized_response()
+            return MessageResponse(message_response).unauthorized_response()
 
         if hasattr(request, "filter") and hasattr(request.filter, "filter"):
             filter_exist = str(request.filter.filter)
