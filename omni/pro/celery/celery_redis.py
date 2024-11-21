@@ -7,8 +7,8 @@ from omni_pro_base.config import Config
 class OmniCelery(Celery):
     def __init__(self, tenant: str, **kwargs) -> None:
         self.tenant = tenant
+        self.conf = self._get_conf()
         if not all(k in kwargs for k in ["broker", "backend"]):
-            self.conf = self._get_conf()
             broker = f"redis://{self.conf['host']}:{self.conf['port']}/{self.conf['db']}"
             backend = f"redis://{self.conf['host']}:{self.conf['port']}/{self.conf['db']}"
 
