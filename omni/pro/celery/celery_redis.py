@@ -7,10 +7,9 @@ from omni_pro_base.config import Config
 class OmniCelery(Celery):
     def __init__(self, tenant: str, **kwargs) -> None:
         self.tenant = tenant
-        self.conf = self._get_conf()
-        if not all(k in kwargs for k in ["broker", "backend"]):
-            broker = f"redis://{self.conf['host']}:{self.conf['port']}/{self.conf['db']}"
-            backend = f"redis://{self.conf['host']}:{self.conf['port']}/{self.conf['db']}"
+        self.conn = self._get_conf()
+        broker = f"redis://{self.conn['host']}:{self.conn['port']}/{self.conn['db']}"
+        backend = f"redis://{self.conn['host']}:{self.conn['port']}/{self.conn['db']}"
 
         kwargs["broker"] = kwargs.get("broker", broker)
         kwargs["backend"] = kwargs.get("backend", backend)
@@ -30,7 +29,7 @@ class OmniCelery(Celery):
             str: The name of the queue with the fewest tasks.
 
         """
-        redis_client = redis.Redis(host=self.conf["host"], port=self.conf["port"], db=self.conf["db"])
+        redis_client = redis.Redis(host=self.conn["host"], port=self.conn["port"], db=self.conn["db"])
         min_tasks = float("inf")
         selected_queue = None
 
