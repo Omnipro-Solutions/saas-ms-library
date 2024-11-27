@@ -1,4 +1,6 @@
 import grpc
+from omni.pro.locales import set_language
+from omni_pro_grpc.util import MessageToDict
 
 
 class LoggingInterceptor(grpc.ServerInterceptor):
@@ -47,3 +49,31 @@ class LoggingInterceptor(grpc.ServerInterceptor):
         except Exception as e:
             self.logger.error("Error while invoking method %s: %s", handler_call_details.method, str(e))
             raise
+
+
+class LanguageInterceptor(grpc.ServerInterceptor):
+    def __init__(self, base_localedir):
+        self.base_localedir = base_localedir
+
+    def intercept_service(self, continuation, handler_call_details):
+        rpc_method_handler = continuation(handler_call_details)
+
+        def new_unary_unary_handler(request, context):
+            if hasattr(request, "context"):
+                user_context = getattr(request, "context", None)
+                if user_context and hasattr(user_context, "locale"):
+                    locale_struct = user_context.locale
+                    locale_dict = MessageToDict(locale_struct)
+                    language_code = locale_dict.get("fields", {}).get("language", {}).get("stringValue", "es")
+                    gettext_function = set_language(language_code=language_code, localedir=self.base_localedir)
+                    context._ = gettext_function
+            return rpc_method_handler.unary_unary(request, context)
+
+        if rpc_method_handler.unary_unary:
+            return grpc.unary_unary_rpc_method_handler(
+                new_unary_unary_handler,
+                request_deserializer=rpc_method_handler.request_deserializer,
+                response_serializer=rpc_method_handler.response_serializer,
+            )
+
+        return rpc_method_handler
