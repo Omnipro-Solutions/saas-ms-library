@@ -16,6 +16,7 @@ from omni.pro.stack import ExitStackDocument
 from omni.pro.user.access import INTERNAL_USER
 from omni.pro.util import Resource, convert_model_alchemy_to_struct, convert_model_mongo_to_struct
 from omni_pro_base.config import Config
+from omni_pro_base.exceptions import OmniStopIteration
 from omni_pro_base.microservice import MicroService as MicroServiceEnum
 from omni_pro_base.util import nested
 from omni_pro_grpc.grpc_function import EventRPCFucntion, MethodRPCFunction, ModelRPCFucntion, WebhookRPCFucntion
@@ -241,38 +242,80 @@ class MirrorModelSQL(MirrorModelBase):
 
     def _convert_fields_to_db_types(self, items: list[dict]):
         """
-        Converts specific fields in a list of items (dictionaries) to match their
-        respective database types as defined in the model's schema.
+        Converts fields in a list of dictionaries to match their database types or resolve foreign key relationships.
 
-        This method inspects the model to identify columns that require type conversion
-        (currently supporting `INTEGER` type) and applies the necessary transformation to
-        corresponding fields in each item in the `items` list.
+        This method inspects the model to identify columns that require type conversion (e.g., `INTEGER`)
+        or are foreign keys. It applies the necessary transformations to the fields in the provided items.
 
         Parameters:
         ----------
         items : list[dict]
-            A list of dictionaries, where each dictionary represents an item containing
-            fields that may need to be converted to the expected database type.
+            A list of dictionaries representing records with fields to be converted or resolved.
 
-        Internal Logic:
-        ---------------
-        - Uses SQLAlchemy's `inspect` to retrieve the model's columns and their types.
-        - Constructs a `field_type_by_name` dictionary mapping field names to their types
-          for fields that require conversion (currently `INTEGER`).
-        - For each item in `items`, it:
-          - Checks if the field exists in the item.
-          - Converts fields of type `INTEGER` to `int`.
+        Methodology:
+        ------------
+        - **Model Inspection:**
+            - Builds a map of fields requiring type conversion (`field_type_by_name`).
+            - Identifies foreign key fields and maps them to their related models and fields (`foreign_key_map`).
 
+        - **Field Processing:**
+            - Resolves foreign key fields by querying the related model using the `pg_manager`.
+            - Converts fields of type `INTEGER` to Python `int`.
+
+        Raises:
+        -------
+        OmniStopIteration:
+            If a related model for a foreign key is missing a required alias (`field_aliasing='id'`).
+
+        Notes:
+        ------
+        - Requires `pg_manager` for database queries.
+        - Assumes foreign key relationships and type mappings are correctly defined in the model schema.
         """
         field_type_by_name = {}
+        foreign_key_map = {}
         mapper = inspect(self.model)
         for column in mapper.columns:
             column_type = str(column.type)
             if column_type in ["INTEGER"]:
                 field_type_by_name[column.name] = column_type
+
+            for fk in column.foreign_keys:
+                for rel in self.model.__mapper__.relationships:
+                    if fk.target_fullname in str(rel.local_columns):
+                        model_dest = rel.mapper.class_
+                        related_field = next(
+                            filter(
+                                lambda x: hasattr(x, "field_aliasing") and x.field_aliasing == "id",
+                                model_dest.__table__.columns,
+                            ),
+                            None,
+                        )
+                        if related_field is None:
+                            raise OmniStopIteration(
+                                f"Model destination {model_dest} does not have a field with field_aliasing id - model: {self.model} - column: {column} - fk: {fk}"
+                            )
+
+                        foreign_key_map[column.name] = {
+                            "related_model": model_dest,
+                            "related_field": related_field.name,
+                        }
+                        break
+
         for item in items:
             for field_name, field_type in field_type_by_name.items():
-                if field_name in item and field_type == "INTEGER":
+                if field_name in foreign_key_map:
+                    foreign_key_value = item.get(field_name)
+                    if foreign_key_value is not None:
+                        related_model = foreign_key_map[field_name]["related_model"]
+                        related_field = foreign_key_map[field_name]["related_field"]
+                        related_instance = self.context.pg_manager.retrieve_record(
+                            related_model, self.context.pg_manager.Session, {related_field: foreign_key_value}
+                        )
+                        if related_instance:
+                            item[field_name] = related_instance.id
+
+                elif field_name in item and field_type == "INTEGER":
                     field_value = item[field_name]
                     item[field_name] = int(field_value)
 
