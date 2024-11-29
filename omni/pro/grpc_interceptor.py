@@ -69,6 +69,14 @@ class LanguageInterceptor(grpc.ServerInterceptor):
                     gettext_function = set_language(language_code=language_code, localedir=self.base_localedir)
                     context._ = gettext_function
                     translator.set_language(language_code, self.base_localedir)
+                else:
+                    # TODO: Remove this block after all services update to new translation method
+                    context._ = set_language(language_code="es", localedir=self.base_localedir)
+                    translator.set_language(language_code="es", localedir=self.base_localedir)
+            else:
+                # TODO: Remove this block after all services update to new translation method
+                context._ = set_language(language_code="es", localedir=self.base_localedir)
+                translator.set_language(language_code="es", localedir=self.base_localedir)
             return rpc_method_handler.unary_unary(request, context)
 
         if isinstance(rpc_method_handler, grpc.RpcMethodHandler) and rpc_method_handler.unary_unary:
