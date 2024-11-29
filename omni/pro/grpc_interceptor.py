@@ -1,5 +1,7 @@
+from pathlib import Path
+
 import grpc
-from omni.pro.locales import set_language
+from omni.pro.locales import set_language, translator
 
 
 class LoggingInterceptor(grpc.ServerInterceptor):
@@ -61,9 +63,20 @@ class LanguageInterceptor(grpc.ServerInterceptor):
         def _unary_set_text_language_context(request, context):
             if hasattr(request, "context") and (ctx := request.context).HasField("locale"):
                 locale_dict = dict(ctx.locale.items())
-                language_code = locale_dict.get("language") or "es"
-                gettext_function = set_language(language_code=language_code, localedir=self.base_localedir)
-                context._ = gettext_function
+                language_code = locale_dict.get("language")
+                mofile: Path = Path(str(self.base_localedir)) / str(language_code) / "LC_MESSAGES" / "messages.mo"
+                if language_code and mofile.exists():
+                    gettext_function = set_language(language_code=language_code, localedir=self.base_localedir)
+                    context._ = gettext_function
+                    translator.set_language(language_code, self.base_localedir)
+                else:
+                    # TODO: Remove this block after all services update to new translation method
+                    context._ = set_language(language_code="es", localedir=self.base_localedir)
+                    translator.set_language(language_code="es", localedir=self.base_localedir)
+            else:
+                # TODO: Remove this block after all services update to new translation method
+                context._ = set_language(language_code="es", localedir=self.base_localedir)
+                translator.set_language(language_code="es", localedir=self.base_localedir)
             return rpc_method_handler.unary_unary(request, context)
 
         if isinstance(rpc_method_handler, grpc.RpcMethodHandler) and rpc_method_handler.unary_unary:
