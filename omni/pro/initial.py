@@ -282,3 +282,13 @@ class UserChannel(object):
             )
             response = GRPClient(service_id=self.service_id).call_rpc_fuction(self.event)
         return response
+
+    def get_user_by_sub(self, sub):
+        self.event.update(
+            rpc_method="UserRead",
+            request_class="UserReadRequest",
+            params={"filter": {"filter": f"[('sub','=','{sub}')]"}} | {"context": self.context},
+        )
+        response, _s = GRPClient(service_id=self.service_id).call_rpc_fuction(self.event)
+        user = response.users[0] if response.users else user_pb2.User()
+        return user
