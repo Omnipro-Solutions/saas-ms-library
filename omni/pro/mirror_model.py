@@ -291,6 +291,7 @@ class MirrorModelSQL(MirrorModelBase):
                             ),
                             None,
                         )
+                        # If the related model is not a replic table, try to find the id field
                         if related_field is None and not model_dest.__is_replic_table__:
                             related_field = next(
                                 filter(
