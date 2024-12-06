@@ -291,6 +291,15 @@ class MirrorModelSQL(MirrorModelBase):
                             ),
                             None,
                         )
+                        if related_field is None and not model_dest.__is_replic_table__:
+                            related_field = next(
+                                filter(
+                                    lambda x: x.name == "id",
+                                    model_dest.__table__.columns,
+                                ),
+                                None,
+                            )
+
                         if related_field is None:
                             raise OmniStopIteration(
                                 f"Model destination {model_dest} does not have a field with field_aliasing id - model: {self.model} - column: {column} - fk: {fk}"
