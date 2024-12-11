@@ -106,8 +106,10 @@ class Descriptor(object):
 
             # if the field is an Enum, add options values
             if hasattr(field, "choices") and field.choices:
-                field_info["options"] = [{"code": x.value, "name": to_camel_case(x.value)} for x in field.choices]
-
+                field_info["options"] = [
+                    {"code": x.value, "name": to_camel_case(x.value) if isinstance(x.value, str) else x.name}
+                    for x in field.choices
+                ]
             fields.append(field_info)
 
         if model._dynamic:
