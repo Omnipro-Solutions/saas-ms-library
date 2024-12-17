@@ -1,4 +1,4 @@
-from mongoengine.fields import EmbeddedDocumentField, ObjectIdField, ReferenceField
+from mongoengine.fields import EmbeddedDocumentField, ListField, ObjectIdField, ReferenceField
 from omni.pro.models.base import BaseModel
 from omni_pro_base.util import to_camel_case
 from sqlalchemy import Enum, inspect
@@ -79,13 +79,28 @@ class Descriptor(object):
                 ),
                 "field_aliasing": (field.field_aliasing if hasattr(field, "field_aliasing") else None),
                 "relation": {},
+                "description": (field.help_text if hasattr(field, "help_text") else None),
             }
+            if isinstance(field, ReferenceField):
+                field_info["relation"] = {
+                    "name": current_name,
+                    "code": current_code,
+                }
+
+            if isinstance(field, ListField):
+                inner_field = field.field
+                if isinstance(inner_field, ReferenceField):
+                    field_info["relation"] = {
+                        "name": current_name,
+                        "code": current_code,
+                    }
+
             if hasattr(field, "max_length") and field.max_length:
                 field_info["size"] = field.max_length
 
             # If the field is an EmbeddedDocumentField or ReferenceField, recurse into its fields
-            is_reference = isinstance(field, ReferenceField)
-            if isinstance(field, EmbeddedDocumentField) or is_reference:
+            # is_reference = isinstance(field, ReferenceField)
+            if isinstance(field, EmbeddedDocumentField):
                 if depth < max_depth:
                     embedded_model = field.document_type_obj
                     try:
@@ -194,6 +209,7 @@ class Descriptor(object):
                 "is_exportable": column.is_exportable,
                 "is_importable": column.is_importable,
                 "field_aliasing": column.field_aliasing,
+                "description": column.doc if column.doc else None,
             }
             if hasattr(column.type, "length") and column.type.length:
                 column_info["size"] = column.type.length
@@ -206,7 +222,8 @@ class Descriptor(object):
             if column.foreign_keys:
                 # Aquí solo se toma el primer ForeignKey, hay que modificarlo si puede haber múltiples referencias.
                 related_model = list(column.foreign_keys)[0].column.table.name
-                column_info["relation"] = {"name": related_model}
+                name_related_model = to_camel_case(related_model)
+                column_info["relation"] = {"code": related_model, "name": name_related_model}
             # column_info["relation"] = {}
 
             description["fields"].append(column_info)
