@@ -718,6 +718,14 @@ class MirrorModelServiceMongo(mirror_model_pb2_grpc.MirrorModelServiceServicer):
                     request.id, request.fields, request.filter, request.paginated, None, request.sort_by
                 )
                 result = base.read_mirror_model(request.context.tenant, data)
+                if request.protobuf:
+                    return message_response.created_response(
+                        message="Mirror model read successfully",
+                        mirror_models=to_list_value(
+                            [MessageToDict(mirror_model.to_proto()) for mirror_model in result]
+                        ),
+                    )
+
                 return message_response.created_response(
                     message="Mirror model read successfully",
                     mirror_models=to_list_value([mirror_model.generate_dict() for mirror_model in result[0]]),
