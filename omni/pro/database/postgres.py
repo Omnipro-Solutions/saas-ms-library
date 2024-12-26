@@ -359,7 +359,11 @@ class PostgresDatabaseManager(SessionManager):
         offset = (page - 1) * limit
         query = query.offset(offset).limit(limit)
 
-        return query.all(), total
+        results = query.all()
+        if fields.ListFields():
+            results = [model(**dict(zip(fields.name_field, record))) for record in results]
+            
+        return results, total
 
     def build_sort_by(self, model, sort_by: base_pb2.SortBy):
         field = getattr(model, sort_by.name_field)
