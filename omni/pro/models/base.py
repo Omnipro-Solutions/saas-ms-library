@@ -18,6 +18,7 @@ from omni.pro.airflow.actions import ActionToAirflow
 from omni.pro.config import Config
 from omni.pro.database.postgres import CustomSession
 from omni.pro.database.sqlalchemy import mapped_column
+from omni.pro.locales import translator as ts
 from omni.pro.logger import configure_logger
 from omni.pro.user.access import INTERNAL_USER
 from omni.pro.util import measure_time
@@ -58,12 +59,16 @@ class BaseObjectEmbeddedDocument(BaseEmbeddedDocument):
 
 
 class Audit(BaseEmbeddedDocument):
-    created_at = DateTimeField(default=datetime.utcnow, is_importable=False)
-    created_by = StringField(is_importable=False)
-    updated_at = DateTimeField(default=datetime.utcnow, is_importable=False)
-    updated_by = StringField(is_importable=False)
-    deleted_at = DateTimeField(is_importable=False)
-    deleted_by = StringField(is_importable=False)
+    created_at = DateTimeField(
+        default=datetime.utcnow, is_importable=False, help_text=ts.gettext("Created at for the object")
+    )
+    created_by = StringField(is_importable=False, help_text=ts.gettext("Created by for the object"))
+    updated_at = DateTimeField(
+        default=datetime.utcnow, is_importable=False, help_text=ts.gettext("Updated at for the object")
+    )
+    updated_by = StringField(is_importable=False, help_text=ts.gettext("Updated by for the object"))
+    deleted_at = DateTimeField(is_importable=False, help_text=ts.gettext("Deleted at for the object"))
+    deleted_by = StringField(is_importable=False, help_text=ts.gettext("Deleted by for the object"))
 
     def to_proto(self) -> AuditProto:
         create_at_ts = Timestamp()
@@ -79,8 +84,8 @@ class Audit(BaseEmbeddedDocument):
 
 
 class Context(BaseEmbeddedDocument):
-    tenant = StringField(is_importable=False)
-    user = StringField(is_importable=False)
+    tenant = StringField(is_importable=False, help_text=ts.gettext("Tenant for the context"))
+    user = StringField(is_importable=False, help_text=ts.gettext("User for the context"))
 
     def to_proto(self) -> ContextProto:
         return ContextProto(
@@ -92,10 +97,10 @@ class Context(BaseEmbeddedDocument):
 class BaseDocument(Document):
     __is_replic_table__ = False
 
-    context = EmbeddedDocumentField(Context)
-    audit = EmbeddedDocumentField(Audit)
-    active = BooleanField(default=True)
-    external_id = StringField()
+    context = EmbeddedDocumentField(Context, help_text=ts.gettext("Context for the object"))
+    audit = EmbeddedDocumentField(Audit, help_text=ts.gettext("Audit for the object"))
+    active = BooleanField(default=True, help_text=ts.gettext("Active for the object"))
+    external_id = StringField(help_text=ts.gettext("External id for the object"))
 
     meta = {
         "abstract": True,
@@ -324,18 +329,47 @@ class Base:
         """
         return cls._camel_to_snake(cls.__name__)
 
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True, is_importable=False)
-    active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
-    external_id: Mapped[str] = mapped_column(String(50), unique=True, nullable=True)
-    tenant: Mapped[str] = mapped_column(String(30), nullable=False, is_importable=False)
-    created_by: Mapped[str] = mapped_column(String(50), default=set_created_by, nullable=False, is_importable=False)
-    updated_by: Mapped[str] = mapped_column(String(50), nullable=False, is_importable=False)
-    deleted_by: Mapped[str] = mapped_column(String(50), nullable=True, is_importable=False)
-    created_at: Mapped[datetime] = mapped_column(DateTime(), default=datetime.now, nullable=False, is_importable=False)
-    updated_at: Mapped[datetime] = mapped_column(
-        DateTime(), default=datetime.now, onupdate=datetime.now, nullable=False, is_importable=False
+    id: Mapped[int] = mapped_column(
+        primary_key=True, autoincrement=True, is_importable=False, doc=ts.gettext("Identificaator for the object")
     )
-    deleted_at: Mapped[datetime] = mapped_column(DateTime(), nullable=True, is_importable=False)
+    active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False, doc=ts.gettext("Active for the object"))
+    external_id: Mapped[str] = mapped_column(
+        String(50), unique=True, nullable=True, doc=ts.gettext("External id for the object")
+    )
+    tenant: Mapped[str] = mapped_column(
+        String(30), nullable=False, is_importable=False, doc=ts.gettext("Tenant for the object")
+    )
+    created_by: Mapped[str] = mapped_column(
+        String(50),
+        default=set_created_by,
+        nullable=False,
+        is_importable=False,
+        doc=ts.gettext("Created by for the object"),
+    )
+    updated_by: Mapped[str] = mapped_column(
+        String(50), nullable=False, is_importable=False, doc=ts.gettext("Updated by for the object")
+    )
+    deleted_by: Mapped[str] = mapped_column(
+        String(50), nullable=True, is_importable=False, doc=ts.gettext("Deleted by for the object")
+    )
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(),
+        default=datetime.now,
+        nullable=False,
+        is_importable=False,
+        doc=ts.gettext("Created at for the object"),
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(),
+        default=datetime.now,
+        onupdate=datetime.now,
+        nullable=False,
+        is_importable=False,
+        doc=ts.gettext("Updated at for the object"),
+    )
+    deleted_at: Mapped[datetime] = mapped_column(
+        DateTime(), nullable=True, is_importable=False, doc=ts.gettext("Deleted at for the object")
+    )
 
     def model_to_dict(self, depth=None, properties=None):
         """
