@@ -75,12 +75,23 @@ class QueryExport(ImportExportBase):
                 "$lte": self.parse_date(end_date),
             },
         }
-        cursor = db[model_path.split(".")[2].lower()].find(
+        cursor = db[model._meta["collection"]].find(
             query_filter,
             projection=exclude,
         )
         result = list(cursor)
         return result
+
+    def _get_unique_field_aliasing(self, table):
+        code_field_aliasing = None
+        for column in table.columns:
+            if column.unique and hasattr(column, "field_aliasing") and column.name:
+                if column.field_aliasing == "id":
+                    return column.name
+                elif column.field_aliasing == "code":
+                    return column.name
+
+        return code_field_aliasing
 
     def get_data_sql(self, model, model_path, fields, start_date, end_date, context):
         """
@@ -106,8 +117,8 @@ class QueryExport(ImportExportBase):
         related_table_fields = []
 
         for column in inspector.columns:
-            if column.name in fields:
-                for fk in column.foreign_keys:
+            for fk in column.foreign_keys:
+                if column.name in fields:
                     target_class = fk.column.table.name.capitalize()
                     foreign_keys.append(
                         {
@@ -115,14 +126,29 @@ class QueryExport(ImportExportBase):
                             "target_class": str(target_class).lower(),
                         }
                     )
+                else:
+                    field_aliasing_unique = self._get_unique_field_aliasing(fk.column.table)
+                    if f"{fk.column.table}.{field_aliasing_unique}" in fields:
+                        main_table_fields = main_table_fields.replace(
+                            f", {main_table_alias}.{fk.column.table}.{field_aliasing_unique}", ""
+                        )
+                        target_class = fk.column.table.name.capitalize()
+                        foreign_keys.append(
+                            {
+                                "column": column.name,
+                                "target_class": str(target_class).lower(),
+                                "related_fields": related_fields.copy() + [field_aliasing_unique],
+                            }
+                        )
         # Create join clauses and related fields for foreign keys
         for fk in foreign_keys:
             related_table = fk["target_class"]
+            table_related_fields = fk.get("related_fields", related_fields)
             join_clauses.append(
                 f'LEFT JOIN "{related_table}" ON "{main_table_alias}".{fk["column"]} = "{related_table}".id'
             )
-            for field in related_fields:
-                alias = f"{related_table}_{field}"
+            for field in table_related_fields:
+                alias = f"{related_table}_{field}" if related_table not in field else field
                 related_table_fields.append(f"{related_table}.{field} AS {alias}")
 
         # Build the SQL query
