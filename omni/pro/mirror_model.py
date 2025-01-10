@@ -22,7 +22,7 @@ from omni_pro_base.util import nested
 from omni_pro_grpc.grpc_function import EventRPCFucntion, MethodRPCFunction, ModelRPCFucntion, WebhookRPCFucntion
 from omni_pro_grpc.util import MessageToDict, to_list_value
 from omni_pro_grpc.v1.utilities import mirror_model_pb2, mirror_model_pb2_grpc
-from pymongo import DeleteOne, InsertOne, UpdateOne
+from pymongo import DeleteMany, DeleteOne, InsertOne, UpdateOne
 from sqlalchemy import inspect
 from sqlalchemy.exc import IntegrityError, OperationalError
 
@@ -198,7 +198,7 @@ class MirrorModelSQL(MirrorModelBase):
             self.model, self.context.pg_manager.Session, nested(data, "model_data.id"), data["model_data"] | audit
         )
 
-    def multi_update_mirror_model(self, items: list):
+    def multi_update_mirror_model(self, items: list, delete=False):
         """
         Updates the mirror model in the SQL database.
 
@@ -213,6 +213,23 @@ class MirrorModelSQL(MirrorModelBase):
         bulk_update_items = []
         bulk_create_items = []
         unique_field_aliasing = self._get_unique_field_aliasing()
+
+        if delete:
+            type_field = type(items[0]["id"])
+            if type_field == float:
+                type_field = int
+            provided_ids = [type_field(item["id"]) for item in items]
+            existing_docs = (
+                self.context.pg_manager.Session.query(self.model).filter(self.model.tenant == self.tenant).all()
+            )
+            existing_ids = [getattr(doc, unique_field_aliasing) for doc in existing_docs]
+
+            ids_to_delete = set(existing_ids) - set(provided_ids)
+            if ids_to_delete:
+                self.context.pg_manager.Session.query(self.model).filter(
+                    self.model.tenant == self.tenant, getattr(self.model, unique_field_aliasing).in_(ids_to_delete)
+                ).delete(synchronize_session=False)
+                return True
 
         if self.tenant and unique_field_aliasing:
             instance_ids_by_unique_field_aliasing = self._get_doc_ids_by_unique_field_aliasing(
@@ -481,7 +498,7 @@ class MirrorModelNoSQL(MirrorModelBase):
         self.model.transform_mirror(data["model_data"])
         return self.context.db_manager.update_document(None, self.model, **data["model_data"])
 
-    def multi_update_mirror_model(self, items: list):
+    def multi_update_mirror_model(self, items: list, delete=False):
         """
         Update the mirror model using NO_SQL.
 
@@ -497,6 +514,20 @@ class MirrorModelNoSQL(MirrorModelBase):
         items_create = []
         unique_field_aliasing = self._get_unique_field_aliasing()
 
+        if delete:
+            type_field = type(items[0]["id"])
+            if type_field == float:
+                type_field = int
+            provided_ids = [type_field(item["id"]) for item in items]
+            existing_docs = self.model.objects(context__tenant=self.tenant).only(unique_field_aliasing)
+            existing_ids = [type_field(getattr(doc, unique_field_aliasing)) for doc in existing_docs]
+
+            ids_to_delete = set(existing_ids) - set(provided_ids)
+            if ids_to_delete:
+                self.model._get_collection().bulk_write(
+                    [DeleteMany({unique_field_aliasing: {"$in": list(ids_to_delete)}})], ordered=False
+                )
+                return True
         if self.tenant and unique_field_aliasing:
             doc_ids_by_unique_field_aliasing = self._get_doc_ids_by_unique_field_aliasing(items, unique_field_aliasing)
             self._convert_fields_to_db_types(items)
@@ -773,7 +804,7 @@ class MirrorModelServiceMongo(mirror_model_pb2_grpc.MirrorModelServiceServicer):
                 db_alias=context.db_name,
             ):
 
-                result = base.multi_update_mirror_model(data.get("data"))
+                result = base.multi_update_mirror_model(data.get("data"), data.get("delete"))
 
                 return message_response.updated_response(
                     message="Mirror updated successfully",
@@ -904,7 +935,7 @@ class MirrorModelServicePostgres(mirror_model_pb2_grpc.MirrorModelServiceService
 
                 result = mirror_factory(
                     context, data.pop("model_path"), request.context.tenant, request.context.user
-                ).multi_update_mirror_model(data.get("data"))
+                ).multi_update_mirror_model(data.get("data"), data.get("delete"))
 
                 return message_response.updated_response(
                     message="Mirror updated successfully",
