@@ -96,6 +96,7 @@ class Context(BaseEmbeddedDocument):
 
 class BaseDocument(Document):
     __is_replic_table__ = False
+    __exclude_fields__ = []
 
     context = EmbeddedDocumentField(Context, help_text=ts.gettext("Context for the object"))
     audit = EmbeddedDocumentField(Audit, help_text=ts.gettext("Audit for the object"))
@@ -153,8 +154,16 @@ class BaseDocument(Document):
             self.validate_change_fields(set(kwargs.keys()))
         return res
 
-    def to_proto(self, *args, **kwargs):
-        raise NotImplementedError
+    def to_proto(self, fields=set(), exclude=False, message=None, *args, **kwargs):
+        """
+        Convert the model instance to its proto representation.
+
+        Returns:
+            AuditProto: The proto representation of the model.
+        """
+
+        self.clear_fields(self.__exclude_fields__ if exclude else fields, message)
+        return message
 
     @classmethod
     def reference_list(cls):
@@ -258,6 +267,35 @@ class BaseDocument(Document):
 
         return set(changes)
 
+    @classmethod
+    def clear_fields(cls, fields, message):
+        """
+        Clears the specified fields from a given message.
+        Args:
+            cls: The class that this method is a part of.
+            fields (iterable): An iterable containing the names of the fields to be cleared.
+            message: The message object from which the fields will be cleared.
+        Raises:
+            ValueError: If 'fields' is not an iterable or if one or more fields are not present in the message.
+        """
+
+        if not hasattr(fields, "__iter__"):
+            raise ValueError("The exclude_fields property must be an iterable.")
+        if not set(fields).issubset(set(field.name for field in message.DESCRIPTOR.fields)):
+            raise ValueError("One or more fields are not present in the message.")
+        for field in fields:
+            message.ClearField(field)
+
+    @property
+    def exclude_fields(self):
+        return self.__exclude_fields__
+
+    @exclude_fields.setter
+    def exclude_fields(self, value):
+        if not hasattr(value, "__iter__"):
+            raise ValueError("The exclude_fields property must be an iterable.")
+        self.__exclude_fields__ = value
+
 
 class BaseAuditEmbeddedDocument(BaseEmbeddedDocument):
     context = EmbeddedDocumentField(Context)
@@ -304,6 +342,7 @@ class Base:
     __max_depth__ = 0
     __properties__ = []
     __click_house__ = True
+    __exclude_fields__ = []
 
     @staticmethod
     def _camel_to_snake(name):
@@ -492,7 +531,7 @@ class Base:
         except SQLAlchemyError as e:
             return False
 
-    def to_proto(self) -> AuditProto:
+    def to_proto(self, fields=set(), exclude=False, message=None) -> AuditProto:
         """
         Convert the model instance to its proto representation.
 
@@ -513,8 +552,10 @@ class Base:
             deleted_at_ts = Timestamp()
             deleted_at_ts.FromDatetime(self.deleted_at)
             audit_proto.deleted_at = deleted_at_ts
-
-        return audit_proto
+        if message:
+            self.clear_fields(self.__exclude_fields__ if exclude else fields, message)
+            message.object_audit.CopyFrom(audit_proto)
+        return message or audit_proto
 
     def sync_data(self, *args, **kwargs):
         """
@@ -639,6 +680,34 @@ class Base:
         """
         return (t := Timestamp(), t.FromDatetime(dt))[0] if dt else None
 
+    @classmethod
+    def clear_fields(cls, fields, message):
+        """
+        Clears the specified fields from a given message.
+        Args:
+            cls: The class that this method is a part of.
+            fields (iterable): An iterable containing the names of the fields to be cleared.
+            message: The message object from which the fields will be cleared.
+        Raises:
+            ValueError: If 'fields' is not an iterable or if one or more fields are not present in the message.
+        """
+        if not hasattr(fields, "__iter__"):
+            raise ValueError("The exclude_fields property must be an iterable.")
+        if not set(fields).issubset(set(field.name for field in message.DESCRIPTOR.fields)):
+            raise ValueError("One or more fields are not present in the message.")
+        for field in fields:
+            message.ClearField(field)
+
+    @property
+    def exclude_fields(self):
+        return self.__exclude_fields__
+
+    @exclude_fields.setter
+    def exclude_fields(self, value):
+        if not hasattr(value, "__iter__"):
+            raise ValueError("The exclude_fields property must be an iterable.")
+        self.__exclude_fields__ = value
+
 
 BaseModel = declarative_base(cls=Base)
 
@@ -680,4 +749,5 @@ def post_delete(mapper, connection, target):
         # ActionToAirflow.send_to_airflow(
         #     mapper, target, "delete", context={"tenant": target.tenant, "user": target.updated_by}
         # )
+    return
     return
