@@ -112,7 +112,7 @@ def convert_name_upper_snake_case(function_name: str, model_name: str) -> str:
     if set(model_name.split("_")).intersection(set(components)):
         resul = [component for component in components if component not in model_name.split("_")]
         action = "_".join(resul)
-        return f"CAN_{action}_{model_name}".upper()
+        return f"CAN_{model_name}_{action}".upper()
     return f"CAN_{snake_case}".upper()
 
 
