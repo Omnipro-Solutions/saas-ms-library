@@ -345,8 +345,8 @@ class PostgresDatabaseManager(SessionManager):
         if id:
             query = query.filter(model.id == id)
 
-        if fields.ListFields():
-            query = query.with_entities(*[getattr(model, f) for f in fields.name_field])
+        # if fields.ListFields():
+        #     query = query.with_entities(*[getattr(model, f) for f in fields.name_field])
 
         if sort_by.ListFields():
             order_by_fields = self.build_sort_by(model, sort_by)
@@ -361,9 +361,78 @@ class PostgresDatabaseManager(SessionManager):
 
         results = query.all()
         if fields.ListFields():
-            results = [model(**dict(zip(fields.name_field, record))) for record in results]
-            
+            # results = [model(**dict(zip(fields.name_field, record))) for record in results]
+            if fields.name_field:
+                results = self.transform_objects_by_fields(model, fields.name_field, results)
+
         return results, total
+
+    def transform_objects_by_fields(self, model, fields: list, objects: list):
+        fields = set(fields).union({"id", "created_at", "updated_at", "created_by", "updated_by"})
+        model_fields, relational_fields = self._extract_model_and_relational_fields(fields)
+
+        def create_partial_object(obj, model, fields):
+            return model(
+                **{
+                    field: getattr(obj, field)
+                    for field in fields
+                    if hasattr(obj, field) and not isinstance(getattr(obj.__class__, field, None), property)
+                }
+            )
+
+        def create_relational_object(obj, relational_fields):
+            def _get_object_based_fields(relational_obj, rel_fields):
+                return relational_obj.__class__(
+                    **{
+                        field: getattr(relational_obj, field)
+                        for field in rel_fields
+                        if hasattr(relational_obj, field)
+                        and not isinstance(getattr(relational_obj.__class__, field, None), property)
+                    }
+                )
+
+            relations = {
+                relation: (
+                    [_get_object_based_fields(item, rel_fields) for item in getattr(obj, relation, [])]
+                    if isinstance(getattr(obj, relation, None), list)
+                    else _get_object_based_fields(getattr(obj, relation), rel_fields)
+                )
+                for relation, rel_fields in relational_fields.items()
+                if getattr(obj, relation, None)
+            }
+
+            return relations
+
+        transformed_results = []
+        for obj in objects:
+            partial_obj = create_partial_object(obj, model, model_fields)
+            relations = create_relational_object(obj, relational_fields)
+            for relation, rel_obj in relations.items():
+                setattr(partial_obj, relation, rel_obj)
+            transformed_results.append(partial_obj)
+
+        return transformed_results
+
+    def _extract_model_and_relational_fields(self, fields: set) -> tuple:
+        model_fields = []
+        relational_fields = {}
+
+        for field in fields:
+            if "." in field:
+                relation, rel_field = field.split(".", 1)
+                relational_fields.setdefault(relation, set()).add(rel_field)
+            else:
+                model_fields.append(field)
+
+        relational_fields = {
+            relation: rel_fields for relation, rel_fields in relational_fields.items() if relation not in model_fields
+        }
+
+        default_fields = {"id", "created_at", "updated_at", "created_by", "updated_by"}
+        for relation in relational_fields:
+            relational_fields[relation] = relational_fields[relation].union(default_fields)
+
+        return model_fields, relational_fields
 
     def build_sort_by(self, model, sort_by: base_pb2.SortBy):
         field = getattr(model, sort_by.name_field)
