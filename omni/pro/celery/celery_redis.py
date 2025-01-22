@@ -13,7 +13,8 @@ class OmniCelery(Celery):
 
         kwargs["broker"] = kwargs.get("broker", broker)
         kwargs["backend"] = kwargs.get("backend", backend)
-        kwargs["main"] = "tasks"
+        kwargs["main"] = "omni_celery"
+        kwargs["task_default_queue"] = "low"
         super().__init__(**kwargs)
         self.app: Celery = self._get_app()
 

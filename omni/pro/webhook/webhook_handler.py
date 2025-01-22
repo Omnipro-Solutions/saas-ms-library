@@ -217,17 +217,40 @@ class WebhookHandler:
             self._send_notification_webhook_records(webhook_entry)
 
     def _create_click_house_task(self, webhook_entry: dict):
-        if self.celery_app:
+        order_ids = self._extract_order_ids_from_webhook_entry(webhook_entry)
+        if self.celery_app and order_ids:
             webhook: dict = webhook_entry.get("webhook", {})
             records = webhook_entry.get("records", [])
-            kwargs = {"name": webhook.get("name"), "records_count": len(records)}
+            kwargs = {"name": webhook.get("name"), "order_ids_count": len(order_ids)}
             queue = "click_house"
-            name = "export_to_click_house"
+            name = "tasks.sale.order.order_to_facts_file_object_storage"
             try:
-                task = self.celery_app.send_task(name=name, args=[records, self.context], kwargs=kwargs, queue=queue)
+                task = self.celery_app.send_task(name=name, args=[order_ids, self.context], kwargs=kwargs, queue=queue)
                 _logger.debug(f"task ID: {task.id}")
             except Exception as e:
                 _logger.error(str(e))
+
+    def _extract_order_ids_from_webhook_entry(self, webhook_entry: dict) -> list:
+        model = webhook_entry.get("event", {}).get("model", {})
+        order_ids = []
+        microservice = model.get("microservice")
+        model_code = model.get("code")
+        records = webhook_entry.get("records", [])
+        if microservice == "saas-ms-sale":
+            if model_code == "order":
+                order_ids = [r.get("id") for r in records]
+            elif model_code == "sale":
+                order_ids = [order.get("id") for sale in records for order in sale.get("orders", [])]
+            elif model_code == "order_line":
+                order_ids = [r.get("order_id") for r in records]
+
+        elif microservice == "saas-ms-stock":
+            order_ids = [
+                r.get("order", {}).get("order_sql_id") for r in records if r.get("order", {}).get("order_sql_id")
+            ]
+        if order_ids:
+            order_ids = list(set(order_ids))
+        return order_ids
 
     def _create_celery_task(self, webhook_entry: dict):
         """
@@ -724,9 +747,11 @@ class WebhookHandler:
                         event_id = event.id
                         if not event_id in webhooks_by_event_id:
                             webhooks_by_event_id[event_id] = []
-                        webhooks_by_event_id[event_id].append(
-                            json_format.MessageToDict(webhook, preserving_proto_field_name=True)
-                        )
+                        webhook_dict = json_format.MessageToDict(webhook, preserving_proto_field_name=True)
+                        priority_map = {"critical": 1, "high": 2, "medium": 3, "low": 4, "very_low": 5}
+                        priority_code = webhook_dict.get("priority_level", {}).get("code", "medium")
+                        webhook_dict["priority_level"] = priority_map.get(priority_code)
+                        webhooks_by_event_id[event_id].append(webhook_dict)
         except Exception as ex:
             _logger.error(f"_set_webhooks_by_event_id: {str(ex)}")
 

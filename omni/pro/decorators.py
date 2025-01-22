@@ -72,9 +72,7 @@ def resources_decorator(
 
 def permission_required(rm: RedisManager, request, funcion: callable, message_response, permission_code: str):
     try:
-        permission = permission_code or convert_name_upper_snake_case(
-            funcion.__name__, funcion.__module__.split(".")[-1].upper()
-        )
+        permission = permission_code or convert_name_upper_snake_case(funcion.__name__)
         config = rm.get_resource_config(Config.SAAS_MS_USER, request.context.tenant)
         rds_conn = nested(config, "dbs.redis")
         rm_per = RedisManager(**rds_conn)
@@ -102,18 +100,9 @@ def permission_required(rm: RedisManager, request, funcion: callable, message_re
         return MessageResponse(message_response).internal_response(message="Permission required decorator exception")
 
 
-def convert_name_upper_snake_case(function_name: str, model_name: str) -> str:
-    snake = re.sub(r"([A-Z])", r"_\1", function_name).lower()
-    # Eliminar el guión bajo inicial si existe y convertir todo a mayúsculas
-    snake_case = (snake[1:] if snake.startswith("_") else snake).upper()
-    components = snake_case.split("_")
-
-    # Identificar la acción y el modelo
-    if set(model_name.split("_")).intersection(set(components)):
-        resul = [component for component in components if component not in model_name.split("_")]
-        action = "_".join(resul)
-        return f"CAN_{model_name}_{action}".upper()
-    return f"CAN_{snake_case}".upper()
+def convert_name_upper_snake_case(function_name: str) -> str:
+    snake_case = re.sub(r"(?<!^)(?=[A-Z])", "_", function_name).upper()
+    return f"CAN_{snake_case}"
 
 
 class FunctionThreadController:
