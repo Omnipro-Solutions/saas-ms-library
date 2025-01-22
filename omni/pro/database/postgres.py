@@ -381,18 +381,26 @@ class PostgresDatabaseManager(SessionManager):
             )
 
         def create_relational_object(obj, relational_fields):
-            relations = {}
-            for relation, rel_fields in relational_fields.items():
-                relational_obj = getattr(obj, relation, None)
-                if relational_obj:
-                    relations[relation] = relational_obj.__class__(
-                        **{
-                            field: getattr(relational_obj, field)
-                            for field in rel_fields
-                            if hasattr(relational_obj, field)
-                            and not isinstance(getattr(relational_obj.__class__, field, None), property)
-                        }
-                    )
+            def _get_object_based_fields(relational_obj, rel_fields):
+                return relational_obj.__class__(
+                    **{
+                        field: getattr(relational_obj, field)
+                        for field in rel_fields
+                        if hasattr(relational_obj, field)
+                        and not isinstance(getattr(relational_obj.__class__, field, None), property)
+                    }
+                )
+
+            relations = {
+                relation: (
+                    [_get_object_based_fields(item, rel_fields) for item in getattr(obj, relation, [])]
+                    if isinstance(getattr(obj, relation, None), list)
+                    else _get_object_based_fields(getattr(obj, relation), rel_fields)
+                )
+                for relation, rel_fields in relational_fields.items()
+                if getattr(obj, relation, None)
+            }
+
             return relations
 
         transformed_results = []
