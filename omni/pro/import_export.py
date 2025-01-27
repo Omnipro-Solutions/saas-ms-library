@@ -156,7 +156,7 @@ class DynamicQueryPostgresService:
                     if part not in rels_by_key:
                         # If it's not a relationship, we raise an error
                         raise ValueError(
-                            f"The field '{part}' is not a valid relationship of the model {current_model.__name__}."
+                            f"The field '{part}' is not a valid column or relationship of the model {current_model.__name__}."
                         )
                     rel = rels_by_key[part]
                     current_dict = current_dict.setdefault(part, {})
