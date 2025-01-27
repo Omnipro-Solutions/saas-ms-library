@@ -97,7 +97,9 @@ class QueryExport(ImportExportBase):
             list: A list of records retrieved from the database.
         """
 
-        return DynamicQueryService(self.context.pg_manager).get_data_sql(model, fields, start_date, end_date, context)
+        return DynamicQueryPostgresService(self.context.pg_manager).get_data_sql(
+            model, fields, start_date, end_date, context
+        )
 
 
 class DynamicQueryPostgresService:
