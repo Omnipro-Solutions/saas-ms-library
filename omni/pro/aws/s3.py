@@ -117,6 +117,20 @@ class AWSS3Client(AWSClient):
         except (NoCredentialsError, PartialCredentialsError) as e:
             raise e
 
+    def put_object(self, body, key, ACL="private", **kwargs):
+        """
+        Uploads a file to an S3 bucket.
+
+        :param body: str
+        The body of the object to be uploaded.
+
+        :param key: str
+        The name of the object in S3 to be uploaded.
+
+        :return: None
+        """
+        return self.client.put_object(ACL=ACL, Body=body, Bucket=self.bucket_name, Key=key, **kwargs)
+
     def get_object_metadata(self, object_name):
         """
         Retrieves metadata for a specific object from the S3 bucket.
