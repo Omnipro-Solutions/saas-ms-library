@@ -97,9 +97,7 @@ class QueryExport(ImportExportBase):
             list: A list of records retrieved from the database.
         """
 
-        return DynamicQueryPostgresService(self.context.pg_manager).get_data_sql(
-            model, fields, start_date, end_date, context
-        )
+        return DynamicQueryService(self.context.pg_manager).get_data_sql(model, fields, start_date, end_date, context)
 
 
 class DynamicQueryPostgresService:
@@ -148,14 +146,18 @@ class DynamicQueryPostgresService:
                 rels_by_key = {r.key: r for r in inspector.relationships}
 
                 if i == 0 and part.endswith("_id") and part in model_columns:
-                    raise ValueError(f"No se permite usar el campo '{part}'. Debes usar la relación correspondiente.")
+                    raise ValueError(
+                        f"Not allowed to include the column '{part}' directly. Include the relationship instead."
+                    )
 
                 if not is_last:
                     # Subfields are only allowed for relationships, not for columns.
                     # If you want to include a column, just include the column name directly.
                     if part not in rels_by_key:
                         # If it's not a relationship, we raise an error
-                        raise ValueError(f"El campo '{part}' no es una relación válida del modelo {model.__name__}.")
+                        raise ValueError(
+                            f"The field '{part}' is not a valid relationship of the model {current_model.__name__}."
+                        )
                     rel = rels_by_key[part]
                     current_dict = current_dict.setdefault(part, {})
                     current_model = rel.mapper.class_
