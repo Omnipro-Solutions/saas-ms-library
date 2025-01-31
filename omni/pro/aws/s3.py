@@ -134,3 +134,18 @@ class AWSS3Client(AWSClient):
                              for some other reason. This could be due to a permissions issue, non-existent bucket or object, etc.
         """
         return self._client.head_object(Bucket=self.bucket_name, Key=object_name)
+
+    def upload_fileobj(self, fileobj, object_name):
+        """
+        Uploads a file-like object to an S3 bucket.
+
+        :param fileobj: A file-like object to be uploaded.
+        :param object_name: The key under which the file will be stored in S3.
+        :param content_type: The MIME type of the file, which helps the browser to handle the file appropriately.
+
+        :return: A URL to the uploaded file in the format "https://<bucket_name>.s3.amazonaws.com/<object_name>"
+
+        :raises boto3.exceptions.S3UploadFailedError: If the upload to S3 fails.
+        """
+
+        return self._client.upload_fileobj(fileobj, self.bucket_name, object_name)
