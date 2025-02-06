@@ -324,9 +324,47 @@ class PostgresDatabaseManager(SessionManager):
         (list): A list of records based on the provided parameters.
                 Una lista de registros basados en los parámetros proporcionados.
         """
-        # records = QueryBuilder.build_filter(model, session, id, fields, filter, group_by, sort_by, paginated)
+        results, total = self.fetch_records(model, session, id, fields, filter, group_by, sort_by, paginated)
 
-        # Uso de la clase
+        return results, total
+
+    def fetch_records(
+        self,
+        model,
+        session,
+        id: int = None,
+        fields: list[str] = None,
+        filter: dict = None,
+        group_by: list[str] = None,
+        sort_by: list[dict] = None,
+        paginated: dict = None,
+    ):
+        """
+        Lists database records based on provided parameters (using standard Python objects).
+        Lista registros de la base de datos basados en los parámetros proporcionados (usando objetos estándar de Python).
+
+        Args:
+        model (Base): The SQLAlchemy model to query.
+                    El modelo SQLAlchemy a consultar.
+        session (Session): An instance of the database session.
+                        Una instancia de la sesión de base de datos.
+        id (int, optional): The ID of a specific record to retrieve.
+                            El ID de un registro específico para recuperar.
+        fields (list[str], optional): List of fields to return in the response.
+                                    Lista de campos a devolver en la respuesta.
+        filter (dict, optional): Conditions to filter the list of records in dictionary format.
+                                Condiciones para filtrar la lista de registros en formato de diccionario.
+        group_by (list[str], optional): Fields to group the list of records.
+                                        Campos para agrupar la lista de registros.
+        sort_by (list[dict], optional): List of sorting conditions in dictionary format (e.g., {"field": "name", "order": "asc"}).
+                                        Lista de condiciones para ordenar en formato de diccionario (e.g., {"field": "name", "order": "asc"}).
+        paginated (dict, optional): Pagination conditions in dictionary format (e.g., {"offset": 1, "limit": 20}).
+                                    Condiciones de paginación en formato de diccionario (e.g., {"offset": 1, "limit": 20}).
+
+        Returns:
+        (list, int): A list of records based on the provided parameters and the total count.
+                    Una lista de registros basados en los parámetros proporcionados y el total.
+        """
         query = session.query(model)
 
         if filter.ListFields():

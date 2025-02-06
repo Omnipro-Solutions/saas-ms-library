@@ -692,6 +692,27 @@ class DBUtil(object):
         group_by: base_pb2.GroupBy,
         sort_by: base_pb2.SortBy,
     ) -> dict:
+        prepared_statement = DBUtil.fetch_prepared_statement(
+            id=id,
+            fields=fields,
+            filter=filter,
+            paginated=paginated,
+            group_by=group_by,
+            sort_by=sort_by,
+        )
+
+        return prepared_statement
+
+    @classmethod
+    def fetch_prepared_statement(
+        cls,
+        id: str,
+        fields: list[str] = None,
+        filter: dict = None,
+        paginated: dict = None,
+        group_by: list[str] = None,
+        sort_by: list[dict] = None,
+    ) -> dict:
         prepared_statement = {}
         prepared_statement["paginated"] = {
             "page": paginated.offset,
