@@ -1,3 +1,4 @@
+import boto3
 from botocore.config import Config
 from botocore.exceptions import NoCredentialsError, PartialCredentialsError
 from omni.pro.aws.client import AWSClient
@@ -30,12 +31,24 @@ class AWSS3Client(AWSClient):
 
         Additional kwargs are passed to the base class AWSClient constructor, allowing further configuration.
         """
-        kwargs["config"] = Config(
+        self.config = Config(
             region_name=region_name, signature_version="v4", retries={"max_attempts": 10, "mode": "standard"}
         )
+        kwargs["config"] = self.config
         self.bucket_name = bucket_name
         self.allowed_files = allowed_files
         super().__init__("s3", region_name, aws_access_key_id, aws_secret_access_key, **kwargs)
+
+    def get_resource(self, **kwargs):
+        session = boto3.Session(
+            aws_access_key_id=self.client._request_signer._credentials.access_key,
+            aws_secret_access_key=self.client._request_signer._credentials.secret_key,
+            aws_session_token=self.client._request_signer._credentials.token,
+            region_name=self.client.meta.region_name,
+            **kwargs,
+        )
+        resource = session.resource("s3")
+        return resource
 
     def download_file(self, object_name: str, file_path: str):
         """
@@ -117,7 +130,7 @@ class AWSS3Client(AWSClient):
         except (NoCredentialsError, PartialCredentialsError) as e:
             raise e
 
-    def put_object(self, body, key, ACL="private", **kwargs):
+    def put_object(self, body, key, ACL="private", **kwargs) -> dict:
         """
         Uploads a file to an S3 bucket.
 
@@ -130,6 +143,17 @@ class AWSS3Client(AWSClient):
         :return: None
         """
         return self.client.put_object(ACL=ACL, Body=body, Bucket=self.bucket_name, Key=key, **kwargs)
+
+    def get_object(self, key, **kwargs):
+        """
+        Retrieves an object from the S3 bucket.
+
+        :param key: str
+        The name of the object in S3 to be retrieved.
+
+        :return: dict
+        """
+        return self.client.get_object(Bucket=self.bucket_name, Key=key, **kwargs)
 
     def get_object_metadata(self, object_name):
         """
