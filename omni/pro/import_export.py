@@ -148,14 +148,18 @@ class DynamicQueryPostgresService:
                 rels_by_key = {r.key: r for r in inspector.relationships}
 
                 if i == 0 and part.endswith("_id") and part in model_columns:
-                    raise ValueError(f"No se permite usar el campo '{part}'. Debes usar la relación correspondiente.")
+                    raise ValueError(
+                        f"Not allowed to include the column '{part}' directly. Include the relationship instead."
+                    )
 
                 if not is_last:
                     # Subfields are only allowed for relationships, not for columns.
                     # If you want to include a column, just include the column name directly.
                     if part not in rels_by_key:
                         # If it's not a relationship, we raise an error
-                        raise ValueError(f"El campo '{part}' no es una relación válida del modelo {model.__name__}.")
+                        raise ValueError(
+                            f"The field '{part}' is not a valid column or relationship of the model {current_model.__name__}."
+                        )
                     rel = rels_by_key[part]
                     current_dict = current_dict.setdefault(part, {})
                     current_model = rel.mapper.class_
@@ -249,23 +253,19 @@ class DynamicQueryPostgresService:
                 related_alias = f"{alias_prefix}_{key}"
 
                 rel = inspect(model).relationships.get(key)
-                related_alias = f"{alias_prefix}_{key}"
 
                 if is_m2m and pivot_table_name:
-                    # Caso muchos-a-muchos
-                    # Supongamos que 'alias_prefix' = 'main_orders_delivery_method'
-                    # (o similar) es en realidad el "alias del padre".
+                    # Many-to-many relationship
                     pivot_alias = f"{alias_prefix}_{key}_assoc"  # p.e. main_orders_delivery_method_states_assoc
                     child_final_alias = f"{alias_prefix}_{key}_table"  # p.e. main_orders_delivery_method_states_table
 
                     join_clauses.append(
                         f'LEFT JOIN "{pivot_table_name}" AS {pivot_alias}'
-                        f' ON {alias_prefix}."id" = {pivot_alias}."delivery_method_id"'
-                        # Arriba, el "alias_prefix" es el padre real (delivery_method)
+                        f' ON {alias_prefix}."id" = {pivot_alias}."{list(rel.local_columns)[0]._key_label}"'
                     )
                     join_clauses.append(
                         f'LEFT JOIN "{target_table}" AS {child_final_alias}'
-                        f' ON {pivot_alias}."state_id" = {child_final_alias}."id"'
+                        f' ON {pivot_alias}."{list(rel.remote_side)[0].name}" = {child_final_alias}."id"'
                     )
 
                     final_alias = f"{related_alias}_table"
@@ -354,16 +354,82 @@ class DynamicQueryPostgresService:
                 grouped_data[main_id_value] = self._build_base_dict(row_dict, nested_mapping)
 
             for rel_name, info in nested_mapping.items():
-                if isinstance(info, dict) and info.get("_uselist") is True:
-                    # Extract the sub-dictionary for the relationship
-                    sub_map = info["_mapping"]
+                if isinstance(info, dict):
+                    sub_map = info.get("_mapping", {})
                     sub_dict = self._build_nested_dict(row_dict, sub_map)
 
-                    # Avoid adding empty dictionaries
-                    if any(v is not None for v in sub_dict.values()):
-                        grouped_data[main_id_value][rel_name].append(sub_dict)
+                    if info.get("_uselist"):
+                        existing_list = grouped_data[main_id_value][rel_name]
+                        found = False
+                        for idx, existing_item in enumerate(existing_list):
+                            if self._compare_items(existing_item, sub_dict, sub_map):
+                                merged_item = self._merge_nested_dicts(existing_item, sub_dict, sub_map)
+                                existing_list[idx] = merged_item
+                                found = True
+                                break
+                        if not found:
+                            existing_list.append(sub_dict)
+                    else:
+                        existing_item = grouped_data[main_id_value].get(rel_name, {})
+                        if existing_item:
+                            merged_item = self._merge_nested_dicts(existing_item, sub_dict, sub_map)
+                            grouped_data[main_id_value][rel_name] = merged_item
+                        else:
+                            grouped_data[main_id_value][rel_name] = sub_dict
 
         return list(grouped_data.values())
+
+    def _merge_nested_dicts(self, existing, new, mapping):
+        for key, key_info in mapping.items():
+            if isinstance(key_info, dict):
+                sub_mapping = key_info.get("_mapping", {})
+                if key_info.get("_uselist", False):
+                    existing_list = existing.get(key, [])
+                    new_list = new.get(key, [])
+                    for new_item in new_list:
+                        found = False
+                        for existing_item in existing_list:
+                            if self._compare_items(existing_item, new_item, sub_mapping):
+                                self._merge_nested_dicts(existing_item, new_item, sub_mapping)
+                                found = True
+                                break
+                        if not found:
+                            existing_list.append(new_item)
+                    existing[key] = existing_list
+                else:
+                    existing_sub = existing.get(key, {})
+                    new_sub = new.get(key, {})
+                    merged_sub = self._merge_nested_dicts(existing_sub, new_sub, sub_mapping)
+                    existing[key] = merged_sub
+            else:
+                if key in new and new[key] is not None:
+                    existing[key] = new[key]
+        return existing
+
+    def _compare_items(self, item1, item2, mapping):
+        """
+        Compares two items based on the mapping, ignoring list-type keys.
+        """
+        for key, key_info in mapping.items():
+            # Skip keys that are lists (uselist=True)
+            if isinstance(key_info, dict) and key_info.get("_uselist", False):
+                continue
+
+            # Handle nested mappings (non-list)
+            if isinstance(key_info, dict) and "_mapping" in key_info:
+                nested_mapping = key_info["_mapping"]
+                nested_item1 = item1.get(key, {})
+                nested_item2 = item2.get(key, {})
+                if not self._compare_items(nested_item1, nested_item2, nested_mapping):
+                    return False
+            elif isinstance(key_info, dict):
+                # Handle other dict structures if needed
+                pass
+            else:
+                # Simple key comparison
+                if item1.get(key) != item2.get(key):
+                    return False
+        return True
 
     def _build_nested_dict(self, flat_row, nested_mapping) -> dict:
         """
@@ -381,23 +447,24 @@ class DynamicQueryPostgresService:
         if isinstance(nested_mapping, str):
             return flat_row.get(nested_mapping)
 
-        if isinstance(nested_mapping, dict) and "_uselist" in nested_mapping:
-            is_uselist = nested_mapping["_uselist"]
-            sub_mapping = nested_mapping["_mapping"]
-
-            if is_uselist:
-                subobj = self._build_nested_dict(flat_row, sub_mapping)
-                return subobj
-            else:
-                # One-to-one relationship => construct a sub-dictionary
-                return self._build_nested_dict(flat_row, sub_mapping)
-
         if isinstance(nested_mapping, dict):
+            if "_uselist" in nested_mapping:
+                is_uselist = nested_mapping["_uselist"]
+                sub_mapping = nested_mapping["_mapping"]
+
+                if is_uselist:
+                    sub_element = self._build_nested_dict(flat_row, sub_mapping)
+                    return [sub_element] if sub_element else []
+                else:
+                    return self._build_nested_dict(flat_row, sub_mapping)
+
             result = {}
             for sub_key, sub_val in nested_mapping.items():
                 # Recursively build the nested dictionary for each sub-key
                 result[sub_key] = self._build_nested_dict(flat_row, sub_val)
             return result
+
+        return None
 
     def _build_base_dict(self, row_dict, nested_mapping) -> dict:
         """
@@ -423,9 +490,13 @@ class DynamicQueryPostgresService:
                 if value.get("_uselist"):
                     # Collection => initialize with an empty list
                     result[key] = []
+                    sub_map = value.get("_mapping", {})
+                    sub_element = self._build_nested_dict(row_dict, sub_map)
+                    if sub_element:  # Solo agregar si hay datos
+                        result[key].append(sub_element)
                 else:
-                    # One-to-one relationship => construct a sub-dictionary
-                    sub_map = value["_mapping"]
+                    # # Relation one-to-one
+                    sub_map = value.get("_mapping", {})
                     sub_dict = self._build_nested_dict(row_dict, sub_map)
                     result[key] = sub_dict
         return result
