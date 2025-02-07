@@ -239,7 +239,7 @@ class Descriptor(object):
                     "type": "RelationshipProperty",
                     "class_type": Descriptor.get_equivalent_field("RelationshipProperty"),
                     "required": not relation.uselist,  # True para many-to-one, False para many-to-many
-                    "relation": {"name": relation.entity.class_.__name__},
+                    "relation": {"name": relation.entity.class_.__name__, "code": relation.entity.mapped_table.name},
                     "is_exportable": False,
                     "is_importable": False,
                     "is_filterable": False,
