@@ -3,6 +3,8 @@ from datetime import datetime
 from importlib import import_module
 
 from dateutil import parser
+from mongoengine import Document, EmbeddedDocumentField, ListField, ReferenceField
+from mongoengine.queryset import QuerySet
 from sqlalchemy import inspect, text
 
 
@@ -45,45 +47,14 @@ class QueryExport(ImportExportBase):
         Returns: The fetched data.
         """
         model = self.get_model(model_path)
-        return self.db_types[self.db_type](model, model_path, fields, date_init, date_finish, context)
+        return self.db_types[self.db_type](model, fields, date_init, date_finish, context)
 
-    def parse_date(self, date):
-        result = None
-        try:
-            result = datetime.strptime(date, "%Y-%m-%dT%H:%M:%S.%fZ")
-        except ValueError:
-            result = datetime.strptime(date, "%Y-%m-%dT%H:%M:%SZ")
-        return parser.parse(result.strftime("%Y-%m-%dT%H:%M:%S.%f+00:00"))
-
-    def get_data_no_sql(self, model, model_path, fields, start_date, end_date, context):
-        """
-        Fetches data from a NoSQL database.
-        Parameters:
-        model: The model class for the NoSQL operation.
-        model_path (str): The path to the model class.
-        fields (list): A list of field names to be fetched.
-        date_init(datetime): The start date for the query.
-        date_finish(datetime): The end date for the query.
-        context (dict): The context for the NoSQL database operation.
-        Returns: Data retrieved from the NoSQL database.
-        """
-        exclude = {"_id" if key == "id" else key: False for key in set(model._fields.keys()) - set(fields)}
-        db = model.db
-        query_filter = {
-            "context.tenant": context["tenant"],
-            "audit.created_at": {
-                "$gte": self.parse_date(start_date),
-                "$lte": self.parse_date(end_date),
-            },
-        }
-        cursor = db[model._meta["collection"]].find(
-            query_filter,
-            projection=exclude,
+    def get_data_no_sql(self, model, fields, start_date, end_date, context):
+        return DynamicQueryMongoService(self.context.db_manager).get_data_mongo(
+            model, fields, start_date, end_date, context
         )
-        result = list(cursor)
-        return result
 
-    def get_data_sql(self, model, model_path, fields, start_date, end_date, context) -> list:
+    def get_data_sql(self, model, fields, start_date, end_date, context) -> list:
         """
         Retrieve data from the database using a dynamically generated SQL query.
         Args:
@@ -500,6 +471,314 @@ class DynamicQueryPostgresService:
                     sub_dict = self._build_nested_dict(row_dict, sub_map)
                     result[key] = sub_dict
         return result
+
+
+class DynamicQueryMongoService:
+    def __init__(self, db_manager):
+        self.db_manager = db_manager
+
+    def parse_nested_fields(self, model, fields):
+        """
+        Parses a list of nested field names and constructs a nested structure representing the hierarchy of fields.
+        Args:
+            model (Document): The root model class to start parsing from.
+            fields (list of str): A list of field names, potentially nested, separated by dots.
+        Returns:
+            dict: A nested dictionary representing the structure of the fields, where each key is a field name and the value
+                  is either True for simple fields or a dictionary with metadata for nested fields.
+        Raises:
+            ValueError: If a field in the path does not exist in the model.
+        """
+
+        nested_structure = {}
+        for field in fields:
+            parts = field.split(".")
+            current_model = model
+            current_node = nested_structure
+
+            for i, part in enumerate(parts):
+                if not hasattr(current_model, part):
+                    raise ValueError(f"Campo '{part}' no existe en {current_model.__name__}.")
+
+                field_obj = current_model._fields[part]
+                is_list = False
+                ref_model = None
+                is_embedded = False
+
+                # Determinar tipo de campo
+                if isinstance(field_obj, ReferenceField):
+                    ref_model = field_obj.document_type
+                elif isinstance(field_obj, ListField):
+                    if isinstance(field_obj.field, ReferenceField):
+                        ref_model = field_obj.field.document_type
+                        is_list = True
+                        is_embedded = False
+                    elif isinstance(field_obj.field, EmbeddedDocumentField):
+                        ref_model = field_obj.field.document_type
+                        is_list = True
+                        is_embedded = True
+                    else:
+                        # Es una lista de DateField, StringField, DictField, etc.
+                        # -> Campo "simple" desde el punto de vista de lookups.
+                        current_node[part] = True
+                        break
+
+                elif isinstance(field_obj, EmbeddedDocumentField):
+                    ref_model = field_obj.document_type
+                    is_embedded = True
+                else:
+                    # Campo simple, termina aquí
+                    current_node[part] = True
+                    break
+
+                # Preparar para siguiente nivel
+                if ref_model:
+                    node = {"_model": ref_model, "_is_list": is_list, "_is_embedded": is_embedded, "_fields": {}}
+                    current_node = current_node.setdefault(part, node)["_fields"]
+                    current_model = ref_model
+        return nested_structure
+
+    def build_aggregation_pipeline(self, model, nested_fields, context, start_date, end_date):
+        """
+        Constructs an aggregation pipeline for MongoDB queries based on the provided parameters.
+        Args:
+            model (Model): The model to be queried.
+            nested_fields (list): A list of nested fields to be processed for $lookup and $project stages.
+            context (dict): A dictionary containing context information, including the tenant.
+            start_date (str): The start date for the date range filter.
+            end_date (str): The end date for the date range filter.
+        Returns:
+            list: A list representing the aggregation pipeline stages.
+        """
+
+        def parse_date(date_str):
+            """
+            Parses a date string and returns a datetime object.
+            This method attempts to parse the given date string using the `parser.parse` method.
+            If parsing fails, it falls back to using `datetime.fromisoformat`.
+            Args:
+                date_str (str): The date string to be parsed.
+            Returns:
+                datetime: A datetime object representing the parsed date.
+            Raises:
+                ValueError: If the date string cannot be parsed by either method.
+            """
+            try:
+                return parser.parse(date_str)
+            except:
+                return datetime.fromisoformat(date_str)
+
+        pipeline = []
+        # Match stage for tenant and date range
+        match_stage = {
+            "$match": {
+                f"context.tenant": context["tenant"],
+                "audit.created_at": {
+                    "$gte": parse_date(start_date),
+                    "$lte": parse_date(end_date),
+                },
+            }
+        }
+
+        pipeline.append(match_stage)
+
+        # Process nested fields to add $lookup and $project stages
+        self._process_nested_fields(pipeline, model, nested_fields)
+
+        # Final $project stage to exclude unnecessary fields
+        projection = self._build_projection(nested_fields)
+        pipeline.append({"$project": projection})
+
+        return pipeline
+
+    def _process_nested_fields(self, pipeline, model, nested_fields, parent_path=""):
+        """
+        Processes nested fields for a MongoDB aggregation pipeline.
+        This method recursively processes nested fields in a MongoDB aggregation pipeline,
+        handling references and embedded documents. It constructs the necessary `$lookup`
+        and `$unwind` stages to properly join and unwind nested fields.
+        Args:
+            pipeline (list): The aggregation pipeline to which stages will be appended.
+            model (object): The model class representing the current document.
+            nested_fields (dict): A dictionary representing the nested fields configuration.
+                The keys are field names, and the values are either `True` (indicating the field
+                should be included as-is) or a dictionary with configuration options.
+                Configuration options include:
+                    - "_model": The model class for the referenced or embedded document.
+                    - "_is_list": A boolean indicating if the field is a list.
+                    - "_is_embedded": A boolean indicating if the field is an embedded document.
+                    - "_fields": A dictionary of subfields to process recursively.
+            parent_path (str, optional): The parent path for nested fields. Defaults to an empty string.
+        Returns:
+            None: This method modifies the `pipeline` list in place.
+        """
+
+        for field, config in nested_fields.items():
+            if config is True:
+                continue
+
+            if isinstance(config, dict) and "_model" in config:
+                # Field is a reference or embedded document
+                full_path = f"{parent_path}{field}" if parent_path else field
+                is_list = config.get("_is_list", False)
+                is_embedded = config.get("_is_embedded", False)
+
+                if not is_embedded:
+                    ref_model = config["_model"]
+                    collection_name = ref_model._get_collection_name()
+                    lookup_stage = {
+                        "$lookup": {
+                            "from": collection_name,
+                            "localField": full_path,
+                            "foreignField": "_id",
+                            "as": full_path,
+                        }
+                    }
+                    pipeline.append(lookup_stage)
+
+                # Unwind stage if it's not a list
+                if is_list:
+                    # 1) Unwind stage for lists
+                    pipeline.append({"$unwind": {"path": f"${full_path}", "preserveNullAndEmptyArrays": True}})
+
+                    # 2) Recursion over subfields already unwinded
+                    self._process_nested_fields(
+                        pipeline, config["_model"], config.get("_fields", {}), parent_path=f"{full_path}."
+                    )
+
+                    # 3) Regrouping
+                    group_fields = {
+                        "_id": "$_id",
+                        **{f: {"$first": f"${f}"} for f in model._fields if f != field},
+                        field: {"$push": f"${full_path}"},
+                    }
+                    pipeline.append({"$group": group_fields})
+
+                else:
+                    # Unwind immediately (even if it's not a list), so that the subfields below are read in separate documents"
+                    pipeline.append({"$unwind": {"path": f"${full_path}", "preserveNullAndEmptyArrays": True}})
+
+                    # Recursion over subfields already unwinded
+                    self._process_nested_fields(
+                        pipeline, config["_model"], config.get("_fields", {}), parent_path=f"{full_path}."
+                    )
+
+    def _build_projection(self, nested_fields, parent_var="$", is_map=False):
+        """
+        Constructs a MongoDB projection document for nested fields.
+        Args:
+            nested_fields (dict): A dictionary representing the nested fields and their configurations.
+            parent_var (str, optional): The parent variable path for nested fields. Defaults to "$".
+            is_map (bool, optional): Indicates if the current context is within a $map operation. Defaults to False.
+        Returns:
+            dict: A dictionary representing the MongoDB projection document.
+        """
+
+        def build_field_path(parent_var, field_name):
+            """
+            Constructs a field path string based on the given parent variable and field name.
+            Args:
+                parent_var (str): The parent variable, typically represented as a string.
+                                If the parent variable is '$', it indicates the root level.
+                field_name (str): The name of the field to be appended to the parent variable.
+            Returns:
+                str: A string representing the concatenated field path. If the parent variable
+                    is '$', the result will be in the format '$fieldName'. Otherwise, it will
+                    be in the format '$parent.fieldName'.
+            """
+
+            if parent_var == "$":
+                return f"{parent_var}{field_name}"
+            else:
+                return f"{parent_var}.{field_name}"
+
+        projection = {}
+
+        for field, config in nested_fields.items():
+
+            # If it's a dict and has "_model" it means it's a nested field (ReferenceField, EmbeddedDocument, etc.)
+            if isinstance(config, dict) and "_model" in config:
+                is_list = config.get("_is_list", False)
+                is_embedded = config.get("_is_embedded", False)
+                sub_fields = config.get("_fields", {})
+
+                if is_list:
+                    # Build the sub-projection for each item in the list
+                    sub_projection = self._build_projection(
+                        sub_fields, parent_var="$$item"  # dentro de un $map, cada elemento es $$item
+                    )
+
+                    # In the $project, the "field" key will represent the transformed array
+                    projection[field] = {
+                        "$map": {
+                            "input": {"$ifNull": [build_field_path(parent_var, field), []]},
+                            "as": "item",
+                            "in": sub_projection,
+                        }
+                    }
+
+                elif is_embedded:
+                    # Field is embedded: we nest recursively without using dots
+                    projection[field] = self._build_projection(
+                        sub_fields, parent_var=f"{parent_var}.{field}", is_map=False
+                    )
+                else:
+                    # Field is a reference
+                    projection[field] = self._build_projection(
+                        sub_fields, parent_var=f"{parent_var}.{field}", is_map=False
+                    )
+
+            else:
+                # Field is a simple field
+                if field == "id":
+                    if parent_var == "$":
+                        projection["_id"] = True
+                    else:
+                        projection["id"] = f"{parent_var}._id"
+                else:
+                    projection[field] = build_field_path(parent_var, field)
+
+        return projection
+
+    def get_data_mongo(self, model, fields, start_date, end_date, context):
+        """
+        Retrieve data from a MongoDB collection based on the specified model, fields, and date range.
+        Args:
+            model (Model): The model representing the MongoDB collection.
+            fields (list): A list of fields to be retrieved from the collection.
+            start_date (datetime): The start date for the data retrieval.
+            end_date (datetime): The end date for the data retrieval.
+            context (dict): Additional context for building the aggregation pipeline.
+        Returns:
+            list: A list of formatted documents retrieved from the MongoDB collection.
+        """
+
+        # Parse fields and build pipeline
+        nested_fields = self.parse_nested_fields(model, fields)
+        pipeline = self.build_aggregation_pipeline(model, nested_fields, context, start_date, end_date)
+
+        # Execute aggregation pipeline
+        collection = model._get_collection()
+        results = collection.aggregate(pipeline)
+
+        # Format results
+        return [self._format_document(doc) for doc in results]
+
+    def _format_document(self, doc):
+        """
+        Recursively formats a document by processing its nested dictionaries and lists.
+        Args:
+            doc (dict): The document to be formatted.
+        Returns:
+            dict: The formatted document with nested dictionaries and lists processed.
+        """
+
+        for key, value in doc.items():
+            if isinstance(value, dict):
+                doc[key] = self._format_document(value)
+            elif isinstance(value, list):
+                doc[key] = [self._format_document(item) if isinstance(item, dict) else item for item in value]
+        return doc
 
 
 class BatchUpsert(ImportExportBase):
