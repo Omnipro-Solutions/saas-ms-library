@@ -241,6 +241,7 @@ class Descriptor(object):
                     "required": not relation.uselist,  # True para many-to-one, False para many-to-many
                     "relation": {
                         "name": relation.entity.class_.__name__,
+                        "code": relation.entity.mapped_table.name,
                         "primitive_field": ",".join([x.name for x in relation.local_columns]),
                     },
                     "is_exportable": False,
