@@ -143,7 +143,7 @@ class Descriptor(object):
             description = {
                 "name": model.__name__,
                 "class_name": f"{model.__module__}.{model.__name__}",
-                "code": model._meta.get("collection") or model.__name__.lower(),
+                "code": model.__name__.lower(),
                 "verbose_name": model._meta.get("verbose_name"),
                 "fields": fields,
             }
@@ -239,7 +239,10 @@ class Descriptor(object):
                     "type": "RelationshipProperty",
                     "class_type": Descriptor.get_equivalent_field("RelationshipProperty"),
                     "required": not relation.uselist,  # True para many-to-one, False para many-to-many
-                    "relation": {"name": relation.entity.class_.__name__},
+                    "relation": {
+                        "name": relation.entity.class_.__name__,
+                        "primitive_field": ",".join([x.name for x in relation.local_columns]),
+                    },
                     "is_exportable": False,
                     "is_importable": False,
                     "is_filterable": False,
