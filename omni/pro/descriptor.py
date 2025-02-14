@@ -143,7 +143,7 @@ class Descriptor(object):
             description = {
                 "name": model.__name__,
                 "class_name": f"{model.__module__}.{model.__name__}",
-                "code": model.__name__.lower(),
+                "code": model._camel_to_snake(model.__name__),
                 "verbose_name": model._meta.get("verbose_name"),
                 "fields": fields,
             }
